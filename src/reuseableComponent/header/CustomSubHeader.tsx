@@ -1,19 +1,25 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { RootStackParamList } from "../../navigation/AppNavigation";
 import fontSizes from "../../assets/fonts/FontSize";
 import colors from "../../assets/color/colors";
 
-function CustomSubHeader(props: { spotName: any }) {
-  const { spotName } = props;
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+function CustomSubHeader(props: { spotName: string, onPress: any }) {
+  const { spotName, onPress } = props;
+
+  // Define navigation based on the 'type' prop
+
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.leftSection}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <MaterialIcons name="arrow-back" size={24} color="white" style={styles.backIcon} />
+        <TouchableOpacity onPress={onPress}>
+          <MaterialIcons
+            name="arrow-back"
+            size={24}
+            color={colors.darkblack}
+            style={styles.backIcon}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.rightSection}>
@@ -25,7 +31,7 @@ function CustomSubHeader(props: { spotName: any }) {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: colors.AppPrimaryColor,
+    backgroundColor: colors.white,
     height: 60,
     flexDirection: 'row',
     alignItems: 'center',
@@ -43,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   spotName: {
-    color: 'white',
+    color: colors.darkblack,
     fontSize: fontSizes.heading,
   },
 });

@@ -9,4 +9,4 @@ export const displays = "/iv1/displays/unused/list"
 export const readers = "/iv1/readers/unused/list"
 export const weighBridges = "/iv1/external/activeAndExpiredWeighbridges"
 export const uploadGeneric = "/iv1/spots/create"
-
+export const deleteSpots = "spots/remove/:"

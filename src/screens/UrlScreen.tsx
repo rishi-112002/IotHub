@@ -7,19 +7,19 @@ import {
     TouchableOpacity,
     View,
     Easing,
-    ActivityIndicator,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { RootState } from "../reducer/Store";
+import { RootState, store } from "../reducer/Store";
 import { setBaseUrl } from "../reducer/Login/LoginReducer";
-import { fetchConfigDetails } from "../api/Api";
-import CustomTextInputInsideLable from "../reuseableComponent/customTextInput/CustomTextInputInsideLabel";
 import CustomButton from "../reuseableComponent/customButton/CustomButton";
 import colors from "../assets/color/colors";
 import { RootStackParamList } from "../navigation/AppNavigation";
+import CustomTextInput from "../reuseableComponent/customTextInput/CustomTextInput";
+import CustomLoader from "../reuseableComponent/loader/CustomLoader";
+import { GetUrls } from "../reducer/url/UrlAction";
 
 interface urlScreenParams {
     baseUrls: string;
@@ -30,6 +30,7 @@ function UrlScreen() {
     const passedBaseUrl = route.params?.baseUrls || "";
     const [url, setUrl] = useState(passedBaseUrl);
     const isLogedIn = useSelector((state: RootState) => state.authentication.isLogedIn);
+    const error = useSelector((state: RootState) => state.getUrls.error);
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const dispatch = useDispatch();
     const [errors, setErrors] = useState<{ url?: string }>({});
@@ -37,7 +38,7 @@ function UrlScreen() {
     const slideUpAnim = useRef(new Animated.Value(200)).current;
     const [loading, setLoading] = useState(false)
 
-
+    // Validating URL input and enabling/disabling button
     const handleUrlChange = (input: string) => {
         const newValue = input.replace(/\s/g, "");
         if (input !== newValue) {
@@ -47,11 +48,7 @@ function UrlScreen() {
         }
         setUrl(newValue);
 
-        if (newValue.startsWith("http://") || newValue.startsWith("https://")) {
-            setIsButtonDisabled(false);
-        } else {
-            setIsButtonDisabled(true);
-        }
+        setIsButtonDisabled(!(newValue.startsWith("http://") || newValue.startsWith("https://")));
     };
 
     const handleClick = async () => {
@@ -62,19 +59,21 @@ function UrlScreen() {
         } else {
             setLoading(true);
             try {
-                if (await fetchConfigDetails(url)) {
+                // Wait for dispatch to complete and check the result
+                const resultAction = store.dispatch(GetUrls({ baseUrl: url }));
+
+                if (!GetUrls.fulfilled.match(resultAction)) {
                     await AsyncStorage.setItem("baseurl", url);
                     dispatch(setBaseUrl(url));
-                    if (url === passedBaseUrl) {
-                        if (isLogedIn) {
-                            navigation.navigate("HomeScreen");
-                        } else {
-                            navigation.navigate("LoginScreen");
-                        }
+
+                    // Navigate based on login status
+                    if (url === passedBaseUrl && isLogedIn) {
+                        navigation.navigate("HomeScreen");
                     } else {
                         navigation.navigate("LoginScreen");
                     }
                 } else {
+                    // Handle errors from the action if any
                     Alert.alert("Error", "Please check the URL and try again.");
                 }
             } catch (error) {
@@ -87,6 +86,7 @@ function UrlScreen() {
         setErrors(newErrors);
     };
 
+    // Slide-up animation
     useEffect(() => {
         Animated.timing(slideUpAnim, {
             toValue: 0,
@@ -95,11 +95,6 @@ function UrlScreen() {
             easing: Easing.out(Easing.ease),
         }).start();
     }, []);
-    useEffect(() => {
-        if (url) {
-            setIsButtonDisabled(false)
-        }
-    })
 
     return (
         <View style={{ flex: 1, backgroundColor: colors.AppPrimaryColor }}>
@@ -119,15 +114,16 @@ function UrlScreen() {
                     },
                 ]}
             >
-                {loading && <ActivityIndicator size={30} style={{ flex: 1, justifyContent: "center" }} />}
+                {loading && <CustomLoader />}
                 {!url && <Text style={styles.heading}>Welcome</Text>}
                 <Text style={styles.sub_heading}>Please Enter Base Url To Continue</Text>
                 <View style={styles.inputContainer}>
-                    <CustomTextInputInsideLable
+                    <CustomTextInput
                         label="BaseUrl"
                         value={url}
                         onChangeText={handleUrlChange}
                         errorMessage={errors.url}
+                        setTextInput={setUrl}
                     />
                 </View>
                 <Text>You will be able to view and manage data once you enter a valid base URL.</Text>

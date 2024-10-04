@@ -1,4 +1,4 @@
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import CustomSubHeader from "../reuseableComponent/header/CustomSubHeader";
 import { useSelector } from "react-redux";
 import { RootState, store } from "../reducer/Store";
@@ -10,23 +10,24 @@ interface SpotDetailsScreenParams {
     baseUrls: string;
     spotName: string;
 }
-function SpotDetailsScreen() {
+function SpotListScreen() {
 
     const route = useRoute<RouteProp<{ params: SpotDetailsScreenParams }, 'params'>>();
     const { baseUrls, spotName } = route.params;
     const loader = useSelector((state: RootState) => state.spotDetails.loader);
     const spotDetails = useSelector((state: RootState) => state.spotDetails.spotDetails);
+    const navigation = useNavigation()
     useEffect(() => {
         console.log("SpotDetails before dispatch:", spotDetails);
         store.dispatch(GetSpotDetails({ baseUrl: baseUrls, spotName: spotName }));
     }, []);
-    
+
     useEffect(() => {
         console.log("SpotDetails after dispatch:", spotDetails);
     }, [spotDetails]);
     return (
         <View style={{ flex: 1 }}>
-            <CustomSubHeader spotName={spotName} />
+            <CustomSubHeader spotName={spotName} onPress={() => navigation.goBack()} />
             <View style={{ flex: 1 }}>
                 {
                     loader ? <ActivityIndicator size={"large"} /> : <SpotDetailsComponent spotData={spotDetails} />
@@ -36,4 +37,4 @@ function SpotDetailsScreen() {
         </View>
     )
 }
-export default SpotDetailsScreen;
+export default SpotListScreen;

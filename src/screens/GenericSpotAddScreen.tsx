@@ -1,15 +1,17 @@
-import { Text, View, StyleSheet, Switch, TextInput, TouchableOpacity, ActivityIndicator, ScrollView, Alert } from "react-native";
+import { View, ActivityIndicator, ScrollView, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import CustomSubHeader from "../reuseableComponent/header/CustomSubHeader";
-import CustomTextInputInsideLable from "../reuseableComponent/customTextInput/CustomTextInputInsideLabel";
 import colors from "../assets/color/colors";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import GenericModal from "../reuseableComponent/modal/GenralModal";
 import { RootState, store } from "../reducer/Store";
 import { GetDisplays, GetReader, GetSmartControllers, GetWeightBridge } from "../reducer/genericAddDetails/GenericAddDetailsAction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../reuseableComponent/customButton/CustomButton";
 import { uploadGenericData } from "../reducer/uploadGenericData/uploadGenericDataAction";
+import SwithWithLable from "../reuseableComponent/switch/SwitchWithLable";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import CustomTextInput from "../reuseableComponent/customTextInput/CustomTextInput";
+import { GenericNavigationParms } from "../navigation/GenericNavigation";
 
 function GenericAddScreen() {
     const [name, setName] = useState("");
@@ -17,7 +19,14 @@ function GenericAddScreen() {
     const [validId, setvalidId] = useState("");
     const [sequrityTagTimeOut, setSequrityTagTimeOut] = useState("");
     const [driverTagTimeOut, setDriverTagTimeOut] = useState("");
+    const [minTagCount, setMinTagCount] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
+    const [loader, setLoader] = useState(false);
+    const navigation = useNavigation<NavigationProp<GenericNavigationParms>>();
+    const [uploadData, setUploadData] = useState({})
+    const uploadError = useSelector((state: RootState) => state.uploadGeneric.error);
+    const status = useSelector((state: RootState) => state.uploadGeneric.status);
+    const dispatch = useDispatch();
     const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
     const buCode = useSelector((state: RootState) => state.authentication.buCode);
     const token = useSelector((state: RootState) => state.authentication.token);
@@ -25,9 +34,7 @@ function GenericAddScreen() {
     const displays = useSelector((state: RootState) => state.genericAddDetail.display);
     const readers = useSelector((state: RootState) => state.genericAddDetail.reader);
     const Weightbridge = useSelector((state: RootState) => state.genericAddDetail.weighBriges);
-    const displaysLoader = useSelector((state: RootState) => state.genericAddDetail.displaysLoader);
     const smartControllerLoader = useSelector((state: RootState) => state.genericAddDetail.smartControllerLoader);
-    const readerLoader = useSelector((state: RootState) => state.genericAddDetail.readerLoader);
     const [currentField, setCurrentField] = useState<string | null>(null);
     const [selectedReader, setSelectedReader] = useState<any>({ name: '', id: '' });
     const [selectedDisplay, setSelectedDisplay] = useState<any>({ name: '', id: '' });
@@ -35,16 +42,19 @@ function GenericAddScreen() {
     const [selectedEvent, setSelectedEvent] = useState<any>({ name: '', id: '' });
     const [selectedWeighBridge, setSelectedWeighBridge] = useState<any>({ name: '', id: '' });
     const [selectedDirection, setSelectedDirection] = useState<any>({ name: '', id: '' });
-
+    const [errors, setErrors] = useState<{
+        name?: string; delay?: string, event?: string, sequrityDelay?: string, direction?: string,
+        weighBridge?: string, driverTagTimeOut?: string
+    }>({});
     const events = [
         {
             name: "None", id: 'NONE'
         },
         {
-            name: "Tag entry", id: "TAG ENTRY"
+            name: "Tag entry", id: "TAG_ENTRY"
         },
         {
-            name: "Tag entry and exit", id: 'TAG ENTRY AND EXIT'
+            name: "Tag entry and exit", id: 'TAG_ENTRY_AND_EXIT'
         }
     ]
 
@@ -70,30 +80,31 @@ function GenericAddScreen() {
     const [isActiveEnabled, setIsActiveEnabled] = useState(false);
     const toggleActiveSwitch = () => setIsActiveEnabled(prevState => !prevState);
 
-    // Function to handle option selection from modal
     const handleOptionSelect = (selected: any) => {
-        if (currentField === 'display') {
-            return setSelectedDisplay(selected);
-        } else if (currentField === 'reader') {
-            return setSelectedReader(selected);
-
-        }
-        else if (currentField === "smartController") {
-            return setSelectedSmartConnector(selected);
-
-        }
-        else if (currentField === "events") {
-            return setSelectedEvent(selected)
-        }
-        else if (currentField === "weightbridge") {
-            return setSelectedWeighBridge(selected)
-        }
-        else if (currentField === "direction") {
-            return setSelectedDirection(selected)
+        switch (currentField) {
+            case 'display':
+                setSelectedDisplay(selected);
+                break;
+            case 'reader':
+                setSelectedReader(selected);
+                break;
+            case 'smartController':
+                setSelectedSmartConnector(selected);
+                break;
+            case 'events':
+                setSelectedEvent(selected);
+                break;
+            case 'weightbridge':
+                setSelectedWeighBridge(selected);
+                break;
+            case 'direction':
+                setSelectedDirection(selected);
+                break;
         }
         setModalVisible(false);
         setCurrentField(null);
     };
+
 
     // Function to handle input focus and show the modal with the correct options
     const handleFocus = (field: string) => {
@@ -125,28 +136,83 @@ function GenericAddScreen() {
     };
     const handleSaveData = () => {
 
+        const newErrors: {
+            name?: string; delay?: string, event?: string, sequrityDelay?: string, direction?: string,
+            weighBridge?: string, driverTagTimeOut?: string
+        } = {};
 
-        const dataToSave =
-        {
-            active: false,
+        if (!selectedEvent.id) {
+            newErrors.event = "Event is required";
+        }
+        if (!name) {
+            newErrors.name = "Name is required";
+        }
+        if (!delay) {
+            newErrors.delay = "Delay is required";
+        }
+        if (isDriverTagEnabled) {
+            if (!driverTagTimeOut) {
+                newErrors.driverTagTimeOut = "Driver Tag TimeOut is required";
+            }
+        }
+        if (isSecurityTagEnabled) {
+            if (!sequrityTagTimeOut) {
+                newErrors.sequrityDelay = "Sequrity Delay is required";
+            }
+        }
+
+        if (isWeightBridgeEntryEnabled) {
+            if (!selectedDirection) {
+                newErrors.direction = "Direction is required"
+            }
+            if (selectedWeighBridge) {
+                newErrors.weighBridge = "WeighBridge is required"
+            }
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+        setLoader(true);
+        const dataToSave = {
+            active: isActiveEnabled,
             buCode: buCode,
             delayAlertAfter: delay,
-            driverTag: false,
-            events: selectedEvent.id,
-            name:name,
-            securityTag: false,
-            tagCount: null,
+            driverTag: isDriverTagEnabled,
+            ...(isDriverTagEnabled && { driverTagTimeOut: driverTagTimeOut }),
+            events: selectedEvent.id ? selectedEvent.id : null,
+            name: name,
+            securityTag: isSecurityTagEnabled,
+            ...(isSecurityTagEnabled && { sequrityTagTimeOut: sequrityTagTimeOut }),
+            tagCount: minTagCount ? minTagCount : null,
             type: "GENERIC_SPOT",
-            weighbridgeDirection: null,
-            weighbridgeEntry: false,
-            weighbridgeId: null
-          }
-        store.dispatch(uploadGenericData({
-            baseUrls: baseUrls, genericData: dataToSave,
-            token: token , buCode:buCode
-        }))
+            weighbridgeDirection: isWeightBridgeEntryEnabled
+                ? selectedDirection.id
+                    ? selectedDirection.id
+                    : null
+                : null,
+            weighbridgeEntry: isWeightBridgeEntryEnabled,
+            weighbridgeId: isWeightBridgeEntryEnabled
+                ? selectedWeighBridge.id
+                    ? selectedWeighBridge.id
+                    : null
+                : null,
+        };
+        console.log("data for save ", dataToSave)
+        try {
+            store.dispatch(uploadGenericData({
+                baseUrls: baseUrls, genericData: dataToSave,
+                token: token, buCode: buCode
+            }))
+            setLoader(false)
+        } catch (error) {
+            console.log("uploadError in Generic add screen", uploadError)
+        }
     };
-
+    useEffect(() => {
+        console.log("Updated upload data: ", uploadData);
+    }, [uploadData]);
 
     useEffect(() => {
         store.dispatch(GetReader({ baseUrl: baseUrls }))
@@ -154,108 +220,118 @@ function GenericAddScreen() {
         store.dispatch(GetSmartControllers({ baseUrl: baseUrls }))
         store.dispatch(GetWeightBridge({ baseUrl: baseUrls }))
     }, [])
+    useEffect(() => {
+        console.log("error in add screen", uploadError, status)
+        switch (status) {
+            case "failed":
+                if (uploadError) {
+                    Alert.alert("Failed", uploadError);
+                }
+                break;
+            case "succeeded":
+                Alert.alert("Success", status);
+                navigation.goBack()
+                break;
+            case "loading":
+                setLoader(true);
+                break;
+        }
+
+    }, [uploadError, dispatch, status]
+    )
+    if (loader) {
+        return <ActivityIndicator size="large" color={colors.AppPrimaryColor} style={{ flex: 1, backgroundColor: colors.white }} />;
+    }
+
+
+
     return (
-        <ScrollView>
-            <CustomSubHeader spotName={"GenericSpot ADD"} />
+        <ScrollView contentContainerStyle={{ backgroundColor: colors.white }}>
+
+            <CustomSubHeader spotName={"GenericSpot ADD"} onPress={() => navigation.goBack()} />
             {!smartControllerLoader ? <View style={{ padding: 20 }}>
 
-                <View style={styles.row}>
-                    <Text style={styles.labelText}>Active</Text>
-                    <Switch
-                        trackColor={{ false: colors.gray, true: colors.blueLighter }}
-                        thumbColor={!isActiveEnabled ? colors.white : colors.AppPrimaryColor}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={toggleActiveSwitch}
-                        value={isActiveEnabled}
-                    />
-                </View>
-                <CustomTextInputInsideLable
+                <CustomTextInput
                     label="Name"
                     value={name}
-                    onChangeText={(text)=>setName(text)}
-                    placeHolder=""
+                    editable={true}
+                    style={{ flex: 1 }}
 
+                    errorMessage={errors.name}
+                    keyboardType="default"
+                    returnKeyType="next" setTextInput={setName}
                 />
-                <CustomTextInputInsideLable
+                <SwithWithLable value={isActiveEnabled} onChangeValue={toggleActiveSwitch} lable={"Active"} />
+
+                <CustomTextInput
                     label="Delay alert after (milli Seconds)"
                     value={delay}
-                    onChangeText={setDelay}
-                    placeHolder=""
-                />
-                <CustomTextInputInsideLable
+                    editable={true}
+                    style={{ flex: 1 }}
+
+                    errorMessage={errors.delay}
+                    keyboardType="numeric"
+                    returnKeyType="next" setTextInput={setDelay} />
+                <CustomTextInput
                     label="Valid Id state"
+                    style={{ flex: 1 }}
+
                     value={validId}
-                    onChangeText={setvalidId}
-                    placeHolder=""
+                    editable={true}
+                    returnKeyType="next" setTextInput={setvalidId} />
+                <CustomTextInput
+                    value={selectedSmartConnector.name}
+                    onPress={() => handleFocus('smartController')}
+                    style={{ flex: 1 }}
+
+                    label={"Smart Controller"} disable={false}
+                    editable={false} setTextInput={undefined} />
+                <CustomTextInput
+                    value={selectedDisplay.name}
+                    style={{ flex: 1 }}
+
+                    onPress={() => handleFocus('display')}
+                    errorMessage={undefined}
+                    label={"Display"} disable={false}
+                    editable={false} setTextInput={undefined} />
+
+                <CustomTextInput
+                    value={selectedEvent.name}
+                    onPress={() => handleFocus('events')}
+                    style={{ flex: 1 }}
+
+                    errorMessage={errors.event}
+                    label={"Event"} disable={false}
+                    editable={false} setTextInput={undefined} />
+
+                <CustomTextInput
+                    value={selectedReader.name}
+                    onPress={() => handleFocus('reader')}
+                    errorMessage={errors.event}
+                    style={{ flex: 1 }}
+                    label={"Primary Reader"}
+                    disable={selectedEvent.id === "NONE" ? true : false}
+                    editable={false} setTextInput={undefined} />
+
+
+                <CustomTextInput
+                    style={{ flex: 1 }}
+                    value={selectedReader.name}
+                    onPress={() => handleFocus('reader')}
+                    errorMessage={errors.event}
+                    label={"Secoundary Reader"}
+                    disable={selectedEvent.id === "NONE" ? true : false}
+                    editable={false} setTextInput={undefined} />
+
+                <CustomTextInput
+                    label="Min Tag Count"
+                    style={{ flex: 1 }}
+
+                    value={minTagCount}
+                    keyboardType="numeric"
+                    editable={true}
+                    setTextInput={setMinTagCount}
                 />
-                <View>
-                    <Text style={styles.lableHeading}>Smart Controller</Text>
-                    <TouchableOpacity style={styles.inputContainer} onPress={() => handleFocus('smartController')}>
-                        <TextInput
-                            value={selectedSmartConnector.name}
-                            placeholder=""
-                            style={styles.input}
-                            editable={false}
-                        />
-                        <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
-
-                {/* Input for Display */}
-                <View>
-                    <Text style={styles.lableHeading}>Display</Text>
-                    <TouchableOpacity style={styles.inputContainer} onPress={() => handleFocus('display')}>
-                        <TextInput
-                            value={selectedDisplay.name}
-                            placeholder=""
-                            style={styles.input}
-                            editable={false}
-                        />
-                        <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <Text style={styles.lableHeading}>Event</Text>
-                    <TouchableOpacity style={styles.inputContainer} onPress={() => handleFocus('events')}>
-                        <TextInput
-                            value={selectedEvent.name}
-                            placeholder=""
-                            style={styles.input}
-                            editable={false}
-                        />
-                        <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
-
-                <View>
-                    <View>
-                        <Text style={styles.lableHeading}>Primary Reader</Text>
-                        <TouchableOpacity style={styles.inputContainer} onPress={() => handleFocus('reader')}
-                            disabled={selectedEvent.id === "NONE"}>
-                            <TextInput
-                                value={selectedReader.name}
-                                placeholder=""
-                                style={styles.input}
-                                editable={false}
-                            />
-                            <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />
-                        </TouchableOpacity>
-                    </View>
-                    <View>
-                        <Text style={styles.lableHeading}>Secoundary Reader</Text>
-                        <TouchableOpacity style={styles.inputContainer} onPress={() => handleFocus('reader')}
-                            disabled={selectedEvent.id === "NONE"}>
-                            <TextInput
-                                value={selectedReader.name}
-                                placeholder=""
-                                style={styles.input}
-                                editable={false}
-                            />
-                            <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
 
                 {/* Modal for selecting options */}
                 {modalVisible && (
@@ -268,85 +344,53 @@ function GenericAddScreen() {
                         valueKey="id"
                     />
                 )}
-                <View style={styles.row}>
-                    <Text style={styles.labelText}>Driver Tag</Text>
-                    <Switch
-                        trackColor={{ false: colors.gray, true: colors.blueLighter }}
-                        thumbColor={!isDriverTagEnabled ? colors.white : colors.AppPrimaryColor}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={toggleDriverTagSwitch}
-                        value={isDriverTagEnabled}
-                    />
-                </View>
+                <SwithWithLable value={isDriverTagEnabled} onChangeValue={toggleDriverTagSwitch} lable={"Driver Tag"} />
+
                 {
                     isDriverTagEnabled &&
-                    <CustomTextInputInsideLable
+                    <CustomTextInput
                         label="Driver Tag TimeOut (In MilliSecound)"
                         value={driverTagTimeOut}
-                        onChangeText={setDriverTagTimeOut}
-                        placeHolder=""
+                        style={{ flex: 1 }}
+
+                        editable={true}
+                        errorMessage={errors.driverTagTimeOut}
+                        keyboardType="numeric" setTextInput={setDriverTagTimeOut}
                     />
 
                 }
+                <SwithWithLable value={isSecurityTagEnabled} onChangeValue={toggleSecurityTagSwitch} lable={"Security Tag"} />
 
-                <View style={styles.row}>
-                    <Text style={styles.labelText}>Security Tag</Text>
-                    <Switch
-                        trackColor={{ false: colors.gray, true: colors.blueLighter }}
-                        thumbColor={!isSecurityTagEnabled ? colors.white : colors.AppPrimaryColor}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={toggleSecurityTagSwitch}
-                        value={isSecurityTagEnabled}
-                    />
-                </View>
                 {
                     isSecurityTagEnabled &&
-                    <CustomTextInputInsideLable
+                    <CustomTextInput
                         label="Sequirty Tag TimeOut (InMilliSecound)"
                         value={sequrityTagTimeOut}
-                        onChangeText={setSequrityTagTimeOut}
-                        placeHolder=""
+                        editable={true}
+                        style={{ flex: 1 }}
+                        errorMessage={errors.sequrityDelay}
+                        keyboardType="numeric" setTextInput={setSequrityTagTimeOut}
                     />
 
                 }
-
-                <View style={styles.row}>
-                    <Text style={styles.labelText}>Weightbridge Entry</Text>
-                    <Switch
-                        trackColor={{ false: colors.gray, true: colors.blueLighter }}
-                        thumbColor={!isWeightBridgeEntryEnabled ? colors.white : colors.AppPrimaryColor}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={toggleWeightBridgeEntrySwitch}
-                        value={isWeightBridgeEntryEnabled}
-                    />
-                </View>
+                <SwithWithLable value={isWeightBridgeEntryEnabled} onChangeValue={toggleWeightBridgeEntrySwitch} lable={"Weightbridge Entry"} />
                 {
                     isWeightBridgeEntryEnabled &&
                     <View>
-                        <View>
-                            <Text style={styles.lableHeading}>WeighBridge</Text>
-                            <TouchableOpacity style={styles.inputContainer} onPress={() => handleFocus('weightbridge')}>
-                                <TextInput
-                                    value={selectedWeighBridge.name}
-                                    placeholder=""
-                                    style={styles.input}
-                                    editable={false}
-                                />
-                                <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <Text style={styles.lableHeading}>WeighBridge Direction</Text>
-                            <TouchableOpacity style={styles.inputContainer} onPress={() => handleFocus('direction')}>
-                                <TextInput
-                                    value={selectedDirection.name}
-                                    placeholder=""
-                                    style={styles.input}
-                                    editable={false}
-                                />
-                                <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />
-                            </TouchableOpacity>
-                        </View>
+                        <CustomTextInput
+                            style={{ flex: 1 }}
+                            value={selectedReader.name}
+                            onPress={() => handleFocus('weightbridge')}
+                            errorMessage={errors.weighBridge}
+                            label={"WeighBridge"} disable={false} setTextInput={undefined} />
+
+
+                        <CustomTextInput
+                            style={{ flex: 1 }}
+                            value={selectedReader.name}
+                            onPress={() => handleFocus('direction')}
+                            errorMessage={errors.direction}
+                            label={"WeighBridge Direction"} disable={false} setTextInput={undefined} />
                     </View>
 
                 }
@@ -362,42 +406,5 @@ function GenericAddScreen() {
         </ScrollView >
     );
 }
-
-const styles = StyleSheet.create({
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 15,
-    },
-    labelText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#333',
-    },
-    inputContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 10,
-        paddingHorizontal: 10,
-    },
-    lableHeading: {
-        fontSize: 15,
-        fontWeight: "700",
-        color: colors.darkblack,
-    },
-    input: {
-        flex: 1,
-        color: "black",
-        fontSize: 15,
-        paddingVertical: 10,
-    },
-    icon: {
-        paddingLeft: 10,
-    },
-});
-
 export default GenericAddScreen;
 

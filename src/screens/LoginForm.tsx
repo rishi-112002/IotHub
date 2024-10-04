@@ -1,27 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Alert, TouchableOpacity, StatusBar, Animated, Easing } from "react-native";
-import CustomTextInputInsideLable from "../reuseableComponent/customTextInput/CustomTextInputInsideLabel";
+import { View, StyleSheet, Text, Alert, TouchableOpacity, StatusBar, Animated, Easing } from "react-native";
 import CustomButton from "../reuseableComponent/customButton/CustomButton";
 import { RootState, store } from "../reducer/Store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
 import colors from "../assets/color/colors";
 import BusinessUnitModal from "../reuseableComponent/modal/BuinessUnitsModal";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import { loginUser } from "../reducer/Login/LoginAction";
 import NetInfo from "@react-native-community/netinfo";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../navigation/AppNavigation";
+import CustomTextInput from "../reuseableComponent/customTextInput/CustomTextInput";
+import SuccessLoader from "../reuseableComponent/loader/LoginSuccessLoader";
 function LoginForm() {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState<any>({ name: '', code: '' });
   const { buinessunits } = useSelector((State: RootState) => State.buinessUnits);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
-  const [isDropDownVisible, setIsDropDownVisible] = useState<boolean>(false);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [loader, setLoader] = useState(false);  // Loader state
   const loginStatus = useSelector((state: RootState) => state.loginUser.status);
+  const error = useSelector((state: RootState) => state.loginUser.error);
   const [isFocused, setIsFocused] = useState(false);
   const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
   const slideUpAnim = useRef(new Animated.Value(200)).current;
@@ -50,9 +50,9 @@ function LoginForm() {
     }
 
     setErrors(newErrors);
+    setLoader(true);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleUserNameChange = (input: string) => {
     const newValue = input.replace(/\s/g, '');
     if (input !== newValue) {
@@ -72,16 +72,13 @@ function LoginForm() {
       return;
     }
     if (validateForm()) {
-      setLoader(true);
+
       const loginData = { username: userName, password: password, buCode: selectedOption.code };
 
       try {
         await store.dispatch(loginUser({ loginData, baseUrls }))
-      } catch (error) {
+      } catch (e) {
         console.error("Login error: ", error);
-        Alert.alert("Error", "Something went wrong");
-      } finally {
-        setLoader(false);
       }
     }
   };
@@ -97,19 +94,6 @@ function LoginForm() {
   const handleOpenModal = () => {
     setIsFocused(true);
   };
-
-  const handleFocus = () => {
-    Keyboard.dismiss();
-    setIsFocused(true);
-  };
-
-  useEffect(() => {
-    if (userName && password.length >= 8) {
-      setIsDropDownVisible(true);
-    } else {
-      setIsDropDownVisible(false);
-    }
-  }, [userName, password]);
   useEffect(() => {
     Animated.timing(slideUpAnim, {
       toValue: 0,
@@ -120,11 +104,10 @@ function LoginForm() {
   }, []);
   const handleLoginStatus = async () => {
     if (loginStatus === "succeeded") {
-      await AsyncStorage.setItem('userName', userName);
-      await AsyncStorage.setItem('buCode', selectedOption.code);
       setLoader(false);
+      navigation.navigate("HomeScreen")
     } else if (loginStatus === "failed") {
-      Alert.alert("Warning", "Please fill proper details");
+      Alert.alert("Error", " Your authentication information is incorrect. Please try again.");
       setLoader(false);
     }
   };
@@ -143,7 +126,7 @@ function LoginForm() {
       </Text>
       {loader && (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={colors.blueDarkest} />
+          <SuccessLoader />
         </View>
       )}
       <Animated.View
@@ -156,45 +139,38 @@ function LoginForm() {
       >
         <Text style={styles.heading}>Welcome Back</Text>
         <Text style={styles.sub_heading}>Hey There, SignIn To Continue</Text>
-        <CustomTextInputInsideLable
+        <CustomTextInput
           label="Username"
           value={userName}
-          onChangeText={handleUserNameChange}
           errorMessage={errors.userName}
-          placeHolder="enter your userName"
-        />
-        <CustomTextInputInsideLable
+          editable={true}
+          setTextInput={handleUserNameChange} />
+        <CustomTextInput
           label="Password"
           value={password}
-          onChangeText={setPassword}
           secureTextEntry={!passwordVisible}
           errorMessage={errors.password}
           iconName={passwordVisible ? "visibility" : "visibility-off"}
-          handleVisiblity={handleVisibityClick}
-          placeHolder="enter your Password"
-        />
-        {isDropDownVisible && (
-          <View>
-            <Text style={styles.lableHeading}>Business Unit</Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                value={selectedOption.name}
-                placeholder="Select Business unit"
-                style={styles.input}
-                onFocus={handleFocus}
-              />
-              <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />
-            </View>
-            <BusinessUnitModal
-              businessUnits={buinessunits}
-              isVisible={isFocused}
-              handleCloseModal={handleCloseModal}
-              handleOpenModal={handleOpenModal}
-              onOptionSelected={handleOptionSelected}
-              selectedOption={selectedOption.name}
-            />
-          </View>
-        )}
+          handleVisibility={handleVisibityClick}
+          editable={true}
+          setTextInput={setPassword} />
+        <View>
+          <CustomTextInput
+            value={selectedOption.name}
+            setTextInput={undefined}
+            label="Business Unit"
+            editable={false}
+            onPress={() => handleOpenModal()} />
+          <BusinessUnitModal
+            businessUnits={buinessunits}
+            isVisible={isFocused}
+            handleCloseModal={handleCloseModal}
+            handleOpenModal={handleOpenModal}
+            onOptionSelected={handleOptionSelected}
+            selectedOption={selectedOption.name}
+          />
+        </View>
+
         <View style={styles.textContainer}>
           <TouchableOpacity
             onPress={() => {
@@ -223,7 +199,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: colors.white,
     position: "absolute",
     top: 0,
     left: 0,

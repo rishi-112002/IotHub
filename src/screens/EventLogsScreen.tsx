@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Animated, ActivityIndicator } from "react-native"; // Use Animated for slide up effect
 import { RootState, store } from "../reducer/Store";
 import { GetSpotEventLogs } from "../reducer/eventLogs/EventLogsAction";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import CustomSubHeader from "../reuseableComponent/header/CustomSubHeader";
 import EventLogsList from "../component/EventLogsListComponent";
@@ -21,6 +21,7 @@ function EventLogsScreen() {
     const [modalVisible, setModalVisible] = useState(false);
     const [requestData, setRequestData] = useState({});
     const [slideAnim] = useState(new Animated.Value(0));
+    const navigation = useNavigation()
     useEffect(() => {
         if (modalVisible) {
             Animated.timing(slideAnim, {
@@ -54,11 +55,11 @@ function EventLogsScreen() {
 
     return (
         <View style={{ flex: 1 }}>
-            <CustomSubHeader spotName={spotName} />
+            <CustomSubHeader spotName={spotName} onPress={() => navigation.goBack()} />
 
             <View style={{ flex: 1 }}>
                 {loader ? (
-                    <ActivityIndicator size={"large"}  style={{ flex: 1, justifyContent: "center" }}  />
+                    <ActivityIndicator size={"large"} style={{ flex: 1, justifyContent: "center" }} />
                 ) : (
                     <EventLogsList data={eventLogs} setModal={setModalVisible} setRequestData={setRequestData} />
                 )}

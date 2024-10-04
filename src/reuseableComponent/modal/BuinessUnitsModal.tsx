@@ -14,7 +14,6 @@ function BusinessUnitModal(props: { businessUnits: any, isVisible: any, handleOp
     onOptionSelected(unit)
     setSearchVisible(false)
   };
-  console.log("filterOptions" , filteredOptions )
   const filterOptions = (text: string) => {
     setFilteredOptions(
       businessUnits.filter((option: any) =>

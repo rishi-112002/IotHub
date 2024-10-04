@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import {
     View,
@@ -15,33 +15,49 @@ import { RootStackParamList } from "../navigation/AppNavigation";
 function SplashScreen() {
     const isLogedIn = useSelector((state: RootState) => state.authentication.isLogedIn);
     const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
+    
+    const [isFirstLaunch, setIsFirstLaunch] = useState(true); // Add this state to track first launch
     const ring1Scale = useSharedValue(0);
     const ring2Scale = useSharedValue(0);
     const logoOpacity = useSharedValue(0);
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     useEffect(() => {
-        setTimeout(() => {
-            ring1Scale.value = withTiming(1.2, { duration: 800, easing: Easing.out(Easing.exp) });
-        }, 150);
+        if (isFirstLaunch) {
+            setTimeout(() => {
+                ring1Scale.value = withTiming(1.2, { duration: 800, easing: Easing.out(Easing.exp) });
+            }, 150);
 
-        setTimeout(() => {
-            ring2Scale.value = withTiming(1.5, { duration: 1000, easing: Easing.out(Easing.exp) });
-            logoOpacity.value = withTiming(1, { duration: 500 });
-        }, 400);
+            setTimeout(() => {
+                ring2Scale.value = withTiming(1.5, { duration: 1000, easing: Easing.out(Easing.exp) });
+                logoOpacity.value = withTiming(1, { duration: 500 });
+            }, 400);
 
-        const splashTimeout = setTimeout(() => {
+            const splashTimeout = setTimeout(() => {
+                if (baseUrls) {
+                    if (isLogedIn) {
+                        navigation.navigate('Drawer', { screen: "LiveSpot" });
+                    } else {
+                        navigation.navigate("LoginScreen");
+                    }
+                } else {
+                    navigation.navigate('UrlScreen', { baseUrls });
+                }
+                setIsFirstLaunch(false); // Set the flag to false after the splash is shown once
+            }, 2000); // Delay to show splash screen
+
+            return () => clearTimeout(splashTimeout);
+        } else {
+            // Avoid showing splash on subsequent logins/logouts
             if (baseUrls) {
                 if (isLogedIn) {
-                    navigation.navigate('Drawer');
+                    navigation.navigate('Drawer', { screen: "LiveSpot" });
+                } else {
+                    navigation.navigate("LoginScreen");
                 }
-            } else {
-                navigation.navigate('UrlScreen', { baseUrls });
             }
-        }, 2500);
-
-        return () => clearTimeout(splashTimeout);
-    }, [baseUrls, isLogedIn, navigation, ring1Scale, ring2Scale, logoOpacity]);
+        }
+    }, [baseUrls, isLogedIn, navigation, ring1Scale, ring2Scale, logoOpacity, isFirstLaunch]);
 
     const ring1Style = useAnimatedStyle(() => {
         return {
@@ -60,6 +76,10 @@ function SplashScreen() {
             opacity: logoOpacity.value,
         };
     });
+
+    if (!isFirstLaunch) {
+        return null; // Don't render the splash screen after the first launch
+    }
 
     return (
         <View style={styles.container}>

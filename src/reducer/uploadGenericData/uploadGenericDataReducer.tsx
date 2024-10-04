@@ -21,18 +21,22 @@ export const UploadGenericSlice = createSlice({
         builder
             .addCase(uploadGenericData.pending, (state) => {
                 state.status = 'loading';
+                state.error = null;
             })
             .addCase(uploadGenericData.fulfilled, (state, action: PayloadAction<any>) => {
                 state.genericData = action.payload;
                 if (state.genericData.result !== "ERROR") {
                     state.status = 'succeeded';
+                    state.error = null;
+
                 } else {
                     state.status = 'failed';
                 }
             })
             .addCase(uploadGenericData.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.error.message || 'Failed to upload generic data';
+                state.error = action.payload as string || 'Failed to upload generic data';
+                console.log("error in reducer ", action.payload)
             });
     },
 });

@@ -19,19 +19,18 @@ export const SpotsDataByTypeSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(SpotsDataByType.pending, (state, action) => {
-                console.log("pending SpotsDataByTypeSlice", action.payload);
+            .addCase(SpotsDataByType.pending, (state) => {
                 state.loader = true;
             })
             .addCase(SpotsDataByType.fulfilled, (state, action) => {
                 state.loader = false;
                 // Assuming the action.payload has a spotType property
                 const { filteredData, spotType }: any = action.payload; // Modify the payload structure to include spotType
-                console.log("Data That i get in the Reducer of SpotsDataByType", action.payload)
                 if (spotType === "GENERIC_SPOT") {
                     state.GenericSpots = filteredData; // Update GenericSpots
-                } else if (spotType === "UNIDIRECTIONAL_WEIGHBRIDGE") {
+                } else if (spotType === "UNIDIRECTIONAL_WEIGHBRIDGE" ) {
                     state.WeighBridgeSpots = filteredData; // Update WeighBridgeSpots
+                    console.log("filterd data of WeighBridge" , filteredData ,)
                 }
             })
             .addCase(SpotsDataByType.rejected, (state) => {

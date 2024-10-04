@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         shadowRadius: 6,
         elevation: 2,
         borderLeftWidth: 5,
-        borderLeftColor:colors.AppPrimaryColor,
+        borderLeftColor: colors.AppPrimaryColor,
     },
 });
 

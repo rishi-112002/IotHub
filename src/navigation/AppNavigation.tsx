@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from '../screens/SplashScreen';
 import UrlScreen from '../screens/UrlScreen';
 import LoginForm from '../screens/LoginForm';
-import HomeScreen from '../screens/HomeScreen';
 
 import { RootState, store } from '../reducer/Store';
 import { responseDetails } from '../reducer/Reducer';
@@ -15,9 +14,6 @@ import { CheckUserlogin, GetBaseUrl } from "../reducer/Login/LoginAction";
 import { fetchConfigDetails } from "../api/Api";
 import { GetBuinessUnits } from "../reducer/buinessUnits/BuinessUnitsAction";
 import { createStackNavigator } from '@react-navigation/stack';
-import EventLogsScreen from '../screens/EventLogsScreen';
-import SpotDetailsScreen from '../screens/SpotDetailsScreen';
-import { NavigationContainer } from '@react-navigation/native';
 import DrawerNavigation from './DrawerNavigation';
 export type RootStackParamList = {
     HomeScreen: undefined;
@@ -28,7 +24,7 @@ export type RootStackParamList = {
     SplashScreen: undefined;
     EventLogScreen: { baseUrls: string | null, spotName: string },
     SpotDetailsScreen: { baseUrls: string | null, spotName: string },
-    Drawer: {screen:string}
+    Drawer: { screen: string }
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -59,6 +55,7 @@ function AppNavigation() {
             console.error("Failed to fetch base URL from AsyncStorage", error);
         }
     };
+    console.log("userName", userName)
 
     const fetchConfiguration = async (url: string) => {
         try {
@@ -98,14 +95,14 @@ function AppNavigation() {
 
         <Stack.Navigator initialRouteName="SplashScreen">
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
-            {!userName ?
+            {!userName || userName === "" ?
                 <Stack.Group>
                     <Stack.Screen name="UrlScreen" component={UrlScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="LoginScreen" component={LoginForm} options={{ headerShown: false }} />
                 </Stack.Group> :
-                <Stack.Group>
-                    <Stack.Screen name="Drawer" component={DrawerNavigation} options={{ headerShown: false }} />
-                </Stack.Group>}
+
+                <Stack.Screen name="Drawer" component={DrawerNavigation} options={{ headerShown: false }} />
+            }
         </Stack.Navigator>
 
     );

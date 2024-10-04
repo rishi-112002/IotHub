@@ -10,6 +10,7 @@ function FloatingActionCutomButton(props: { onPress: any }) {
             icon={require("../../assets/images/plusIcon.png")}
             style={styles.fab}
             onPress={onPress}
+            color={colors.white}
         />)
 }
 

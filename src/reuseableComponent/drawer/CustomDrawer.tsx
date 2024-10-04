@@ -1,46 +1,158 @@
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import colors from "../../assets/color/colors";
+import fontSizes from "../../assets/fonts/FontSize";
+import { RootDrawerTypes } from "../../navigation/DrawerNavigation";
+import { useSelector } from "react-redux";
+import { RootState } from "../../reducer/Store";
 
 function CustomDrawerContent() {
     const [isSpotExpanded, setIsSpotExpanded] = useState(false);
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationProp<RootDrawerTypes>>();
+
+    const user = useSelector((state: RootState) => state.authentication.userName);
+
     return (
-        <DrawerContentScrollView>
-            <DrawerItem
-                label="Live Spot"
-                onPress={() => console.log("Live Spot")}
-            />
-
-            <TouchableOpacity onPress={() => setIsSpotExpanded(!isSpotExpanded)}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 15 }}>
-                    <Text>Spot</Text>
-                    <MaterialIcons name={isSpotExpanded ? "expand-less" : "expand-more"} size={20} />
+        <View style={{ flex: 1 }}>
+            <DrawerContentScrollView style={styles.container}>
+                {/* Drawer Header */}
+                <View style={styles.header}>
+                    <Text style={styles.headerTitle}>IoT Hub</Text>
+                    <Text style={styles.headerSubtitle}>Welcome, {user}!</Text>
                 </View>
-            </TouchableOpacity>
+                <View>
+                    {/* Live Spot */}
+                    <DrawerItem
+                        label={() => (
+                            <View style={styles.itemContainer}>
+                                <MaterialIcons name="gps-fixed" size={20} color={colors.darkblack} />
+                                <Text style={styles.itemText}>Live Spot</Text>
+                            </View>
+                        )}
+                        onPress={() => navigation.navigate("LiveSpot")}
+                    />
+                    {/* Spot Dropdown */}
+                    <TouchableOpacity
+                        onPress={() => setIsSpotExpanded(!isSpotExpanded)}
+                        style={styles.spotContainer}
+                    >
+                        <MaterialIcons name="place" size={20} color={colors.darkblack} />
+                        <View style={styles.spotLabel}>
+                            <Text style={styles.itemText}>Spot</Text>
+                            <MaterialIcons
+                                name={isSpotExpanded ? "expand-less" : "expand-more"}
+                                size={20}
+                                color={colors.darkblack}
+                            />
+                        </View>
+                    </TouchableOpacity>
 
-            {isSpotExpanded && (
-                <View style={{ paddingLeft: 30 }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Weighbridges')}>
-                        <Text style={{ paddingVertical: 5 }}>WeightBridges</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('GenericSpot')}>
-                        <Text style={{ paddingVertical: 5 }}>GenericSpots</Text>
-                    </TouchableOpacity>
+                    {isSpotExpanded && (
+                        <View style={styles.subMenu}>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('Weighbridges', { screen: "WeighbridgesScreen" })}
+                                style={styles.subMenuItem}
+                            >
+                                <MaterialIcons name="scale" size={18} color={colors.gray} />
+                                <Text style={styles.subMenuText}>Weighbridges</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('GenericSpot', { screen: 'GenericSpotScreen' })}
+                                style={styles.subMenuItem}
+                            >
+                                <MaterialIcons name="location-on" size={18} color={colors.gray} />
+                                <Text style={styles.subMenuText}>GenericSpots</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+
+                    {/* Settings */}
+                    <DrawerItem
+                        label={() => (
+                            <View style={styles.itemContainer}>
+                                <MaterialIcons name="settings" size={20} color={colors.darkblack} />
+                                <Text style={styles.itemText}>Settings</Text>
+                            </View>
+                        )}
+                        onPress={() => console.log("Settings")}
+                    />
+
+                    {/* About */}
+                    <DrawerItem
+                        label={() => (
+                            <View style={styles.itemContainer}>
+                                <MaterialIcons name="info" size={20} color={colors.darkblack} />
+                                <Text style={styles.itemText}>About</Text>
+                            </View>
+                        )}
+                        onPress={() => console.log("About")}
+                    />
                 </View>
-            )}
-
-            <DrawerItem
-                label="Settings"
-                onPress={() => console.log("Setting")}
-            />
-            <DrawerItem
-                label="About"
-                onPress={() => console.log("About")}
-            />
-        </DrawerContentScrollView>
+            </DrawerContentScrollView>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: colors.white,
+    },
+    header: {
+        padding: 15,
+        backgroundColor: colors.AppPrimaryColor,
+    },
+    headerTitle: {
+        fontSize: fontSizes.subheading,
+        fontWeight: 'bold',
+        color: colors.white,
+    },
+    headerSubtitle: {
+        fontSize: fontSizes.smallText,
+        color: colors.white,
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center', // Align items in the center vertically
+        paddingVertical: 0, // Reduce vertical padding
+        paddingHorizontal: 0, // Optional: Adjust horizontal padding if needed
+    },
+    itemText: {
+        marginLeft: 10,
+        fontSize: fontSizes.text,
+        color: colors.darkblack,
+    },
+    spotContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 10, // Adjust spacing between the dropdown and other items
+        paddingHorizontal: 18,
+    },
+    spotLabel: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'space-between',
+        marginLeft: 10, // Spacing between icon and text
+    },
+    subMenu: {
+        paddingLeft: 40, // Indent sub-items
+        paddingVertical: 5, // Reduce space between submenu items
+    },
+    subMenuItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 5, // Reduce vertical padding
+    },
+    subMenuText: {
+        marginLeft: 10,
+        fontSize: fontSizes.smallText,
+        color: colors.gray,
+    },
+});
+
 export default CustomDrawerContent;

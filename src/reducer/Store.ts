@@ -8,6 +8,8 @@ import { spotDetailsSlice } from './spotDetails/spotDetailsReducer';
 import { SpotsDataByTypeSlice } from './SpotsDataByType/SpotsDataByTypeReducer';
 import { GenericAddDetailsSlice } from './genericAddDetails/GenericAddDetailsReducer';
 import { UploadGenericSlice } from './uploadGenericData/uploadGenericDataReducer';
+import { GetUrlsSlice } from './url/UrlReducer';
+import { DeleteSpotSlice } from './deleteSpot/DeleteSpotReducer';
 export const store = configureStore({
   reducer: {
     apiResponse: apiResponseList.reducer,
@@ -19,7 +21,9 @@ export const store = configureStore({
     spotDetails: spotDetailsSlice.reducer,
     spotsDataByType: SpotsDataByTypeSlice.reducer,
     genericAddDetail: GenericAddDetailsSlice.reducer,
-    uploadGeneric: UploadGenericSlice.reducer
+    uploadGeneric: UploadGenericSlice.reducer,
+    getUrls: GetUrlsSlice.reducer,
+    deletSpot : DeleteSpotSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
