@@ -54,6 +54,7 @@ function EventLogsScreen() {
             ),
         });
     }, [navigation]);
+    console.log("hello")
 
     const slideUpStyle = {
         transform: [
