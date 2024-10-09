@@ -8,6 +8,7 @@ import FloatingActionCutomButton from "../reuseableComponent/customButton/Floati
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import CustomHeader from "../reuseableComponent/header/CustomHeader";
 import { AppNavigationParams } from "../navigation/NavigationStackList";
+import React from "react";
 
 function GenericSpot() {
     const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);

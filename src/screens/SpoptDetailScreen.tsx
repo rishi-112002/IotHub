@@ -46,7 +46,6 @@ interface SpotDetails {
 
 interface SpotDetailsScreenParams {
     data: SpotDetails;
-    onPress: any
 }
 
 function SpotDetailScreen() {
