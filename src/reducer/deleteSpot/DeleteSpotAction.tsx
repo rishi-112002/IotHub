@@ -3,10 +3,10 @@ import axios from "axios";
 import { deleteSpots } from "../../api/EndPointsUrl";
 
 
-export const DeleteSpot = createAsyncThunk("deleteSpot", async (params: { baseUrl: any, id: string, bucode: string, token: string }) => {
+export const DeleteSpot = createAsyncThunk("deleteSpot", async (params: { baseUrl: any, id: string, bucode: string | null, token: string | null }) => {
     const { baseUrl, id, bucode, token } = params
     const fullUrl = `${baseUrl}/${deleteSpots}${id}`
-    console.log("Token" , token)
+    console.log("Token", token)
     try {
 
         const { data } = await axios.delete(fullUrl, {

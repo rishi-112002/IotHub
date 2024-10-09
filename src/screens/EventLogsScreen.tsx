@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { View, Animated, ActivityIndicator } from "react-native"; // Use Animated for slide up effect
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { View, Animated, Text, StyleSheet } from "react-native"; // Use Animated for slide up effect
 import { RootState, store } from "../reducer/Store";
 import { GetSpotEventLogs } from "../reducer/eventLogs/EventLogsAction";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useSelector } from "react-redux";
-import CustomSubHeader from "../reuseableComponent/header/CustomSubHeader";
 import EventLogsList from "../component/EventLogsListComponent";
 import EventlogsModals from "../reuseableComponent/modal/EventLogsModal";
+import SequentialBouncingLoader from "../reuseableComponent/loader/BallBouncingLoader";
+import colors from "../assets/color/colors";
+import fontSizes from "../assets/fonts/FontSize";
+import { AppNavigationParams } from "../navigation/NavigationStackList";
 
 interface EventLogsScreenParams {
     baseUrls: string;
@@ -20,8 +23,8 @@ function EventLogsScreen() {
     const eventLogs = useSelector((state: RootState) => state.eventLogs.eventLogs);
     const [modalVisible, setModalVisible] = useState(false);
     const [requestData, setRequestData] = useState({});
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
     const [slideAnim] = useState(new Animated.Value(0));
-    const navigation = useNavigation()
     useEffect(() => {
         if (modalVisible) {
             Animated.timing(slideAnim, {
@@ -42,6 +45,16 @@ function EventLogsScreen() {
         store.dispatch(GetSpotEventLogs({ baseUrl: baseUrls, spotName: spotName }));
     }, []);
 
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <View>
+                    <Text style={styles.headerTitle}>{spotName}</Text>
+                </View>
+            ),
+        });
+    }, [navigation]);
+
     const slideUpStyle = {
         transform: [
             {
@@ -55,11 +68,9 @@ function EventLogsScreen() {
 
     return (
         <View style={{ flex: 1 }}>
-            <CustomSubHeader spotName={spotName} onPress={() => navigation.goBack()} />
-
             <View style={{ flex: 1 }}>
                 {loader ? (
-                    <ActivityIndicator size={"large"} style={{ flex: 1, justifyContent: "center" }} />
+                    <SequentialBouncingLoader />
                 ) : (
                     <EventLogsList data={eventLogs} setModal={setModalVisible} setRequestData={setRequestData} />
                 )}
@@ -77,5 +88,11 @@ function EventLogsScreen() {
         </View>
     );
 }
+const styles = StyleSheet.create({
+    headerTitle: {
+        color: colors.darkblack,
+        fontSize: fontSizes.heading,
+    },
+})
 
 export default EventLogsScreen;

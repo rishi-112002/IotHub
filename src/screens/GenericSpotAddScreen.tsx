@@ -1,5 +1,5 @@
-import { View, ActivityIndicator, ScrollView, Alert } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, ActivityIndicator, ScrollView, Alert, Text } from "react-native";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import CustomSubHeader from "../reuseableComponent/header/CustomSubHeader";
 import colors from "../assets/color/colors";
 import GenericModal from "../reuseableComponent/modal/GenralModal";
@@ -11,7 +11,9 @@ import { uploadGenericData } from "../reducer/uploadGenericData/uploadGenericDat
 import SwithWithLable from "../reuseableComponent/switch/SwitchWithLable";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import CustomTextInput from "../reuseableComponent/customTextInput/CustomTextInput";
-import { GenericNavigationParms } from "../navigation/GenericNavigation";
+import { StyleSheet } from "react-native";
+import fontSizes from "../assets/fonts/FontSize";
+import { AppNavigationParams } from "../navigation/NavigationStackList";
 
 function GenericAddScreen() {
     const [name, setName] = useState("");
@@ -22,7 +24,7 @@ function GenericAddScreen() {
     const [minTagCount, setMinTagCount] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
     const [loader, setLoader] = useState(false);
-    const navigation = useNavigation<NavigationProp<GenericNavigationParms>>();
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
     const [uploadData, setUploadData] = useState({})
     const uploadError = useSelector((state: RootState) => state.uploadGeneric.error);
     const status = useSelector((state: RootState) => state.uploadGeneric.status);
@@ -220,6 +222,15 @@ function GenericAddScreen() {
         store.dispatch(GetSmartControllers({ baseUrl: baseUrls }))
         store.dispatch(GetWeightBridge({ baseUrl: baseUrls }))
     }, [])
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <View>
+                    <Text style={styles.headerTitle}> GenericSpot ADD</Text>
+                </View>
+            ),
+        });
+    }, [navigation]);
     useEffect(() => {
         console.log("error in add screen", uploadError, status)
         switch (status) {
@@ -247,8 +258,6 @@ function GenericAddScreen() {
 
     return (
         <ScrollView contentContainerStyle={{ backgroundColor: colors.white }}>
-
-            <CustomSubHeader spotName={"GenericSpot ADD"} onPress={() => navigation.goBack()} />
             {!smartControllerLoader ? <View style={{ padding: 20 }}>
 
                 <CustomTextInput
@@ -406,5 +415,11 @@ function GenericAddScreen() {
         </ScrollView >
     );
 }
+const styles = StyleSheet.create({
+    headerTitle: {
+        color: colors.darkblack,
+        fontSize: fontSizes.heading,
+      },
+})
 export default GenericAddScreen;
 

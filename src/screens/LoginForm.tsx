@@ -9,9 +9,9 @@ import BusinessUnitModal from "../reuseableComponent/modal/BuinessUnitsModal";
 import { loginUser } from "../reducer/Login/LoginAction";
 import NetInfo from "@react-native-community/netinfo";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../navigation/AppNavigation";
 import CustomTextInput from "../reuseableComponent/customTextInput/CustomTextInput";
 import SuccessLoader from "../reuseableComponent/loader/LoginSuccessLoader";
+import { AppNavigationParams } from "../navigation/NavigationStackList";
 function LoginForm() {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -31,7 +31,7 @@ function LoginForm() {
     setIsButtonDisabled(false);
   };
 
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const [errors, setErrors] = useState<{ userName?: string; password?: string }>({});
 
   const validateForm = () => {

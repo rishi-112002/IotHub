@@ -2,10 +2,12 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import fontSizes from "../assets/fonts/FontSize";
 import colors from "../assets/color/colors";
-import CustomSubHeader from "../reuseableComponent/header/CustomSubHeader";
 import { useSelector } from "react-redux";
 import { RootState } from "../reducer/Store";
-import { HomeNavigationParams } from "../navigation/HomeNavigation";
+import { useLayoutEffect } from "react";
+import { AppNavigationParams } from "../navigation/NavigationStackList";
+import React from "react";
+import CustomMenu from "../reuseableComponent/menuOptions/CustomMenu";
 
 // Defining the types for the data structure
 interface Display {
@@ -50,16 +52,25 @@ interface SpotDetailsScreenParams {
 function SpotDetailScreen() {
     const route = useRoute<RouteProp<{ params: SpotDetailsScreenParams }, 'params'>>();
     const item: SpotDetails = route.params?.data;
-    const onPress = route.params?.onPress;
     const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
-    const navigation = useNavigation<NavigationProp<HomeNavigationParams>>();
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
 
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <View>
+                    <Text style={styles.headerTitle}>{item?.name || "Spot Details"} </Text>
+                </View>
+            ),
+            headerRight: () => (
+                <View style={{ marginTop: -5 }}>
+                    <CustomMenu baseUrl={baseUrls} spotName={item.name} />
+                </View>
+            )
+        });
+    }, [navigation]);
     return (
         <ScrollView style={styles.container}>
-            <View style={{ flexDirection: 'row', columnGap: "24%" }}>
-                <CustomSubHeader spotName={item?.name || "Spot Details"} onPress={onPress} />
-            </View>
-
             {/* Spot Information */}
             <View style={styles.section}>
                 <Text style={styles.subHeader}>Spot Information</Text>
@@ -80,32 +91,6 @@ function SpotDetailScreen() {
                     <Text style={styles.value}>{item?.events || "N/A"}</Text>
                 </View>
             </View>
-
-            <View style={styles.sectionAdditionals}>
-                <Text style={styles.subHeader}>Actions :</Text>
-
-                <View style={{ flexDirection: "row", columnGap: 20 }}>
-                    <TouchableOpacity
-                        style={styles.iconButton}
-                        activeOpacity={0.7}
-                        onPress={() => navigation.navigate("SpotDetailsScreen", { baseUrls: baseUrls, spotName: item.name })}>
-                        <Image source={require("../assets/images/spotDetailsLogoBar.png")}
-                            style={styles.iconImage} />
-                        <Text style={styles.iconText}>Spot Details</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.iconButton}
-                        activeOpacity={0.7}
-                        onPress={() => navigation.navigate("EventLogScreen", { baseUrls: baseUrls, spotName: item.name })}>
-                        <Image source={require("../assets/images/eventlogsLogo.png")}
-                            style={styles.iconImage} />
-                        <Text style={styles.iconText}>Event Logs</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            {/* Display Information */}
             <View style={styles.section}>
                 <Text style={styles.subHeader}>Displays</Text>
                 {item?.displays && item.displays.length > 0 ? (
@@ -263,6 +248,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         columnGap: 20
     },
+    iconContainer: {
+
+    },
     iconImage: {
         width: 26,
         height: 26,
@@ -271,11 +259,16 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 5,
     },
+
     iconText: {
         fontSize: fontSizes.smallText,
         fontWeight: "700",
         color: colors.darkblack,
-    }
+    },
+    headerTitle: {
+        color: colors.darkblack,
+        fontSize: fontSizes.heading,
+    },
 });
 
 export default SpotDetailScreen;

@@ -48,7 +48,8 @@ const colors = {
     iconColorLight : "#82b1ff",
     iconColorDark :"#4791db",
     backgroundColor:"#f8f8ff",
-    gray:"#767577"
+    gray:"#767577",
+    lightGray:"#d4d4d4"
 };
 
 export default colors;

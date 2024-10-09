@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 6,
         elevation: 2,
-        borderLeftWidth: 5,
-        borderLeftColor: colors.AppPrimaryColor,
+        // borderLeftWidth: 5,
+        // borderLeftColor: colors.AppPrimaryColor,
     },
 });
 

@@ -1,204 +1,205 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import colors from '../assets/color/colors';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootState } from '../reducer/Store';
-import { useSelector } from 'react-redux';
 import fontSizes from '../assets/fonts/FontSize';
-import { HomeNavigationParams } from '../navigation/HomeNavigation';
 import CustomShimmerForHome from '../reuseableComponent/shimmer/CustomShimmerForHome';
+import { AppNavigationParams } from '../navigation/NavigationStackList';
+import CustomMenu from '../reuseableComponent/menuOptions/CustomMenu';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducer/Store';
+
 type init = {
-  item: any,
-}
+    item: any,
+};
+
 function SpotList(props: { data: any }) {
-  const { data } = props;
-  const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
-  const [loading, setLoading] = useState(true);
+    const { data } = props;
+    const [loading] = useState(true);
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+    const fadeAnim = new Animated.Value(0);
+    const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
 
-  const navigation = useNavigation<NavigationProp<HomeNavigationParams>>();
+    const fadeIn = () => {
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+    };
 
-  const fadeAnim = new Animated.Value(0);
+    const renderSpot = ({ item }: init) => {
+        let weightDisplay;
+        if (item.weight !== null) {
+            weightDisplay = (
+                <Text style={[styles.weightText, { color: item.weightStable ? 'green' : 'red' }]}>
+                    {item.weight}
+                </Text>
+            );
+        } else if (item.weightError) {
+            weightDisplay = (
+                <Text style={styles.errorText}>
+                    {item.weightError}
+                </Text>
+            );
+        } else {
+            weightDisplay = <Text style={styles.noInfoText}>No Weight Info</Text>;
+        }
 
-  const fadeIn = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  };
-  const renderSpot = ({ item }: init) => {
-    let weightDisplay;
-    if (item.weight !== null) {
-      weightDisplay = (
-        <Text style={{ color: item.weightStable ? 'green' : 'red', fontSize: fontSizes.text, fontWeight: 'bold' }}>
-          {item.weight}
-        </Text>
-      );
-    } else if (item.weightError) {
-      weightDisplay = (
-        <Text style={{ color: 'red', fontSize: fontSizes.text }}>
-          {item.weightError}
-        </Text>
-      );
-    } else {
-      weightDisplay = <Text style={{ fontSize: fontSizes.text, color: "gray" }}>No Weight Info</Text>;
-    }
+        fadeIn();
 
-    fadeIn();
+        return (
+            <Animated.View style={[styles.spotContainer, { opacity: fadeAnim }]}>
+                {!loading ? (
+                    <View>
+                        <CustomShimmerForHome width="80%" height={20} />
+                        <CustomShimmerForHome width="30%" height={15} />
+                        <CustomShimmerForHome width="50%" height={15} />
+                        <CustomShimmerForHome width="40%" height={15} />
+                        <CustomShimmerForHome width="60%" height={15} />
+                    </View>
+                ) : (
+                    <TouchableOpacity onPress={() => navigation.navigate("SpotDetailScreen", { data: item, onPress: () => navigation.goBack() })}>
+                        <View style={styles.contentContainer}>
+                            <View style={styles.infoContainer}>
+                                <Text style={styles.spotTitle}>
+                                    {item.name?.length > 14 ? item.name.substring(0, 14) : item.name}
+                                </Text>
+                            </View>
+                            <View style={{ flexDirection: "row", columnGap: 40 }}>
+                                <View style={{ backgroundColor: item.active ? '#DCFCE7' : "#FEF2F2", paddingVertical: 3, paddingHorizontal: 5, borderRadius: 15 }}>
+                                    <Text style={{ color: item.active ? "#15803D" : "#B91C1C", fontSize: fontSizes.vSmallText }}>
+                                        {item.active ? 'Connected' : 'Not-Connected'}
+                                    </Text>
+                                </View>
+                                <CustomMenu baseUrl={baseUrls} spotName={item.name} />
+
+                            </View>
+                        </View>
+                        <View style={styles.section}>
+                            <Text style={styles.label}>Weight: </Text>
+                            {weightDisplay}
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginVertical: 4,
+                            columnGap: 20
+                        }}>
+                            <View style={{ borderColor: item.delayed ? "#FEF2F2" : '#DCFCE7', borderWidth: 2, paddingHorizontal: 3, paddingVertical: 3, borderRadius: 15 }}>
+                                <Text style={[styles.details, { color: item.delayed ? "#B91C1C" : "#15803D" }]}>
+                                    {item.delayed ? 'Delayed' : 'On Time'}
+                                </Text>
+                            </View>
+
+                            <View style={{ borderColor: item.currentState ? '#DCFCE7' : "#FEF2F2", borderWidth: 2, paddingHorizontal: 3, paddingVertical: 3, borderRadius: 15 }}>
+                                <Text style={{ color: item.currentState ? "#15803D" : "#B91C1C", fontSize: fontSizes.vSmallText }}>{item.currentState || 'No State Info'}</Text>
+                            </View>
+
+                        </View>
+                    </TouchableOpacity>
+                )}
+
+                <View style={styles.divider} />
+            </Animated.View>
+        );
+    };
 
     return (
-      <Animated.View style={[styles.card, { opacity: fadeAnim }]}>
-        <View style={styles.spotContainer}>
-          {!loading ? (
-            <View>
-              <CustomShimmerForHome width="80%" height={20} />
-              <CustomShimmerForHome width="30%" height={15} />
-              <CustomShimmerForHome width="50%" height={15} />
-              <CustomShimmerForHome width="40%" height={15} />
-              <CustomShimmerForHome width="60%" height={15} />
-            </View>
-          ) :
-            (<View>
-              <TouchableOpacity onPress={() => navigation.navigate("SpotDetailScreen", { data: item, onPress: () => navigation.goBack() })}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <View style={{ flexDirection: "column" }}>
-                    {item.name &&
-                      <Text style={styles.spotTitle}>
-                        {item.name.length > 14 ? `${item.name.substring(0, 14)}...` : item.name}
-                      </Text>
-                    }
-
-                    <View style={{ flexDirection: "row", marginBottom: 5 }}>
-                      <Text style={styles.label}>Connectivity: </Text>
-                      <MaterialIcons
-                        name={item.active === true ? 'cancel' : 'pause-circle'}
-                        size={20}
-                        color={item.active === true ? colors.redDarkest : colors.greenDarkest}
-                      />
-                    </View>
-                  </View>
-
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
-                    <TouchableOpacity
-                      style={styles.iconButton}
-                      activeOpacity={0.7}
-                      onPress={() => navigation.navigate("SpotDetailsScreen", { baseUrls: baseUrls, spotName: item.name })}>
-                      <Image source={require("../assets/images/spotDetailsLogoBar.png")}
-                        style={styles.iconImage} />
-                      <Text style={styles.iconText}>Spot Details</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      style={styles.iconButton}
-                      activeOpacity={0.7}
-                      onPress={() => navigation.navigate("EventLogScreen", { baseUrls: baseUrls, spotName: item.name })}>
-                      <Image source={require("../assets/images/eventlogsLogo.png")}
-                        style={styles.iconImage} />
-                      <Text style={styles.iconText}>Event Logs</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-                <View style={styles.section}>
-                  <Text style={styles.label}>Weight: </Text>
-                  {weightDisplay}
-                </View>
-
-                <View style={styles.section}>
-                  <Text style={styles.label}>Time Status: </Text>
-                  <Text style={[styles.details, { color: item.delayed ? colors.redDarkest : colors.greenDarkest }]}>
-                    {item.delayed ? 'Delayed' : 'On Time'}
-                  </Text>
-                </View>
-
-                <View style={styles.section}>
-                  <Text style={styles.label}>Current State: </Text>
-                  <Text style={styles.details}>{item.currentState || 'No State Info'}</Text>
-                </View>
-              </TouchableOpacity>
-            </View>)
-          }
+        <View style={{ paddingBottom: 20 }}>
+            <FlatList
+                data={data}
+                keyExtractor={(_item, index) => index.toString()}
+                renderItem={renderSpot}
+            />
         </View>
-      </Animated.View >
     );
-  };
-
-  return (
-    <View style={{ paddingBottom: 20 }}>
-
-      <FlatList
-        data={data} // Show 5 placeholders when loading
-        keyExtractor={(_item, index) => index.toString()}
-        renderItem={renderSpot}
-        contentContainerStyle={{ padding: 10 }}
-
-      />
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    marginVertical: 10,
-    padding: 15,
-    backgroundColor: colors.white,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 2,
-    borderLeftWidth: 5,
-    borderLeftColor: colors.AppPrimaryColor,
-  },
-  shimmer: {
-    // flex: 1,
-    height: 100,
-    borderRadius: 10,
-  },
-  spotContainer: {
-    flexDirection: "column",
-  },
-  spotTitle: {
-    fontSize: fontSizes.heading,
-    color: colors.darkblack,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  label: {
-    fontSize: fontSizes.text,
-    color: "gray",
-    fontWeight: '600',
-  },
-  details: {
-    fontSize: fontSizes.smallText,
-    color: colors.blueDarkest,
-    fontWeight: '600',
-  },
-  section: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 2,
-  },
-  iconButton: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  iconImage: {
-    width: 26,
-    height: 26,
-    tintColor: colors.white,
-    backgroundColor: colors.iconColorDark,
-    borderRadius: 5,
-    marginBottom: 5,
-  },
-  iconText: {
-    fontSize: fontSizes.smallText,
-    fontWeight: "700",
-    color: colors.darkblack,
-  }
+    spotContainer: {
+
+        paddingHorizontal: 20,
+    },
+    contentContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        columnGap: 20
+    },
+    infoContainer: {
+        flex: 1,
+    },
+    spotTitle: {
+        fontSize: fontSizes.heading,
+        color: colors.darkblack,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    connectivityRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 5,
+    },
+    label: {
+        fontSize: fontSizes.text,
+        color: "gray",
+        fontWeight: '600',
+    },
+    details: {
+        fontSize: fontSizes.vSmallText,
+        color: colors.blueDarkest,
+        fontWeight: '600',
+    },
+    weightText: {
+        fontSize: fontSizes.text,
+        fontWeight: 'bold',
+    },
+    triggerWrapper: {
+        position: 'absolute',
+        paddingHorizontal: 5,
+        right: 0,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: fontSizes.text,
+    },
+    noInfoText: {
+        fontSize: fontSizes.text,
+        color: 'gray',
+    },
+    actionsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 20,
+    },
+    iconButton: {
+        alignItems: "center",
+    },
+    iconImage: {
+        width: 26,
+        height: 26,
+        tintColor: colors.white,
+        backgroundColor: colors.iconColorDark,
+        borderRadius: 5,
+        marginBottom: 5,
+    },
+    iconText: {
+        fontSize: fontSizes.smallText,
+        fontWeight: "700",
+        color: colors.darkblack,
+    },
+    section: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 4,
+    },
+    divider: {
+        height: 1,
+        marginVertical: 15,
+        backgroundColor: '#d4d4d4', // Light gray divider
+    },
 });
 
 export default SpotList;
-

@@ -16,10 +16,10 @@ import { RootState, store } from "../reducer/Store";
 import { setBaseUrl } from "../reducer/Login/LoginReducer";
 import CustomButton from "../reuseableComponent/customButton/CustomButton";
 import colors from "../assets/color/colors";
-import { RootStackParamList } from "../navigation/AppNavigation";
 import CustomTextInput from "../reuseableComponent/customTextInput/CustomTextInput";
 import CustomLoader from "../reuseableComponent/loader/CustomLoader";
 import { GetUrls } from "../reducer/url/UrlAction";
+import { AppNavigationParams } from "../navigation/NavigationStackList";
 
 interface urlScreenParams {
     baseUrls: string;
@@ -30,8 +30,7 @@ function UrlScreen() {
     const passedBaseUrl = route.params?.baseUrls || "";
     const [url, setUrl] = useState(passedBaseUrl);
     const isLogedIn = useSelector((state: RootState) => state.authentication.isLogedIn);
-    const error = useSelector((state: RootState) => state.getUrls.error);
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
     const dispatch = useDispatch();
     const [errors, setErrors] = useState<{ url?: string }>({});
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);

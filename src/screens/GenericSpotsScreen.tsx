@@ -1,22 +1,25 @@
-import { useEffect } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { useEffect, useLayoutEffect } from "react";
+import { ActivityIndicator, Text, View } from "react-native";
 import { RootState, store } from "../reducer/Store";
 import { SpotsDataByType } from "../reducer/SpotsDataByType/SpotsDataByTypeAction";
 import { useSelector } from "react-redux";
 import SpotsDataByTypeComponent from "../component/SpotsDataByTypeComponent";
 import FloatingActionCutomButton from "../reuseableComponent/customButton/FloatingActionCustomButton";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { GenericNavigationParms } from "../navigation/GenericNavigation";
 import CustomHeader from "../reuseableComponent/header/CustomHeader";
+import { AppNavigationParams } from "../navigation/NavigationStackList";
 
 function GenericSpot() {
     const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
+    const buCode = useSelector((state: RootState) => state.authentication.buCode);
+    const token = useSelector((state: RootState) => state.authentication.token);
     const GenericSpots = useSelector((state: RootState) => state.spotsDataByType.GenericSpots);
     const Loader = useSelector((state: RootState) => state.spotsDataByType.loader);
-    const navigation = useNavigation<NavigationProp<GenericNavigationParms>>();
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+
     useEffect(() => {
         console.log("base Url of Generic ", baseUrls)
-        store.dispatch(SpotsDataByType({ baseUrl: baseUrls, spotType: "GENERIC_SPOT" }))
+        store.dispatch(SpotsDataByType({ baseUrl: baseUrls, spotType: "GENERIC_SPOT", token: token, buCode: buCode }))
     }, [])
     const onHandlePress = () => {
         navigation.navigate('GenericSpotAddScreen');

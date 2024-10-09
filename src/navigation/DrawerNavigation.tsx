@@ -4,21 +4,16 @@ import CustomDrawerContent from "../reuseableComponent/drawer/CustomDrawer";
 import HomeNavigation from './HomeNavigation';
 import GenericNavigation from './GenericNavigation';
 import WeighBridgeNavigation from './WeighBridgeNavigation';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { AppNavigationParams } from './NavigationStackList';
 
-export type RootDrawerTypes = {
-    navigate(arg0: string): void;
-    LiveSpot: undefined;
-    Weighbridges: { screen: string };
-    GenericSpot: { screen: string };
-    GenericSpotAddScreen: undefined;
-    SpotDetailScreen: { data: [], onPress: any }
-};
-
-const Drawer = createDrawerNavigator<RootDrawerTypes>();
+const Drawer = createDrawerNavigator<AppNavigationParams>();
 export default function DrawerNavigation() {
+    const route = useRoute<RouteProp<{ params: AppNavigationParams }, 'params'>>();
+    const { screen }: any = route.params;
     return (
 
-        <Drawer.Navigator initialRouteName="LiveSpot" screenOptions={{ headerShown: false }}
+        <Drawer.Navigator initialRouteName={screen} screenOptions={{ headerShown: false }}
             drawerContent={() => <CustomDrawerContent />}>
             <Drawer.Screen name="LiveSpot" component={HomeNavigation} />
             <Drawer.Screen name="Weighbridges" component={WeighBridgeNavigation} />

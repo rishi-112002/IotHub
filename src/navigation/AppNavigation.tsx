@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import SplashScreen from '../screens/SplashScreen';
 import UrlScreen from '../screens/UrlScreen';
 import LoginForm from '../screens/LoginForm';
-
 import { RootState, store } from '../reducer/Store';
 import { responseDetails } from '../reducer/Reducer';
 import { CheckUserlogin, GetBaseUrl } from "../reducer/Login/LoginAction";
@@ -15,25 +13,17 @@ import { fetchConfigDetails } from "../api/Api";
 import { GetBuinessUnits } from "../reducer/buinessUnits/BuinessUnitsAction";
 import { createStackNavigator } from '@react-navigation/stack';
 import DrawerNavigation from './DrawerNavigation';
-export type RootStackParamList = {
-    HomeScreen: undefined;
-    UrlScreen: { baseUrls: string | null };
-    LoginScreen: undefined;
-    TermsAndCondition: undefined;
-    PrivacyPolicy: undefined;
-    SplashScreen: undefined;
-    EventLogScreen: { baseUrls: string | null, spotName: string },
-    SpotDetailsScreen: { baseUrls: string | null, spotName: string },
-    Drawer: { screen: string }
-};
-
-const Stack = createStackNavigator<RootStackParamList>();
+import { AppNavigationParams } from './NavigationStackList';
+import React from 'react';
+const Stack = createStackNavigator<AppNavigationParams>();
 
 function AppNavigation() {
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
     const userName = useSelector((state: RootState) => state.authentication.userName);
+    const token = useSelector((state: RootState) => state.authentication.token);
+    const buCode = useSelector((state: RootState) => state.authentication.buCode);
 
     const netinfo = async () => {
         const netInfo = await NetInfo.fetch();
@@ -83,7 +73,7 @@ function AppNavigation() {
     useEffect(() => {
         if (baseUrls) {
             fetchConfiguration(baseUrls);
-            store.dispatch(GetBuinessUnits({ baseUrl: baseUrls }));
+            store.dispatch(GetBuinessUnits({ baseUrl: baseUrls, buCode: buCode, token: token }));
         }
     }, [baseUrls, dispatch]);
 
@@ -93,7 +83,7 @@ function AppNavigation() {
 
     return (
 
-        <Stack.Navigator initialRouteName="SplashScreen">
+        <Stack.Navigator initialRouteName="SplashScreen" >
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
             {!userName || userName === "" ?
                 <Stack.Group>

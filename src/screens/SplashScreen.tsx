@@ -10,7 +10,7 @@ import colors from '../assets/color/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../reducer/Store';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from "../navigation/AppNavigation";
+import { AppNavigationParams } from '../navigation/NavigationStackList';
 
 function SplashScreen() {
     const isLogedIn = useSelector((state: RootState) => state.authentication.isLogedIn);
@@ -20,7 +20,7 @@ function SplashScreen() {
     const ring1Scale = useSharedValue(0);
     const ring2Scale = useSharedValue(0);
     const logoOpacity = useSharedValue(0);
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
 
     useEffect(() => {
         if (isFirstLaunch) {

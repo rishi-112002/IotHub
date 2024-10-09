@@ -20,6 +20,7 @@ function HomeScreen() {
     useEffect(() => {
         store.dispatch(GetSpotData({ baseUrl: baseUrls }))
     }, [])
+
     return (
         <View style={styles.container}>
 
@@ -35,7 +36,7 @@ function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.backgroundColor,
+        backgroundColor: colors.white,
     },
     textContainer: {
         paddingHorizontal: 20,
