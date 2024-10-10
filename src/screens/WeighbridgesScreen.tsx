@@ -8,6 +8,7 @@ import FloatingActionCutomButton from "../reuseableComponent/customButton/Floati
 import CustomLoader from "../reuseableComponent/loader/CustomLoader";
 import colors from "../assets/color/colors";
 import CustomHeader from "../reuseableComponent/header/CustomHeader";
+import React from "react";
 
 function Weighbridges() {
     const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);

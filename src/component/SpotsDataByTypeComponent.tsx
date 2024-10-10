@@ -82,7 +82,7 @@ function SpotsDataByTypeComponent(props: { data: any, onPress: any, type: string
             >
                 <View style={{ flex: 1 }}>
                     <Card>
-                        <TouchableOpacity onPress={() => navigation.navigate("SpotDetailScreen", { data: item, onPress: onPress })}>
+                        <TouchableOpacity onPress={() => navigation.navigate("SpotDetailScreen", { data: item })}>
                             <View style={styles.row}>
                                 <Text style={styles.spotTitle}>{item.name}</Text>
                                 <MaterialIcons
