@@ -28,9 +28,9 @@ export const SpotsDataByTypeSlice = createSlice({
                 const { filteredData, spotType }: any = action.payload; // Modify the payload structure to include spotType
                 if (spotType === "GENERIC_SPOT") {
                     state.GenericSpots = filteredData; // Update GenericSpots
-                } else if (spotType === "UNIDIRECTIONAL_WEIGHBRIDGE" ) {
+                } else if (spotType === "UNIDIRECTIONAL_WEIGHBRIDGE") {
                     state.WeighBridgeSpots = filteredData; // Update WeighBridgeSpots
-                    console.log("filterd data of WeighBridge" , filteredData ,)
+                    console.log("filterd data of WeighBridge", filteredData,)
                 }
             })
             .addCase(SpotsDataByType.rejected, (state) => {
@@ -41,5 +41,4 @@ export const SpotsDataByTypeSlice = createSlice({
             });
     }
 });
-
 export default SpotsDataByTypeSlice.reducer;

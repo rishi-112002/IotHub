@@ -1,6 +1,6 @@
 export const userData= [
   {
-    "spotName": "Beta_WB",
+    "name": "Beta_WB",
     "connectivity": "OUT_OF_SERVICE",
     "weight": 0,
     "weightStable": false,
@@ -34,7 +34,7 @@ export const userData= [
     "driverTag": null
   },
   {
-    "spotName": "Beta_WB",
+    "name": "Beta_WB",
     "connectivity": "OUT_OF_SERVICE",
     "weight": 0,
     "weightStable": false,
@@ -68,7 +68,7 @@ export const userData= [
     "driverTag": null
   },
   {
-    "spotName": "Beta_WB",
+    "name": "Beta_WB",
     "connectivity": "OUT_OF_SERVICE",
     "weight": 0,
     "weightStable": false,
@@ -102,7 +102,7 @@ export const userData= [
     "driverTag": null
   },
   {
-    "spotName": "RAW_WB01",
+    "name": "RAW_WB01",
     "connectivity": "OUT_OF_SERVICE",
     "weight": 0,
     "weightStable": false,
@@ -128,7 +128,7 @@ export const userData= [
     "driverTag": null
   },
   {
-    "spotName": "PlantEntry",
+    "name": "PlantEntry",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,
@@ -154,7 +154,7 @@ export const userData= [
     "allTrolleyTags": {}
   },
   {
-    "spotName": "Entry_Gate",
+    "name": "Entry_Gate",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,
@@ -183,7 +183,7 @@ export const userData= [
     "allTrolleyTags": {}
   },
   {
-    "spotName": "RAW_WB1_Entry1",
+    "name": "RAW_WB1_Entry1",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,
@@ -209,7 +209,7 @@ export const userData= [
     "allTrolleyTags": {}
   },
   {
-    "spotName": "RAW_WB1_Entry2",
+    "name": "RAW_WB1_Entry2",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,
@@ -235,7 +235,7 @@ export const userData= [
     "allTrolleyTags": {}
   },
   {
-    "spotName": "Plant_entry_gate",
+    "name": "Plant_entry_gate",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,
@@ -261,7 +261,7 @@ export const userData= [
     "allTrolleyTags": {}
   },
   {
-    "spotName": "Dry_ash_gate_entry(Bulker)",
+    "name": "Dry_ash_gate_entry(Bulker)",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,
@@ -287,7 +287,7 @@ export const userData= [
     "allTrolleyTags": {}
   },
   {
-    "spotName": "Dry_ash_gate_exit(Bulker)",
+    "name": "Dry_ash_gate_exit(Bulker)",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,
@@ -313,7 +313,7 @@ export const userData= [
     "allTrolleyTags": {}
   },
   {
-    "spotName": "11ImageTestEntry",
+    "name": "11ImageTestEntry",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,
@@ -339,7 +339,7 @@ export const userData= [
     "allTrolleyTags": {}
   },
   {
-    "spotName": "Main_Gate",
+    "name": "Main_Gate",
     "connectivity": "OUT_OF_SERVICE",
     "weight": null,
     "weightStable": false,

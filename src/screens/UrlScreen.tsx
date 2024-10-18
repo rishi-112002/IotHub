@@ -122,8 +122,7 @@ function UrlScreen() {
                         value={url}
                         onChangeText={handleUrlChange}
                         errorMessage={errors.url}
-                        setTextInput={setUrl}
-                    />
+                        setTextInput={setUrl} required={true}                    />
                 </View>
                 <Text>You will be able to view and manage data once you enter a valid base URL.</Text>
                 <View style={styles.customButtonContainer}>

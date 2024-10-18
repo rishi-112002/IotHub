@@ -6,10 +6,11 @@ import { spotDataSlice } from './spotData/spotDataReducer';
 import { eventLogsSlice } from './eventLogs/EventLogsReducer';
 import { spotDetailsSlice } from './spotDetails/spotDetailsReducer';
 import { SpotsDataByTypeSlice } from './SpotsDataByType/SpotsDataByTypeReducer';
-import { GenericAddDetailsSlice } from './genericAddDetails/GenericAddDetailsReducer';
+import { SpotAddDetailsSlice } from './spotAddDetails/SpotAddDetailsReducer';
 import { UploadGenericSlice } from './uploadGenericData/uploadGenericDataReducer';
 import { GetUrlsSlice } from './url/UrlReducer';
 import { DeleteSpotSlice } from './deleteSpot/DeleteSpotReducer';
+import { WeighBridgeSlice } from './weighBridge/WeighBridgeReducer';
 export const store = configureStore({
   reducer: {
     apiResponse: apiResponseList.reducer,
@@ -20,10 +21,11 @@ export const store = configureStore({
     eventLogs: eventLogsSlice.reducer,
     spotDetails: spotDetailsSlice.reducer,
     spotsDataByType: SpotsDataByTypeSlice.reducer,
-    genericAddDetail: GenericAddDetailsSlice.reducer,
+    spotAddDetail: SpotAddDetailsSlice.reducer,
     uploadGeneric: UploadGenericSlice.reducer,
     getUrls: GetUrlsSlice.reducer,
-    deletSpot : DeleteSpotSlice.reducer
+    deletSpot: DeleteSpotSlice.reducer,
+    weighBridge: WeighBridgeSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

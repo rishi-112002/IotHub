@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Modal, TouchableOpacity, FlatList, StyleSheet, Button, Keyboard } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, FlatList, StyleSheet, Button, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import CustomSearchBar from '../customSearchBar/CustomSearchBar';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 function GenericModal(props: {
     options: any[],
@@ -52,44 +51,45 @@ function GenericModal(props: {
     }, [isVisible, options]);
 
     return (
-        <View style={styles.container}>
-            <Modal
-                transparent={true}
-                animationType="slide"
-                visible={isVisible}
-            >
-                <TouchableWithoutFeedback onPress={() => console.log("hello")
-                }>
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalContent}>
-                            <View style={styles.modalheading}>
-                                <Text style={styles.modalTitle}>Select Option</Text>
-                                <View style={styles.modalheadingicon}>
-                                    <TouchableOpacity style={styles.closeButton} onPress={handleSearchClick}>
-                                        <Icon name='search' size={24} color={colors.blueDarkest} />
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={styles.closeButton} onPress={() => handleCloseModal()}>
-                                        <Icon name='cancel' size={24} color={colors.blueDarkest} />
-                                    </TouchableOpacity>
-                                </View>
+
+        <Modal
+            transparent={true}
+            animationType="slide"
+            visible={isVisible}
+            onRequestClose={handleCloseModal}
+        >
+            <TouchableWithoutFeedback onPress={handleCloseModal}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <View style={styles.modalheading}>
+                            <Text style={styles.modalTitle}>Select Option</Text>
+                            <View style={styles.modalheadingicon}>
+                                <TouchableOpacity style={styles.closeButton} onPress={handleSearchClick}>
+                                    <Icon name='search' size={24} color={colors.blueDarkest} />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.closeButton} onPress={() => handleCloseModal()}>
+                                    <Icon name='cancel' size={24} color={colors.blueDarkest} />
+                                </TouchableOpacity>
                             </View>
-                            {searchVisible &&
-                                <CustomSearchBar
-                                    onSearch={filterOptions}
-                                    onCancel={() => setSearchVisible(false)}
-                                    searchIcon={''} />
-                            }
-                            <FlatList
-                                data={filteredOptions}
-                                renderItem={renderItem}
-                                keyExtractor={(item) => item[valueKey]}
-                                style={styles.list}
-                            />
                         </View>
+                        {searchVisible &&
+                            <CustomSearchBar
+                                onSearch={filterOptions}
+                                onCancel={() => setSearchVisible(false)}
+                                searchIcon={''} />
+                        }
+                        <FlatList
+                            data={filteredOptions}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item[valueKey]}
+                            style={styles.list}
+                        />
                     </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-        </View>
+                </View>
+            </TouchableWithoutFeedback>
+
+        </Modal>
+
     );
 }
 

@@ -4,8 +4,8 @@ import { deleteSpots } from "../../api/EndPointsUrl";
 
 
 export const DeleteSpot = createAsyncThunk("deleteSpot", async (params: { baseUrl: any, id: string, bucode: string | null, token: string | null }) => {
-    const { baseUrl, id, bucode, token } = params
-    const fullUrl = `${baseUrl}/${deleteSpots}${id}`
+    const { id, bucode, token } = params
+    const fullUrl = `https://13.235.84.67/${deleteSpots}${id}`
     console.log("Token", token)
     try {
 

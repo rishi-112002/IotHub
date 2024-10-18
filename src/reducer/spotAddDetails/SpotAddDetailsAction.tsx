@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { displays, readers, smartController, weighBridges } from "../../api/EndPointsUrl";
+import { displays, readers, smartController, weighBridges, weightParsers } from "../../api/EndPointsUrl";
 
 
 export const GetSmartControllers = createAsyncThunk("getSmartControllers", async (params: { baseUrl: any }) => {
@@ -64,3 +64,19 @@ export const GetWeightBridge = createAsyncThunk("getWeightBridge", async (params
         console.log(err);
     }
 })
+
+export const GetWeightParsers = createAsyncThunk("getWeightParsers", async (params: { baseUrl: any }) => {
+    const { baseUrl } = params
+    const fullUrl = `${baseUrl}${weightParsers}`
+    try {
+        const { data } = await axios.get(fullUrl);
+        const formattedOptions = data.map((item: any) => ({
+            name: item.name,
+            id: item.id
+        }));
+
+        return formattedOptions;
+    } catch (err) {
+        console.log("weightParsersError", err);
+    }
+})  

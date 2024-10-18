@@ -144,7 +144,7 @@ function LoginForm() {
           value={userName}
           errorMessage={errors.userName}
           editable={true}
-          setTextInput={handleUserNameChange} />
+          setTextInput={handleUserNameChange} required={false} />
         <CustomTextInput
           label="Password"
           value={password}
@@ -153,14 +153,14 @@ function LoginForm() {
           iconName={passwordVisible ? "visibility" : "visibility-off"}
           handleVisibility={handleVisibityClick}
           editable={true}
-          setTextInput={setPassword} />
+          setTextInput={setPassword} required={false} />
         <View>
           <CustomTextInput
             value={selectedOption.name}
             setTextInput={undefined}
             label="Business Unit"
             editable={false}
-            onPress={() => handleOpenModal()} />
+            onPress={() => handleOpenModal()} required={false} />
           <BusinessUnitModal
             businessUnits={buinessunits}
             isVisible={isFocused}

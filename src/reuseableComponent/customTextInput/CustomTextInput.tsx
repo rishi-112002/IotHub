@@ -16,6 +16,7 @@ type CustomTextInputProps = {
   onPress?: () => void;
   disable?: boolean;
   setTextInput: any
+  required: boolean
 } & TextInputProps;
 
 function CustomTextInput({
@@ -31,6 +32,7 @@ function CustomTextInput({
   disable = false,
   value,
   setTextInput,
+  required = false,
   errorMessage: error,
   ...rest
 }: CustomTextInputProps) {
@@ -48,7 +50,7 @@ function CustomTextInput({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {label && <Text style={labelStyle}>{label}</Text>}
+      {label && <Text style={labelStyle}>{label}<Text style={{ color: colors.redDarkest }}>{" "}{required && "*"}</Text></Text>}
       <TouchableOpacity
         style={inputContainerStyle}
         onPress={editable ? undefined : onPress}
@@ -85,14 +87,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
     borderColor: '#ccc',
     borderRadius: 10,
   },
   input: {
     flex: 1,
-    fontSize: fontSizes.text,
-    paddingVertical: 10,
+    fontSize: fontSizes.vSmallText,
     color: '#262626',
   },
   icon: {
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
   },
   label: {
     position: 'absolute',
-    left: 10,
     top: 12,
     fontSize: fontSizes.subheading,
     color: '#8292B4',
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
   labelFocused: {
     top: -8,
     fontSize: 12,
-    color: colors.blueLighter,
+    color: colors.AppPrimaryColor,
     fontWeight: '500',
   },
   labelBlurred: {
