@@ -6,6 +6,7 @@ import GenericNavigation from './GenericNavigation';
 import WeighBridgeNavigation from './WeighBridgeNavigation';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { AppNavigationParams } from './NavigationStackList';
+import RfidScreenNavigation from './RfidNavigation';
 
 // Create the drawer navigator with a parameterized type for AppNavigationParams
 const Drawer = createDrawerNavigator<AppNavigationParams>();
@@ -30,9 +31,10 @@ export default function DrawerNavigation() {
             drawerContent={() => <CustomDrawerContent />}
         >
             {/* Define the screens within the drawer navigation */}
-            <Drawer.Screen name="LiveSpot" component={HomeNavigation} />
+            <Drawer.Screen name="HomeNavigation" component={HomeNavigation} />
             <Drawer.Screen name="Weighbridges" component={WeighBridgeNavigation} />
             <Drawer.Screen name="GenericSpot" component={GenericNavigation} />
+            <Drawer.Screen name="RfidScreenNavigation" component={RfidScreenNavigation} />
         </Drawer.Navigator>
     );
 }
