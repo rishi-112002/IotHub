@@ -11,6 +11,7 @@ import { UploadGenericSlice } from './uploadGenericData/uploadGenericDataReducer
 import { GetUrlsSlice } from './url/UrlReducer';
 import { DeleteSpotSlice } from './deleteSpot/DeleteSpotReducer';
 import { WeighBridgeSlice } from './weighBridge/WeighBridgeReducer';
+import { rfidListSlice } from './RFIDList/RFIDListReducer';
 export const store = configureStore({
   reducer: {
     apiResponse: apiResponseList.reducer,
@@ -25,7 +26,9 @@ export const store = configureStore({
     uploadGeneric: UploadGenericSlice.reducer,
     getUrls: GetUrlsSlice.reducer,
     deletSpot: DeleteSpotSlice.reducer,
-    weighBridge: WeighBridgeSlice.reducer
+    weighBridge: WeighBridgeSlice.reducer,
+    rfidList:rfidListSlice.reducer,
+
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
