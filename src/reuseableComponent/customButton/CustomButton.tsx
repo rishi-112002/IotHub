@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, StyleProp, ViewStyle, TextStyle, View } from 'react-native';
 import colors from '../../assets/color/colors';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type ButtonProps = {
   label: string;
@@ -9,6 +10,7 @@ type ButtonProps = {
   labelStyle?: StyleProp<TextStyle>;
   disabled?: boolean;
   loading?: boolean;
+  icon?: any
 }
 
 function CustomButton({
@@ -18,6 +20,7 @@ function CustomButton({
   labelStyle,
   disabled = false,
   loading = false,
+  icon,
 }: ButtonProps) {
   return (
     <TouchableOpacity
@@ -28,7 +31,12 @@ function CustomButton({
       {loading ? (
         <Text style={[styles.label, labelStyle]}>Loading...</Text>
       ) : (
-        <Text style={[styles.label, labelStyle]}>{label}</Text>
+        <View style={{ flexDirection: "row", columnGap: 10 }}>
+          <Text style={[styles.label, labelStyle]}>{label}</Text>
+          {icon && <Icon name={icon} size={20} color={colors.white}/>}
+
+        </View>
+
       )}
     </TouchableOpacity>
   );

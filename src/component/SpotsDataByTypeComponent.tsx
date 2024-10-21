@@ -7,19 +7,19 @@ import { Swipeable } from 'react-native-gesture-handler';
 import colors from '../assets/color/colors';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootState, store } from '../reducer/Store';
-import { DeleteSpot } from '../reducer/deleteSpot/DeleteSpotAction';
 import { useSelector } from 'react-redux';
 import { SpotsDataByType } from '../reducer/SpotsDataByType/SpotsDataByTypeAction';
 import { AppNavigationParams } from '../navigation/NavigationStackList';
+import { DeleteSpot } from '../reducer/uploadGenericData/uploadGenericDataAction';
 
-function SpotsDataByTypeComponent(props: { data: any, onPress: any, type: string }) {
+function SpotsDataByTypeComponent(props: { data: any, type: string }) {
 
     const url = useSelector((state: RootState) => state.authentication.baseUrl);
     const buCode = useSelector((state: RootState) => state.authentication.buCode);
     const token = useSelector((state: RootState) => state.authentication.token);
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
 
-    const { data, onPress, type } = props;
+    const { data, type } = props;
 
     // Create a ref for each swipeable item
     const swipeableRef = useRef<any>(null);
@@ -78,25 +78,27 @@ function SpotsDataByTypeComponent(props: { data: any, onPress: any, type: string
         return (
             <Swipeable
                 ref={swipeableRef} // Assign the ref to the Swipeable component
-                renderRightActions={() => renderRightActions(item.id)} // Assume each item has a unique id
+                renderRightActions={() => renderRightActions(item.id)}
+            // Assume each item has a unique id
             >
-                <View style={{ flex: 1 }}>
-                    <Card>
-                        <TouchableOpacity onPress={() => navigation.navigate("SpotDetailScreen", { data: item })}>
-                            <View style={styles.row}>
-                                <Text style={styles.spotTitle}>{item.name}</Text>
-                                <MaterialIcons
-                                    name="circle"
-                                    size={14}
-                                    color={item.active ? 'green' : 'red'}
-                                    style={styles.statusIcon}
-                                />
+                <View style={styles.spotContainer}>
+
+                    <TouchableOpacity onPress={() => navigation.navigate("SpotDetailScreen", { data: item })}>
+                        <View style={styles.row}>
+                            <Text style={styles.spotTitle}>{item.name}</Text>
+                            <View style={{ backgroundColor: item.active ? '#DCFCE7' : "#FEF2F2", paddingVertical: 3, paddingHorizontal: 5, borderRadius: 15 }}>
+                                <Text style={{ color: item.active ? "#15803D" : "#B91C1C", fontSize: fontSizes.vSmallText }}>
+                                    {item.active ? 'Active' : 'In-active'}
+                                </Text>
                             </View>
-                            <Text style={styles.infoText}>ValidId: {item.validDiDirA}</Text>
-                            <Text style={styles.infoText}>Event: {item.events}</Text>
-                        </TouchableOpacity>
-                    </Card>
+
+                        </View>
+                        <Text style={styles.infoText}>ValidId: {item.validDiDirA}</Text>
+                        <Text style={styles.infoText}>Event: {item.events}</Text>
+                    </TouchableOpacity>
+
                 </View>
+                <View style={styles.divider} />
             </Swipeable>
         );
     };
@@ -120,9 +122,26 @@ const styles = StyleSheet.create({
         width: 70, // Adjust based on your design
         height: '100%',
     },
+    spotContainer: {
+        paddingHorizontal: 20,
+        flex: 1
+    },
+    statusBadge: {
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 12,
+        fontSize: fontSizes.subheading,
+        color: '#fff',
+        fontWeight: 'bold',
+    },
     deleteIcon: {
         padding: 10,
         tintColor: colors.redDarkest
+    },
+    divider: {
+        height: 1,
+        marginVertical: 15,
+        backgroundColor: '#d4d4d4', // Light gray divider
     },
     row: {
         flexDirection: 'row',

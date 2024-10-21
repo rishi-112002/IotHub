@@ -1,3 +1,4 @@
+
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -57,7 +58,6 @@ function GenericModal(props: {
   const handleSearchClick = () => {
     setSearchVisible(true);
   };
-
   useEffect(() => {
     if (isVisible) {
       setFilteredOptions(options);
@@ -103,7 +103,7 @@ function GenericModal(props: {
         </TouchableWithoutFeedback>
       </Modal>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({

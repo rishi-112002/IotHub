@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { GetDisplays, GetReader, GetSmartControllers, GetWeightBridge } from "./GenericAddDetailsAction"
+import { GetDisplays, GetReader, GetSmartControllers, GetWeightBridge, GetWeightParsers } from "./SpotAddDetailsAction"
 
 
 
@@ -8,6 +8,7 @@ type AuthState = {
     display: [],
     reader: [],
     weighBriges: [],
+    weightParsers: [],
     readerLoader: boolean,
     displaysLoader: boolean,
     smartControllerLoader: boolean
@@ -17,12 +18,13 @@ const initState: AuthState = {
     smartController: [],
     display: [],
     weighBriges: [],
+    weightParsers: [],
     reader: [],
     readerLoader: true,
     displaysLoader: false,
     smartControllerLoader: false
 }
-export const GenericAddDetailsSlice = createSlice({
+export const SpotAddDetailsSlice = createSlice({
     name: "genericAddDetails",
     initialState: initState,
     reducers: {},
@@ -80,6 +82,20 @@ export const GenericAddDetailsSlice = createSlice({
             state.readerLoader = false
         })
         builder.addCase(GetWeightBridge.pending, (state) => {
+            console.log("pending")
+            state.readerLoader = true
+        })
+        builder.addCase(GetWeightParsers.fulfilled, (state, action) => {
+            state.weightParsers = action.payload
+            state.readerLoader = false
+            console.log("done")
+        })
+        builder.addCase(GetWeightParsers.rejected, (state) => {
+            state.weightParsers = []
+            console.log("error")
+            state.readerLoader = false
+        })
+        builder.addCase(GetWeightParsers.pending, (state) => {
             console.log("pending")
             state.readerLoader = true
         })

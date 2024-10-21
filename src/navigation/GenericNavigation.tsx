@@ -15,34 +15,34 @@ function GenericNavigation() {
         // Define the stack navigator for generic navigation screens
         <Stack.Navigator>
             {/* Screen for displaying the Generic Spot list; header is hidden */}
-            <Stack.Screen 
-                name="GenericSpotScreen" 
-                component={GenericSpot} 
-                options={{ headerShown: false }} 
+            <Stack.Screen
+                name="GenericSpotScreen"
+                component={GenericSpot}
+                options={{ headerShown: false }}
             />
             {/* Screen for displaying event logs; header is shown */}
-            <Stack.Screen 
-                name="EventLogScreen" 
-                component={EventLogsScreen} 
-                options={{ headerShown: true }} 
+            <Stack.Screen
+                name="EventLogScreen"
+                component={EventLogsScreen}
+                options={{ headerShown: true }}
             />
             {/* Screen for displaying the list of spots; header is shown */}
-            <Stack.Screen 
-                name="SpotDetailsScreen" 
-                component={SpotListScreen} 
-                options={{ headerShown: true }} 
+            <Stack.Screen
+                name="SpotDetailsScreen"
+                component={SpotListScreen}
+                options={{ headerShown: true }}
             />
             {/* Screen for displaying details of a specific spot; header is shown */}
-            <Stack.Screen 
-                name="SpotDetailScreen" 
-                component={SpotDetailScreen} 
-                options={{ headerShown: true }} 
+            <Stack.Screen
+                name="SpotDetailScreen"
+                component={SpotDetailScreen}
+                options={{ headerShown: true }}
             />
             {/* Screen for adding a new generic spot; header is shown */}
-            <Stack.Screen 
-                name="GenericSpotAddScreen" 
-                component={GenericSpotAddScreen} 
-                options={{ headerShown: true }} 
+            <Stack.Screen
+                name="GenericSpotAddScreen"
+                component={GenericSpotAddScreen}
+                options={{ headerShown: true}}
             />
         </Stack.Navigator>
     );
