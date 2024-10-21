@@ -10,6 +10,7 @@ import { GenericAddDetailsSlice } from './genericAddDetails/GenericAddDetailsRed
 import { UploadGenericSlice } from './uploadGenericData/uploadGenericDataReducer';
 import { GetUrlsSlice } from './url/UrlReducer';
 import { DeleteSpotSlice } from './deleteSpot/DeleteSpotReducer';
+import { rfidListSlice } from './RFIDList/RFIDListReducer';
 export const store = configureStore({
   reducer: {
     apiResponse: apiResponseList.reducer,
@@ -23,7 +24,8 @@ export const store = configureStore({
     genericAddDetail: GenericAddDetailsSlice.reducer,
     uploadGeneric: UploadGenericSlice.reducer,
     getUrls: GetUrlsSlice.reducer,
-    deletSpot : DeleteSpotSlice.reducer
+    deletSpot : DeleteSpotSlice.reducer,
+    rfidList:rfidListSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,13 +1,16 @@
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import colors from "../../assets/color/colors";
-import fontSizes from "../../assets/fonts/FontSize";
-import { RootDrawerTypes } from "../../navigation/DrawerNavigation";
-import { useSelector } from "react-redux";
-import { RootState } from "../../reducer/Store";
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/react-in-jsx-scope */
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import colors from '../../assets/color/colors';
+import fontSizes from '../../assets/fonts/FontSize';
+import { RootDrawerTypes } from '../../navigation/DrawerNavigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducer/Store';
+import React from 'react';
 
 function CustomDrawerContent() {
     const [isSpotExpanded, setIsSpotExpanded] = useState(false);
@@ -23,6 +26,7 @@ function CustomDrawerContent() {
                     <Text style={styles.headerTitle}>IoT Hub</Text>
                     <Text style={styles.headerSubtitle}>Welcome, {user}!</Text>
                 </View>
+
                 <View>
                     {/* Live Spot */}
                     <DrawerItem
@@ -32,7 +36,7 @@ function CustomDrawerContent() {
                                 <Text style={styles.itemText}>Live Spot</Text>
                             </View>
                         )}
-                        onPress={() => navigation.navigate("LiveSpot")}
+                        onPress={() => navigation.navigate('HomeNavigation')}
                     />
                     {/* Spot Dropdown */}
                     <TouchableOpacity
@@ -43,7 +47,7 @@ function CustomDrawerContent() {
                         <View style={styles.spotLabel}>
                             <Text style={styles.itemText}>Spot</Text>
                             <MaterialIcons
-                                name={isSpotExpanded ? "expand-less" : "expand-more"}
+                                name={isSpotExpanded ? 'expand-less' : 'expand-more'}
                                 size={20}
                                 color={colors.darkblack}
                             />
@@ -53,7 +57,7 @@ function CustomDrawerContent() {
                     {isSpotExpanded && (
                         <View style={styles.subMenu}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('Weighbridges', { screen: "WeighbridgesScreen" })}
+                                onPress={() => navigation.navigate('Weighbridges', { screen: 'WeighbridgesScreen' })}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="scale" size={18} color={colors.gray} />
@@ -69,6 +73,17 @@ function CustomDrawerContent() {
                         </View>
                     )}
 
+                    {/* RFID Reader's */}
+                    <DrawerItem
+                        label={() => (
+                            <View style={styles.itemContainer}>
+                                <MaterialIcons name="wifi-tethering" size={20} color={colors.darkblack} />
+                                <Text style={styles.itemText}>RFID Reader's</Text>
+                            </View>
+                        )}
+                        onPress={() => navigation.navigate('RfidScreenNavigation')}
+                    />
+
                     {/* Settings */}
                     <DrawerItem
                         label={() => (
@@ -77,7 +92,7 @@ function CustomDrawerContent() {
                                 <Text style={styles.itemText}>Settings</Text>
                             </View>
                         )}
-                        onPress={() => console.log("Settings")}
+                        onPress={() => console.log('Settings')}
                     />
 
                     {/* About */}
@@ -88,7 +103,7 @@ function CustomDrawerContent() {
                                 <Text style={styles.itemText}>About</Text>
                             </View>
                         )}
-                        onPress={() => console.log("About")}
+                        onPress={() => console.log('About')}
                     />
                 </View>
             </DrawerContentScrollView>
