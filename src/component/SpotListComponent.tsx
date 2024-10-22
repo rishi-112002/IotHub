@@ -1,21 +1,22 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Animated, VirtualizedList } from 'react-native';
 import colors from '../assets/color/colors';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import fontSizes from '../assets/fonts/FontSize';
-import CustomShimmerForHome from '../reuseableComponent/shimmer/CustomShimmerForHome'; // Shimmer effect for loading placeholders
-import { AppNavigationParams } from '../navigation/NavigationStackList'; // Navigation types
-import CustomMenu from '../reuseableComponent/menuOptions/CustomMenu'; // Custom menu component
-import { useSelector } from 'react-redux'; // Redux for accessing state
-import { RootState } from '../reducer/Store'; // Root state for redux
+import CustomShimmerForHome from '../reuseableComponent/shimmer/CustomShimmerForHome';
+import { AppNavigationParams } from '../navigation/NavigationStackList';
+import CustomMenu from '../reuseableComponent/menuOptions/CustomMenu';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducer/Store';
 
 type init = {
-    item: any, // Type definition for FlatList item
+    item: any,
 };
 
 // Main component
 function SpotList(props: { data: any[] }) {
-    const { data = [] } = props; // Ensure data is always an array
+    const { data = [] } = props;
     const [loading] = useState(true);
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
     const fadeAnim = new Animated.Value(0);
@@ -61,16 +62,16 @@ function SpotList(props: { data: any[] }) {
                         <CustomShimmerForHome width="60%" height={15} />
                     </View>
                 ) : (
-                    <TouchableOpacity onPress={() => navigation.navigate("SpotDetailScreen", { data: item })}>
+                    <TouchableOpacity onPress={() => navigation.navigate('SpotDetailScreen', { data: item })}>
                         <View style={styles.contentContainer}>
                             <View style={styles.infoContainer}>
                                 <Text style={styles.spotTitle}>
                                     {item.name?.length > 14 ? item.name.substring(0, 14) : item.name}
                                 </Text>
                             </View>
-                            <View style={{ flexDirection: "row", columnGap: 40 }}>
-                                <View style={{ backgroundColor: item.active ? '#DCFCE7' : "#FEF2F2", paddingVertical: 3, paddingHorizontal: 5, borderRadius: 15 }}>
-                                    <Text style={{ color: item.active ? "#15803D" : "#B91C1C", fontSize: fontSizes.vSmallText }}>
+                            <View style={{ flexDirection: 'row', columnGap: 40 }}>
+                                <View style={{ backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2', paddingVertical: 3, paddingHorizontal: 5, borderRadius: 15 }}>
+                                    <Text style={{ color: item.active ? '#15803D' : '#B91C1C', fontSize: fontSizes.vSmallText }}>
                                         {item.active ? 'Connected' : 'Not-Connected'}
                                     </Text>
                                 </View>
@@ -83,13 +84,13 @@ function SpotList(props: { data: any[] }) {
                         </View>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 4, columnGap: 20 }}>
-                            <View style={{ borderColor: item.delayed ? "#FEF2F2" : '#DCFCE7', borderWidth: 2, paddingHorizontal: 3, paddingVertical: 3, borderRadius: 15 }}>
-                                <Text style={[styles.details, { color: item.delayed ? "#B91C1C" : "#15803D" }]}>
+                            <View style={{ borderColor: item.delayed ? '#FEF2F2' : '#DCFCE7', borderWidth: 2, paddingHorizontal: 3, paddingVertical: 3, borderRadius: 15 }}>
+                                <Text style={[styles.details, { color: item.delayed ? '#B91C1C' : '#15803D' }]}>
                                     {item.delayed ? 'Delayed' : 'On Time'}
                                 </Text>
                             </View>
-                            <View style={{ borderColor: item.currentState ? '#DCFCE7' : "#FEF2F2", borderWidth: 2, paddingHorizontal: 3, paddingVertical: 3, borderRadius: 15 }}>
-                                <Text style={{ color: item.currentState ? "#15803D" : "#B91C1C", fontSize: fontSizes.vSmallText }}>{item.currentState || 'No State Info'}</Text>
+                            <View style={{ borderColor: item.currentState ? '#DCFCE7' : '#FEF2F2', borderWidth: 2, paddingHorizontal: 3, paddingVertical: 3, borderRadius: 15 }}>
+                                <Text style={{ color: item.currentState ? '#15803D' : '#B91C1C', fontSize: fontSizes.vSmallText }}>{item.currentState || 'No State Info'}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     // Label text styling
     label: {
         fontSize: fontSizes.text,
-        color: "gray",
+        color: 'gray',
         fontWeight: '600',
     },
     // General details text styling
