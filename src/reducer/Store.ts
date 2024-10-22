@@ -28,7 +28,6 @@ export const store = configureStore({
     deletSpot: DeleteSpotSlice.reducer,
     weighBridge: WeighBridgeSlice.reducer,
     rfidList:rfidListSlice.reducer,
-
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

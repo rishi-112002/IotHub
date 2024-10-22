@@ -24,14 +24,11 @@ export const useRfidAddForm = (navigation: NavigationProp<any>) => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const dispatch = useDispatch();
-  const CreateError = useSelector(
-    (state: RootState) => state.rfidList.errors.create,
-  );
   const buCode = useSelector((state: RootState) => state.authentication.buCode);
   const token = useSelector((state: RootState) => state.authentication.token);
   const Loader = useSelector((state: RootState) => state.rfidList.loader);
   const smartControllerLoader = useSelector(
-    (state: RootState) => state.genericAddDetail.smartControllerLoader,
+    (state: RootState) => state.uploadGeneric.loader,
   );
 
   // Validates the form fields

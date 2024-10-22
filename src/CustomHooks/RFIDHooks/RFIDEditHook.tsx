@@ -59,7 +59,7 @@ export const useEditRfid = (item: RFIDItem): EditRfidReturn => {
   const buCode = useSelector((state: RootState) => state.authentication.buCode);
   const token = useSelector((state: RootState) => state.authentication.token);
   const smartControllerLoader = useSelector(
-    (state: RootState) => state.genericAddDetail.smartControllerLoader,
+    (state: RootState) => state.uploadGeneric.loader,
   );
 
   const handleInputFocus = useCallback(

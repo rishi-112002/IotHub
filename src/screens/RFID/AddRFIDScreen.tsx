@@ -8,7 +8,7 @@ import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import LoadingModal from '../../reuseableComponent/loader/CustomLoaderFaiz';
-import {useRfidAddForm} from '../../CustomHooks/RFIDHooks/RFIDAddHook'; // Import custom hook
+import {useRfidAddForm} from '../../CustomHooks/RFIDHooks/RFIDAddHook';
 
 const RfidAddScreen = () => {
   const navigation = useNavigation<NavigationProp<any>>();
@@ -41,25 +41,24 @@ const RfidAddScreen = () => {
         <View style={{padding: 20}}>
           {/* Name Input */}
           <CustomTextInput
-            label="Name"
-            value={name}
-            errorMessage={errors.name}
-            keyboardType="default"
-            returnKeyType="next"
-            setTextInput={setName}
-            onFocus={() => handleInputFocus('name')}
-          />
+              label="Name"
+              value={name}
+              errorMessage={errors.name}
+              keyboardType="default"
+              returnKeyType="next"
+              setTextInput={setName}
+              onFocus={() => handleInputFocus('name')} required={false}          />
 
           {/* Model Number Input */}
           <View style={{position: 'relative'}}>
             <CustomTextInput
-              label="Model Number"
-              value={modal || ''}
-              editable={false}
-              errorMessage={errors.modal}
-              setTextInput={setModal}
-              onPress={() => setDropdownVisible(true)} // Open modal on press
-            />
+                label="Model Number"
+                value={modal || ''}
+                editable={false}
+                errorMessage={errors.modal}
+                setTextInput={setModal}
+                onPress={() => setDropdownVisible(true)} // Open modal on press
+                required={false}            />
           </View>
 
           {/* Model Number Modal */}
@@ -78,22 +77,20 @@ const RfidAddScreen = () => {
           {modal !== 'FX9600' && (
             <>
               <CustomTextInput
-                label="IP Address"
-                value={IPAddress}
-                errorMessage={errors.IPAddress}
-                keyboardType="default"
-                returnKeyType="next"
-                setTextInput={setIPAddress}
-                onFocus={() => handleInputFocus('IPAddress')}
-              />
+                  label="IP Address"
+                  value={IPAddress}
+                  errorMessage={errors.IPAddress}
+                  keyboardType="default"
+                  returnKeyType="next"
+                  setTextInput={setIPAddress}
+                  onFocus={() => handleInputFocus('IPAddress')} required={false}              />
               <CustomTextInput
-                label="Port Number"
-                value={port}
-                errorMessage={errors.port}
-                keyboardType="numeric"
-                setTextInput={setPort}
-                onFocus={() => handleInputFocus('port')}
-              />
+                  label="Port Number"
+                  value={port}
+                  errorMessage={errors.port}
+                  keyboardType="numeric"
+                  setTextInput={setPort}
+                  onFocus={() => handleInputFocus('port')} required={false}              />
             </>
           )}
 
