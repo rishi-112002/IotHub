@@ -1,6 +1,6 @@
 // EventLogList.tsx
-import React, {useCallback} from 'react';
-import {View, FlatList, Text, StyleSheet, Animated} from 'react-native';
+import React, { useCallback } from 'react';
+import { View, FlatList, Text, StyleSheet, Animated } from 'react-native';
 import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -34,7 +34,7 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
   );
 
   const renderEventLog = useCallback(
-    ({item}: {item: EventLogItemType}) => (
+    ({ item }: { item: EventLogItemType }) => (
       <EventLogItem item={item} onInfoClick={onInfoClick} />
     ),
     [onInfoClick],
@@ -73,11 +73,11 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 10,
-    backgroundColor: colors.backgroundColor,
+    backgroundColor: colors.white
   },
-  flatListContent: {paddingBottom: 10},
-  emptyContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  emptyText: {fontSize: fontSizes.subheading, color: 'gray'},
+  flatListContent: { paddingBottom: 10 },
+  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  emptyText: { fontSize: fontSizes.subheading, color: 'gray' },
 });
 
 export default EventLogsList;

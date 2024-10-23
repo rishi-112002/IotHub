@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Card from '../reuseableComponent/card/CustomCard';
 import fontSizes from '../assets/fonts/FontSize';
 import { Swipeable } from 'react-native-gesture-handler';
 import colors from '../assets/color/colors';
@@ -10,7 +9,8 @@ import { RootState, store } from '../reducer/Store';
 import { useSelector } from 'react-redux';
 import { SpotsDataByType } from '../reducer/SpotsDataByType/SpotsDataByTypeAction';
 import { AppNavigationParams } from '../navigation/NavigationStackList';
-import { DeleteSpot } from '../reducer/uploadGenericData/uploadGenericDataAction';
+import { DeleteGenericSpot } from '../reducer/uploadGenericData/uploadGenericDataAction';
+import { DeleteWeighBridgeSpot } from '../reducer/weighBridge/WeighBridgeAction';
 
 function SpotsDataByTypeComponent(props: { data: any, type: string }) {
 
@@ -55,8 +55,8 @@ function SpotsDataByTypeComponent(props: { data: any, type: string }) {
                 {
                     text: 'OK',
                     onPress: () => {
-                        // Dispatch the delete action and wait for it to resolve
-                        store.dispatch(DeleteSpot({ baseUrl: url, id: id, bucode: buCode, token: token }))
+                        if (type === "GENERIC_SPOT"){
+                            store.dispatch(DeleteGenericSpot({ baseUrl: url, id: id, bucode: buCode, token: token }))
                             .then((response) => {
                                 console.log("response", response)
                                 // After successful deletion, refetch the spot data
@@ -67,6 +67,22 @@ function SpotsDataByTypeComponent(props: { data: any, type: string }) {
                                 // Handle any error from the delete operation
                                 Alert.alert("Error", "Failed to delete the spot. Please try again.");
                             });
+                        }
+                        else{
+                            store.dispatch(DeleteWeighBridgeSpot({ baseUrl: url, id: id, bucode: buCode, token: token }))
+                            .then((response) => {
+                                console.log("response", response)
+                                // After successful deletion, refetch the spot data
+                                store.dispatch(SpotsDataByType({ baseUrl: url, spotType: type, token: token, buCode: buCode }));
+
+                            })
+                            .catch((error) => {
+                                // Handle any error from the delete operation
+                                Alert.alert("Error", "Failed to delete the spot. Please try again.");
+                            });
+
+                        }
+                       
                     },
                 },
             ],

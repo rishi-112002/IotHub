@@ -9,7 +9,6 @@ import { SpotsDataByTypeSlice } from './SpotsDataByType/SpotsDataByTypeReducer';
 import { SpotAddDetailsSlice } from './spotAddDetails/SpotAddDetailsReducer';
 import { UploadGenericSlice } from './uploadGenericData/uploadGenericDataReducer';
 import { GetUrlsSlice } from './url/UrlReducer';
-import { DeleteSpotSlice } from './deleteSpot/DeleteSpotReducer';
 import { WeighBridgeSlice } from './weighBridge/WeighBridgeReducer';
 import { rfidListSlice } from './RFIDList/RFIDListReducer';
 export const store = configureStore({
@@ -25,7 +24,6 @@ export const store = configureStore({
     spotAddDetail: SpotAddDetailsSlice.reducer,
     uploadGeneric: UploadGenericSlice.reducer,
     getUrls: GetUrlsSlice.reducer,
-    deletSpot: DeleteSpotSlice.reducer,
     weighBridge: WeighBridgeSlice.reducer,
     rfidList:rfidListSlice.reducer,
   },
