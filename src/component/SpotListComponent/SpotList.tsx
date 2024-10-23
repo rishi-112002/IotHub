@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 // src/components/SpotList.tsx
 import React, {useCallback} from 'react';
-import {View, StyleSheet, FlatList, Animated, ListRenderItem} from 'react-native';
+import {StyleSheet, FlatList, Animated, ListRenderItem} from 'react-native';
 import SpotItem from './SpotItem';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../reducer/Store';

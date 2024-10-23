@@ -1,6 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
 import {
   createDrawerNavigator,
-  DrawerContentComponentProps,
 } from '@react-navigation/drawer';
 import React from 'react';
 import CustomDrawerContent from '../reuseableComponent/drawer/CustomDrawer';
