@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import EventLogsScreen from "../screens/EventLogsScreen";
+import EventLogsScreen from "../screens/HomeScreen/EventLogsScreen";
 import SpotDetailScreen from "../screens/SpoptDetailScreen";
 import SpotListScreen from "../screens/SpotListScreen";
 import Weighbridges from "../screens/WeighbridgesScreen";

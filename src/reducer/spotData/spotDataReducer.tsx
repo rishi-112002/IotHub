@@ -20,7 +20,7 @@ export const spotDataSlice = createSlice({
     builder.addCase(GetSpotData.fulfilled, (state, action) => {
       state.spotData = action.payload;
       state.loader = false;
-      console.log('done :- ', action.payload);
+      console.log('done :- ');
     });
     builder.addCase(GetSpotData.rejected, (state, action) => {
       state.error = action.payload as string;

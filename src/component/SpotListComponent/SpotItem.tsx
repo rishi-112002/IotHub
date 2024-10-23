@@ -7,7 +7,7 @@ import colors from '../../assets/color/colors';
 import CustomMenu from '../../reuseableComponent/menuOptions/CustomMenu';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
-import useFadeAnimation from '../../reuseableComponent/shimmer/FadeInAnimation';
+// import useFadeAnimation from '../../reuseableComponent/shimmer/FadeInAnimation';
 
 type SpotItemProps = {
   item: {
