@@ -18,3 +18,12 @@ export const direction = [
         name: "B", id: "B"
     },
 ]
+export const types = [
+
+    { name: "Unidirectional", id: 'UNIDIRECTIONAL_WEIGHBRIDGE' },
+    { name: "Bidirectional3R", id: 'BIDIRECTIONAL_WEIGHBRIDGE_3_READER' },
+    { name: "Bidirectional", id: 'BIDIRECTIONAL_WEIGHBRIDGE' },
+    { name: "BidirectionalNR", id: 'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER' },
+    { name: "UnidirectionalNR", id: 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER' },
+
+]
