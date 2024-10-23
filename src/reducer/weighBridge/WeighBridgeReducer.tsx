@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { weighBridgeAdd, WeighBridgeSpotData } from './WeighBridgeAction';
+import { DeleteWeighBridgeSpot, weighBridgeAdd, WeighBridgeSpotData } from './WeighBridgeAction';
 
 interface UploadState {
     weighBridge: any;
@@ -7,7 +7,8 @@ interface UploadState {
     error: string | null;
     WeighBridgeSpots: any[],
     loader: boolean,
-    genericData: any[]
+    genericData: any[],
+    response: any
 }
 
 const initialState: UploadState = {
@@ -16,7 +17,8 @@ const initialState: UploadState = {
     error: null,
     WeighBridgeSpots: [],
     loader: false,
-    genericData: []
+    genericData: [],
+    response: null
 
 };
 
@@ -67,6 +69,26 @@ export const WeighBridgeSlice = createSlice({
                 state.genericData = []
 
             });
+        builder.addCase(DeleteWeighBridgeSpot.fulfilled, (state, action) => {
+            state.response = action.payload
+            state.loader = false
+            const deletedSpotId = action.payload?.id; // Modify this according to your payload structure
+
+            // Filter out the deleted spot from WeighBridgeSpots
+            state.WeighBridgeSpots = state.WeighBridgeSpots.filter(spot => spot.id !== deletedSpotId);
+
+            console.log("Deleted spot with ID: ", deletedSpotId);
+            console.log("done")
+        })
+        builder.addCase(DeleteWeighBridgeSpot.rejected, (state) => {
+            state.response = []
+            console.log("error")
+            state.loader = false
+        })
+        builder.addCase(DeleteWeighBridgeSpot.pending, (state) => {
+            console.log("pending")
+            state.loader = true
+        })
     },
 });
 export const { resetStatus } = WeighBridgeSlice.actions;

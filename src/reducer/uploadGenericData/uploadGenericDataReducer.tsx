@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DeleteSpot, SpotsDataByType, uploadGenericData } from './uploadGenericDataAction';
+import { DeleteGenericSpot, SpotsDataByType, uploadGenericData } from './uploadGenericDataAction';
 
 interface UploadState {
     genericData: any;
@@ -79,20 +79,26 @@ export const UploadGenericSlice = createSlice({
                 state.loader = false;
                 state.GenericSpots = []; // Optionally reset both on error, or just one
             })
-        builder.addCase(DeleteSpot.fulfilled, (state, action) => {
-            state.response = action.payload
-            state.loader = false
-            console.log("done")
-        })
-        builder.addCase(DeleteSpot.rejected, (state) => {
-            state.response = []
-            console.log("error")
-            state.loader = false
-        })
-        builder.addCase(DeleteSpot.pending, (state) => {
-            console.log("pending")
-            state.loader = true
-        })
+            builder.addCase(DeleteGenericSpot.fulfilled, (state, action) => {
+                state.response = action.payload
+                state.loader = false
+                const deletedSpotId = action.payload?.id; // Modify this according to your payload structure
+    
+                // Filter out the deleted spot from WeighBridgeSpots
+                state.GenericSpots = state.GenericSpots.filter(spot => spot.id !== deletedSpotId);
+    
+                console.log("Deleted spot with ID: ", deletedSpotId);
+                console.log("done")
+            })
+            builder.addCase(DeleteGenericSpot.rejected, (state) => {
+                state.response = []
+                console.log("error")
+                state.loader = false
+            })
+            builder.addCase(DeleteGenericSpot.pending, (state) => {
+                console.log("pending")
+                state.loader = true
+            })
     },
 });
 export const { resetStatus } = UploadGenericSlice.actions;

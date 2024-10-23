@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -15,9 +15,9 @@ type EventLogItemProps = {
   onInfoClick: (details: any) => void;
 };
 
-const EventLogItem: React.FC<EventLogItemProps> = ({item, onInfoClick}) => {
+const EventLogItem: React.FC<EventLogItemProps> = ({ item, onInfoClick }) => {
   return (
-    <View style={{paddingHorizontal: 20}}>
+    <View style={{ paddingHorizontal: 15 }}>
       <TouchableOpacity
         onPress={() => onInfoClick(item.details)}
         activeOpacity={0.7}>
@@ -27,11 +27,16 @@ const EventLogItem: React.FC<EventLogItemProps> = ({item, onInfoClick}) => {
               ? `${item.name.substring(0, 25)}..`
               : item.name}
           </Text>
-          <MaterialIcons
-            name="info-outline"
-            size={24}
-            color={colors.blueDarkest}
-          />
+          <View style={{ flexDirection: "row", columnGap: 5 }}>
+            <Text style={{ fontSize: fontSizes.smallText  , color:colors.darkblack}}>
+              Details
+            </Text>
+            <MaterialIcons
+              name="info-outline"
+              size={20}
+              color={colors.AppPrimaryColor}
+            />
+          </View>
         </View>
 
         <View style={styles.section}>
@@ -63,7 +68,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   spotTitle: {
-    fontSize: fontSizes.heading,
+    fontSize: fontSizes.text,
     color: colors.darkblack,
     fontWeight: 'bold',
     flexShrink: 1,
@@ -75,23 +80,24 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   label: {
-    fontSize: fontSizes.text,
-    color: 'gray',
+    fontSize: fontSizes.smallText,
+    color: colors.gray,
     fontWeight: '600',
   },
   typeText: {
-    fontSize: fontSizes.text,
-    color: colors.blueDarkest,
-    fontWeight: '600',
+    fontSize: fontSizes.smallText,
+    color: colors.darkblack,
+    fontWeight: '500',
   },
   createdAt: {
-    fontSize: fontSizes.text,
+    fontSize: fontSizes.smallText,
     color: colors.darkblack,
+    fontWeight: '500',
   },
   messageId: {
-    fontSize: fontSizes.text,
-    color: colors.blueDarkest,
-    fontWeight: '600',
+    fontSize: fontSizes.smallText,
+    color: colors.darkblack,
+    fontWeight: '500',
   },
   divider: {
     height: 1,

@@ -69,10 +69,9 @@ export const SpotsDataByType = createAsyncThunk("spotsDataByType", async (params
         console.log(err);
     }
 })
-
-export const DeleteSpot = createAsyncThunk("deleteSpot", async (params: { baseUrl: any, id: string, bucode: string | null, token: string | null }) => {
+export const DeleteGenericSpot = createAsyncThunk("deleteSpot", async (params: { baseUrl: any, id: string, bucode: string | null, token: string | null }) => {
     const { id, bucode, token } = params
-    const fullUrl = `https://13.235.84.67/${deleteSpots}${id}`
+    const fullUrl = `https://13.235.84.67${deleteSpots}${id}`
     console.log("Token", token)
     try {
 
@@ -85,7 +84,7 @@ export const DeleteSpot = createAsyncThunk("deleteSpot", async (params: { baseUr
             }
         },);
         console.log("url for delete", fullUrl, data)
-        return data;
+        return {data , id};
     } catch (err) {
         console.log(err);
         console.log("url for delete", fullUrl)
