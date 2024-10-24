@@ -5,8 +5,7 @@ import SpotDetailScreen from "../screens/SpoptDetailScreen";
 import SpotListScreen from "../screens/SpotListScreen";
 import Weighbridges from "../screens/WeighbridgesScreen";
 import { AppNavigationParams } from "./NavigationStackList";
-import WeighbridgesAddScreen from "../screens/WeighBridgeAddScreenFirst";
-import WeighbridgesAddScreenSecound from "../screens/WeighBridgeAddScreenSecound";
+import WeighbridgesAddScreen from "../screens/weighBridgeAdd/WeighBridgeAddScreen";
 const Stack = createStackNavigator<AppNavigationParams>();
 function WeighBridgeNavigation() {
     return (
@@ -18,11 +17,6 @@ function WeighBridgeNavigation() {
             <Stack.Screen
                 name="WeighbridgesAddScreen"
                 component={WeighbridgesAddScreen}
-                options={{ headerShown: true }} // Add title here
-            />
-            <Stack.Screen
-                name="WeighbridgesAddScreenSecound"
-                component={WeighbridgesAddScreenSecound}
                 options={{ headerShown: true }} // Add title here
             />
         </Stack.Navigator>

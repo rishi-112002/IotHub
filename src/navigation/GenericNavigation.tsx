@@ -3,9 +3,9 @@ import React from "react";
 import EventLogsScreen from "../screens/HomeScreen/EventLogsScreen"; // Import the Event Logs screen component
 import SpotListScreen from "../screens/SpotListScreen"; // Import the Spot List screen component
 import SpotDetailScreen from "../screens/SpoptDetailScreen"; // Import the Spot Detail screen component (note: typo in file name "SpoptDetailScreen" should be corrected to "SpotDetailScreen")
-import GenericSpot from "../screens/GenericSpotsScreen"; // Import the Generic Spots screen component
-import GenericSpotAddScreen from "../screens/GenericSpotAddScreen"; // Import the Generic Spot Add screen component
+import GenericSpot from "../screens/GenericSpotsScreen"; // Import the Generic Spots screen component Import the Generic Spot Add screen component
 import { AppNavigationParams } from "./NavigationStackList"; // Import type definitions for navigation parameters
+import GenericSpotAddScreen from "../screens/GenericAdd/GenericSpotAddScreen";
 
 // Create the stack navigator with parameterized types for AppNavigationParams
 const Stack = createStackNavigator<AppNavigationParams>();
