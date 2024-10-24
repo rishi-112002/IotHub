@@ -7,7 +7,7 @@ import { eventLogsSlice } from './eventLogs/EventLogsReducer';
 import { spotDetailsSlice } from './spotDetails/spotDetailsReducer';
 import { SpotsDataByTypeSlice } from './SpotsDataByType/SpotsDataByTypeReducer';
 import { SpotAddDetailsSlice } from './spotAddDetails/SpotAddDetailsReducer';
-import { UploadGenericSlice } from './uploadGenericData/uploadGenericDataReducer';
+import { UploadGenericSlice } from './genericSpot/uploadGenericDataReducer';
 import { GetUrlsSlice } from './url/UrlReducer';
 import { WeighBridgeSlice } from './weighBridge/WeighBridgeReducer';
 import { rfidListSlice } from './RFIDList/RFIDListReducer';

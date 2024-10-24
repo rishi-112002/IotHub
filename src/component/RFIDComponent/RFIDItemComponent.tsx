@@ -64,6 +64,7 @@ const RfidItem: React.FC<init> = ({item, handleDelete}) => {
 
 const styles = StyleSheet.create({
   contantView: {
+    flex:1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

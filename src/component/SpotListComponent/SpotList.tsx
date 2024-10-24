@@ -1,12 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-shadow */
-// src/components/SpotList.tsx
-import React, {useCallback} from 'react';
-import {StyleSheet, FlatList, Animated, ListRenderItem} from 'react-native';
+import React, { useCallback } from 'react';
+import { StyleSheet, FlatList, Animated, ListRenderItem } from 'react-native';
 import SpotItem from './SpotItem';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../reducer/Store';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducer/Store';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface SpotData {
   id: string;
@@ -22,8 +19,9 @@ interface SpotData {
 interface SpotListComponentProps {
   spotData: SpotData[];
   refreshing: boolean;
-  scrollY: Animated.Value;
   loadRfidList: () => void;
+  onScroll: any,
+  contentContainerStyle: any
 }
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
@@ -32,6 +30,8 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   spotData,
   loadRfidList,
   refreshing,
+  onScroll,
+  contentContainerStyle,
 }) => {
   const baseUrl = useSelector((state: RootState) => state.authentication.baseUrl);
 
@@ -54,13 +54,15 @@ const SpotList: React.FC<SpotListComponentProps> = ({
         initialNumToRender={100} // Initially render 10 items for performance
         maxToRenderPerBatch={100} // Number of items rendered per batch
         windowSize={150} // How many screens worth of content to render
-        getItemLayout={(data, index) => ({
+        getItemLayout={(_data, index) => ({
           length: 90,
           offset: 90 * index,
           index,
         })}
         updateCellsBatchingPeriod={30} // Reduce lag in scrolling
         scrollEventThrottle={16} // For smoother scroll handling
+        onScroll={onScroll}
+        contentContainerStyle={contentContainerStyle}
       />
     </SafeAreaView>
   );
@@ -68,7 +70,6 @@ const SpotList: React.FC<SpotListComponentProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     paddingBottom: 20,
   },
 });

@@ -4,14 +4,16 @@ import { GetReader, GetDisplays, GetSmartControllers, GetWeightBridge, GetWeight
 import { SpotsDataByType } from "../../reducer/SpotsDataByType/SpotsDataByTypeAction";
 import { RootState, store } from "../../reducer/Store";
 import { WeighBridgeSpotData } from "../../reducer/weighBridge/WeighBridgeAction";
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import React from "react";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { AppNavigationParams } from "../../navigation/NavigationStackList";
 import { StyleSheet } from "react-native";
 import colors from "../../assets/color/colors";
 import fontSizes from "../../assets/fonts/FontSize";
-import { resetStatus } from "../../reducer/uploadGenericData/uploadGenericDataReducer";
+import { resetStatus } from "../../reducer/genericSpot/uploadGenericDataReducer";
+import CustomSnackBar from "../../reuseableComponent/modal/CustomSnackBar";
+import { resetDeleteStatus } from "../../reducer/weighBridge/WeighBridgeReducer";
 
 function WeighBridgeEffectHooks() {
     const [loader, setLoader] = useState(false);
@@ -21,8 +23,9 @@ function WeighBridgeEffectHooks() {
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
     const uploadError = useSelector((state: RootState) => state.weighBridge.error);
     const status = useSelector((state: RootState) => state.weighBridge.status);
+    const deleteStatus = useSelector((state: RootState) => state.weighBridge.deleteStatus);
     const dispatch = useDispatch();
-    console.log("upload Error in Hook" , uploadError)
+    console.log("upload Error in Hook", uploadError)
     useEffect(() => {
         // Dispatch actions when the component mounts
         store.dispatch(GetReader({ baseUrl: baseUrls }));
@@ -33,7 +36,7 @@ function WeighBridgeEffectHooks() {
         store.dispatch(SpotsDataByType({ baseUrl: baseUrls, spotType: "GENERIC_SPOT", token: token, buCode: buCode }));
         store.dispatch(WeighBridgeSpotData({ baseUrl: baseUrls, buCode: buCode, token: token, spotType: "" }));
     }, [baseUrls, token, buCode]); // Dependencies
-   
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -44,35 +47,54 @@ function WeighBridgeEffectHooks() {
         });
     }, [navigation]);
     useEffect(() => {
-        console.log("error in add screen", uploadError, status)
         switch (status) {
             case "failed":
                 if (uploadError) {
-                    Alert.alert("Failed", uploadError);
-                }
-                break;
-            case "succeeded":
-                Alert.alert("Success", status);
-                navigation.goBack()
-                break;
-            case "loading":
-                break;
-        }
-
-    }, [uploadError, dispatch, status]
-    )
-      useEffect(() => {
-        switch (status) {
-            case "failed":
-                if (uploadError) {
-                    Alert.alert("Failed", uploadError);
+                    CustomSnackBar({
+                        text: "failed",
+                        backGroundColor: colors.redBase,
+                        textColor: colors.white
+                    })
                     dispatch(resetStatus())
                 }
                 break;
             case "succeeded":
-                Alert.alert("Success", status);
+                CustomSnackBar({
+                    text: "Success",
+                    backGroundColor: colors.greenBase,
+                    textColor: colors.white
+                })
                 dispatch(resetStatus())
                 navigation.navigate("WeighbridgesScreen")
+                break;
+            case "loading":
+                setLoader(true);
+                break;
+        }
+
+
+    }, [uploadError, dispatch, status])
+
+    useEffect(() => {
+        console.log("delete Status", deleteStatus)
+        switch (deleteStatus) {
+            case "failed":
+                if (uploadError) {
+                    CustomSnackBar({
+                        text: "failed",
+                        backGroundColor: colors.redBase,
+                        textColor: colors.white
+                    })
+                    dispatch(resetDeleteStatus())
+                }
+                break;
+            case "succeeded":
+                CustomSnackBar({
+                    text: "Success",
+                    backGroundColor: colors.greenBase,
+                    textColor: colors.white
+                })
+                dispatch(resetDeleteStatus())
                 break;
             case "loading":
                 setLoader(true);

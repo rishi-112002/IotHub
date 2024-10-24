@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGenericAddEffect } from "./GenericAddEffect";
 import { RootState, store } from "../../reducer/Store";
-import { uploadGenericData } from "../../reducer/uploadGenericData/uploadGenericDataAction";
+import { uploadGenericData } from "../../reducer/genericSpot/uploadGenericDataAction";
 import { ApiCallsAddGenericSpot } from "../../api/ApiCallsByReducer";
 import SequentialBouncingLoader from "../../reuseableComponent/loader/BallBouncingLoader";
 import { direction, events } from "../../assets/constants/Constant";
