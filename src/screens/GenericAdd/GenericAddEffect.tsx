@@ -5,7 +5,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Alert, Text, View } from "react-native";
 import { RootState } from "../../reducer/Store";
 import { ApiCallsAddGenericSpot } from "../../api/ApiCallsByReducer";
-import { resetStatus } from "../../reducer/uploadGenericData/uploadGenericDataReducer";
+import { resetStatus } from "../../reducer/genericSpot/uploadGenericDataReducer";
 import React from "react";
 import { StyleSheet } from "react-native";
 import colors from "../../assets/color/colors";

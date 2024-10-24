@@ -1,15 +1,17 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
+import fontSizes from '../../assets/fonts/FontSize';
+import colors from '../../assets/color/colors';
 
 interface CustomAlertProps {
   isVisible: boolean;
   onClose: () => void;
-  onOkPress: () => void; // Pass the onOkPress function from the parent component
+  onOkPress: () => void;
   title: string;
   message: string;
-  showCancel?: boolean; // New prop to show or hide the cancel button
-  type?: 'success' | 'error' | 'confirmation'; // New prop to define alert type
+  showCancel?: boolean;
+  type?: 'success' | 'error' | 'confirmation';
 }
 
 const CustomAlert: React.FC<CustomAlertProps> = ({
@@ -19,35 +21,29 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
   title,
   message,
   showCancel = true,
-  type = 'confirmation', // Default to confirmation alert type
 }) => {
-  const getAlertStyle = () => {
-    switch (type) {
-      case 'success':
-        return styles.successContainer;
-      case 'error':
-        return styles.errorContainer;
-      default:
-        return styles.confirmationContainer;
-    }
-  };
-
   return (
-    <Modal isVisible={isVisible} onBackdropPress={onClose}>
-      <View style={[styles.alertContainer, getAlertStyle()]}>
+    <Modal
+      isVisible={isVisible}
+      onBackdropPress={onClose}
+      backdropColor="transparent"
+      backdropOpacity={0}
+      animationIn="fadeIn"
+      animationOut="fadeOut">
+      <View style={styles.alertContainer}>
         <Text style={styles.alertTitle}>{title}</Text>
         <Text style={styles.alertMessage}>{message}</Text>
+        <View
+          style={{backgroundColor: '#edebeb', height: 1}}
+        />
         <View style={styles.buttonContainer}>
-          {/* Conditionally render Cancel Button */}
           {showCancel && (
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           )}
-
-          {/* OK Button */}
           <TouchableOpacity style={styles.okButton} onPress={onOkPress}>
-            <Text style={styles.buttonText}>OK</Text>
+            <Text style={styles.okButtonText}>Confirm</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -57,61 +53,66 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
 
 export default CustomAlert;
 
-// Styles using StyleSheet
 const styles = StyleSheet.create({
   alertContainer: {
     backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius:20,
+    borderWidth:1,
+    borderColor:'#edebeb',
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 10, height: 40},
+    shadowOpacity: 9,
+    shadowRadius: 80,
   },
   alertTitle: {
-    fontSize: 18,
+    fontSize: fontSizes.subheader,
     fontWeight: 'bold',
-    marginBottom: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 25,
+    color: colors.inkDarkest,
+    backgroundColor: '#edebeb',
+    borderTopRightRadius: 20,
+    borderBottomRightRadius:20,
   },
   alertMessage: {
-    fontSize: 16,
-    marginBottom: 20,
-    textAlign: 'center',
+    fontSize: fontSizes.heading,
+    paddingVertical: 20,
+    paddingHorizontal: 25,
+    textAlign: 'left',
   },
   buttonContainer: {
+    paddingVertical: 15,
+    paddingHorizontal: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    width: '70%',
   },
   cancelButton: {
-    backgroundColor: '#ff6b6b',
+    borderColor: '#D3D3D3',
+    borderWidth: 1,
     padding: 10,
-    borderRadius: 5,
-    flex: 1,
+    borderRadius: 10,
     marginRight: 10,
+    flex: 1,
   },
   okButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.AppPrimaryColor,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     flex: 1,
-    marginLeft: 10,
   },
-  buttonText: {
+  okButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  // Additional styles for different alert types
-  successContainer: {
-    borderColor: '#4CAF50',
-    borderWidth: 2,
-  },
-  errorContainer: {
-    borderColor: '#ff6b6b',
-    borderWidth: 2,
-  },
-  confirmationContainer: {
-    borderColor: '#2196F3',
-    borderWidth: 2,
+  cancelButtonText: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

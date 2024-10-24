@@ -9,17 +9,17 @@ import { RootState, store } from '../reducer/Store';
 import { useSelector } from 'react-redux';
 import { SpotsDataByType } from '../reducer/SpotsDataByType/SpotsDataByTypeAction';
 import { AppNavigationParams } from '../navigation/NavigationStackList';
-import { DeleteGenericSpot } from '../reducer/uploadGenericData/uploadGenericDataAction';
+import { DeleteGenericSpot } from '../reducer/genericSpot/uploadGenericDataAction';
 import { DeleteWeighBridgeSpot } from '../reducer/weighBridge/WeighBridgeAction';
 
-function SpotsDataByTypeComponent(props: { data: any, type: string }) {
+function SpotsDataByTypeComponent(props: { data: any, type: string, handleScroll: any }) {
 
     const url = useSelector((state: RootState) => state.authentication.baseUrl);
     const buCode = useSelector((state: RootState) => state.authentication.buCode);
     const token = useSelector((state: RootState) => state.authentication.token);
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
 
-    const { data, type } = props;
+    const { data, type, handleScroll } = props;
 
     // Create a ref for each swipeable item
     const swipeableRef = useRef<any>(null);
@@ -55,34 +55,34 @@ function SpotsDataByTypeComponent(props: { data: any, type: string }) {
                 {
                     text: 'OK',
                     onPress: () => {
-                        if (type === "GENERIC_SPOT"){
+                        if (type === "GENERIC_SPOT") {
                             store.dispatch(DeleteGenericSpot({ baseUrl: url, id: id, bucode: buCode, token: token }))
-                            .then((response) => {
-                                console.log("response", response)
-                                // After successful deletion, refetch the spot data
-                                store.dispatch(SpotsDataByType({ baseUrl: url, spotType: type, token: token, buCode: buCode }));
+                                .then((response) => {
+                                    console.log("response", response)
+                                    // After successful deletion, refetch the spot data
+                                    store.dispatch(SpotsDataByType({ baseUrl: url, spotType: type, token: token, buCode: buCode }));
 
-                            })
-                            .catch((error) => {
-                                // Handle any error from the delete operation
-                                Alert.alert("Error", "Failed to delete the spot. Please try again.");
-                            });
+                                })
+                                .catch((error) => {
+                                    // Handle any error from the delete operation
+                                    Alert.alert("Error", "Failed to delete the spot. Please try again.");
+                                });
                         }
-                        else{
+                        else {
                             store.dispatch(DeleteWeighBridgeSpot({ baseUrl: url, id: id, bucode: buCode, token: token }))
-                            .then((response) => {
-                                console.log("response", response)
-                                // After successful deletion, refetch the spot data
-                                store.dispatch(SpotsDataByType({ baseUrl: url, spotType: type, token: token, buCode: buCode }));
+                                .then((response) => {
+                                    console.log("response", response)
+                                    // After successful deletion, refetch the spot data
+                                    store.dispatch(SpotsDataByType({ baseUrl: url, spotType: type, token: token, buCode: buCode }));
 
-                            })
-                            .catch((error) => {
-                                // Handle any error from the delete operation
-                                Alert.alert("Error", "Failed to delete the spot. Please try again.");
-                            });
+                                })
+                                .catch((error) => {
+                                    // Handle any error from the delete operation
+                                    Alert.alert("Error", "Failed to delete the spot. Please try again.");
+                                });
 
                         }
-                       
+
                     },
                 },
             ],
@@ -126,6 +126,7 @@ function SpotsDataByTypeComponent(props: { data: any, type: string }) {
                 keyExtractor={(_item, index) => index.toString()}
                 renderItem={renderSpot}
                 contentContainerStyle={{ padding: 10 }}
+                onScroll={handleScroll}
             />
         </View>
     );

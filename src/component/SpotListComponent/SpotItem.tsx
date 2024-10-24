@@ -19,7 +19,7 @@ type SpotItemProps = {
     delayed: boolean;
     currentState: string | null;
   };
-  baseUrl: string;
+  baseUrl: string|null;
 };
 
 const SpotItem = ({ item, baseUrl }: SpotItemProps) => {

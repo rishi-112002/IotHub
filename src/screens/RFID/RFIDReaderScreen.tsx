@@ -1,20 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useMemo, useState } from 'react';
-import { View, Animated } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import React from 'react';
+import {View, Animated} from 'react-native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import colors from '../../assets/color/colors';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import FloatingActionCustomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
-import { RfidListHook } from '../../CustomHooks/RFIDHooks/RFIDListHook';
+import {RfidListHook} from '../../CustomHooks/RFIDHooks/RFIDListHook';
 import RfidListComponent from '../../component/RFIDComponent/RfidListComponent';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
+import CustomSnackBar from '../../reuseableComponent/modal/CustomSnackBar';
 
 const RfidReader = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const {
     ListData,
     Loader,
-    loadRfidList,
+    loadRfidList, // Call this after delete to reload the list
     handleDelete,
     refreshing,
     buCode,
@@ -22,56 +23,39 @@ const RfidReader = () => {
     setAlertVisible,
     confirmDelete,
     successAlertVisible,
-    setSuccessAlertVisible,
     errorAlertVisible,
-    setErrorAlertVisible,
     errorMessage,
   } = RfidListHook();
 
-  const [scrollY] = useState(new Animated.Value(0));
-  const [buttonVisible, setButtonVisible] = useState(true);
+  const scrollY = new Animated.Value(0);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 60);
+  const translateY = diffClamp.interpolate({
+    inputRange: [0, 20],
+    outputRange: [0, -20],
+  });
+  const paddingTopAnimated = scrollY.interpolate({
+    inputRange: [0, 10],
+    outputRange: [50, 0],
+    extrapolate: 'clamp',
+  });
+  const translateButtonY = diffClamp.interpolate({
+    inputRange: [0, 50],
+    outputRange: [0, 100],
+  });
 
-  const headerTranslate = useMemo(
-    () => scrollY.interpolate({
-      inputRange: [0, 500],
-      outputRange: [0, -500],
-      extrapolate: 'clamp',
-    }),
-    [scrollY],
-  );
-
-  const handleScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-    {
-      useNativeDriver: true,
-      listener: event => {
-        const currentScrollY = event.nativeEvent.contentOffset.y;
-        setButtonVisible(currentScrollY <= 50);
-      },
-    },
-  );
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
+    <View style={{flex: 1, backgroundColor: colors.white}}>
       {/* Header */}
-      <Animated.View
-        style={{
-          transform: [{ translateY: headerTranslate }],
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1,
-        }}>
-        <CustomHeader
-          title="RFID Readers"
-          buCode={buCode}
-          userLogo={'account-circle'}
-        />
-      </Animated.View>
+      <CustomHeader
+        title="RFID Readers"
+        buCode={buCode}
+        userLogo={'account-circle'}
+        translateY={translateY}
+      />
 
       {/* List Content */}
-      <View style={{ flex: 1, paddingTop: buttonVisible ? 60 : 0 }}>
+      <Animated.View style={{flex: 1, paddingTop: paddingTopAnimated}}>
         <RfidListComponent
           ListData={ListData}
           Loader={Loader}
@@ -79,8 +63,10 @@ const RfidReader = () => {
           handleDelete={handleDelete}
           loadRfidList={loadRfidList}
           refreshing={refreshing}
-          buttonVisible={buttonVisible}
-          handleScroll={handleScroll}
+          handleScroll={(e: {nativeEvent: {contentOffset: {y: number}}}) => {
+            scrollY.setValue(e.nativeEvent.contentOffset.y);
+          }}
+          buttonVisible={false}
         />
 
         {/* Confirmation Alert for Deletion */}
@@ -97,44 +83,27 @@ const RfidReader = () => {
 
         {/* Success Alert */}
         {successAlertVisible && (
-          <CustomAlert
-            isVisible={successAlertVisible}
-            onClose={() => setSuccessAlertVisible(false)}
-            onOkPress={() => setSuccessAlertVisible(false)} // Just dismiss
-            title="Success"
-            message="RFID deleted successfully!"
-            showCancel={false} // No cancel button for success alerts
-            type="success" // Set alert type to success
+          <CustomSnackBar
+            text="RFID deleted successfully!"
+            backGroundColor={colors.greenBase}
+            textColor={colors.white}
           />
         )}
 
         {/* Error Alert */}
         {errorAlertVisible && (
-          <CustomAlert
-            isVisible={errorAlertVisible}
-            onClose={() => setErrorAlertVisible(false)}
-            onOkPress={() => setErrorAlertVisible(false)} // Just dismiss
-            title="Error"
-            message={errorMessage}
-            showCancel={false} // No cancel button for error alerts
-            type="error" // Set alert type to error
+          <CustomSnackBar
+            text={errorMessage}
+            backGroundColor={colors.redBase}
+            textColor={colors.white}
           />
         )}
 
-        {buttonVisible && (
-          <Animated.View
-            style={{
-              position: 'absolute',
-              bottom: 20,
-              right: 20,
-              opacity: buttonVisible ? 1 : 0,
-            }}>
-            <FloatingActionCustomButton
-              onPress={() => navigation.navigate('RFID ADD')}
-            />
-          </Animated.View>
-        )}
-      </View>
+        <FloatingActionCustomButton
+          onPress={() => navigation.navigate('RFID ADD')}
+          translateButtonY={translateButtonY}
+        />
+      </Animated.View>
     </View>
   );
 };
