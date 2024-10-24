@@ -1,19 +1,19 @@
-import { useEffect, useLayoutEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { GetReader, GetDisplays, GetSmartControllers, GetWeightBridge, GetWeightParsers } from "../../reducer/spotAddDetails/SpotAddDetailsAction";
-import { SpotsDataByType } from "../../reducer/SpotsDataByType/SpotsDataByTypeAction";
-import { RootState, store } from "../../reducer/Store";
-import { WeighBridgeSpotData } from "../../reducer/weighBridge/WeighBridgeAction";
-import { Text, View } from "react-native";
-import React from "react";
-import { useNavigation, NavigationProp } from "@react-navigation/native";
-import { AppNavigationParams } from "../../navigation/NavigationStackList";
-import { StyleSheet } from "react-native";
-import colors from "../../assets/color/colors";
-import fontSizes from "../../assets/fonts/FontSize";
-import { resetStatus } from "../../reducer/genericSpot/uploadGenericDataReducer";
-import CustomSnackBar from "../../reuseableComponent/modal/CustomSnackBar";
-import { resetDeleteStatus } from "../../reducer/weighBridge/WeighBridgeReducer";
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetReader, GetDisplays, GetSmartControllers, GetWeightBridge, GetWeightParsers } from '../../reducer/spotAddDetails/SpotAddDetailsAction';
+import { SpotsDataByType } from '../../reducer/SpotsDataByType/SpotsDataByTypeAction';
+import { RootState, store } from '../../reducer/Store';
+import { WeighBridgeSpotData } from '../../reducer/weighBridge/WeighBridgeAction';
+import { Text, View } from 'react-native';
+import React from 'react';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { StyleSheet } from 'react-native';
+import colors from '../../assets/color/colors';
+import fontSizes from '../../assets/fonts/FontSize';
+import { resetStatus } from '../../reducer/genericSpot/uploadGenericDataReducer';
+import CustomSnackBar from '../../reuseableComponent/modal/CustomSnackBar';
+import { resetDeleteStatus } from '../../reducer/weighBridge/WeighBridgeReducer';
 
 function WeighBridgeEffectHooks() {
     const [loader, setLoader] = useState(false);
@@ -25,7 +25,7 @@ function WeighBridgeEffectHooks() {
     const status = useSelector((state: RootState) => state.weighBridge.status);
     const deleteStatus = useSelector((state: RootState) => state.weighBridge.deleteStatus);
     const dispatch = useDispatch();
-    console.log("upload Error in Hook", uploadError)
+    console.log('upload Error in Hook', uploadError);
     useEffect(() => {
         // Dispatch actions when the component mounts
         store.dispatch(GetReader({ baseUrl: baseUrls }));
@@ -33,8 +33,8 @@ function WeighBridgeEffectHooks() {
         store.dispatch(GetSmartControllers({ baseUrl: baseUrls }));
         store.dispatch(GetWeightBridge({ baseUrl: baseUrls }));
         store.dispatch(GetWeightParsers({ baseUrl: baseUrls }));
-        store.dispatch(SpotsDataByType({ baseUrl: baseUrls, spotType: "GENERIC_SPOT", token: token, buCode: buCode }));
-        store.dispatch(WeighBridgeSpotData({ baseUrl: baseUrls, buCode: buCode, token: token, spotType: "" }));
+        store.dispatch(SpotsDataByType({ baseUrl: baseUrls, spotType: 'GENERIC_SPOT', token: token, buCode: buCode }));
+        store.dispatch(WeighBridgeSpotData({ baseUrl: baseUrls, buCode: buCode, token: token, spotType: '' }));
     }, [baseUrls, token, buCode]); // Dependencies
 
     useLayoutEffect(() => {
@@ -43,66 +43,66 @@ function WeighBridgeEffectHooks() {
                 <View>
                     <Text style={styles.headerTitle}> Add Weighbridge</Text>
                 </View>
-            )
+            ),
         });
     }, [navigation]);
     useEffect(() => {
         switch (status) {
-            case "failed":
+            case 'failed':
                 if (uploadError) {
                     CustomSnackBar({
-                        text: "failed",
+                        text: 'failed',
                         backGroundColor: colors.redBase,
-                        textColor: colors.white
-                    })
-                    dispatch(resetStatus())
+                        textColor: colors.white,
+                    });
+                    dispatch(resetStatus());
                 }
                 break;
-            case "succeeded":
+            case 'succeeded':
                 CustomSnackBar({
-                    text: "Success",
+                    text: 'Success',
                     backGroundColor: colors.greenBase,
-                    textColor: colors.white
-                })
-                dispatch(resetStatus())
-                navigation.navigate("WeighbridgesScreen")
+                    textColor: colors.white,
+                });
+                dispatch(resetStatus());
+                navigation.navigate('WeighbridgesScreen');
                 break;
-            case "loading":
+            case 'loading':
                 setLoader(true);
                 break;
         }
 
 
-    }, [uploadError, dispatch, status])
+    }, [uploadError, dispatch, status, navigation]);
 
     useEffect(() => {
-        console.log("delete Status", deleteStatus)
+        console.log('delete Status', deleteStatus);
         switch (deleteStatus) {
-            case "failed":
+            case 'failed':
                 if (uploadError) {
                     CustomSnackBar({
-                        text: "failed",
+                        text: 'failed',
                         backGroundColor: colors.redBase,
-                        textColor: colors.white
-                    })
-                    dispatch(resetDeleteStatus())
+                        textColor: colors.white,
+                    });
+                    dispatch(resetDeleteStatus());
                 }
                 break;
-            case "succeeded":
+            case 'succeeded':
                 CustomSnackBar({
-                    text: "Success",
+                    text: 'Success',
                     backGroundColor: colors.greenBase,
-                    textColor: colors.white
-                })
-                dispatch(resetDeleteStatus())
+                    textColor: colors.white,
+                });
+                dispatch(resetDeleteStatus());
                 break;
-            case "loading":
+            case 'loading':
                 setLoader(true);
                 break;
         }
 
 
-    }, [uploadError, dispatch, status])
+    }, [uploadError, dispatch, status, deleteStatus]);
 
     return { loader }; // Or some UI component if needed
 }
@@ -111,9 +111,9 @@ const styles = StyleSheet.create({
         color: colors.darkblack,
         fontSize: fontSizes.heading,
     },
-    directionText: { color: colors.darkblack, paddingVertical: 10 }
+    directionText: { color: colors.darkblack, paddingVertical: 10 },
 
-})
+});
 
 export default WeighBridgeEffectHooks;
 
