@@ -12,49 +12,32 @@ import RfidListComponent from '../../component/RFIDComponent/RfidListComponent';
 const RfidReader = () => {
   const navigation = useNavigation<NavigationProp<any>>();
   const { ListData, Loader, loadRfidList, handleDelete, refreshing, buCode } = RfidListHook();
+  const scrollY = new Animated.Value(0)
+  const diffClamp = Animated.diffClamp(scrollY, 0, 60)
+  const translateY = diffClamp.interpolate({
+      inputRange: [0, 60],
+      outputRange: [0, -60]
+  })
+  const paddingTopAnimated = scrollY.interpolate({
+      inputRange: [0, 0],
+      outputRange: [60, 0],
+      extrapolate: 'clamp', // Ensures the value doesn't exceed the input range
+  });
+  const translateButtonY = diffClamp.interpolate({
+    inputRange: [0, 0],
+    outputRange: [0, 100]
+  })
+ 
 
-  const [scrollY] = useState(new Animated.Value(0));
-  const [buttonVisible, setButtonVisible] = useState(true);
-
-  const headerTranslate = useMemo(
-    () =>
-      scrollY.interpolate({
-        inputRange: [0, 500],
-        outputRange: [0, -500],
-        extrapolate: 'clamp',
-      }),
-    [scrollY]
-  );
-
-  const handleScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-    {
-      useNativeDriver: true,
-      listener: event => {
-        const currentScrollY = event.nativeEvent.contentOffset.y;
-        setButtonVisible(currentScrollY <= 50);
-      },
-    }
-  );
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>
       {/* Header */}
-      <Animated.View
-        style={{
-          transform: [{ translateY: headerTranslate }],
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1,
-        }}
-      >
-        <CustomHeader title="RFID Readers" buCode={buCode} userLogo={'account-circle'} />
-      </Animated.View>
+     
+        <CustomHeader title="RFID Readers" buCode={buCode} userLogo={'account-circle'} translateY={translateY} />
 
       {/* List Content */}
-      <View style={{ flex: 1, paddingTop: buttonVisible ? 60 : 0 }}>
+      <Animated.View style={{ flex: 1 , paddingTop: paddingTopAnimated}}>
         <RfidListComponent
           ListData={ListData}
           Loader={Loader}
@@ -62,23 +45,13 @@ const RfidReader = () => {
           handleDelete={handleDelete}
           loadRfidList={loadRfidList}
           refreshing={refreshing}
-          buttonVisible={buttonVisible}
-          handleScroll={handleScroll}
-        />
-        {buttonVisible && (
-          <Animated.View
-            style={{
-              position: 'absolute',
-              bottom: 20,
-              right: 20,
-              opacity: buttonVisible ? 1 : 0,
-            }}
-          >
-            <FloatingActionCustomButton onPress={() => navigation.navigate('RFID ADD')} />
-          </Animated.View>
-        )}
-      </View>
+          handleScroll={(e: { nativeEvent: { contentOffset: { y: number; }; }; }) => {
+            scrollY.setValue(e.nativeEvent.contentOffset.y);
+          } } buttonVisible={false}    />
+          <FloatingActionCustomButton onPress={() => navigation.navigate('RFID ADD')} translateButtonY={translateButtonY} />
+    </Animated.View>
     </View>
+
   );
 };
 

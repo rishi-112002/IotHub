@@ -1,37 +1,46 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import SpotList from '../../component/SpotListComponent/SpotList';
-import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
+import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
 
 function HomeScreen() {
-  const {spotListData, Loader, loadRfidList, refreshing, buCode} = SpotListHook();
-  // console.log("Home Screen Data :- ",spotListData);
+  const { spotListData, Loader, loadRfidList, refreshing, buCode } = SpotListHook();
+  const scrollY = new Animated.Value(0)
+  const diffClamp = Animated.diffClamp(scrollY, 0, 60)
+  const translateY = diffClamp.interpolate({
+    inputRange: [0, 60],
+    outputRange: [0, -60]
+  })
+  const paddingTopAnimated = scrollY.interpolate({
+    inputRange: [0, 0],
+    outputRange: [60, 0],
+    extrapolate: 'clamp', // Ensures the value doesn't exceed the input range
+  });
   return (
     <View style={styles.container}>
-      <CustomHeader
-        buCode={buCode}
-        userLogo={'account-circle'}
-        title={'IotHub'}
-      />
+      
+        <CustomHeader
+          buCode={buCode}
+          userLogo={'account-circle'}
+          title={'IotHub'} translateY={translateY}        />
       {Loader ? (
         <BouncingLoader />
       ) : (
-        <View style={{marginBottom: 40}}>
+        <Animated.View style={{ paddingTop: paddingTopAnimated}}>
           <SpotList
             spotData={spotListData}
-            Loader={Loader}
-            // scrollY={scrollY}
             loadRfidList={loadRfidList}
             refreshing={refreshing}
-            scrollY={undefined}
-            // handleDelete={handleDelete}
-            // buttonVisible={buttonVisible}
-            // handleScroll={handleScroll}
+            onScroll={(e: { nativeEvent: { contentOffset: { y: number; }; }; }) => {
+              scrollY.setValue(e.nativeEvent.contentOffset.y)
+            }}
+            contentContainerStyle={undefined}   
+
           />
-        </View>
+        </Animated.View>
       )}
     </View>
   );

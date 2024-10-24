@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { View } from "react-native";
+import { Animated, View } from "react-native";
 import { useSelector } from "react-redux";
 import SpotsDataByTypeComponent from "../component/SpotsDataByTypeComponent";
 import { RootState, store } from "../reducer/Store";
@@ -19,7 +19,21 @@ function Weighbridges() {
     const buCode = useSelector((state: RootState) => state.authentication.buCode);
     const token = useSelector((state: RootState) => state.authentication.token);
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-
+    const scrollY = new Animated.Value(0)
+    const diffClamp = Animated.diffClamp(scrollY, 0, 60)
+    const translateY = diffClamp.interpolate({
+        inputRange: [0, 60],
+        outputRange: [0, -60]
+    })
+    const paddingTopAnimated = scrollY.interpolate({
+        inputRange: [0, 0],
+        outputRange: [60, 0],
+        extrapolate: 'clamp', // Ensures the value doesn't exceed the input range
+    });
+    const translateButtonY = diffClamp.interpolate({
+        inputRange: [0, 0],
+        outputRange: [0, 100]
+      })
     useEffect(() => {
         console.log("base Url of Generic ", baseUrls);
         store.dispatch(WeighBridgeSpotData({ baseUrl: baseUrls, spotType: "UNIDIRECTIONAL_WEIGHBRIDGE", buCode: buCode, token: token }));
@@ -31,14 +45,17 @@ function Weighbridges() {
 
     return (
         <View style={{ flex: 1, backgroundColor: colors.white }}>
-            <CustomHeader buCode={undefined} userLogo={"account-circle"} title={"Weighbridges"} />
+            <CustomHeader buCode={undefined} userLogo={"account-circle"} title={"Weighbridges"} translateY={translateY} />
             {Loader ? (
                 <CustomLoader />
             ) : (
-                <View style={{ position: "relative"  , flex:1}}>
-                    <SpotsDataByTypeComponent data={WeighbridgeSpots}type={"UNIDIRECTIONAL_WEIGHBRIDGE"} />
-                    <FloatingActionCutomButton onPress={() => navigation.navigate("WeighbridgesAddScreen")} />
-                </View>
+                <Animated.View style={{ position: "relative", flex: 1, paddingTop: paddingTopAnimated }}>
+                    <SpotsDataByTypeComponent data={WeighbridgeSpots} type={"UNIDIRECTIONAL_WEIGHBRIDGE"}
+                        handleScroll={(e: { nativeEvent: { contentOffset: { y: number; }; }; }) => {
+                            scrollY.setValue(e.nativeEvent.contentOffset.y);
+                        }} />
+                    <FloatingActionCutomButton onPress={() => navigation.navigate("WeighbridgesAddScreen")} translateButtonY={translateButtonY} />
+                </Animated.View>
             )}
         </View>
     );

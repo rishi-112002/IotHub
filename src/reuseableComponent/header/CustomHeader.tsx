@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Animated, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import { useSelector } from "react-redux";
@@ -8,10 +8,12 @@ import { RootState, store } from "../../reducer/Store";
 import colors from "../../assets/color/colors";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { logoutUser } from "../../reducer/Login/LoginAction";
+import React from "react";
 
-function CustomHeader(props: { buCode: any, userLogo: any, title: any }) {
+function CustomHeader(props: { buCode: any, userLogo: any, title: any, translateY: any }) {
+
     const userName = useSelector((State: RootState) => State.authentication.userName)
-    const { buCode, userLogo, title } = props
+    const { buCode, userLogo, title, translateY } = props
     const [modalVisible, setModalVisible] = useState(false);
     console.log("bucode", buCode)
     const Navigations = useNavigation()
@@ -41,29 +43,34 @@ function CustomHeader(props: { buCode: any, userLogo: any, title: any }) {
     };
 
     return (
-        <View style={styles.headerContainer}>
-            <View style={styles.leftSection}>
-                <TouchableOpacity onPress={openDrawer}>
-                    <MaterialIcons name="menu" size={28} color={colors.darkblack} style={styles.burgerIcon} />
-                </TouchableOpacity>
-                <Image
-                    source={require("../../assets/images/iotHubLogo.png")}
-                    style={styles.logo}
+        <Animated.View style={{
+            transform: [{ translateY: translateY }], elevation: 5,
+            zIndex: 100000,
+        }}>
+            <View style={styles.headerContainer}>
+                <View style={styles.leftSection}>
+                    <TouchableOpacity onPress={openDrawer}>
+                        <MaterialIcons name="menu" size={28} color={colors.darkblack} style={styles.burgerIcon} />
+                    </TouchableOpacity>
+                    <Image
+                        source={require("../../assets/images/iotHubLogo.png")}
+                        style={styles.logo}
 
-                />
-                <Text style={styles.appName}>{title}</Text>
+                    />
+                    <Text style={styles.appName}>{title}</Text>
+                </View>
+                <View style={styles.rightSection}>
+                    <Text style={styles.username}>{buCode}</Text>
+                    <TouchableOpacity onPress={() => setModalVisible(true)}>
+                        <MaterialIcons name={userLogo} size={25} color={colors.darkblack} />
+                    </TouchableOpacity>
+                </View>
+                {
+                    modalVisible &&
+                    <UserModal modalVisible={modalVisible} setModalVisible={setModalVisible} username={userName} onLogout={handleLogout} />
+                }
             </View>
-            <View style={styles.rightSection}>
-                <Text style={styles.username}>{buCode}</Text>
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <MaterialIcons name={userLogo} size={25} color={colors.darkblack} />
-                </TouchableOpacity>
-            </View>
-            {
-                modalVisible &&
-                <UserModal modalVisible={modalVisible} setModalVisible={setModalVisible} username={userName} onLogout={handleLogout} />
-            }
-        </View>
+        </Animated.View>
     );
 };
 
@@ -75,6 +82,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 15,
+        position: "absolute",
+        top: 0,
+
+        left: 0,
+        right: 0
     },
     leftSection: {
         flexDirection: 'row',
