@@ -1,6 +1,7 @@
 import { SpotDataByType } from "../../api/EndPointsUrl";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { deleteSpots } from "../../api/EndPointsUrl";
 
 export const weighBridgeAdd = createAsyncThunk(
   "spot/uploadWeighData",
@@ -75,7 +76,7 @@ export const WeighBridgeSpotData = createAsyncThunk("weighBridgeSpotData", async
     console.log(err);
   }
 })
-import { deleteSpots } from "../../api/EndPointsUrl";
+
 
 
 export const DeleteWeighBridgeSpot = createAsyncThunk("deleteSpot", async (params: { baseUrl: any, id: string, bucode: string | null, token: string | null }) => {

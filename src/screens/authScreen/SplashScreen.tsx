@@ -6,11 +6,11 @@ import {
     StatusBar
 } from 'react-native';
 import Animated, { useSharedValue, withTiming, Easing, useAnimatedStyle } from 'react-native-reanimated';
-import colors from '../assets/color/colors';
+import colors from '../../assets/color/colors';
 import { useSelector } from 'react-redux';
-import { RootState } from '../reducer/Store';
+import { RootState } from '../../reducer/Store';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { AppNavigationParams } from '../navigation/NavigationStackList';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
 function SplashScreen() {
     const isLogedIn = useSelector((state: RootState) => state.authentication.isLogedIn);
@@ -87,7 +87,7 @@ function SplashScreen() {
             <Animated.View style={[styles.ringContainer, ring2Style]}>
                 <Animated.View style={[styles.ringContainer, ring1Style]}>
                     <Animated.Image
-                        source={require("../assets/images/apconicLogo.png")}
+                        source={require("../../assets/images/apconicLogo.png")}
                         style={[styles.logo, logoStyle]}
                     />
                 </Animated.View>

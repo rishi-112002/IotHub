@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetReader, GetDisplays, GetSmartControllers, GetWeightBridge, GetWeightParsers } from "../../reducer/spotAddDetails/SpotAddDetailsAction";
-import { SpotsDataByType } from "../../reducer/SpotsDataByType/SpotsDataByTypeAction";
 import { RootState, store } from "../../reducer/Store";
 import { WeighBridgeSpotData } from "../../reducer/weighBridge/WeighBridgeAction";
 import { Text, View } from "react-native";
@@ -33,7 +32,6 @@ function WeighBridgeEffectHooks() {
         store.dispatch(GetSmartControllers({ baseUrl: baseUrls }));
         store.dispatch(GetWeightBridge({ baseUrl: baseUrls }));
         store.dispatch(GetWeightParsers({ baseUrl: baseUrls }));
-        store.dispatch(SpotsDataByType({ baseUrl: baseUrls, spotType: "GENERIC_SPOT", token: token, buCode: buCode }));
         store.dispatch(WeighBridgeSpotData({ baseUrl: baseUrls, buCode: buCode, token: token, spotType: "" }));
     }, [baseUrls, token, buCode]); // Dependencies
 

@@ -5,7 +5,6 @@ import { businessUnitsSlice } from './buinessUnits/BuinessUnitsReducer';
 import { spotDataSlice } from './spotData/spotDataReducer';
 import { eventLogsSlice } from './eventLogs/EventLogsReducer';
 import { spotDetailsSlice } from './spotDetails/spotDetailsReducer';
-import { SpotsDataByTypeSlice } from './SpotsDataByType/SpotsDataByTypeReducer';
 import { SpotAddDetailsSlice } from './spotAddDetails/SpotAddDetailsReducer';
 import { UploadGenericSlice } from './genericSpot/uploadGenericDataReducer';
 import { GetUrlsSlice } from './url/UrlReducer';
@@ -20,7 +19,6 @@ export const store = configureStore({
     spotData: spotDataSlice.reducer,
     eventLogs: eventLogsSlice.reducer,
     spotDetails: spotDetailsSlice.reducer,
-    spotsDataByType: SpotsDataByTypeSlice.reducer,
     spotAddDetail: SpotAddDetailsSlice.reducer,
     uploadGeneric: UploadGenericSlice.reducer,
     getUrls: GetUrlsSlice.reducer,

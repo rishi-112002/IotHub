@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DeleteGenericSpot, SpotsDataByType, uploadGenericData } from './uploadGenericDataAction';
+import { DeleteGenericSpot, GenericSpotsData, uploadGenericData } from './uploadGenericDataAction';
+import GenericSpot from '../../screens/GenericSpotsScreen';
 
 interface UploadState {
     genericData: any;
@@ -7,7 +8,8 @@ interface UploadState {
     error: string | null;
     GenericSpots: any[],
     loader: boolean,
-    response: any
+    response: any,
+    deleteStatus: 'idle' | 'loading' | 'succeeded' | 'failed'
 
 }
 
@@ -17,7 +19,8 @@ const initialState: UploadState = {
     status: 'idle',
     error: null,
     GenericSpots: [],
-    loader: false
+    loader: false,
+    deleteStatus: "idle"
 };
 export const UploadGenericSlice = createSlice({
     name: "upload",
@@ -25,6 +28,9 @@ export const UploadGenericSlice = createSlice({
     reducers: {
         resetStatus: (state) => {
             state.status = 'idle';  // Reset the status to 'idle'
+        },
+        resetDeleteStatus: (state) => {
+            state.deleteStatus = 'idle';  // Reset the status to 'idle'
         }
     },
     extraReducers: (builder) => {
@@ -39,13 +45,6 @@ export const UploadGenericSlice = createSlice({
 
                 state.status = 'succeeded';
                 state.error = null;
-
-                // Always create a new array for state to ensure re-render
-                if (newData.result !== "ERROR") {
-                    // Spread old array and append new data
-                    console.log("Updated GenericSpots after push", state.GenericSpots.length);  // Now length should reflect updated data
-                }
-
                 // Check if genericData already exists, and append new data
                 if (state.GenericSpots) {
                     console.log("new data in if", state.GenericSpots.length);
@@ -63,10 +62,10 @@ export const UploadGenericSlice = createSlice({
                 state.error = action.payload as string || 'Failed to upload generic data';
                 console.log("error in reducer ", action.payload);
             })
-            .addCase(SpotsDataByType.pending, (state) => {
+            .addCase(GenericSpotsData.pending, (state) => {
                 state.loader = true;
             })
-            .addCase(SpotsDataByType.fulfilled, (state, action) => {
+            .addCase(GenericSpotsData.fulfilled, (state, action) => {
                 state.loader = false;
                 // Assuming the action.payload has a spotType property
                 const { filteredData, spotType }: any = action.payload; // Modify the payload structure to include spotType
@@ -74,31 +73,37 @@ export const UploadGenericSlice = createSlice({
                     state.GenericSpots = filteredData; // Update GenericSpots
                 }
             })
-            .addCase(SpotsDataByType.rejected, (state) => {
+            .addCase(GenericSpotsData.rejected, (state) => {
                 console.log("error");
                 state.loader = false;
                 state.GenericSpots = []; // Optionally reset both on error, or just one
             })
-            builder.addCase(DeleteGenericSpot.fulfilled, (state, action) => {
-                state.response = action.payload
-                state.loader = false
-                const deletedSpotId = action.payload?.id; // Modify this according to your payload structure
-    
-                // Filter out the deleted spot from WeighBridgeSpots
-                state.GenericSpots = state.GenericSpots.filter(spot => spot.id !== deletedSpotId);
-    
-                console.log("Deleted spot with ID: ", deletedSpotId);
-                console.log("done")
-            })
-            builder.addCase(DeleteGenericSpot.rejected, (state) => {
-                state.response = []
-                console.log("error")
-                state.loader = false
-            })
-            builder.addCase(DeleteGenericSpot.pending, (state) => {
-                console.log("pending")
-                state.loader = true
-            })
+        builder.addCase(DeleteGenericSpot.fulfilled, (state, action) => {
+            console.log("deleteId from action0", action.payload?.id)
+            state.response = action.payload
+            state.loader = false
+            const deletedSpotId = action.payload?.id; // Modify this according to your payload structure
+
+            // Filter out the deleted spot from WeighBridgeSpots
+            console.log("beforeDelete", state.GenericSpots.length)
+            state.GenericSpots = state.GenericSpots.filter(spot => spot.id !== deletedSpotId);
+            console.log("afterDelete", state.GenericSpots.length)
+
+            state.deleteStatus = "succeeded"
+            console.log("Deleted spot with ID: ", deletedSpotId);
+            console.log("done")
+        })
+        builder.addCase(DeleteGenericSpot.rejected, (state) => {
+            state.response = []
+            console.log("error")
+            state.deleteStatus = "failed"
+            state.loader = false
+        })
+        builder.addCase(DeleteGenericSpot.pending, (state) => {
+            console.log("pending")
+            state.deleteStatus = "loading"
+            state.loader = true
+        })
     },
 });
-export const { resetStatus } = UploadGenericSlice.actions;
+export const { resetStatus, resetDeleteStatus } = UploadGenericSlice.actions;
