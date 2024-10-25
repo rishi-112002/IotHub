@@ -8,10 +8,11 @@ import FloatingActionCustomButton from '../../reuseableComponent/customButton/Fl
 import {RfidListHook} from '../../CustomHooks/RFIDHooks/RFIDListHook';
 import RfidListComponent from '../../component/RFIDComponent/RfidListComponent';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
-import CustomSnackBar from '../../reuseableComponent/modal/CustomSnackBar';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import CustomToast from '../../reuseableComponent/modal/CustomToast';
 
 const RfidReader = () => {
-  const navigation = useNavigation<NavigationProp<any>>();
+  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const {
     ListData,
     Loader,
@@ -42,7 +43,6 @@ const RfidReader = () => {
     inputRange: [0, 50],
     outputRange: [0, 100],
   });
-
 
   return (
     <View style={{flex: 1, backgroundColor: colors.white}}>
@@ -82,25 +82,15 @@ const RfidReader = () => {
         )}
 
         {/* Success Alert */}
-        {successAlertVisible && (
-          <CustomSnackBar
-            text="RFID deleted successfully!"
-            backGroundColor={colors.greenBase}
-            textColor={colors.white}
-          />
-        )}
+        {successAlertVisible &&
+          CustomToast({type: 'success', message: 'RFID deleted successfully!'})}
 
         {/* Error Alert */}
-        {errorAlertVisible && (
-          <CustomSnackBar
-            text={errorMessage}
-            backGroundColor={colors.redBase}
-            textColor={colors.white}
-          />
-        )}
+        {errorAlertVisible &&
+          CustomToast({type: 'Error', message: {errorMessage}})}
 
         <FloatingActionCustomButton
-          onPress={() => navigation.navigate('RFID ADD')}
+          onPress={() => navigation.navigate('RfidAdd')}
           translateButtonY={translateButtonY}
         />
       </Animated.View>

@@ -26,4 +26,11 @@ export const types = [
     { name: "BidirectionalNR", id: 'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER' },
     { name: "UnidirectionalNR", id: 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER' },
 
-]
+];
+export const MODEL_LIST = [
+    {name: 'AUR221', value: 'AUR221'},
+    {name: 'AUR145', value: 'AUR145'},
+    {name: 'AHR023', value: 'AHR023'},
+    {name: 'FX9600', value: 'FX9600'},
+    {name: 'AHR023-OLD', value: 'AHR023-OLD'},
+  ];

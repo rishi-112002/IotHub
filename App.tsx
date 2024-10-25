@@ -5,6 +5,7 @@ import { store } from './src/reducer/Store';
 import AppNavigation from './src/navigation/AppNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { MenuProvider } from 'react-native-popup-menu';
+import Toast from 'react-native-toast-message';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <NavigationContainer>
         <MenuProvider>
           <AppNavigation />
+          <Toast />
         </MenuProvider>
       </NavigationContainer>
 

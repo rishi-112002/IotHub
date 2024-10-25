@@ -25,4 +25,9 @@ export type AppNavigationParams = {
   Weighbridges: undefined;
   GenericSpot: undefined;
   RfidScreenNavigation: undefined;
+
+
+  RfidReader:undefined ,
+  RfidAdd:undefined ,
+  RfidEdit:undefined
 };
