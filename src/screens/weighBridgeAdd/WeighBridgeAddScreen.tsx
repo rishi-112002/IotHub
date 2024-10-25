@@ -1,5 +1,5 @@
-import React from "react";
-import WeighBridgeAddForm from "./WeighBridgeAddForm";
+import React from 'react';
+import WeighBridgeAddForm from './WeighBridgeAddForm';
 
 function WeighbridgesAddScreen() {
     return (

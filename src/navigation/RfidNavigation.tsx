@@ -16,12 +16,12 @@ function RfidScreenNavigation() {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="RFID ADD"
+        name="RfidAdd"
         component={RfidAddScreen}
         options={{headerShown: true}}
       />
       <Stack.Screen
-        name="RFID Edit"
+        name="RfidEdit"
         component={EditRfidScreen}
         options={{headerShown: true}}
       />

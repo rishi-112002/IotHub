@@ -4,6 +4,7 @@ import {Alert} from 'react-native';
 import {CreateRFIDdata} from '../../reducer/RFIDList/RFIDListAction';
 import {RootState} from '../../reducer/Store';
 import {NavigationProp} from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
 const MODEL_LIST = [
   {name: 'AUR221', value: 'AUR221'},
@@ -14,7 +15,7 @@ const MODEL_LIST = [
 ];
 
 // Custom hook for managing the RFID form logic
-export const useRfidAddForm = (navigation: NavigationProp<any>) => {
+export const useRfidAddForm = (navigation: NavigationProp<AppNavigationParams>) => {
   const [name, setName] = useState('');
   const [modal, setModal] = useState<string | null>(null);
   const [IPAddress, setIPAddress] = useState('');
@@ -34,13 +35,13 @@ export const useRfidAddForm = (navigation: NavigationProp<any>) => {
   // Validates the form fields
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
-    if (!name) newErrors.name = 'Name is required';
-    if (!modal) newErrors.modal = 'Model number is required';
+    if (!name) {newErrors.name = 'Name is required';}
+    if (!modal) {newErrors.modal = 'Model number is required';}
 
     // Validate IP and Port only if model is not FX9600
     if (modal !== 'FX9600') {
-      if (!IPAddress) newErrors.IPAddress = 'IP address is required';
-      if (!port) newErrors.port = 'Port number is required';
+      if (!IPAddress) {newErrors.IPAddress = 'IP address is required';}
+      if (!port) {newErrors.port = 'Port number is required';}
     }
     return newErrors;
   };

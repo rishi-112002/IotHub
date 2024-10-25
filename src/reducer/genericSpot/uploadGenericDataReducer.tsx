@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DeleteGenericSpot, GenericSpotsData, uploadGenericData } from './uploadGenericDataAction';
-import GenericSpot from '../../screens/GenericSpotsScreen';
 
 interface UploadState {
     genericData: any;
@@ -20,10 +19,10 @@ const initialState: UploadState = {
     error: null,
     GenericSpots: [],
     loader: false,
-    deleteStatus: "idle"
+    deleteStatus: 'idle'
 };
 export const UploadGenericSlice = createSlice({
-    name: "upload",
+    name: 'upload',
     initialState,
     reducers: {
         resetStatus: (state) => {
@@ -41,18 +40,16 @@ export const UploadGenericSlice = createSlice({
             })
             .addCase(uploadGenericData.fulfilled, (state, action: PayloadAction<any>) => {
                 const newData = action.payload;
-                console.log("initialState of generic data ", state.GenericSpots);
-
                 state.status = 'succeeded';
                 state.error = null;
                 // Check if genericData already exists, and append new data
                 if (state.GenericSpots) {
-                    console.log("new data in if", state.GenericSpots.length);
+                    console.log('new data in if', state.GenericSpots.length);
                     state.GenericSpots = [...state.GenericSpots, newData];
-                    console.log("new data in after", state.GenericSpots.length);
+                    console.log('new data in after', state.GenericSpots.length);
 
                 } else {
-                    console.log("new data in else", newData);
+                    console.log('new data in else', newData);
                     state.genericData = newData;
                 }
 
@@ -60,7 +57,7 @@ export const UploadGenericSlice = createSlice({
             .addCase(uploadGenericData.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload as string || 'Failed to upload generic data';
-                console.log("error in reducer ", action.payload);
+                console.log('error in reducer ', action.payload);
             })
             .addCase(GenericSpotsData.pending, (state) => {
                 state.loader = true;
@@ -68,40 +65,38 @@ export const UploadGenericSlice = createSlice({
             .addCase(GenericSpotsData.fulfilled, (state, action) => {
                 state.loader = false;
                 // Assuming the action.payload has a spotType property
-                const { filteredData, spotType }: any = action.payload; // Modify the payload structure to include spotType
-                if (spotType === "GENERIC_SPOT") {
+                const { filteredData }: any = action.payload; // Modify the payload structure to include spotType
                     state.GenericSpots = filteredData; // Update GenericSpots
-                }
             })
             .addCase(GenericSpotsData.rejected, (state) => {
-                console.log("error");
+                console.log('error');
                 state.loader = false;
                 state.GenericSpots = []; // Optionally reset both on error, or just one
             })
         builder.addCase(DeleteGenericSpot.fulfilled, (state, action) => {
-            console.log("deleteId from action0", action.payload?.id)
+            console.log('deleteId from action0', action.payload?.id)
             state.response = action.payload
             state.loader = false
             const deletedSpotId = action.payload?.id; // Modify this according to your payload structure
 
             // Filter out the deleted spot from WeighBridgeSpots
-            console.log("beforeDelete", state.GenericSpots.length)
+            console.log('beforeDelete', state.GenericSpots.length)
             state.GenericSpots = state.GenericSpots.filter(spot => spot.id !== deletedSpotId);
-            console.log("afterDelete", state.GenericSpots.length)
+            console.log('afterDelete', state.GenericSpots.length)
 
-            state.deleteStatus = "succeeded"
-            console.log("Deleted spot with ID: ", deletedSpotId);
-            console.log("done")
+            state.deleteStatus = 'succeeded'
+            console.log('Deleted spot with ID: ', deletedSpotId);
+            console.log('done')
         })
         builder.addCase(DeleteGenericSpot.rejected, (state) => {
             state.response = []
-            console.log("error")
-            state.deleteStatus = "failed"
+            console.log('error')
+            state.deleteStatus = 'failed'
             state.loader = false
         })
         builder.addCase(DeleteGenericSpot.pending, (state) => {
-            console.log("pending")
-            state.deleteStatus = "loading"
+            console.log('pending')
+            state.deleteStatus = 'loading'
             state.loader = true
         })
     },

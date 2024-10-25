@@ -30,7 +30,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
 }) => {
   // Memoized renderSpot for better performance
   const renderSpot = useCallback(
-    ({ item }) => <RFIDItemComponent handleDelete={handleDelete} item={item} />,
+    ({ item }:any) => <RFIDItemComponent handleDelete={handleDelete} item={item} />,
     [handleDelete]
   );
 

@@ -3,9 +3,10 @@
 import {useState, useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {EditRFIDdata} from '../../reducer/RFIDList/RFIDListAction';
-import {RootState} from '../../reducer/Store';
+import {RootState, store} from '../../reducer/Store';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
 interface RFIDItem {
   id: string;
@@ -46,10 +47,10 @@ export const useEditRfid = (item: RFIDItem): EditRfidReturn => {
   const [showIpAndPortFields, setShowIpAndPortFields] = useState<boolean>(
     model !== 'FX9600',
   ); // Control visibility
+
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [successMessage, setSuccessMessage] = useState<string>('');
-
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const dispatch = useDispatch();
 
   const Loader = useSelector((state: RootState) => state.rfidList.loader);
@@ -71,11 +72,11 @@ export const useEditRfid = (item: RFIDItem): EditRfidReturn => {
 
   const validateInputs = useCallback(() => {
     const newErrors: {name?: string; IPAddress?: string; port?: string} = {};
-    if (!name) newErrors.name = 'Name is required';
+    if (!name) {newErrors.name = 'Name is required';}
     if (!IPAddress && showIpAndPortFields)
-      newErrors.IPAddress = 'IP address is required';
+      {newErrors.IPAddress = 'IP address is required';}
     if (!port && showIpAndPortFields)
-      newErrors.port = 'Port number is required';
+      {newErrors.port = 'Port number is required';}
 
     return newErrors;
   }, [name, IPAddress, port, showIpAndPortFields]);
@@ -96,7 +97,7 @@ export const useEditRfid = (item: RFIDItem): EditRfidReturn => {
       };
       // console.log(rfidData);
 
-      await dispatch(
+      store.dispatch(
         EditRFIDdata({
           rfidData,
           token,
