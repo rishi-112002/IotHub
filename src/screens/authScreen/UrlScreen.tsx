@@ -12,19 +12,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { RootState, store } from "../reducer/Store";
-import { setBaseUrl } from "../reducer/Login/LoginReducer";
-import CustomButton from "../reuseableComponent/customButton/CustomButton";
-import colors from "../assets/color/colors";
-import CustomTextInput from "../reuseableComponent/customTextInput/CustomTextInput";
-import CustomLoader from "../reuseableComponent/loader/CustomLoader";
-import { GetUrls } from "../reducer/url/UrlAction";
-import { AppNavigationParams } from "../navigation/NavigationStackList";
+import { RootState, store } from "../../reducer/Store";
+import { setBaseUrl } from "../../reducer/Login/LoginReducer";
+import CustomButton from "../../reuseableComponent/customButton/CustomButton";
+import colors from "../../assets/color/colors";
+import CustomTextInput from "../../reuseableComponent/customTextInput/CustomTextInput";
+import CustomLoader from "../../reuseableComponent/loader/CustomLoader";
+import { GetUrls } from "../../reducer/url/UrlAction";
+import { AppNavigationParams } from "../../navigation/NavigationStackList";
 
 interface urlScreenParams {
     baseUrls: string;
 }
-
 function UrlScreen() {
     const route = useRoute<RouteProp<{ params: urlScreenParams }, 'params'>>();
     const passedBaseUrl = route.params?.baseUrls || "";

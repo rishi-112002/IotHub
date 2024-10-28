@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text, Alert, TouchableOpacity, StatusBar, Animated, Easing } from "react-native";
-import CustomButton from "../reuseableComponent/customButton/CustomButton";
-import { RootState, store } from "../reducer/Store";
+import CustomButton from "../../reuseableComponent/customButton/CustomButton";
+import { RootState, store } from "../../reducer/Store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
-import colors from "../assets/color/colors";
-import BusinessUnitModal from "../reuseableComponent/modal/BuinessUnitsModal";
-import { loginUser } from "../reducer/Login/LoginAction";
+import colors from "../../assets/color/colors";
+import BusinessUnitModal from "../../reuseableComponent/modal/BuinessUnitsModal";
+import { loginUser } from "../../reducer/Login/LoginAction";
 import NetInfo from "@react-native-community/netinfo";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import CustomTextInput from "../reuseableComponent/customTextInput/CustomTextInput";
-import SuccessLoader from "../reuseableComponent/loader/LoginSuccessLoader";
-import { AppNavigationParams } from "../navigation/NavigationStackList";
+import CustomTextInput from "../../reuseableComponent/customTextInput/CustomTextInput";
+import SuccessLoader from "../../reuseableComponent/loader/LoginSuccessLoader";
+import { AppNavigationParams } from "../../navigation/NavigationStackList";
 function LoginForm() {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');

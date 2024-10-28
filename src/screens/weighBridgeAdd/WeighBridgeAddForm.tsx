@@ -1,60 +1,53 @@
-import React, { useState } from "react";
-import CustomDateTimePicker from "../../reuseableComponent/modal/CalendarWithTime";
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, View } from "react-native";
-import CustomTextInput from "../../reuseableComponent/customTextInput/CustomTextInput";
-import WeighBridgeComponent from "./WeighBridgeAddComponent";
-import GenericModal from "../../reuseableComponent/modal/GenralModal";
-import SwithWithLable from "../../reuseableComponent/switch/SwitchWithLable";
-import { useSelector } from "react-redux";
-import { RootState, store } from "../../reducer/Store";
-import { types } from "../../assets/constants/Constant";
-import CustomButton from "../../reuseableComponent/customButton/CustomButton";
-import colors from "../../assets/color/colors";
-import fontSizes from "../../assets/fonts/FontSize";
-import { weighBridgeAdd } from "../../reducer/weighBridge/WeighBridgeAction";
-import WeighBridgeEffectHooks from "./WeighBridgeEffectHooks";
-import SequentialBouncingLoader from "../../reuseableComponent/loader/BallBouncingLoader";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import React, { useState } from 'react';
+import CustomDateTimePicker from '../../reuseableComponent/modal/CalendarWithTime';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
+import WeighBridgeComponent from './WeighBridgeAddComponent';
+import GenericModal from '../../reuseableComponent/modal/GenralModal';
+import SwithWithLable from '../../reuseableComponent/switch/SwitchWithLable';
+import { useSelector } from 'react-redux';
+import { RootState, store } from '../../reducer/Store';
+import { types } from '../../assets/constants/Constant';
+import CustomButton from '../../reuseableComponent/customButton/CustomButton';
+import colors from '../../assets/color/colors';
+import fontSizes from '../../assets/fonts/FontSize';
+import { weighBridgeAdd } from '../../reducer/weighBridge/WeighBridgeAction';
+import WeighBridgeEffectHooks from './WeighBridgeEffectHooks';
+import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 function WeighBridgeAddForm() {
-    const { loader } = WeighBridgeEffectHooks()
+    const { loader , displays , smartController , smartControllerLoader , weightParsers } = WeighBridgeEffectHooks()
 
-    const [name, setName] = useState("");
-    const [delay, setDelay] = useState("");
-    const [minTagCount, setMinTagCount] = useState("");
-    const [sequrityTagTimeOut, setSequrityTagTimeOut] = useState("");
-    const [driverTagTimeOut, setDriverTagTimeOut] = useState("");
+    const [name, setName] = useState('');
+    const [delay, setDelay] = useState('');
+    const [minTagCount, setMinTagCount] = useState('');
+    const [sequrityTagTimeOut, setSequrityTagTimeOut] = useState('');
+    const [driverTagTimeOut, setDriverTagTimeOut] = useState('');
     const [platformReadyTicks, setPlatformReadyTicks] = useState();
     const [platformMaxWeight, setPlatformMaxWeight] = useState(0);
     const [platformMinWeight, setPlatformMinWeight] = useState();
     const [stableWeightTolerance, setStableWeightTolerance] = useState();
     const [stableWeightTicks, setStableWeightTicks] = useState();
     const [minVehicleWeight, setMinVehicleWeight] = useState(0);
-    const [expiryDateValue, setExpiryDateValue] = useState("");
+    const [expiryDateValue, setExpiryDateValue] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-
-
-
-    const smartController = useSelector((state: RootState) => state.spotAddDetail.smartController);
-    const displays = useSelector((state: RootState) => state.spotAddDetail.display);
-    const weightParsers = useSelector((state: RootState) => state.spotAddDetail.weightParsers);
-    const smartControllerLoader = useSelector((state: RootState) => state.spotAddDetail.smartControllerLoader);
     const [currentField, setCurrentField] = useState<string | null>(null);
     const [selectedSmartConnector, setSelectedSmartConnector] = useState<any>({ name: '', id: '' });
     const [selectedEvent, setSelectedEvent] = useState<any>({ name: '', id: '' });
-    const [selectedWeightParser, setselectedWeightPars] = useState<any>({ name: "", id: "" });
+    const [selectedWeightParser, setselectedWeightPars] = useState<any>({ name: '', id: '' });
     const GenericSpots = useSelector((state: RootState) => state.weighBridge.genericData);
     const readers = useSelector((state: RootState) => state.spotAddDetail.reader);
 
     // Direction A states
-    const [validIdA, setValidIdA] = useState("");
+    const [validIdA, setValidIdA] = useState('');
     const [selectedDisplayA, setSelectedDisplayA] = useState<any>({ name: '', id: '' });
     const [selectedPrimaryReaderA, setSelectedPrimaryReaderA] = useState<any>({ name: '', id: '' });
     const [selectedSecondaryReaderA, setSelectedSecondaryReaderA] = useState<any>({ name: '', id: '' });
 
     // Direction B states
-    const [validIdB, setValidIdB] = useState("");
+    const [validIdB, setValidIdB] = useState('');
     const [selectedDisplayB, setSelectedDisplayB] = useState<any>({ name: '', id: '' });
     const [selectedPrimaryReaderB, setSelectedPrimaryReaderB] = useState<any>({ name: '', id: '' });
     const [selectedSecondaryReaderB, setSelectedSecondaryReaderB] = useState<any>({ name: '', id: '' });
@@ -79,7 +72,7 @@ function WeighBridgeAddForm() {
     const closeCalendarModal = () => setCalendarVisible(false);
 
     const handleDateSelect = (date: React.SetStateAction<string>, dateValue: any) => {
-        console.log("date", date, dateValue)
+        console.log('date', date, dateValue)
         setExpiryDateValue(dateValue)
         setSelectedDate(date);
         closeCalendarModal();  // Close the modal after selecting the date
@@ -136,7 +129,7 @@ function WeighBridgeAddForm() {
             setCurrentField(field);
         }
         else {
-            console.log("filed", field)
+            console.log('filed', field)
             openCalendarModal()
         }
         if (currentField?.includes('display')) {
@@ -154,13 +147,13 @@ function WeighBridgeAddForm() {
         if (currentField === 'display') {
             return displays;
         }
-        else if (currentField === "smartController") {
+        else if (currentField === 'smartController') {
             return smartController
         }
-        else if (currentField === "events") {
+        else if (currentField === 'events') {
             return types
         }
-        else if (currentField === "weightParsers") {
+        else if (currentField === 'weightParsers') {
             return weightParsers
         }
         else if (currentField?.includes('display')) {
@@ -180,25 +173,25 @@ function WeighBridgeAddForm() {
                 selectedEvent?.name?.trim() !== '' &&
                 selectedSmartConnector?.name?.trim() !== '' &&
                 selectedWeightParser?.name?.trim() !== '' &&
-                platformReadyTicks !== "" &&
+                platformReadyTicks !== '' &&
                 platformMaxWeight !== null &&
                 platformMinWeight !== null &&
                 stableWeightTolerance !== null &&
                 stableWeightTicks !== null &&
                 minVehicleWeight !== null &&
                 (
-                    selectedEvent.id === "UNIDIRECTIONAL_WEIGHBRIDGE" ||
-                    selectedEvent.id === "UNIDIRECTIONAL_WEIGHBRIDGE_3_READER" ||
-                    selectedEvent.id === "BIDIRECTIONAL_WEIGHBRIDGE"
+                    selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
+                    selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
+                    selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE'
                 )
                 ? selectedPrimaryReaderA?.name?.trim() !== ''
                 : (
-                    selectedEvent.id === "BIDIRECTIONAL_WEIGHBRIDGE_NO_READER"
+                    selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
                         ? (
                             typeof selectedGenericSpotDirA === 'string' && selectedGenericSpotDirA.trim() !== '' &&
                             typeof selectedGenericSpotDirB === 'string' && selectedGenericSpotDirB.trim() !== ''
                         )
-                        : selectedEvent.id === "UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER"
+                        : selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
                             ? (
                                 typeof selectedGenericSpotDirA === 'string' && selectedGenericSpotDirA.trim() !== ''
                             )
@@ -212,15 +205,15 @@ function WeighBridgeAddForm() {
     function handleUploadData() {
         if (platformMaxWeight > minVehicleWeight) {
             Alert.alert(
-                "Warning",
-                "Platform Max Weight is greater than Min Vehicle Weight",
+                'Warning',
+                'Platform Max Weight is greater than Min Vehicle Weight',
                 [
-                    { text: "OK", onPress: () => console.log("OK Pressed", minVehicleWeight, platformMaxWeight) }
+                    { text: 'OK', onPress: () => console.log('OK Pressed', minVehicleWeight, platformMaxWeight) }
                 ],
                 { cancelable: false }
             );
         }
-        console.log("selectedEvent.id", selectedEvent.id)
+        console.log('selectedEvent.id', selectedEvent.id)
         let typeSpecificFields = {};
         switch (selectedEvent.id) {
             case 'UNIDIRECTIONAL_WEIGHBRIDGE':
@@ -289,7 +282,7 @@ function WeighBridgeAddForm() {
         };
         const dataToUpload = {
             ...typeSpecificFields,
-            ...input
+            ...input,
 
         };
         try {
@@ -297,7 +290,7 @@ function WeighBridgeAddForm() {
                 baseUrls: baseUrls,
                 weighData: dataToUpload,
                 token: token,
-                buCode: buCode
+                buCode: buCode,
             }));
         }
         catch (
@@ -306,10 +299,10 @@ function WeighBridgeAddForm() {
             console.log(error)
         }
 
-        console.log("firstScreenData to pass", dataToUpload)
+        console.log('firstScreenData to pass', dataToUpload);
     }
     if (loader) {
-        <SequentialBouncingLoader />
+        <SequentialBouncingLoader />;
     }
     return (
         <GestureHandlerRootView>
@@ -342,13 +335,13 @@ function WeighBridgeAddForm() {
                             onPress={() => handleFocus('events')}
                             style={{ flex: 1 }}
                             errorMessage={undefined}
-                            label={"Type"} disable={false}
+                            label={'Type'} disable={false}
                             editable={false} setTextInput={undefined} required={true} />
 
                         <CustomTextInput
                             value={selectedSmartConnector.name}
                             onPress={() => handleFocus('smartController')}
-                            label={"Smart Controller"}
+                            label={'Smart Controller'}
                             disable={false}
                             style={{ flex: 1 }}
                             editable={false}
@@ -356,7 +349,7 @@ function WeighBridgeAddForm() {
                         <CustomTextInput
                             value={selectedWeightParser.name}
                             onPress={() => handleFocus('weightParsers')}
-                            label={"Weight parser"}
+                            label={'Weight parser'}
                             disable={false}
                             style={{ flex: 1 }}
                             editable={false}
@@ -364,8 +357,8 @@ function WeighBridgeAddForm() {
                         <WeighBridgeComponent platformReadyTicks={platformReadyTicks} setPlatformReadyTicks={setPlatformReadyTicks} platformMaxWeight={platformMaxWeight} setPlatformMaxWeight={setPlatformMaxWeight} platformMinWeight={platformMinWeight} setPlatformMinWeight={setPlatformMinWeight} stableWeightTolerance={stableWeightTolerance} setStableWeightTolerance={setStableWeightTolerance} stableWeightTicks={stableWeightTicks} setStableWeightTicks={setStableWeightTicks} minVehicleWeight={minVehicleWeight} setMinVehicleWeight={setMinVehicleWeight} minTagCount={minTagCount} setMinTagCount={setMinTagCount} />
                         <CustomTextInput
                             value={selectedDate}
-                            onPress={() => handleFocus("")}
-                            label={"Expiry Date"}
+                            onPress={() => handleFocus('')}
+                            label={'Expiry Date'}
                             disable={false}
                             style={{ flex: 1 }}
                             editable={false}
@@ -377,7 +370,7 @@ function WeighBridgeAddForm() {
 
                         {modalVisible && (
                             // Alert.alert("hello")
-                            <View style={{ backgroundColor: "pink", flex: 1 }}>
+                            <View style={{ backgroundColor: 'pink', flex: 1 }}>
                                 <GenericModal
                                     options={getOptions()}
                                     isVisible={modalVisible}
@@ -390,7 +383,7 @@ function WeighBridgeAddForm() {
                             </View>
                         )}
 
-                        <SwithWithLable value={isDriverTagEnabled} onChangeValue={toggleDriverTagSwitch} lable={"Driver Tag"} />
+                        <SwithWithLable value={isDriverTagEnabled} onChangeValue={toggleDriverTagSwitch} lable={'Driver Tag'} />
 
                         {
                             isDriverTagEnabled &&
@@ -403,7 +396,7 @@ function WeighBridgeAddForm() {
                                 keyboardType="numeric" setTextInput={setDriverTagTimeOut} required={true} />
 
                         }
-                        <SwithWithLable value={isSecurityTagEnabled} onChangeValue={toggleSecurityTagSwitch} lable={"Security Tag"} />
+                        <SwithWithLable value={isSecurityTagEnabled} onChangeValue={toggleSecurityTagSwitch} lable={'Security Tag'} />
                         {
                             isSecurityTagEnabled &&
                             <CustomTextInput
@@ -427,7 +420,7 @@ function WeighBridgeAddForm() {
                                         onPress={() => handleFocus('displayA')}
                                         label="Display"
                                         editable={false} setTextInput={undefined} required={false} />
-                                    {selectedEvent.id === "UNIDIRECTIONAL_WEIGHBRIDGE" || selectedEvent.id === "UNIDIRECTIONAL_WEIGHBRIDGE_3_READER" || selectedEvent.id === "BIDIRECTIONAL_WEIGHBRIDGE" ?
+                                    {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' || selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' || selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ?
                                         (<View>
                                             <CustomTextInput
                                                 value={selectedPrimaryReaderA.name}
@@ -462,7 +455,7 @@ function WeighBridgeAddForm() {
                                 </View>
 
                                 {/* Direction B Inputs */}
-                                {(selectedEvent.id === "BIDIRECTIONAL_WEIGHBRIDGE" || selectedEvent.id === "BIDIRECTIONAL_WEIGHBRIDGE_NO_READER")
+                                {(selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' || selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER')
                                     &&
                                     <View>
                                         <Text style={styles.directionText}>Direction B</Text>
@@ -474,7 +467,7 @@ function WeighBridgeAddForm() {
                                             editable={false}
                                             required={false} setTextInput={undefined} />
 
-                                        {selectedEvent.id === "UNIDIRECTIONAL_WEIGHBRIDGE" || selectedEvent.id === "UNIDIRECTIONAL_WEIGHBRIDGE_3_READER" || selectedEvent.id === "BIDIRECTIONAL_WEIGHBRIDGE" ? (
+                                        {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' || selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' || selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
                                             <View>
                                                 <CustomTextInput
                                                     value={selectedPrimaryReaderB.name}
@@ -515,14 +508,14 @@ function WeighBridgeAddForm() {
                             </View>}
 
                         <View>
-                            <CustomButton label={"save"}
+                            <CustomButton label={'save'}
                                 onPress={handleUploadData}
                                 disabled={isFormValid()}
                             />
                         </View>
 
 
-                    </View> : <ActivityIndicator size={"large"} style={{ flex: 1 }} />
+                    </View> : <ActivityIndicator size={'large'} style={{ flex: 1 }} />
                 }
             </ScrollView >
         </GestureHandlerRootView>

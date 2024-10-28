@@ -46,7 +46,7 @@ export const CreateRFIDdata = createAsyncThunk(
 
 export const EditRFIDdata = createAsyncThunk(
   'EditRFIDdata',
-  async ({ rfidData, token, buCode }, { rejectWithValue }) => {
+  async ({ rfidData, token, buCode }:any, { rejectWithValue }) => {
     // console.log('Action :- ', rfidData);
     const fullUrl = `${BASE_URL}${EditRFIDListEndPoint}`;
     try {

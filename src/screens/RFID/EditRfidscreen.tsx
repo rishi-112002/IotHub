@@ -8,15 +8,9 @@ import CustomTextInput from '../../reuseableComponent/customTextInput/CustomText
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import LoadingModal from '../../reuseableComponent/loader/CustomLoaderFaiz';
 import {useEditRfid} from '../../CustomHooks/RFIDHooks/RFIDEditHook';
+import { MODEL_LIST } from '../../assets/constants/Constant';
 
 // Define MODEL_LIST here
-const MODEL_LIST = [
-  {name: 'AUR221', value: 'AUR221'},
-  {name: 'AUR145', value: 'AUR145'},
-  {name: 'AHR023', value: 'AHR023'},
-  {name: 'FX9600', value: 'FX9600'},
-  {name: 'AHR023-OLD', value: 'AHR023-OLD'},
-];
 
 interface EditRfidScreenProps {
   route: {
@@ -69,8 +63,8 @@ const EditRfidScreen: React.FC<EditRfidScreenProps> = ({route}) => {
             returnKeyType="next"
             setTextInput={setName}
             onFocus={() => handleInputFocus('name')}
+            required={false}
           />
-
           <CustomTextInput
             label="Model Number"
             value={model}
@@ -78,6 +72,7 @@ const EditRfidScreen: React.FC<EditRfidScreenProps> = ({route}) => {
             errorMessage={errors.model}
             onPress={() => setDropdownVisible(true)}
             setTextInput={undefined}
+            required={false}
           />
 
           {dropdownVisible && (
@@ -102,6 +97,7 @@ const EditRfidScreen: React.FC<EditRfidScreenProps> = ({route}) => {
                 returnKeyType="next"
                 setTextInput={setIPAddress}
                 onFocus={() => handleInputFocus('IPAddress')}
+                required={false}
               />
 
               <CustomTextInput
@@ -111,6 +107,7 @@ const EditRfidScreen: React.FC<EditRfidScreenProps> = ({route}) => {
                 keyboardType="numeric"
                 setTextInput={setPort}
                 onFocus={() => handleInputFocus('port')}
+                required={false}
               />
             </>
           )}
