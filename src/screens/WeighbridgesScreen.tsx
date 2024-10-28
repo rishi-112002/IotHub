@@ -1,13 +1,13 @@
-import { Animated, View, StyleSheet } from 'react-native';
+import {Animated, View, StyleSheet} from 'react-native';
 import SpotsDataByTypeComponent from '../component/SpotsDataByTypeComponent';
 import FloatingActionCutomButton from '../reuseableComponent/customButton/FloatingActionCustomButton';
 import CustomLoader from '../reuseableComponent/loader/CustomLoader';
 import colors from '../assets/color/colors';
 import CustomHeader from '../reuseableComponent/header/CustomHeader';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import CustomAlert from '../reuseableComponent/PopUp/CustomPopUp';
 import WeighBridgeScreenHooks from '../CustomHooks/weighBridgeHooks/WeighBridgeScreenHooks';
-
+ 
 function Weighbridges() {
   const {
     Loader,
@@ -18,7 +18,7 @@ function Weighbridges() {
     navigation,
     setIsVisible,
   } = WeighBridgeScreenHooks();
-
+ 
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 60);
   const translateY = diffClamp.interpolate({
@@ -34,11 +34,29 @@ function Weighbridges() {
     inputRange: [0, 0],
     outputRange: [0, 100],
   });
-
+ 
+  // Animation for CustomAlert modal
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+ 
+  // Trigger the fade-in effect when `isVisible` changes to true
+  useEffect(() => {
+    if (isVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300, // Adjust duration for smoothness
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isVisible, fadeAnim]);
   if (WeighbridgeSpots) {
     console.log('Generic Spots ', WeighbridgeSpots);
   }
-
   return (
     <View style={styles.container}>
       <CustomHeader
@@ -51,15 +69,11 @@ function Weighbridges() {
         <CustomLoader />
       ) : (
         <Animated.View
-          style={[
-            styles.animatedContainer,
-            { paddingTop: paddingTopAnimated },
-          ]}
-        >
+          style={[styles.animatedContainer, {paddingTop: paddingTopAnimated}]}>
           <SpotsDataByTypeComponent
             data={WeighbridgeSpots}
             type={'UNIDIRECTIONAL_WEIGHBRIDGE'}
-            handleScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
+            handleScroll={(e: {nativeEvent: {contentOffset: {y: number}}}) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
             handleDelete={handleDelete}
@@ -70,17 +84,23 @@ function Weighbridges() {
           />
         </Animated.View>
       )}
-      <CustomAlert
-        isVisible={isVisible}
-        onClose={() => setIsVisible(false)}
-        onOkPress={confirmDelete}
-        title="GENERIC_SPOT"
-        message="Are you sure you want to delete this GENERIC_SPOT?"
-      />
+ 
+      {/* Animated CustomAlert */}
+      {isVisible && (
+        <Animated.View style={[styles.modalContainer, {opacity: fadeAnim}]}>
+          <CustomAlert
+            isVisible={isVisible}
+            onClose={() => setIsVisible(false)}
+            onOkPress={confirmDelete}
+            title="GENERIC_SPOT"
+            message="Are you sure you want to delete this GENERIC_SPOT?"
+          />
+        </Animated.View>
+      )}
     </View>
   );
 }
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -90,6 +110,11 @@ const styles = StyleSheet.create({
     position: 'relative',
     flex: 1,
   },
+  modalContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
-
+ 
 export default Weighbridges;

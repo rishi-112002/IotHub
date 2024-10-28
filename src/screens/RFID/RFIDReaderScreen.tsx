@@ -77,7 +77,8 @@ const RfidReader = () => {
             onOkPress={confirmDelete}
             title="Delete RFID"
             message="Are you sure you want to delete this RFID?"
-            showCancel={true} // Show cancel button for confirmation alerts
+            showCancel={true}
+            // Show cancel button for confirmation alerts
           />
         )}
 
