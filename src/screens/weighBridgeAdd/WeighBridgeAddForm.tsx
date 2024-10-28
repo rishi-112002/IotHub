@@ -23,7 +23,7 @@ function WeighBridgeAddForm() {
     const [name, setName] = useState('');
     const [delay, setDelay] = useState('');
     const [minTagCount, setMinTagCount] = useState('');
-    const [sequrityTagTimeOut, setSequrityTagTimeOut] = useState('');
+    const [securityTagTimeOut, setSecurityTagTimeOut] = useState('');
     const [driverTagTimeOut, setDriverTagTimeOut] = useState('');
     const [platformReadyTicks, setPlatformReadyTicks] = useState();
     const [platformMaxWeight, setPlatformMaxWeight] = useState(0);
@@ -148,13 +148,13 @@ function WeighBridgeAddForm() {
             return displays;
         }
         else if (currentField === 'smartController') {
-            return smartController
+            return smartController;
         }
         else if (currentField === 'events') {
-            return types
+            return types;
         }
         else if (currentField === 'weightParsers') {
-            return weightParsers
+            return weightParsers;
         }
         else if (currentField?.includes('display')) {
             return displays;
@@ -213,14 +213,14 @@ function WeighBridgeAddForm() {
                 { cancelable: false }
             );
         }
-        console.log('selectedEvent.id', selectedEvent.id)
+        console.log('selectedEvent.id', selectedEvent.id);
         let typeSpecificFields = {};
         switch (selectedEvent.id) {
             case 'UNIDIRECTIONAL_WEIGHBRIDGE':
                 typeSpecificFields = {
                     validDiDirA: validIdA,
                     primaryReaderIdDirA: selectedPrimaryReaderA.id,
-                    displayIdDirA: selectedDisplayA.id
+                    displayIdDirA: selectedDisplayA.id,
                 };
                 break;
 
@@ -231,7 +231,7 @@ function WeighBridgeAddForm() {
                     primaryReaderIdDirA: selectedPrimaryReaderA.id,
                     validDiDirB: validIdB,
                     displayIdDirA: selectedDisplayA.id,
-                    displayIdDirB: selectedDisplayB.id
+                    displayIdDirB: selectedDisplayB.id,
                 };
                 break;
             case 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER':
@@ -255,7 +255,7 @@ function WeighBridgeAddForm() {
                     validDiDirA: validIdA,
                     validDiDirB: validIdB,
                     displayA: selectedDisplayA.id,
-                    displayB: selectedDisplayB.id
+                    displayB: selectedDisplayB.id,
                 };
                 break;
         }
@@ -296,7 +296,7 @@ function WeighBridgeAddForm() {
         catch (
         error
         ) {
-            console.log(error)
+            console.log(error);
         }
 
         console.log('firstScreenData to pass', dataToUpload);
@@ -401,11 +401,11 @@ function WeighBridgeAddForm() {
                             isSecurityTagEnabled &&
                             <CustomTextInput
                                 label="Sequirty Tag TimeOut (InMilliSecound)"
-                                value={sequrityTagTimeOut}
+                                value={securityTagTimeOut}
                                 editable={true}
                                 style={{ flex: 1 }}
                                 errorMessage={undefined}
-                                keyboardType="numeric" setTextInput={setSequrityTagTimeOut} required={true} />
+                                keyboardType="numeric" setTextInput={setSecurityTagTimeOut} required={true} />
 
                         }
 
