@@ -1,10 +1,10 @@
 import {useState, useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Alert} from 'react-native';
 import {CreateRFIDdata} from '../../reducer/RFIDList/RFIDListAction';
 import {RootState} from '../../reducer/Store';
 import {NavigationProp} from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import showCustomToast from '../../reuseableComponent/modal/CustomToast';
 
 const MODEL_LIST = [
   {name: 'AUR221', value: 'AUR221'},
@@ -14,39 +14,36 @@ const MODEL_LIST = [
   {name: 'AHR023-OLD', value: 'AHR023-OLD'},
 ];
 
-// Custom hook for managing the RFID form logic
-export const useRfidAddForm = (navigation: NavigationProp<AppNavigationParams>) => {
+export const useRfidAddForm = (
+  navigation: NavigationProp<AppNavigationParams>,
+) => {
   const [name, setName] = useState('');
   const [modal, setModal] = useState<string | null>(null);
   const [IPAddress, setIPAddress] = useState('');
   const [port, setPort] = useState('');
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
 
   const dispatch = useDispatch();
-  const buCode = useSelector((state: RootState) => state.authentication.buCode);
-  const token = useSelector((state: RootState) => state.authentication.token);
+  const {buCode, token} = useSelector(
+    (state: RootState) => state.authentication,
+  );
   const Loader = useSelector((state: RootState) => state.rfidList.loader);
   const smartControllerLoader = useSelector(
     (state: RootState) => state.uploadGeneric.loader,
   );
 
-  // Validates the form fields
   const validateForm = () => {
     const newErrors: {[key: string]: string} = {};
-    if (!name) {newErrors.name = 'Name is required';}
-    if (!modal) {newErrors.modal = 'Model number is required';}
-
-    // Validate IP and Port only if model is not FX9600
+    if (!name) newErrors.name = 'Name is required';
+    if (!modal) newErrors.modal = 'Model number is required';
     if (modal !== 'FX9600') {
-      if (!IPAddress) {newErrors.IPAddress = 'IP address is required';}
-      if (!port) {newErrors.port = 'Port number is required';}
+      if (!IPAddress) newErrors.IPAddress = 'IP address is required';
+      if (!port) newErrors.port = 'Port number is required';
     }
     return newErrors;
   };
 
-  // Handles data submission
   const handleSaveData = async () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
@@ -54,42 +51,37 @@ export const useRfidAddForm = (navigation: NavigationProp<AppNavigationParams>) 
       return;
     }
 
-    // Prepare data based on the selected model
     const rfidData = {
       name,
       model: modal,
       ...(modal !== 'FX9600' && {ip: IPAddress, port}),
     };
-    // console.log(rfidData);
 
     try {
-      await dispatch(
-        CreateRFIDdata({
-          rfidData,
-          token,
-          buCode,
-        }),
-      ).unwrap();
-      setSuccessMessage('Data saved successfully!');
+      await dispatch(CreateRFIDdata({rfidData, token, buCode})).unwrap();
+      showCustomToast('success', 'Data saved successfully!');
+
+      // Delay navigation to allow toast time to display
+      setTimeout(() => {
+        navigation.navigate('RfidReader');
+      }, 500);
     } catch (err) {
-      Alert.alert('Error', err);
+      console.log('ADD ERROR: ', err);
+      showCustomToast(
+        'fail',
+        err || 'Something went wrong! Please try again...',
+      );
     }
   };
 
-  // Resets field-specific errors when input is focused
   const handleInputFocus = (field: string) => {
     setErrors(prevErrors => ({...prevErrors, [field]: undefined}));
-    if (field === 'modal') {
-      setDropdownVisible(true);
-    }
+    if (field === 'modal') setDropdownVisible(true);
   };
 
-  // Handles model selection from the modal
   const handleModalSelect = (selectedModel: {name: string; value: string}) => {
     setModal(selectedModel.value);
     setDropdownVisible(false);
-
-    // If FX9600 is selected, reset IP and Port and clear errors for them
     if (selectedModel.value === 'FX9600') {
       setIPAddress('');
       setPort('');
@@ -100,20 +92,6 @@ export const useRfidAddForm = (navigation: NavigationProp<AppNavigationParams>) 
       }));
     }
   };
-
-  // Success message handler
-  const handleSuccessConfirm = useCallback(() => {
-    setSuccessMessage('');
-    navigation.navigate('RfidReader');
-  }, [navigation]);
-
-  useEffect(() => {
-    if (successMessage) {
-      Alert.alert('Success', successMessage, [
-        {text: 'OK', onPress: handleSuccessConfirm},
-      ]);
-    }
-  }, [successMessage, handleSuccessConfirm]);
 
   return {
     name,

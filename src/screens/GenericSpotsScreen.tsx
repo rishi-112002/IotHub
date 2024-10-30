@@ -4,7 +4,7 @@ import FloatingActionCutomButton from '../reuseableComponent/customButton/Floati
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import CustomHeader from '../reuseableComponent/header/CustomHeader';
 import {AppNavigationParams} from '../navigation/NavigationStackList';
-import React from 'react';
+import React, { useRef } from 'react';
 import colors from '../assets/color/colors';
 import GenericScreenHooks from '../CustomHooks/genericHooks/GenericScreenHooks';
 import CustomAlert from '../reuseableComponent/PopUp/CustomPopUp';
@@ -14,6 +14,7 @@ function GenericSpot() {
   const scrollY = new Animated.Value(0);
 
   const diffClamp = Animated.diffClamp(scrollY, 0, 60);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
   const {
     Loader,
     GenericSpots,
@@ -66,13 +67,17 @@ function GenericSpot() {
             onPress={onHandlePress}
             translateButtonY={translateButtonY}
           />
-          <CustomAlert
-            isVisible={isVisible}
-            onClose={() => setIsVisible(false)}
-            onOkPress={confirmDelete}
-            title="GENERIC_SPOT"
-            message="Are you sure you want to delete this GENERIC_SPOT?"
-          />
+          {isVisible && (
+            <Animated.View style={[styles.modalContainer, {opacity: fadeAnim}]}>
+              <CustomAlert
+                isVisible={isVisible}
+                onClose={() => setIsVisible(false)}
+                onOkPress={confirmDelete}
+                title="GENERIC_SPOT"
+                message="Are you sure you want to delete this GENERIC_SPOT?"
+              />
+            </Animated.View>
+          )}
         </Animated.View>
       )}
     </View>
@@ -90,6 +95,11 @@ const styles = StyleSheet.create({
     position: 'relative',
     flex: 1,
     backgroundColor: colors.white,
+  },
+  modalContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

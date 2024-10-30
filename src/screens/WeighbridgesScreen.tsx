@@ -55,10 +55,6 @@ function Weighbridges() {
     }
   }, [isVisible, fadeAnim]);
 
-  if (WeighbridgeSpots) {
-    console.log('Generic Spots ', WeighbridgeSpots);
-  }
-
   return (
     <View style={styles.container}>
       <CustomHeader
@@ -90,13 +86,6 @@ function Weighbridges() {
       {/* Animated CustomAlert */}
       {isVisible && (
         <Animated.View style={[styles.modalContainer, {opacity: fadeAnim}]}>
-          {/* <CustomAlert
-            isVisible={isVisible}
-            onClose={() => setIsVisible(false)}
-            onOkPress={confirmDelete}
-            title="GENERIC_SPOT"
-            message="Are you sure you want to delete this GENERIC_SPOT?"
-          /> */}
           <CustomAlert
             isVisible={isVisible}
             onClose={() => setIsVisible(false)}

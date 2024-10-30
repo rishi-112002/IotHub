@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import {
-    Alert,
     Animated,
     StyleSheet,
     Text,
@@ -20,6 +19,7 @@ import CustomTextInput from "../../reuseableComponent/customTextInput/CustomText
 import CustomLoader from "../../reuseableComponent/loader/CustomLoader";
 import { GetUrls } from "../../reducer/url/UrlAction";
 import { AppNavigationParams } from "../../navigation/NavigationStackList";
+import showCustomToast from "../../reuseableComponent/modal/CustomToast";
 
 interface urlScreenParams {
     baseUrls: string;
@@ -72,10 +72,10 @@ function UrlScreen() {
                     }
                 } else {
                     // Handle errors from the action if any
-                    Alert.alert("Error", "Please check the URL and try again.");
+                    showCustomToast("fail", "Please check the URL and try again.");
                 }
             } catch (error) {
-                Alert.alert("Error", "Failed to fetch configuration. Please check the URL and try again.");
+                showCustomToast("fail", "Failed to fetch configuration. Please check the URL and try again.");
             } finally {
                 setLoading(false); // Hide loader after processing
             }

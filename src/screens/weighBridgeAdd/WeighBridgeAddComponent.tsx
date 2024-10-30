@@ -1,6 +1,6 @@
-import { View } from "react-native";
-import CustomTextInput from "../../reuseableComponent/customTextInput/CustomTextInput";
-import React from "react";
+import { View } from 'react-native';
+import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
+import React from 'react';
 
 function WeighBridgeComponent(props:{platformReadyTicks:any ,setPlatformReadyTicks: any , platformMaxWeight: any ,setPlatformMaxWeight: any,platformMinWeight: any,setPlatformMinWeight: any,stableWeightTolerance: any ,setStableWeightTolerance: any ,  stableWeightTicks: any , setStableWeightTicks: any  , minVehicleWeight: any , setMinVehicleWeight: any  ,minTagCount: any, setMinTagCount: any }){
     const {platformReadyTicks ,setPlatformReadyTicks , platformMaxWeight ,setPlatformMaxWeight,platformMinWeight,setPlatformMinWeight,stableWeightTolerance ,setStableWeightTolerance ,  stableWeightTicks , setStableWeightTicks  , minVehicleWeight , setMinVehicleWeight  ,minTagCount, setMinTagCount }= props

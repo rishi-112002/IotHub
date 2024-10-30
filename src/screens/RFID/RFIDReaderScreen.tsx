@@ -1,22 +1,21 @@
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {View, Animated} from 'react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { View, Animated } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import colors from '../../assets/color/colors';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import FloatingActionCustomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
-import {RfidListHook} from '../../CustomHooks/RFIDHooks/RFIDListHook';
+import { RfidListHook } from '../../CustomHooks/RFIDHooks/RFIDListHook';
 import RfidListComponent from '../../component/RFIDComponent/RfidListComponent';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
-import CustomToast from '../../reuseableComponent/modal/CustomToast';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import showCustomToast from '../../reuseableComponent/modal/CustomToast';
 
 const RfidReader = () => {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const {
     ListData,
     Loader,
-    loadRfidList, // Call this after delete to reload the list
+    loadRfidList,
     handleDelete,
     refreshing,
     buCode,
@@ -44,9 +43,17 @@ const RfidReader = () => {
     outputRange: [0, 100],
   });
 
+  useEffect(() => {
+    if (successAlertVisible) {
+      showCustomToast('success', 'RFID deleted successfully!');
+    }
+    if (errorAlertVisible) {
+      showCustomToast('fail', errorMessage || 'Something went wrong! Please try deleting again...');
+    }
+  }, [successAlertVisible, errorAlertVisible, errorMessage]);
+
   return (
-    <View style={{flex: 1, backgroundColor: colors.white}}>
-      {/* Header */}
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
       <CustomHeader
         title="RFID Readers"
         buCode={buCode}
@@ -54,8 +61,7 @@ const RfidReader = () => {
         translateY={translateY}
       />
 
-      {/* List Content */}
-      <Animated.View style={{flex: 1, paddingTop: paddingTopAnimated}}>
+      <Animated.View style={{ flex: 1, paddingTop: paddingTopAnimated }}>
         <RfidListComponent
           ListData={ListData}
           Loader={Loader}
@@ -63,13 +69,12 @@ const RfidReader = () => {
           handleDelete={handleDelete}
           loadRfidList={loadRfidList}
           refreshing={refreshing}
-          handleScroll={(e: {nativeEvent: {contentOffset: {y: number}}}) => {
+          handleScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
             scrollY.setValue(e.nativeEvent.contentOffset.y);
           }}
           buttonVisible={false}
         />
 
-        {/* Confirmation Alert for Deletion */}
         {alertVisible && (
           <CustomAlert
             isVisible={alertVisible}
@@ -77,17 +82,9 @@ const RfidReader = () => {
             onOkPress={confirmDelete}
             title="Delete RFID"
             message="Are you sure you want to delete this RFID?"
-            showCancel={true} // Show cancel button for confirmation alerts
+            showCancel={true}
           />
         )}
-
-        {/* Success Alert */}
-        {successAlertVisible &&
-          CustomToast({type: 'success', message: 'RFID deleted successfully!'})}
-
-        {/* Error Alert */}
-        {errorAlertVisible &&
-          CustomToast({type: 'Error', message: {errorMessage}})}
 
         <FloatingActionCustomButton
           onPress={() => navigation.navigate('RfidAdd')}

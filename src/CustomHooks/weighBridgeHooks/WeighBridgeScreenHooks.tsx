@@ -10,7 +10,6 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AppNavigationParams} from '../../navigation/NavigationStackList';
 
 function WeighBridgeScreenHooks() {
-  const [successAlertVisible, setSuccessAlertVisible] = useState(false);
   // const [errorAlertVisible, setErrorAlertVisible] = useState(false);
   // const [errorMessage, setErrorMessage] = useState('');
   const baseUrls = useSelector(
@@ -30,7 +29,7 @@ function WeighBridgeScreenHooks() {
   const [isVisible, setIsVisible] = useState(false);
 
   const getWeighBridgeData = useCallback(() => {
-    setSuccessAlertVisible(false); // Reset success alert before fetching data
+    // setSuccessAlertVisible(false); // Reset success alert before fetching data
     // setErrorAlertVisible(false); // Reset error alert before fetching data
     // setErrorMessage('');
     store.dispatch(
