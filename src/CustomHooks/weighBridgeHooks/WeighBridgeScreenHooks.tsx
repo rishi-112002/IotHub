@@ -6,10 +6,12 @@ import {
 import {RootState, store} from '../../reducer/Store';
 import {useSelector} from 'react-redux';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
 
 function WeighBridgeScreenHooks() {
+  // const [errorAlertVisible, setErrorAlertVisible] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState('');
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
@@ -27,6 +29,9 @@ function WeighBridgeScreenHooks() {
   const [isVisible, setIsVisible] = useState(false);
 
   const getWeighBridgeData = useCallback(() => {
+    // setSuccessAlertVisible(false); // Reset success alert before fetching data
+    // setErrorAlertVisible(false); // Reset error alert before fetching data
+    // setErrorMessage('');
     store.dispatch(
       WeighBridgeSpotData({
         baseUrl: baseUrls,
@@ -39,12 +44,13 @@ function WeighBridgeScreenHooks() {
 
   useEffect(() => {
     getWeighBridgeData();
-  }, [getWeighBridgeData]);
+  }, [baseUrls, buCode, token, getWeighBridgeData]);
 
   const handleDelete = useCallback((id: string) => {
     setDeleteId(id);
     setIsVisible(true);
   }, []);
+
   const confirmDelete = useCallback(async () => {
     if (!deleteId) {
       return;
@@ -59,17 +65,17 @@ function WeighBridgeScreenHooks() {
           token: token,
         }),
       );
-      //   getGenericData(); // Re-fetch data after delete action
+      // genericData(); // Re-fetch data after delete action
       CustomToast({type: 'success', message: 'Deleted successfully'});
     } catch (error) {
       CustomToast({
-        type: 'Error',
+        type: 'fail',
         message: 'Failed to delete the spot. Please try again.',
       });
     } finally {
       setDeleteId(null);
     }
-  }, [deleteId, baseUrls, buCode, token]);
+  }, [deleteId, baseUrls, buCode, token,]);
   return {
     genericData,
     Loader,
@@ -79,7 +85,6 @@ function WeighBridgeScreenHooks() {
     setIsVisible,
     WeighbridgeSpots,
     navigation,
-
   };
 }
 export default WeighBridgeScreenHooks;

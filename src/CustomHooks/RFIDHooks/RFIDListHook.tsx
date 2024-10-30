@@ -47,6 +47,7 @@ export const RfidListHook = () => {
 
   useEffect(() => {
     loadRfidList();
+    console.log('first');
   }, [baseUrl, loadRfidList]);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export const RfidListHook = () => {
       setErrorMessage(LError || DError);
       setErrorAlertVisible(true);
     }
+    console.log('Second');
   }, [LError, DError]);
 
   const handleDelete = useCallback((id: string) => {

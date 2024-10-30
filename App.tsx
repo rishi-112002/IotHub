@@ -16,9 +16,7 @@ function App() {
           <Toast />
         </MenuProvider>
       </NavigationContainer>
-
     </Provider>
-
   );
 }
 export default App;
