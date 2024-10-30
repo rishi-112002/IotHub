@@ -106,10 +106,10 @@ function WeighBridgeEffectHooks() {
       handleLogout();
     } else if (status === 'failed' && uploadError) {
       console.log('Error for log out user', uploadError);
-      CustomToast({type: 'error', message: uploadError});
+      CustomToast('error', uploadError);
       dispatch(resetStatus());
     } else if (status === 'succeeded') {
-      CustomToast({type: 'success', message: 'uploaded successfully'});
+      CustomToast('success', 'uploaded successfully');
       dispatch(resetStatus());
       navigation.goBack();
     } else if (status === 'loading') {

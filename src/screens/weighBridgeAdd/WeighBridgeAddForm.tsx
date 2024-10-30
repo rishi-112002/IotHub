@@ -134,8 +134,9 @@ function WeighBridgeAddForm() {
               disable={false}
               style={styles.flexInput}
               editable={false}
-              setTextInput={errors.smartController}
+              errorMessage={errors.selectedSmartConnector}
               required={true}
+              setTextInput={undefined}
             />
             <CustomTextInput
               value={selectedWeightParser.name}
@@ -144,8 +145,9 @@ function WeighBridgeAddForm() {
               disable={false}
               style={styles.flexInput}
               editable={false}
-              setTextInput={errors.weightParsers}
+              errorMessage={errors.selectedWeightParser}
               required={true}
+              setTextInput={undefined}
             />
             <WeighBridgeComponent
               platformReadyTicks={platformReadyTicks}
@@ -171,8 +173,9 @@ function WeighBridgeAddForm() {
               style={styles.flexInput}
               editable={false}
               iconName=""
-              setTextInput={errors.selectedDate}
+              errorMessage={errors.selectedDate}
               required={false}
+              setTextInput={undefined}
             />
 
             {/* Modal for selecting options */}
@@ -262,7 +265,6 @@ function WeighBridgeAddForm() {
                         editable={false}
                         setTextInput={undefined}
                         required={false}
-                        errorMessage={errors.selectedSecondaryReaderA}
                       />
                     </View>
                   ) : (
@@ -302,7 +304,6 @@ function WeighBridgeAddForm() {
                       editable={false}
                       required={false}
                       setTextInput={undefined}
-                      errorMessage={errors.selectedDisplayB}
                     />
 
                     {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
@@ -326,7 +327,6 @@ function WeighBridgeAddForm() {
                           label="Secondary Reader"
                           editable={false}
                           required={false}
-                          errorMessage={errors.selectedSecondaryReaderB}
                           setTextInput={undefined}
                         />
                       </View>

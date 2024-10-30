@@ -7,7 +7,7 @@ import CustomHeader from '../reuseableComponent/header/CustomHeader';
 import React, {useEffect, useRef} from 'react';
 import CustomAlert from '../reuseableComponent/PopUp/CustomPopUp';
 import WeighBridgeScreenHooks from '../CustomHooks/weighBridgeHooks/WeighBridgeScreenHooks';
- 
+
 function Weighbridges() {
   const {
     Loader,
@@ -18,7 +18,7 @@ function Weighbridges() {
     navigation,
     setIsVisible,
   } = WeighBridgeScreenHooks();
- 
+
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 60);
   const translateY = diffClamp.interpolate({
@@ -34,10 +34,10 @@ function Weighbridges() {
     inputRange: [0, 0],
     outputRange: [0, 100],
   });
- 
+
   // Animation for CustomAlert modal
   const fadeAnim = useRef(new Animated.Value(0)).current;
- 
+
   // Trigger the fade-in effect when `isVisible` changes to true
   useEffect(() => {
     if (isVisible) {
@@ -54,9 +54,7 @@ function Weighbridges() {
       }).start();
     }
   }, [isVisible, fadeAnim]);
-  if (WeighbridgeSpots) {
-    console.log('Generic Spots ', WeighbridgeSpots);
-  }
+
   return (
     <View style={styles.container}>
       <CustomHeader
@@ -84,7 +82,7 @@ function Weighbridges() {
           />
         </Animated.View>
       )}
- 
+
       {/* Animated CustomAlert */}
       {isVisible && (
         <Animated.View style={[styles.modalContainer, {opacity: fadeAnim}]}>
@@ -100,7 +98,7 @@ function Weighbridges() {
     </View>
   );
 }
- 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -116,5 +114,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
- 
+
 export default Weighbridges;

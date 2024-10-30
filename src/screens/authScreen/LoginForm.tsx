@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   Text,
-  Alert,
   TouchableOpacity,
   StatusBar,
   Animated,
@@ -11,7 +10,6 @@ import {
 } from 'react-native';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import {RootState, store} from '../../reducer/Store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
 import colors from '../../assets/color/colors';
 import BusinessUnitModal from '../../reuseableComponent/modal/BuinessUnitsModal';
@@ -21,6 +19,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import SuccessLoader from '../../reuseableComponent/loader/LoginSuccessLoader';
 import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import showCustomToast from '../../reuseableComponent/modal/CustomToast';
 function LoginForm() {
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -33,7 +32,6 @@ function LoginForm() {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [loader, setLoader] = useState(false); // Loader state
   const loginStatus = useSelector((state: RootState) => state.loginUser.status);
-  const error = useSelector((state: RootState) => state.loginUser.error);
   const [isFocused, setIsFocused] = useState(false);
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
@@ -86,8 +84,8 @@ function LoginForm() {
     const netInfo = await NetInfo.fetch();
 
     if (!netInfo.isConnected) {
-      Alert.alert(
-        'No Internet Connection',
+      showCustomToast(
+        'fail',
         'Please check your internet connection and try again.',
       );
       setLoader(false);
@@ -103,7 +101,7 @@ function LoginForm() {
       try {
         await store.dispatch(loginUser({loginData, baseUrls}));
       } catch (e) {
-        console.error('Login error: ', error);
+        showCustomToast('error', e);
       }
     }
   };
@@ -126,22 +124,25 @@ function LoginForm() {
       useNativeDriver: true,
       easing: Easing.out(Easing.ease),
     }).start();
-  }, []);
-  const handleLoginStatus = async () => {
+  }, [slideUpAnim]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleLoginStatus = () => {
     if (loginStatus === 'succeeded') {
       setLoader(false);
       navigation.navigate('HomeScreen');
     } else if (loginStatus === 'failed') {
-      Alert.alert(
-        'Error',
+      showCustomToast(
+        'error',
         ' Your authentication information is incorrect. Please try again.',
       );
       setLoader(false);
     }
   };
+
   useEffect(() => {
     handleLoginStatus();
-  }, [loginStatus]);
+  }, [handleLoginStatus, loginStatus]);
 
   return (
     <View style={{flex: 1, backgroundColor: colors.AppPrimaryColor}}>

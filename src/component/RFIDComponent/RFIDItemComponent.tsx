@@ -35,7 +35,7 @@ const RfidItem: React.FC<init> = ({item, handleDelete}) => {
               size={20}
               color={colors.blueDarkest}
               onPress={() => {
-                navigation.navigate('RFID Edit', {item});
+                navigation.navigate('RfidEdit', {item});
               }}
             />
             <MaterialIcons

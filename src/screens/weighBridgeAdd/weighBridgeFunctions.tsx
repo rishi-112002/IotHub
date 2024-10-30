@@ -312,18 +312,6 @@ function WeighBridgeFunction() {
     if (!minTagCount) {
       newErrors.minTagCount = 'Minimum Tag Count is required';
     }
-    if (!displays) {
-      newErrors.displays = 'Displays selection is required';
-    }
-    if (!smartController) {
-      newErrors.smartController = 'Smart Controller is required';
-    }
-    if (!weightParsers) {
-      newErrors.weightParsers = 'Weight Parsers is required';
-    }
-    if (!isCalendarVisible) {
-      newErrors.isCalendarVisible = 'Calendar Visibility is required';
-    }
     if (!selectedDate) {
       newErrors.selectedDate = 'Selected Date is required';
     }
@@ -339,10 +327,10 @@ function WeighBridgeFunction() {
     if (!validIdB) {
       newErrors.validIdB = 'Valid ID B is required';
     }
-    if (!selectedSmartConnector) {
+    if (!selectedSmartConnector.id) {
       newErrors.selectedSmartConnector = 'Smart Connector is required';
     }
-    if (!selectedWeightParser) {
+    if (!selectedWeightParser.id) {
       newErrors.selectedWeightParser = 'Weight Parser is required';
     }
     if (!platformReadyTicks) {
@@ -363,23 +351,23 @@ function WeighBridgeFunction() {
     if (!stableWeightTicks) {
       newErrors.stableWeightTicks = 'Stable Weight Ticks is required';
     }
-    if (!selectedDisplayA) {
+    if (!selectedDisplayA.id) {
       newErrors.selectedDisplayA = 'Display A is required';
     }
-    if (!selectedPrimaryReaderA) {
+    if (!selectedPrimaryReaderA.id) {
       newErrors.selectedPrimaryReaderA = 'Primary Reader A is required';
     }
-    if (!selectedGenericSpotDirA) {
+    if (!selectedGenericSpotDirA.id) {
       newErrors.selectedGenericSpotDirA =
         'Generic Spot Direction A is required';
     }
-    if (!selectedDisplayB) {
+    if (!selectedDisplayB.id) {
       newErrors.selectedDisplayB = 'Display B is required';
     }
-    if (!selectedPrimaryReaderB) {
+    if (!selectedPrimaryReaderB.id) {
       newErrors.selectedPrimaryReaderB = 'Primary Reader B is required';
     }
-    if (!selectedGenericSpotDirB) {
+    if (!selectedGenericSpotDirB.id) {
       newErrors.selectedGenericSpotDirB =
         'Generic Spot Direction B is required';
     }
