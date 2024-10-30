@@ -48,7 +48,7 @@ const RfidReader = () => {
       showCustomToast('success', 'RFID deleted successfully!');
     }
     if (errorAlertVisible) {
-      showCustomToast('fail', errorMessage || 'Something went wrong! Please try deleting again...');
+      showCustomToast('error', errorMessage || 'Something went wrong! Please try deleting again...');
     }
   }, [successAlertVisible, errorAlertVisible, errorMessage]);
 

@@ -26,10 +26,6 @@ function UserModal(props: { modalVisible: any, setModalVisible: any, username: a
                             <MaterialIcons name="logout" size={24} color="black" />
                             <Text style={styles.modalText}>Logout</Text>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity style={styles.modalItem} >
-                            <MaterialIcons name="update" size={24} color="black" />
-                            <Text style={styles.modalText}>Update Url</Text>
-                        </TouchableOpacity> */}
                     </View>
                 </View>
             </TouchableWithoutFeedback>

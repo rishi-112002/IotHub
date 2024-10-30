@@ -32,7 +32,7 @@ const GenericScreenHooks = () => {
   }, [baseUrls, buCode, token]);
   useEffect(() => {
     getGenericData();
-  }, [baseUrls, getGenericData , buCode, token]);
+  }, [baseUrls, getGenericData, buCode, token]);
 
   const handleDelete = useCallback((id: string) => {
     setDeleteId(id);
@@ -56,14 +56,14 @@ const GenericScreenHooks = () => {
       );
       //   getGenericData(); // Re-fetch data after delete action
       if (!Loader) {
-        CustomToast({type: 'success', message: 'Deleted successfully'});
+        CustomToast('success', 'Deleted successfully');
       }
     } catch (error) {
-      CustomToast({type: 'Error', message: 'Failed to delete the spot. Please try again.'});
+      CustomToast('error', 'Failed to delete the spot. Please try again.');
     } finally {
       setDeleteId(null);
     }
-  }, [deleteId, baseUrls, buCode, token , Loader]);
+  }, [deleteId, baseUrls, buCode, token, Loader]);
 
   return useMemo(
     () => ({
