@@ -1,122 +1,163 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { GetReader, GetDisplays, GetSmartControllers, GetWeightBridge, GetWeightParsers } from '../../reducer/spotAddDetails/SpotAddDetailsAction';
-import { RootState, store } from '../../reducer/Store';
-import { WeighBridgeSpotData } from '../../reducer/weighBridge/WeighBridgeAction';
-import { Text, View } from 'react-native';
+import {useEffect, useLayoutEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  GetReader,
+  GetDisplays,
+  GetSmartControllers,
+  GetWeightBridge,
+  GetWeightParsers,
+} from '../../reducer/spotAddDetails/SpotAddDetailsAction';
+import {RootState, store} from '../../reducer/Store';
+import {WeighBridgeSpotData} from '../../reducer/weighBridge/WeighBridgeAction';
+import {Alert, Text, View} from 'react-native';
 import React from 'react';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
-import { StyleSheet } from 'react-native';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import {StyleSheet} from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-import { resetStatus } from '../../reducer/genericSpot/uploadGenericDataReducer';
 import CustomSnackBar from '../../reuseableComponent/modal/CustomSnackBar';
-import { resetDeleteStatus } from '../../reducer/weighBridge/WeighBridgeReducer';
-
-
+import {
+  resetDeleteStatus,
+  resetStatus,
+} from '../../reducer/weighBridge/WeighBridgeReducer';
+import CustomToast from '../../reuseableComponent/modal/CustomToast';
+import {logoutUser} from '../../reducer/Login/LoginAction';
 
 function WeighBridgeEffectHooks() {
-    const [loader, setLoader] = useState(false);
-    const token = useSelector((state: RootState) => state.authentication.token);
-    const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
-    const buCode = useSelector((state: RootState) => state.authentication.buCode);
-    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-    const uploadError = useSelector((state: RootState) => state.weighBridge.error);
-    const status = useSelector((state: RootState) => state.weighBridge.status);
-    const deleteStatus = useSelector((state: RootState) => state.weighBridge.deleteStatus);
-    const smartController = useSelector((state: RootState) => state.spotAddDetail.smartController);
-    const displays = useSelector((state: RootState) => state.spotAddDetail.display);
-    const weightParsers = useSelector((state: RootState) => state.spotAddDetail.weightParsers);
-    const smartControllerLoader = useSelector((state: RootState) => state.spotAddDetail.smartControllerLoader);
-    console.log('upload Error in Hook', uploadError);
-    useEffect(() => {
-        // Dispatch actions when the component mounts
-        store.dispatch(GetReader({ baseUrl: baseUrls }));
-        store.dispatch(GetDisplays({ baseUrl: baseUrls }));
-        store.dispatch(GetSmartControllers({ baseUrl: baseUrls }));
-        store.dispatch(GetWeightBridge({ baseUrl: baseUrls }));
-        store.dispatch(GetWeightParsers({ baseUrl: baseUrls }));
-        store.dispatch(WeighBridgeSpotData({ baseUrl: baseUrls, buCode: buCode, token: token, spotType: '' }));
-    }, [baseUrls, token, buCode]); // Dependencies
+  const [loader, setLoader] = useState(false);
+  const token = useSelector((state: RootState) => state.authentication.token);
+  const baseUrls = useSelector(
+    (state: RootState) => state.authentication.baseUrl,
+  );
+  const buCode = useSelector((state: RootState) => state.authentication.buCode);
+  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+  const uploadError = useSelector(
+    (state: RootState) => state.weighBridge.error,
+  );
+  const status = useSelector((state: RootState) => state.weighBridge.status);
+  const deleteStatus = useSelector(
+    (state: RootState) => state.weighBridge.deleteStatus,
+  );
+  const smartController = useSelector(
+    (state: RootState) => state.spotAddDetail.smartController,
+  );
+  const displays = useSelector(
+    (state: RootState) => state.spotAddDetail.display,
+  );
+  const weightParsers = useSelector(
+    (state: RootState) => state.spotAddDetail.weightParsers,
+  );
+  const smartControllerLoader = useSelector(
+    (state: RootState) => state.spotAddDetail.smartControllerLoader,
+  );
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerTitle: () => (
-                <View>
-                    <Text style={styles.headerTitle}> Add Weighbridge</Text>
-                </View>
-            ),
+  const handleLogout = async () => {
+    Alert.alert(
+      'Logout', // Alert title
+      ' you had to log out to Add', // Alert message
+      [
+        {
+          text: 'Cancel', // Cancel button
+          style: 'cancel', // This makes the button appear more prominent
+        },
+        {
+          text: 'OK', // OK button
+          onPress: () => {
+            store.dispatch(logoutUser()); // Log out the user
+          },
+        },
+      ],
+      {cancelable: false}, // Prevents closing the alert by tapping outside of it
+    );
+  };
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // Dispatch actions when the component mounts
+    store.dispatch(GetReader({baseUrl: baseUrls}));
+    store.dispatch(GetDisplays({baseUrl: baseUrls}));
+    store.dispatch(GetSmartControllers({baseUrl: baseUrls}));
+    store.dispatch(GetWeightBridge({baseUrl: baseUrls}));
+    store.dispatch(GetWeightParsers({baseUrl: baseUrls}));
+    store.dispatch(
+      WeighBridgeSpotData({
+        baseUrl: baseUrls,
+        buCode: buCode,
+        token: token,
+        spotType: '',
+      }),
+    );
+  }, [baseUrls, token, buCode]); // Dependencies
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <View>
+          <Text style={styles.headerTitle}> Add Weighbridge</Text>
+        </View>
+      ),
+    });
+  }, [navigation]);
+
+  useEffect(() => {
+    if (uploadError === 'Upload error: User is not logged in') {
+      dispatch(resetStatus());
+      handleLogout();
+    } else if (status === 'failed' && uploadError) {
+      console.log('Error for log out user', uploadError);
+      CustomToast({type: 'error', message: uploadError});
+      dispatch(resetStatus());
+    } else if (status === 'succeeded') {
+      CustomToast({type: 'success', message: 'uploaded successfully'});
+      dispatch(resetStatus());
+      navigation.goBack();
+    } else if (status === 'loading') {
+      setLoader(true);
+    }
+  }, [uploadError, status, navigation, dispatch]);
+
+  useEffect(() => {
+    console.log('delete Status', deleteStatus);
+    switch (deleteStatus) {
+      case 'failed':
+        if (uploadError) {
+          CustomSnackBar({
+            text: 'failed',
+            backGroundColor: colors.redBase,
+            textColor: colors.white,
+          });
+          store.dispatch(resetDeleteStatus());
+        }
+        break;
+      case 'succeeded':
+        CustomSnackBar({
+          text: 'Success',
+          backGroundColor: colors.greenBase,
+          textColor: colors.white,
         });
-    }, [navigation]);
-    useEffect(() => {
-        switch (status) {
-            case 'failed':
-                if (uploadError) {
-                    CustomSnackBar({
-                        text: 'failed',
-                        backGroundColor: colors.redBase,
-                        textColor: colors.white,
-                    });
-                    store.dispatch(resetStatus());
-                }
-                break;
-            case 'succeeded':
-                CustomSnackBar({
-                    text: 'Success',
-                    backGroundColor: colors.greenBase,
-                    textColor: colors.white,
-                });
-                store.dispatch(resetStatus());
-                navigation.navigate('WeighbridgesScreen');
-                break;
-            case 'loading':
-                setLoader(true);
-                break;
-        }
+        store.dispatch(resetDeleteStatus());
+        break;
+      case 'loading':
+        setLoader(true);
+        break;
+    }
+  }, [uploadError, status, deleteStatus]);
 
-
-    }, [uploadError, status, navigation]);
-
-    useEffect(() => {
-        console.log('delete Status', deleteStatus);
-        switch (deleteStatus) {
-            case 'failed':
-                if (uploadError) {
-                    CustomSnackBar({
-                        text: 'failed',
-                        backGroundColor: colors.redBase,
-                        textColor: colors.white,
-                    });
-                    store.dispatch(resetDeleteStatus());
-                }
-                break;
-            case 'succeeded':
-                CustomSnackBar({
-                    text: 'Success',
-                    backGroundColor: colors.greenBase,
-                    textColor: colors.white,
-                });
-                store.dispatch(resetDeleteStatus());
-                break;
-            case 'loading':
-                setLoader(true);
-                break;
-        }
-
-
-    }, [uploadError, status, deleteStatus]);
-
-    return { loader , smartControllerLoader ,  smartController , displays ,weightParsers }; // Or some UI component if needed
+  return {
+    loader,
+    smartControllerLoader,
+    smartController,
+    displays,
+    weightParsers,
+  }; // Or some UI component if needed
 }
 const styles = StyleSheet.create({
-    headerTitle: {
-        color: colors.darkblack,
-        fontSize: fontSizes.heading,
-    },
-    directionText: { color: colors.darkblack, paddingVertical: 10 },
-
+  headerTitle: {
+    color: colors.darkblack,
+    fontSize: fontSizes.heading,
+  },
+  directionText: {color: colors.darkblack, paddingVertical: 10},
 });
 
 export default WeighBridgeEffectHooks;
-

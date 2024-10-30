@@ -43,7 +43,7 @@ export const weighBridgeAdd = createAsyncThunk(
 
 export const WeighBridgeSpotData = createAsyncThunk(
   'weighBridgeSpotData',
-  async (params: { baseUrl: string | null; spotType: string; buCode: string; token: string }, { rejectWithValue }) => {
+  async (params: { baseUrl: string | null; spotType: string |null; buCode: string |null; token: string |null}, { rejectWithValue }) => {
     const { baseUrl, spotType, buCode, token } = params;
     const fullUrl = `${baseUrl}${SpotDataByType}`;
     console.log('Full URL:', fullUrl, 'Token:', token, 'BU Code:', buCode);

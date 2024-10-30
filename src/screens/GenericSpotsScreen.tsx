@@ -4,7 +4,7 @@ import FloatingActionCutomButton from '../reuseableComponent/customButton/Floati
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import CustomHeader from '../reuseableComponent/header/CustomHeader';
 import {AppNavigationParams} from '../navigation/NavigationStackList';
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import colors from '../assets/color/colors';
 import GenericScreenHooks from '../CustomHooks/genericHooks/GenericScreenHooks';
 import CustomAlert from '../reuseableComponent/PopUp/CustomPopUp';
