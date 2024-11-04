@@ -1,4 +1,4 @@
-import React from 'react';
+import React = require('react');
 import {Animated, Text, TouchableOpacity, View} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../../../reuseableComponent/customButton/CustomButton';

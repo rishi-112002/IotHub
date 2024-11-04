@@ -1,10 +1,10 @@
-import React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import SpotList from '../../component/SpotListComponent/SpotList';
 import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
+import React = require('react');
 
 function HomeScreen() {
   const {spotListData, Loader, loadRfidList, refreshing, buCode} =
