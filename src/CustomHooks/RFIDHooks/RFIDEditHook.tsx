@@ -77,7 +77,7 @@ export const useEditRfid = (item: RFIDItem) => {
       // Delay navigation to allow toast time to display
       setTimeout(() => {
         navigation.navigate('RfidReader');
-      }, 500);
+      }, -200);
     } catch (err) {
       showCustomToast('fail', err || 'Something went wrong! Please try again...');
     }
