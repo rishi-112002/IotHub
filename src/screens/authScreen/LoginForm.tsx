@@ -101,7 +101,7 @@ function LoginForm() {
       try {
         await store.dispatch(loginUser({loginData, baseUrls}));
       } catch (e) {
-        showCustomToast('fail', e);
+        showCustomToast('error', e);
       }
     }
   };
@@ -124,22 +124,25 @@ function LoginForm() {
       useNativeDriver: true,
       easing: Easing.out(Easing.ease),
     }).start();
-  }, []);
-  const handleLoginStatus = async () => {
+  }, [slideUpAnim]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleLoginStatus = () => {
     if (loginStatus === 'succeeded') {
       setLoader(false);
       navigation.navigate('HomeScreen');
     } else if (loginStatus === 'failed') {
       showCustomToast(
-        'fail',
+        'error',
         ' Your authentication information is incorrect. Please try again.',
       );
       setLoader(false);
     }
   };
+
   useEffect(() => {
     handleLoginStatus();
-  }, [loginStatus]);
+  }, [handleLoginStatus, loginStatus]);
 
   return (
     <View style={{flex: 1, backgroundColor: colors.AppPrimaryColor}}>

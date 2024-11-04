@@ -61,21 +61,18 @@ function WeighBridgeScreenHooks() {
         DeleteWeighBridgeSpot({
           baseUrl: baseUrls,
           id: deleteId,
-          bucode: buCode,
+          buCode: buCode,
           token: token,
         }),
       );
       // genericData(); // Re-fetch data after delete action
-      CustomToast({type: 'success', message: 'Deleted successfully'});
+      CustomToast('success', 'Deleted successfully');
     } catch (error) {
-      CustomToast({
-        type: 'fail',
-        message: 'Failed to delete the spot. Please try again.',
-      });
+      CustomToast('error', 'Failed to delete the spot. Please try again.');
     } finally {
       setDeleteId(null);
     }
-  }, [deleteId, baseUrls, buCode, token,]);
+  }, [deleteId, baseUrls, buCode, token]);
   return {
     genericData,
     Loader,
