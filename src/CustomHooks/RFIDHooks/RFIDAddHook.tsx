@@ -64,7 +64,7 @@ export const useRfidAddForm = (
       // Delay navigation to allow toast time to display
       setTimeout(() => {
         navigation.navigate('RfidReader');
-      }, 500);
+      }, -200);
     } catch (err) {
       console.log('ADD ERROR: ', err);
       showCustomToast(

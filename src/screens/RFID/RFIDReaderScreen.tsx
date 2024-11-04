@@ -28,13 +28,13 @@ const RfidReader = () => {
   } = RfidListHook();
 
   const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, 60);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 100);
   const translateY = diffClamp.interpolate({
-    inputRange: [0, 20],
-    outputRange: [0, -20],
+    inputRange: [0, 10],
+    outputRange: [0, -10],
   });
   const paddingTopAnimated = scrollY.interpolate({
-    inputRange: [0, 10],
+    inputRange: [0, 110],
     outputRange: [50, 0],
     extrapolate: 'clamp',
   });

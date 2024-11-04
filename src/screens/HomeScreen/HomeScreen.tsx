@@ -16,7 +16,7 @@ function HomeScreen() {
     outputRange: [0, -60],
   });
   const paddingTopAnimated = scrollY.interpolate({
-    inputRange: [0, 0],
+    inputRange: [0, 110],
     outputRange: [60, 0],
     extrapolate: 'clamp',
   });
