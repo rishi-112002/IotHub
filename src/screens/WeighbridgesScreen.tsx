@@ -26,13 +26,13 @@ function Weighbridges() {
     outputRange: [0, -60],
   });
   const paddingTopAnimated = scrollY.interpolate({
-    inputRange: [0, 0],
+    inputRange: [0, 110],
     outputRange: [60, 0],
     extrapolate: 'clamp',
   });
   const translateButtonY = diffClamp.interpolate({
-    inputRange: [0, 0],
-    outputRange: [0, 100],
+    inputRange: [0, 110],
+    outputRange: [0,250],
   });
 
   // Animation for CustomAlert modal

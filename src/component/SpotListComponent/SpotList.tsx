@@ -60,7 +60,7 @@ const SpotList: React.FC<SpotListComponentProps> = ({
           index,
         })}
         updateCellsBatchingPeriod={30} // Reduce lag in scrolling
-        scrollEventThrottle={16} // For smoother scroll handling
+        scrollEventThrottle={20}
         onScroll={onScroll}
         contentContainerStyle={contentContainerStyle}
       />
