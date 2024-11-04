@@ -1,6 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
-import React, {useCallback} from 'react';
+import {useCallback} from 'react';
+import React = require('react');
 
 function GenericAddComponentDropDowns(props: {
   smartController: any;

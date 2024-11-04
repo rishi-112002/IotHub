@@ -1,14 +1,11 @@
-import React from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import GenericAddForm from "./GenericAddForm";
+import React = require('react');
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import GenericAddForm from './GenericAddForm';
 function GenericAddScreen() {
-    return(
-        <GestureHandlerRootView>
-            <GenericAddForm/>
-        </GestureHandlerRootView>
-    )
-   
+  return (
+    <GestureHandlerRootView>
+      <GenericAddForm />
+    </GestureHandlerRootView>
+  );
 }
 export default GenericAddScreen;
-
-

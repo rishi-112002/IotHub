@@ -1,9 +1,9 @@
-import React from 'react';
 import {View, StatusBar} from 'react-native';
 import Animated from 'react-native-reanimated';
 import colors from '../../../assets/color/colors';
 import SplashEffect from './SplashEffect';
 import SplashStyle from './SplashStyle';
+import React from 'react';
 
 function SplashScreen() {
   const {ring1Style, ring2Style, logoStyle} = SplashEffect();

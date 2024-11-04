@@ -1,7 +1,6 @@
 import {useEffect, useLayoutEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-
 import {Text, View} from 'react-native';
 import {RootState} from '../../reducer/Store';
 import {ApiCallsAddGenericSpot} from '../../api/ApiCallsByReducer';
@@ -9,11 +8,11 @@ import {
   resetDeleteStatus,
   resetStatus,
 } from '../../reducer/genericSpot/uploadGenericDataReducer';
-import React from 'react';
 import {StyleSheet} from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
+import React = require('react');
 
 export const useGenericAddEffect = () => {
   const [loader, setLoader] = useState(false);

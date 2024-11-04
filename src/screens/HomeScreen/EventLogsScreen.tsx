@@ -1,7 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/no-unstable-nested-components */
-// src/screens/EventLogsScreen.tsx
-import React, {useLayoutEffect, useState} from 'react';
+import {useLayoutEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import useEventLogs from '../../CustomHooks/EventLog/EventLogHook';
@@ -10,6 +7,7 @@ import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBounci
 import EventlogsModals from '../../reuseableComponent/modal/EventLogsModal';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
+import React = require('react');
 
 interface EventLogsScreenParams {
   baseUrls: string;
@@ -42,9 +40,9 @@ function EventLogsScreen() {
           <SequentialBouncingLoader />
         ) : (
           <EventLogsList
-          data={eventLogs}
-          setModal={setModalVisible}
-          setRequestData={setRequestData}
+            data={eventLogs}
+            setModal={setModalVisible}
+            setRequestData={setRequestData}
           />
         )}
         {modalVisible && (
