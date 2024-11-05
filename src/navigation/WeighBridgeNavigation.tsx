@@ -1,11 +1,11 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import EventLogsScreen from "../screens/HomeScreen/EventLogsScreen";
-import SpotDetailScreen from "../screens/SpoptDetailScreen";
-import SpotListScreen from "../screens/SpotListScreen";
-import Weighbridges from "../screens/WeighbridgesScreen";
-import { AppNavigationParams } from "./NavigationStackList";
-import WeighbridgesAddScreen from "../screens/weighBridgeAdd/WeighBridgeAddScreen";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import EventLogsScreen from '../screens/HomeScreen/EventLogsScreen';
+import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
+import SpotListScreen from '../screens/SpotListScreen';
+import Weighbridges from '../screens/WeighbridgesScreen';
+import { AppNavigationParams } from './NavigationStackList';
+import WeighbridgesAddScreen from '../screens/weighBridgeAdd/WeighBridgeAddScreen';
 const Stack = createStackNavigator<AppNavigationParams>();
 function WeighBridgeNavigation() {
     return (
@@ -20,6 +20,6 @@ function WeighBridgeNavigation() {
                 options={{ headerShown: true }} // Add title here
             />
         </Stack.Navigator>
-    )
+    );
 }
 export default WeighBridgeNavigation;

@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import EventLogsScreen from '../screens/HomeScreen/EventLogsScreen';
 import SpotListScreen from '../screens/SpotListScreen';
-import SpotDetailScreen from '../screens/SpoptDetailScreen'; // Note: There's a typo in the import name ("SpoptDetailScreen" should be "SpotDetailScreen").
+import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
 import { AppNavigationParams } from './NavigationStackList';
 
 // Create the stack navigator with a parameterized type for AppNavigationParams
