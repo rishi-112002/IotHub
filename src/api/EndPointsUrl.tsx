@@ -14,3 +14,4 @@ export const weightParsers = "/iv1/weightParsers/list"
 export const RFIDListEndPoint = '/iv1/readers/list';
 export const CreateRFIDListEndPoint = '/iv1/readers/create';
 export const EditRFIDListEndPoint = '/iv1/readers/update';
+export const EditGenericSpot = "/iv1/spots/"

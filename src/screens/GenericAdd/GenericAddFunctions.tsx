@@ -1,10 +1,14 @@
-import {useCallback, useState} from 'react';
-import {direction, events} from '../../assets/constants/Constant';
-import {store} from '../../reducer/Store';
-import {uploadGenericData} from '../../reducer/genericSpot/uploadGenericDataAction';
-import {useGenericAddEffect} from './GenericAddEffect';
+import { useCallback, useEffect, useState } from 'react';
+import { direction, events } from '../../assets/constants/Constant';
+import { store } from '../../reducer/Store';
+import { UpdateGenericSpot, uploadGenericData } from '../../reducer/genericSpot/uploadGenericDataAction';
+import { useGenericAddEffect } from './GenericAddEffect';
+import CustomToast from '../../reuseableComponent/modal/CustomToast';
+import { resetUpadteStatus } from '../../reducer/genericSpot/uploadGenericDataReducer';
 
-function GenericAddFunction() {
+function GenericAddFunction(props: { id: any }) {
+  const { id } = props
+
   const {
     loader,
     readerLoader,
@@ -18,7 +22,15 @@ function GenericAddFunction() {
     displays,
     readers,
     Weightbridge,
-  } = useGenericAddEffect();
+    GenericSpot,
+    navigation,
+    updateStatus,
+    setLoader,
+    dispatch,
+    editButtonOpacity,
+    setEditButtonOpacity
+
+  } = useGenericAddEffect(id);
   const [formData, setFormData] = useState({
     name: '',
     delay: '',
@@ -27,33 +39,42 @@ function GenericAddFunction() {
     sequrityTagTimeOut: '',
     minTagCount: '',
   });
+
+  console.log("genericSpot", GenericSpot)
   const [modalVisible, setModalVisible] = useState(false);
 
   const [currentField, setCurrentField] = useState<string | null>(null);
+
   const [selectedSecoundaryReader, setSelectedSecoundaryReader] = useState<any>(
-    {name: '', id: ''},
+    { name: '', id: '' },
   );
+
   const [selectedPrimaryReader, setSelectedPrimaryReader] = useState<any>({
     name: '',
     id: '',
   });
+
   const [selectedDisplay, setSelectedDisplay] = useState<any>({
     name: '',
     id: '',
   });
+
   const [selectedSmartConnector, setSelectedSmartConnector] = useState<any>({
     name: '',
     id: '',
   });
-  const [selectedEvent, setSelectedEvent] = useState<any>({name: '', id: ''});
+
+  const [selectedEvent, setSelectedEvent] = useState<any>({ name: '', id: '' });
   const [selectedWeighBridge, setSelectedWeighBridge] = useState<any>({
     name: '',
     id: '',
   });
+
   const [selectedDirection, setSelectedDirection] = useState<any>({
     name: '',
     id: '',
   });
+
   const [errors, setErrors] = useState<{
     name?: string;
     delay?: string;
@@ -65,6 +86,7 @@ function GenericAddFunction() {
   }>({});
 
   const [isDriverTagEnabled, setIsDriverTagEnabled] = useState(false);
+
   const toggleDriverTagSwitch = () =>
     setIsDriverTagEnabled(prevState => !prevState);
 
@@ -74,10 +96,76 @@ function GenericAddFunction() {
 
   const [isWeightBridgeEntryEnabled, setIsWeightBridgeEntryEnabled] =
     useState(false);
+
   const toggleWeightBridgeEntrySwitch = () =>
     setIsWeightBridgeEntryEnabled(prevState => !prevState);
 
   const [isActiveEnabled, setIsActiveEnabled] = useState(false);
+  const eventFromApi = GenericSpot.events; // Assuming this is the event id from the API response
+  const smartControllerOfSpot = GenericSpot.smartio;
+
+  const smartControllerName = smartControllerOfSpot?.name;
+  const smartControllerId = smartControllerOfSpot?.id;
+  const displayOfSpot = GenericSpot.displays;
+
+  const displayName = displayOfSpot?.[0]?.name;
+  const displayId = displayOfSpot?.[0]?.id;
+  // Find the event object with a matching id
+  // const matchedprimaryReader = smartController.find(smartio => smartio.id === smartControllerOfSpot)
+  const matchedEvent = events.find(event => event.id === eventFromApi);
+  const primaryReaderOfSpot = GenericSpot.readers;
+
+  // Filter primary and secondary readers
+  const primaryReader = primaryReaderOfSpot?.find((item: { type: string }) => item.type === "PRIMARY");
+  const secondaryReader = primaryReaderOfSpot?.find((item: { type: string }) => item.type === "SECONDARY");
+
+  // Extracting the properties for primary and secondary readers
+  const PrimaryReaderName = primaryReader?.name;
+  const PrimaryReaderId = primaryReader?.id;
+
+  const SecondaryReaderName = secondaryReader?.name;
+  const SecondaryReaderId = secondaryReader?.id;
+  useEffect(() => {
+    if (id) {
+      console.log("Setting delay with value:", GenericSpot?.delayAlertAfter);
+      setFormData({
+        name: GenericSpot.name || '',
+        delay: GenericSpot.delayAlertAfter?.toString() || '',
+        validId: GenericSpot.validDiDirA || '',
+        driverTagTimeOut: GenericSpot.driverTagTimeout?.toString() || '',
+        sequrityTagTimeOut: GenericSpot.securityTagTimeout?.toString() || '',
+        minTagCount: GenericSpot.tagCount?.toString() || '',
+      });
+      setSelectedDisplay({ name: displayName ? displayName : '', id: displayId ? displayId : '' })
+      setSelectedEvent({ name: matchedEvent?.name || '', id: matchedEvent?.id || '' });
+      setSelectedDirection({ name: GenericSpot.weighbridgeDirection || '', id: GenericSpot.weighbridgeDirection });
+      setSelectedWeighBridge({ name: GenericSpot.weighbridgeName || '', id: GenericSpot.weighbridgeId });
+      setSelectedSmartConnector({ name: smartControllerName ? smartControllerName : '', id: smartControllerId ? smartControllerId : '' });
+      setSelectedPrimaryReader({ name: PrimaryReaderName ? PrimaryReaderName : '', id: PrimaryReaderId ? PrimaryReaderId : '' });
+      setSelectedSecoundaryReader({ name: SecondaryReaderName ? SecondaryReaderName : '', id: SecondaryReaderId ? SecondaryReaderId : '' });
+      setIsDriverTagEnabled(GenericSpot.driverTag || false);
+      setIsSecurityTagEnabled(GenericSpot.securityTag || false);
+      setIsWeightBridgeEntryEnabled(GenericSpot.weighbridgeEntry || false);
+      setIsActiveEnabled(GenericSpot.active || false);
+    }
+  }, [GenericSpot]);
+  useEffect(() => {
+    console.log("updateStatus", updateStatus)
+    switch (updateStatus) {
+      case 'failed':
+        CustomToast('error', uploadError);
+        dispatch(resetUpadteStatus());
+        break;
+      case 'succeeded':
+        CustomToast('success', updateStatus);
+        dispatch(resetUpadteStatus());
+        navigation.navigate('GenericSpotScreen');
+        break;
+      case 'loading':
+        setLoader(true);
+        break;
+    }
+  }, [uploadError, dispatch, navigation, updateStatus]);
   const toggleActiveSwitch = () => setIsActiveEnabled(prevState => !prevState);
   const handleOptionSelect = useCallback(
     (selected: any) => {
@@ -158,22 +246,29 @@ function GenericAddFunction() {
     const dataToSave = {
       active: isActiveEnabled,
       buCode: buCode,
-      delayAlertAfter: formData.delay,
+      ...(selectedPrimaryReader.id && { primaryReaderIdDirA: selectedPrimaryReader.id }),
+      ...(selectedSecoundaryReader.id && { secondaryReaderIdDirA: selectedSecoundaryReader.id }),
+      ...(GenericSpot?.id && { id: GenericSpot.id }),
+      delayAlertAfter: Number(formData.delay),
       driverTag: isDriverTagEnabled,
-      ...(isDriverTagEnabled && {driverTagTimeOut: formData.driverTagTimeOut}),
+      ...(isDriverTagEnabled && { driverTagTimeout: Number(formData.driverTagTimeOut) }),
       events: selectedEvent.id ? selectedEvent.id : null,
       name: formData.name,
+      ...(formData.validId && { validDiDirA: formData.validId }),
       securityTag: isSecurityTagEnabled,
       ...(isSecurityTagEnabled && {
-        sequrityTagTimeOut: formData.sequrityTagTimeOut,
+        securityTagTimeout: Number(formData.sequrityTagTimeOut),
       }),
-      tagCount: formData.minTagCount ? formData.minTagCount : null,
+
+      tagCount: formData.minTagCount ? Number(formData.minTagCount) : null,
       type: 'GENERIC_SPOT',
       weighbridgeDirection: isWeightBridgeEntryEnabled
         ? selectedDirection.id
           ? selectedDirection.id
           : null
         : null,
+      ...(selectedSmartConnector.id && { smartioId: selectedSmartConnector.id, }),
+      ...(selectedDisplay.id && { displayIdDirA: selectedDisplay.id, }),
       weighbridgeEntry: isWeightBridgeEntryEnabled,
       weighbridgeId: isWeightBridgeEntryEnabled
         ? selectedWeighBridge.id
@@ -185,15 +280,22 @@ function GenericAddFunction() {
 
     try {
       store.dispatch(
-        uploadGenericData({
-          baseUrls: baseUrls,
-          genericData: dataToSave,
-          token: token,
-          buCode: buCode,
-        }),
+        id
+          ? UpdateGenericSpot({
+            baseUrls: baseUrls,
+            genericData: dataToSave,
+            token: token,
+            buCode: buCode,
+          })
+          : uploadGenericData({
+            baseUrls: baseUrls,
+            genericData: dataToSave,
+            token: token,
+            buCode: buCode,
+          })
       );
     } catch (error) {
-      console.log('uploadError in Generic add screen', uploadError);
+      console.log('uploadError in Generic add screen', error);
     }
   }, [
     formData.name,
@@ -234,13 +336,43 @@ function GenericAddFunction() {
 
     return [];
   };
-  console.log('current filed ', currentField);
   const handleInputChange = (name: any, value: any) => {
     setFormData(prevData => ({
       ...prevData,
       [name]: value,
     }));
   };
+  useEffect(() => {
+    if (id) {
+      const isFormDataMatching =
+        formData.name === GenericSpot.name &&
+        formData.delay === (GenericSpot.delayAlertAfter?.toString() || "") &&
+        formData.validId === (GenericSpot.validDiDirA || '') &&
+        formData.driverTagTimeOut === (GenericSpot.driverTagTimeout?.toString() || "") &&
+        formData.sequrityTagTimeOut === (GenericSpot.securityTagTimeout?.toString() || "") &&
+        formData.minTagCount === (GenericSpot.tagCount?.toString() || "")
+        &&
+        isActiveEnabled === GenericSpot.active &&
+        selectedDisplay.id === (displayId || null) &&
+        selectedEvent.id === (matchedEvent?.id || null) &&
+        selectedPrimaryReader.id === (PrimaryReaderId || null) &&
+        selectedSecoundaryReader.id === (SecondaryReaderId || null)
+        &&
+        isDriverTagEnabled === GenericSpot.driverTag &&
+        isSecurityTagEnabled === GenericSpot.securityTag
+        ;
+
+      if (isFormDataMatching) {
+        console.log("if");
+        setEditButtonOpacity(true);
+      } else {
+        console.log("else", selectedDisplay.id, displayId);
+        setEditButtonOpacity(false);
+      }
+    }
+  }, [id, formData, GenericSpot]);
+
+
   return {
     smartControllerLoader,
     displayLoader,
@@ -271,6 +403,8 @@ function GenericAddFunction() {
     toggleWeightBridgeEntrySwitch,
     handleFocus,
     loader,
+    editButtonOpacity
   };
 }
 export default GenericAddFunction;
+

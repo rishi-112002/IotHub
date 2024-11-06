@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 
@@ -9,14 +9,16 @@ function GenericAddInputComponent(props: {
   onChangeValue: any;
   handleInputChange: any;
   errors: any;
+  id: any
 }) {
-  const {formData, handleInputChange, isActive, onChangeValue, errors} = props;
+  const { formData, handleInputChange, isActive, onChangeValue, errors, id } = props;
   return (
     <View>
       <CustomTextInput
         label="Name"
         value={formData.name}
-        editable={true}
+        editable={!isActive || !id}
+        type='input'
         style={style.input}
         errorMessage={errors.name}
         keyboardType="default"
@@ -33,7 +35,8 @@ function GenericAddInputComponent(props: {
       <CustomTextInput
         label="Delay alert after (milliSeconds)"
         value={formData.delay}
-        editable={true}
+        editable={!isActive || !id}
+        type='input'
         style={style.input}
         errorMessage={errors.delay}
         keyboardType="numeric"
@@ -45,7 +48,8 @@ function GenericAddInputComponent(props: {
         label="Valid Id state"
         style={style.input}
         value={formData.validId}
-        editable={true}
+        editable={!isActive || !id}
+        type='input'
         returnKeyType="next"
         setTextInput={(value: any) => handleInputChange('validId', value)}
         required={false}
@@ -56,7 +60,8 @@ function GenericAddInputComponent(props: {
         style={style.input}
         value={formData.minTagCount}
         keyboardType="numeric"
-        editable={true}
+        editable={!isActive || !id}
+        type='input'
         setTextInput={(value: any) => handleInputChange('minTagCount', value)}
         required={false}
       />

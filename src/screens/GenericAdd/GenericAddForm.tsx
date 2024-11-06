@@ -1,4 +1,4 @@
-import {View, ScrollView, StyleSheet} from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import React from 'react';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
@@ -10,7 +10,8 @@ import GenericAddInputComponent from './GenericAddInputComponent';
 import GenericAddFunction from './GenericAddFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 
-function GenericAddForm() {
+function GenericAddForm(props: { id: any }) {
+  const { id } = props
   const {
     loader,
     smartControllerLoader,
@@ -41,7 +42,8 @@ function GenericAddForm() {
     toggleDriverTagSwitch,
     toggleWeightBridgeEntrySwitch,
     handleFocus,
-  } = GenericAddFunction();
+    editButtonOpacity
+  } = GenericAddFunction({ id });
   if (smartControllerLoader || displayLoader || readerLoader || loader) {
     return (
       <View style={styles.loaderContainer}>
@@ -60,8 +62,7 @@ function GenericAddForm() {
             isActive={isActiveEnabled}
             onChangeValue={toggleActiveSwitch}
             handleInputChange={handleInputChange}
-            errors={errors}
-          />
+            errors={errors} id={id} />
           <View>
             <GenericAddComponentDropDowns
               smartController={selectedSmartConnector.name}
@@ -72,7 +73,7 @@ function GenericAddForm() {
               eventId={selectedEvent.id}
               setCurrentField={setCurrentField}
               setModalVisible={setModalVisible}
-            />
+              id={id} isActive={isActiveEnabled} />
           </View>
           <SwitchWithLabel
             value={isDriverTagEnabled}
@@ -84,7 +85,8 @@ function GenericAddForm() {
               label="Driver Tag TimeOut (In MilliSecound)"
               value={formData.driverTagTimeOut}
               style={styles.flexContainer}
-              editable
+              type='input'
+              editable={!isActiveEnabled || !id}
               errorMessage={errors.driverTagTimeOut}
               keyboardType="numeric"
               setTextInput={(value: any) =>
@@ -102,7 +104,8 @@ function GenericAddForm() {
             <CustomTextInput
               label="Security Tag TimeOut (In milliSecound)"
               value={formData.sequrityTagTimeOut}
-              editable
+              editable={!isActiveEnabled || !id}
+              type='input'
               style={styles.flexContainer}
               errorMessage={errors.sequrityDelay}
               keyboardType="numeric"
@@ -125,10 +128,10 @@ function GenericAddForm() {
                 onPress={() => handleFocus('weightbridge')}
                 errorMessage={errors.weighBridge}
                 label="WeighBridge"
-                disable={false}
+                type='dropdown'
                 setTextInput={undefined}
                 required={true}
-                editable={false}
+                editable={!isActiveEnabled || !id}
               />
               <CustomTextInput
                 style={styles.flexContainer}
@@ -139,7 +142,7 @@ function GenericAddForm() {
                 disable={false}
                 setTextInput={undefined}
                 required={true}
-                editable={false}
+                editable={!isActiveEnabled || !id}
               />
             </View>
           )}
@@ -152,7 +155,7 @@ function GenericAddForm() {
             valueKey="id"
           />
           <View>
-            <CustomButton label="Save" onPress={handleSaveData} />
+            <CustomButton label={id ? "update" : "save"} onPress={handleSaveData} disabled={id && editButtonOpacity} />
           </View>
         </View>
       ) : (

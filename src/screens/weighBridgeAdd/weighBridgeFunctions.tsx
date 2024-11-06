@@ -1,12 +1,13 @@
-import {Alert} from 'react-native';
-import {RootState, store} from '../../reducer/Store';
-import {weighBridgeAdd} from '../../reducer/weighBridge/WeighBridgeAction';
+import { Alert } from 'react-native';
+import { RootState, store } from '../../reducer/Store';
+import { weighBridgeAdd } from '../../reducer/weighBridge/WeighBridgeAction';
 import WeighBridgeEffectHooks from './WeighBridgeEffectHooks';
-import {types} from '../../assets/constants/Constant';
-import {useSelector} from 'react-redux';
-import {useState} from 'react';
+import { types } from '../../assets/constants/Constant';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
-function WeighBridgeFunction() {
+function WeighBridgeFunction(props: { id: any }) {
+  const { id } = props
   const [name, setName] = useState('');
   const [delay, setDelay] = useState('');
   const [minTagCount, setMinTagCount] = useState('');
@@ -28,7 +29,7 @@ function WeighBridgeFunction() {
     smartController,
     smartControllerLoader,
     weightParsers,
-  } = WeighBridgeEffectHooks();
+  } = WeighBridgeEffectHooks({id:id});
   const [errors, setErrors] = useState<{
     name?: string;
     delay?: string;
@@ -73,7 +74,7 @@ function WeighBridgeFunction() {
     name: '',
     id: '',
   });
-  const [selectedEvent, setSelectedEvent] = useState<any>({name: '', id: ''});
+  const [selectedEvent, setSelectedEvent] = useState<any>({ name: '', id: '' });
   const [selectedWeightParser, setselectedWeightPars] = useState<any>({
     name: '',
     id: '',
@@ -94,7 +95,7 @@ function WeighBridgeFunction() {
     id: '',
   });
   const [selectedSecondaryReaderA, setSelectedSecondaryReaderA] = useState<any>(
-    {name: '', id: ''},
+    { name: '', id: '' },
   );
 
   // Direction B states
@@ -108,7 +109,7 @@ function WeighBridgeFunction() {
     id: '',
   });
   const [selectedSecondaryReaderB, setSelectedSecondaryReaderB] = useState<any>(
-    {name: '', id: ''},
+    { name: '', id: '' },
   );
   const [selectedGenericSpotDirA, setSelectedGenericSpotDirA] = useState<any>({
     name: '',
@@ -242,14 +243,14 @@ function WeighBridgeFunction() {
         selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE')
       ? selectedPrimaryReaderA?.name?.trim() !== ''
       : selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
-      ? typeof selectedGenericSpotDirA === 'string' &&
+        ? typeof selectedGenericSpotDirA === 'string' &&
         selectedGenericSpotDirA.trim() !== '' &&
         typeof selectedGenericSpotDirB === 'string' &&
         selectedGenericSpotDirB.trim() !== ''
-      : selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
-      ? typeof selectedGenericSpotDirA === 'string' &&
-        selectedGenericSpotDirA.trim() !== ''
-      : selectedPrimaryReaderB?.name?.trim() !== '';
+        : selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
+          ? typeof selectedGenericSpotDirA === 'string' &&
+          selectedGenericSpotDirA.trim() !== ''
+          : selectedPrimaryReaderB?.name?.trim() !== '';
   };
 
   function handleUploadData() {
@@ -388,7 +389,7 @@ function WeighBridgeFunction() {
               console.log('OK Pressed', minVehicleWeight, platformMaxWeight),
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
     }
     console.log('selectedEvent.id', selectedEvent.id);

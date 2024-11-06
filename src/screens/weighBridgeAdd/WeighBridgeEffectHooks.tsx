@@ -1,5 +1,5 @@
-import {useEffect, useLayoutEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   GetReader,
   GetDisplays,
@@ -7,13 +7,13 @@ import {
   GetWeightBridge,
   GetWeightParsers,
 } from '../../reducer/spotAddDetails/SpotAddDetailsAction';
-import {RootState, store} from '../../reducer/Store';
-import {WeighBridgeSpotData} from '../../reducer/weighBridge/WeighBridgeAction';
-import {Alert, Text, View} from 'react-native';
+import { RootState, store } from '../../reducer/Store';
+import { WeighBridgeSpotData } from '../../reducer/weighBridge/WeighBridgeAction';
+import { Alert, Text, View } from 'react-native';
 import React from 'react';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
-import {StyleSheet} from 'react-native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomSnackBar from '../../reuseableComponent/modal/CustomSnackBar';
@@ -22,9 +22,10 @@ import {
   resetStatus,
 } from '../../reducer/weighBridge/WeighBridgeReducer';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
-import {logoutUser} from '../../reducer/Login/LoginAction';
+import { logoutUser } from '../../reducer/Login/LoginAction';
 
-function WeighBridgeEffectHooks() {
+function WeighBridgeEffectHooks(props: { id: any }) {
+  const { id } = props;
   const [loader, setLoader] = useState(false);
   const token = useSelector((state: RootState) => state.authentication.token);
   const baseUrls = useSelector(
@@ -68,18 +69,18 @@ function WeighBridgeEffectHooks() {
           },
         },
       ],
-      {cancelable: false}, // Prevents closing the alert by tapping outside of it
+      { cancelable: false }, // Prevents closing the alert by tapping outside of it
     );
   };
 
   const dispatch = useDispatch();
   useEffect(() => {
     // Dispatch actions when the component mounts
-    store.dispatch(GetReader({baseUrl: baseUrls}));
-    store.dispatch(GetDisplays({baseUrl: baseUrls}));
-    store.dispatch(GetSmartControllers({baseUrl: baseUrls}));
-    store.dispatch(GetWeightBridge({baseUrl: baseUrls}));
-    store.dispatch(GetWeightParsers({baseUrl: baseUrls}));
+    store.dispatch(GetReader({ baseUrl: baseUrls }));
+    store.dispatch(GetDisplays({ baseUrl: baseUrls }));
+    store.dispatch(GetSmartControllers({ baseUrl: baseUrls }));
+    store.dispatch(GetWeightBridge({ baseUrl: baseUrls }));
+    store.dispatch(GetWeightParsers({ baseUrl: baseUrls }));
     store.dispatch(
       WeighBridgeSpotData({
         baseUrl: baseUrls,
@@ -94,7 +95,7 @@ function WeighBridgeEffectHooks() {
     navigation.setOptions({
       headerTitle: () => (
         <View>
-          <Text style={styles.headerTitle}> Add Weighbridge</Text>
+          <Text style={styles.headerTitle}> {id ? "Edit Weighbridge" : "Add Weighbridge"}</Text>
         </View>
       ),
     });
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     color: colors.darkblack,
     fontSize: fontSizes.heading,
   },
-  directionText: {color: colors.darkblack, paddingVertical: 10},
+  directionText: { color: colors.darkblack, paddingVertical: 10 },
 });
 
 export default WeighBridgeEffectHooks;

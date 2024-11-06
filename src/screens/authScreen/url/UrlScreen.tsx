@@ -1,4 +1,3 @@
-import React = require('react');
 import {Animated, Text, TouchableOpacity, View} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../../../reuseableComponent/customButton/CustomButton';
@@ -6,6 +5,7 @@ import CustomTextInput from '../../../reuseableComponent/customTextInput/CustomT
 import CustomLoader from '../../../reuseableComponent/loader/CustomLoader';
 import UrlEffect from './UrlEffect';
 import UrlStyles from './UrlStyles';
+import React from 'react';
 
 function UrlScreen() {
   const {
@@ -65,7 +65,7 @@ function UrlScreen() {
           <CustomButton
             label={'Save'}
             onPress={handleClick}
-            disabled={isButtonDisabled}
+            disabled={false}
           />
         </View>
       </Animated.View>

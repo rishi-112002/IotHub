@@ -1,30 +1,38 @@
-import {useEffect, useLayoutEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {Text, View} from 'react-native';
-import {RootState} from '../../reducer/Store';
-import {ApiCallsAddGenericSpot} from '../../api/ApiCallsByReducer';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { Text, View } from 'react-native';
+import { RootState, store } from '../../reducer/Store';
+import { ApiCallsAddGenericSpot } from '../../api/ApiCallsByReducer';
 import {
   resetDeleteStatus,
   resetStatus,
+  resetUpadteStatus,
 } from '../../reducer/genericSpot/uploadGenericDataReducer';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
-import React = require('react');
+import React from 'react';
+import { GenericSpotData } from '../../reducer/genericSpot/uploadGenericDataAction';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
-export const useGenericAddEffect = () => {
+export const useGenericAddEffect = (id: any) => {
   const [loader, setLoader] = useState(false);
+  const [editButtonOpacity, setEditButtonOpacity] = useState(false);
   const dispatch = useDispatch();
-  const navigation = useNavigation<NavigationProp<any>>();
+  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const uploadError = useSelector(
     (state: RootState) => state.uploadGeneric.error,
+  );
+  const GenericSpot = useSelector(
+    (state: RootState) => state.uploadGeneric.GenericSpot,
   );
   const deleteStatus = useSelector(
     (state: RootState) => state.uploadGeneric.deleteStatus,
   );
   const status = useSelector((state: RootState) => state.uploadGeneric.status);
+  const updateStatus = useSelector((state: RootState) => state.uploadGeneric.updateStatus);
 
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
@@ -50,8 +58,14 @@ export const useGenericAddEffect = () => {
   const readerLoader = useSelector(
     (state: RootState) => state.spotAddDetail.readerLoader,
   );
+
   useEffect(() => {
-    ApiCallsAddGenericSpot({baseUrl: baseUrls});
+    if (id) {
+      store.dispatch(GenericSpotData({ id, baseUrl: baseUrls, buCode, token }));
+    }
+  }, [])
+  useEffect(() => {
+    ApiCallsAddGenericSpot({ baseUrl: baseUrls });
   }, [dispatch, baseUrls]);
   useEffect(() => {
     switch (status) {
@@ -71,6 +85,24 @@ export const useGenericAddEffect = () => {
         break;
     }
   }, [uploadError, dispatch, status, navigation]);
+
+  useEffect(() => {
+    console.log("updateStatus", updateStatus)
+    switch (updateStatus) {
+      case 'failed':
+        CustomToast('error', uploadError);
+        dispatch(resetUpadteStatus());
+        break;
+      case 'succeeded':
+        CustomToast('success', status);
+        dispatch(resetUpadteStatus());
+        navigation.goBack();
+        break;
+      case 'loading':
+        setLoader(true);
+        break;
+    }
+  }, [uploadError, dispatch, status, navigation, updateStatus]);
   useEffect(() => {
     switch (deleteStatus) {
       case 'failed':
@@ -101,7 +133,7 @@ export const useGenericAddEffect = () => {
     navigation.setOptions({
       headerTitle: () => (
         <View>
-          <Text style={styles.headerTitle}> Add Generic Screen</Text>
+          <Text style={styles.headerTitle}> {id ? "Edit Generic Screen" : "Add Generic Screen"}</Text>
         </View>
       ),
     });
@@ -120,6 +152,13 @@ export const useGenericAddEffect = () => {
     displays,
     readers,
     Weightbridge,
+    GenericSpot,
+    navigation,
+    updateStatus,
+    setLoader,
+    dispatch,
+    editButtonOpacity,
+    setEditButtonOpacity
   };
 };
 const styles = StyleSheet.create({

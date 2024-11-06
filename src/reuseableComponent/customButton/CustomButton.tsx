@@ -22,18 +22,19 @@ function CustomButton({
   loading = false,
   icon,
 }: ButtonProps) {
+  console.log("disable state of button", disabled)
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[styles.button, buttonStyle, disabled && styles.disabled]}
-      disabled={disabled || loading}
+      disabled={disabled}
     >
       {loading ? (
         <Text style={[styles.label, labelStyle]}>Loading...</Text>
       ) : (
         <View style={{ flexDirection: "row", columnGap: 10 }}>
           <Text style={[styles.label, labelStyle]}>{label}</Text>
-          {icon && <Icon name={icon} size={20} color={colors.white}/>}
+          {icon && <Icon name={icon} size={20} color={colors.white} />}
 
         </View>
 

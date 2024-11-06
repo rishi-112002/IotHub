@@ -14,11 +14,12 @@ import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import WeighBridgeFunction from './weighBridgeFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 
-function WeighBridgeAddForm() {
+function WeighBridgeAddForm(props: { id: any }) {
+  const { id } = props;
   const {
     name,
     setName,
@@ -75,7 +76,7 @@ function WeighBridgeAddForm() {
     selectedPrimaryReaderB,
     selectedGenericSpotDirB,
     errors,
-  } = WeighBridgeFunction();
+  } = WeighBridgeFunction({ id: id });
 
   if (loader) {
     <SequentialBouncingLoader />;
@@ -245,8 +246,8 @@ function WeighBridgeAddForm() {
                     required={false}
                   />
                   {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
-                  selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
-                  selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
+                    selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
+                    selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
                     <View>
                       <CustomTextInput
                         value={selectedPrimaryReaderA.name}
@@ -293,72 +294,72 @@ function WeighBridgeAddForm() {
                 {/* Direction B Inputs */}
                 {(selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ||
                   selectedEvent.id ===
-                    'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER') && (
-                  <View>
-                    <Text style={styles.directionText}>Direction B</Text>
+                  'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER') && (
+                    <View>
+                      <Text style={styles.directionText}>Direction B</Text>
 
-                    <CustomTextInput
-                      value={selectedDisplayB.name}
-                      onPress={() => handleFocus('displayB')}
-                      label="Display"
-                      editable={false}
-                      required={false}
-                      setTextInput={undefined}
-                    />
+                      <CustomTextInput
+                        value={selectedDisplayB.name}
+                        onPress={() => handleFocus('displayB')}
+                        label="Display"
+                        editable={false}
+                        required={false}
+                        setTextInput={undefined}
+                      />
 
-                    {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
-                    selectedEvent.id ===
-                      'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
-                    selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
-                      <View>
-                        <CustomTextInput
-                          value={selectedPrimaryReaderB.name}
-                          onPress={() => handleFocus('primaryReaderB')}
-                          label="Primary Reader"
-                          editable={false}
-                          required={true}
-                          setTextInput={undefined}
-                          errorMessage={errors.selectedPrimaryReaderB}
-                        />
+                      {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
+                        selectedEvent.id ===
+                        'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
+                        selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
+                        <View>
+                          <CustomTextInput
+                            value={selectedPrimaryReaderB.name}
+                            onPress={() => handleFocus('primaryReaderB')}
+                            label="Primary Reader"
+                            editable={false}
+                            required={true}
+                            setTextInput={undefined}
+                            errorMessage={errors.selectedPrimaryReaderB}
+                          />
 
-                        <CustomTextInput
-                          value={selectedSecondaryReaderB.name}
-                          onPress={() => handleFocus('secondaryReaderB')}
-                          label="Secondary Reader"
-                          editable={false}
-                          required={false}
-                          setTextInput={undefined}
-                        />
-                      </View>
-                    ) : (
-                      <View>
-                        <CustomTextInput
-                          value={selectedGenericSpotDirB.name}
-                          onPress={() => handleFocus('genericSpotB')}
-                          label="Generic Spot"
-                          editable={false}
-                          required={true}
-                          setTextInput={undefined}
-                          errorMessage={errors.selectedGenericSpotDirB}
-                        />
-                      </View>
-                    )}
+                          <CustomTextInput
+                            value={selectedSecondaryReaderB.name}
+                            onPress={() => handleFocus('secondaryReaderB')}
+                            label="Secondary Reader"
+                            editable={false}
+                            required={false}
+                            setTextInput={undefined}
+                          />
+                        </View>
+                      ) : (
+                        <View>
+                          <CustomTextInput
+                            value={selectedGenericSpotDirB.name}
+                            onPress={() => handleFocus('genericSpotB')}
+                            label="Generic Spot"
+                            editable={false}
+                            required={true}
+                            setTextInput={undefined}
+                            errorMessage={errors.selectedGenericSpotDirB}
+                          />
+                        </View>
+                      )}
 
-                    <CustomTextInput
-                      label="Valid Id state"
-                      value={validIdB}
-                      editable={true}
-                      setTextInput={setValidIdB}
-                      required={false}
-                    />
-                  </View>
-                )}
+                      <CustomTextInput
+                        label="Valid Id state"
+                        value={validIdB}
+                        editable={true}
+                        setTextInput={setValidIdB}
+                        required={false}
+                      />
+                    </View>
+                  )}
               </View>
             )}
 
             <View>
               <CustomButton
-                label={'save'}
+                label={id ? "update" : 'save'}
                 onPress={handleUploadData}
                 disabled={isFormValid()}
               />
@@ -377,7 +378,7 @@ const styles = StyleSheet.create({
     color: colors.darkblack,
     fontSize: fontSizes.heading,
   },
-  directionText: {color: colors.darkblack, paddingVertical: 10},
+  directionText: { color: colors.darkblack, paddingVertical: 10 },
   scrollContainer: {
     backgroundColor: colors.white,
     flexGrow: 1,

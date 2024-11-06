@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import CustomIcon from '../reuseableComponent/customIcons/CustomIcon';
 import fontSizes from '../assets/fonts/FontSize';
-import {AppNavigationParams} from '../navigation/NavigationStackList';
+import { AppNavigationParams } from '../navigation/NavigationStackList';
 function SpotsDataByTypeComponent(props: {
   data: any;
   type: string;
@@ -11,14 +11,23 @@ function SpotsDataByTypeComponent(props: {
   handleDelete: any;
 }) {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-  const {data, handleScroll, handleDelete} = props;
-  const renderSpot = ({item}: any) => {
+  const { data, handleScroll, handleDelete, type } = props;
+  console.log("type", type)
+  const navigate = (id: any) => {
+    if (type === "GENERIC_SPOT") {
+      navigation.navigate("GenericSpotAddScreen", { id: id })
+    }
+    else {
+      navigation.navigate("WeighbridgesAddScreen", { id: id })
+    }
+  }
+  const renderSpot = ({ item }: any) => {
     return (
       <View>
         <View style={styles.spotContainer}>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('SpotDetailScreen', {data: item})
+              navigation.navigate('SpotDetailScreen', { data: item })
             }>
             <View style={styles.row}>
               <Text style={styles.spotTitle}>{item.name}</Text>
@@ -42,7 +51,7 @@ function SpotsDataByTypeComponent(props: {
                   />
                   <CustomIcon
                     iconPath={require('../assets/icons/Edit--Streamline-Tabler.png')}
-                    onPress={() => console.log('hello from edit')}
+                    onPress={() => navigate(item.id)}
                   />
                 </View>
               </View>

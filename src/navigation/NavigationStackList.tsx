@@ -1,24 +1,24 @@
 export type AppNavigationParams = {
   // Root Stack Screens
-  UrlScreen: {baseUrls: string | null};
+  UrlScreen: { baseUrls: string | null };
   LoginScreen: undefined;
   SplashScreen: undefined;
-  Drawer: {screen: string};
+  Drawer: { screen: string };
 
   // Home Navigation
   HomeScreen: undefined;
-  EventLogScreen: {baseUrls: string | null; spotName: string};
-  SpotDetailsScreen: {baseUrls: string | null; spotName: string};
-  SpotDetailScreen: {data: any[]};
+  EventLogScreen: { baseUrls: string | null; spotName: string };
+  SpotDetailsScreen: { baseUrls: string | null; spotName: string };
+  SpotDetailScreen: { data: any[] };
 
   // Generic Spot Screens
   GenericSpotScreen: undefined;
-  GenericSpotAddScreen: undefined;
+  GenericSpotAddScreen: { id: any };
 
   // WeighBridge Screens
   WeighbridgesScreen: undefined;
-  WeighbridgesAddScreen: undefined;
-  WeighbridgesAddScreenSecound: {data: {}};
+  WeighbridgesAddScreen:  { id: any };
+  WeighbridgesAddScreenSecound: { data: {} };
 
   // Root Drawer Screens
   HomeNavigation: undefined;
@@ -27,7 +27,7 @@ export type AppNavigationParams = {
   RfidScreenNavigation: undefined;
 
 
-  RfidReader:undefined ,
-  RfidAdd:undefined ,
-  RfidEdit:undefined
+  RfidReader: undefined,
+  RfidAdd: undefined,
+  RfidEdit: undefined
 };
