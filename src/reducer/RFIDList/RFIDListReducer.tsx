@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import {createSlice} from '@reduxjs/toolkit';
 import {
   CreateRFIDdata,
@@ -37,19 +38,31 @@ const initialState: AuthState = {
 };
 
 // Generalized handler for pending state
-const handlePending = (state: AuthState, actionType: keyof AuthState['errors']) => {
+const handlePending = (
+  state: AuthState,
+  actionType: keyof AuthState['errors'],
+) => {
   state.loader = true;
   state.errors[actionType] = null;
 };
 
 // Generalized handler for rejected state
-const handleRejected = (state: AuthState, actionType: keyof AuthState['errors'], payload: any) => {
+const handleRejected = (
+  state: AuthState,
+  actionType: keyof AuthState['errors'],
+  payload: any,
+) => {
   state.loader = false;
   state.errors[actionType] = payload;
 };
 
 // Helper to add the common cases (pending, fulfilled, rejected) to an action
-const addAsyncCases = (builder: any, action: any, actionType: keyof AuthState['errors'], fulfilledCallback: any) => {
+const addAsyncCases = (
+  builder: any,
+  action: any,
+  actionType: keyof AuthState['errors'],
+  fulfilledCallback: any,
+) => {
   builder.addCase(action.fulfilled, (state: AuthState, action: any) => {
     fulfilledCallback(state, action);
     state.loader = false;
@@ -69,27 +82,52 @@ export const rfidListSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     // Create
-    addAsyncCases(builder, CreateRFIDdata, 'create', (state: AuthState, action: any) => {
-      state.RfidListData.push(action.payload);
-    });
+    addAsyncCases(
+      builder,
+      CreateRFIDdata,
+      'create',
+      (state: AuthState, action: any) => {
+        state.RfidListData.push(action.payload);
+      },
+    );
 
     // Edit
-    addAsyncCases(builder, EditRFIDdata, 'edit', (state: AuthState, action: any) => {
-      const index = state.RfidListData.findIndex(item => item.id === action.payload.id);
-      if (index !== -1) {
-        state.RfidListData[index] = action.payload;
-      }
-    });
+    addAsyncCases(
+      builder,
+      EditRFIDdata,
+      'edit',
+      (state: AuthState, action: any) => {
+        const index = state.RfidListData.findIndex(
+          item => item.id === action.payload.id,
+        );
+        if (index !== -1) {
+          state.RfidListData[index] = action.payload;
+        }
+      },
+    );
 
     // Get List
-    addAsyncCases(builder, getRfidListAction, 'list', (state: AuthState, action: any) => {
-      state.RfidListData = action.payload;
-    });
+    addAsyncCases(
+      builder,
+      getRfidListAction,
+      'list',
+      (state: AuthState, action: any) => {
+        state.RfidListData = action.payload;
+      },
+    );
 
     // Delete
-    addAsyncCases(builder, deleteRfidListAction, 'delete', (state: AuthState, action: any) => {
-      state.RfidListData = state.RfidListData.filter(item => item.id !== action.payload.id);
-    });
+    addAsyncCases(
+      builder,
+      deleteRfidListAction,
+      'delete',
+      (state: AuthState, action: any) => {
+        // console.log('REDUCER DELETE MESSAGE :- ', action);
+        state.RfidListData = state.RfidListData.filter(
+          item => item.id !== action.payload.id,
+        );
+      },
+    );
   },
 });
 

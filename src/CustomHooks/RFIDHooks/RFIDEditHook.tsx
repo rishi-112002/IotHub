@@ -29,7 +29,6 @@ export const useEditRfid = (item: RFIDItem) => {
   const dispatch = useDispatch();
 
   const Loader = useSelector((state: RootState) => state.rfidList.loader);
-  const EditError = useSelector((state: RootState) => state.rfidList.errors.edit);
   const buCode = useSelector((state: RootState) => state.authentication.buCode);
   const token = useSelector((state: RootState) => state.authentication.token);
   const smartControllerLoader = useSelector((state: RootState) => state.uploadGeneric.loader);

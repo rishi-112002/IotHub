@@ -15,6 +15,7 @@ import { AppNavigationParams } from './NavigationStackList';
 import React from 'react';
 import LoginForm from '../screens/authScreen/login/LoginForm';
 import BottomTabNavigation from './BottomTab';
+import DrawerNavigation from './DrawerNavigation';
 
 const Stack = createStackNavigator<AppNavigationParams>();
 
@@ -109,7 +110,7 @@ function AppNavigation() {
                 </Stack.Group> :
 
                 // If user is logged in, show the DrawerNavigation screen
-                <Stack.Screen name="Drawer" component={BottomTabNavigation} options={{ headerShown: false }} />
+                <Stack.Screen name="Drawer" component={DrawerNavigation} options={{ headerShown: false }} />
             }
         </Stack.Navigator>
     );

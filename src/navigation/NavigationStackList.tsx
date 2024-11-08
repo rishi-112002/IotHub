@@ -27,7 +27,8 @@ export type AppNavigationParams = {
   RfidScreenNavigation: undefined;
 
 
-  RfidReader: undefined,
-  RfidAdd: undefined,
-  RfidEdit: undefined
+
+  RfidReader:undefined ,
+  RfidAdd:undefined ,
+  RfidEdit:{readers:{}}
 };
