@@ -67,6 +67,7 @@ export const EditRFIDdata = createAsyncThunk(
 export const getRfidListAction = createAsyncThunk(
   'getRfidListAction',
   async ({ baseUrl }, { rejectWithValue }) => {
+    
     const fullUrl = `${baseUrl}${RFIDListEndPoint}`;
     try {
       const { data } = await axios.get(fullUrl);
@@ -93,7 +94,7 @@ export const deleteRfidListAction = createAsyncThunk(
       return data;
     } catch (error) {
       const message = handleError(error);
-      // console.log(' Delete Error:', message);
+      console.log('Action Delete Error:', message);
       return rejectWithValue(message);
     }
   }

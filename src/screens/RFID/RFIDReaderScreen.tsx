@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Animated } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import colors from '../../assets/color/colors';
@@ -8,7 +8,6 @@ import { RfidListHook } from '../../CustomHooks/RFIDHooks/RFIDListHook';
 import RfidListComponent from '../../component/RFIDComponent/RfidListComponent';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
-import showCustomToast from '../../reuseableComponent/modal/CustomToast';
 
 const RfidReader = () => {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
@@ -22,9 +21,6 @@ const RfidReader = () => {
     alertVisible,
     setAlertVisible,
     confirmDelete,
-    successAlertVisible,
-    errorAlertVisible,
-    errorMessage,
   } = RfidListHook();
 
   const scrollY = new Animated.Value(0);
@@ -42,15 +38,6 @@ const RfidReader = () => {
     inputRange: [0, 50],
     outputRange: [0, 100],
   });
-
-  useEffect(() => {
-    if (successAlertVisible) {
-      showCustomToast('success', 'RFID deleted successfully!');
-    }
-    if (errorAlertVisible) {
-      showCustomToast('error', errorMessage || 'Something went wrong! Please try deleting again...');
-    }
-  }, [successAlertVisible, errorAlertVisible, errorMessage]);
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.white }}>

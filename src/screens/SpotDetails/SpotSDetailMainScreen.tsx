@@ -13,10 +13,27 @@ import colors from '../../assets/color/colors';
 import {ScrollView} from 'react-native-gesture-handler';
 import DataTab from '../../reuseableComponent/card/DetailsCard';
 import {Colors2} from '../../assets/color/Colors2';
+import {RfidListHook} from '../../CustomHooks/RFIDHooks/RFIDListHook';
+// import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 
 const Tab = createMaterialTopTabNavigator();
 
 const SpotDetailScreen = () => {
+  const {
+    // ListData,
+    // Loader,
+    // loadRfidList,
+    handleDelete,
+    // refreshing,
+    // buCode,
+    // alertVisible,
+    // setAlertVisible,
+    // confirmDelete,
+    // successAlertVisible,
+    // errorAlertVisible,
+    // errorMessage,
+  } = RfidListHook();
+  // console.log('Spot Detail Screen :- ', handleDelete);
   const route = useRoute<RouteProp<{params: {data: any}}, 'params'>>();
   const item = route.params?.data;
   const baseUrls = useSelector(
@@ -56,6 +73,8 @@ const SpotDetailScreen = () => {
               <DataTab
                 data={item.readers}
                 dataType="readers"
+                allow={false}
+                // handleDelete={handleDelete}
                 noDataMessage="No Spot Commands Available"
               />
             </ScrollView>
@@ -73,6 +92,16 @@ const SpotDetailScreen = () => {
           )}
         </Tab.Screen>
       </Tab.Navigator>
+      {/* {alertVisible && (
+        <CustomAlert
+          isVisible={alertVisible}
+          onClose={() => setAlertVisible(false)}
+          onOkPress={confirmDelete}
+          title="Delete RFID"
+          message="Are you sure you want to delete this RFID?"
+          showCancel={true}
+        />
+      )} */}
     </View>
   );
 };

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, ScrollView} from 'react-native';
@@ -8,26 +7,25 @@ import CustomTextInput from '../../reuseableComponent/customTextInput/CustomText
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import LoadingModal from '../../reuseableComponent/loader/CustomLoaderFaiz';
 import {useEditRfid} from '../../CustomHooks/RFIDHooks/RFIDEditHook';
-import { MODEL_LIST } from '../../assets/constants/Constant';
+import {MODEL_LIST} from '../../assets/constants/Constant';
+import {RouteProp, useRoute} from '@react-navigation/native';
 
 // Define MODEL_LIST here
 
-interface EditRfidScreenProps {
-  route: {
-    params: {
-      item: {
-        id: string;
-        name: string;
-        model?: string;
-        ip: string;
-        port: number;
-      };
-    };
+interface readerParams {
+  readers: {
+    id: string;
+    name: string;
+    model?: string;
+    ip: string;
+    port: number;
   };
 }
 
-const EditRfidScreen: React.FC<EditRfidScreenProps> = ({route}) => {
-  const {item} = route.params;
+const EditRfidScreen: React.FC<readerParams> = () => {
+  const route = useRoute<RouteProp<{params: readerParams}, 'params'>>();
+  const readers = route.params?.readers || '';
+  console.log('Edit Screen :- ', readers);
 
   const {
     name,
@@ -46,7 +44,7 @@ const EditRfidScreen: React.FC<EditRfidScreenProps> = ({route}) => {
     handleInputFocus,
     handleModalSelect,
     showIpAndPortFields,
-  } = useEditRfid(item);
+  } = useEditRfid(readers);
 
   return (
     <ScrollView contentContainerStyle={{backgroundColor: colors.white}}>
@@ -102,7 +100,7 @@ const EditRfidScreen: React.FC<EditRfidScreenProps> = ({route}) => {
 
               <CustomTextInput
                 label="Port Number"
-                value={port.toString()}
+                value={port?.toString()}
                 errorMessage={errors.port}
                 keyboardType="numeric"
                 setTextInput={setPort}

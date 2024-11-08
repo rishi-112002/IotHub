@@ -4,7 +4,6 @@ import React from 'react';
 import {Colors2} from '../../assets/color/Colors2';
 import fontSizes from '../../assets/fonts/FontSize';
 import { SpotCommand } from './DetailsCard';
-import colors from '../../assets/color/colors';
 // interface DisplayCardContent {
 //   data: Reader;
 // }

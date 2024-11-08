@@ -1,21 +1,19 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import colors from '../../assets/color/colors';
-import {Colors2} from '../../assets/color/Colors2';
-import fontSizes from '../../assets/fonts/FontSize';
 import {CardItemWith_Icon} from './CardItemWithIcon';
 import {ReaderCardContent} from './ReaderCardContent';
 import {DisplayCardContent} from './DisplayCardContent';
-import { SpotCommandCardContent } from './SpotCommandContent';
+import {SpotCommandCardContent} from './SpotCommandContent';
 
 // Define possible data types and structures
 export interface Reader {
-  name?: string;
-  ip?: string;
-  model?: string;
   type?: string;
-  port?: string;
+  id: string;
+  name: string;
+  model?: string;
+  ip: string;
+  port: number;
 }
 
 export interface Display {
@@ -26,6 +24,7 @@ export interface Display {
 }
 
 export interface SpotCommand {
+  id: number;
   name: string;
   commandDirA: string;
   autoCommandEnabled: string;
@@ -36,6 +35,8 @@ interface DataTabProps {
   dataType: 'readers' | 'displays' | 'spotCommands';
   noDataMessage?: string;
   stylesOverride?: object;
+  allow?: boolean;
+  // handleDelete?: any;
 }
 
 const DataTab: React.FC<DataTabProps> = ({
@@ -43,18 +44,21 @@ const DataTab: React.FC<DataTabProps> = ({
   dataType,
   noDataMessage = 'No Data Available',
   stylesOverride,
+  allow = false,
+  // handleDelete,
 }) => {
+  // console.log('DataTab11111 :- ', handleDelete); 
   const combinedStyles = {...styles, ...stylesOverride};
-
 
   // Render content based on the data type
   const renderData = () => {
     switch (dataType) {
       case 'readers':
-        return data.map((item: Reader) => (
+        return data.map((item: Reader, index: number) => (
           <CardItemWith_Icon
-            iconName={'wifi-tethering'}
-            view={ReaderCardContent(item)}
+            key={item.id || index}
+            iconName="wifi-tethering"
+            view={ReaderCardContent(item, allow)}
           />
         ));
       case 'displays':
