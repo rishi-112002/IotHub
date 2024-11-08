@@ -1,7 +1,7 @@
 import {useEffect, useState, useCallback, useMemo} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {Alert} from 'react-native';
-import {RootState} from '../../reducer/Store';
+import {RootState, store} from '../../reducer/Store';
 import {GetSpotData} from '../../reducer/spotData/spotDataAction';
 
 export const SpotListHook = () => {
@@ -20,7 +20,7 @@ export const SpotListHook = () => {
   // Load RFID list
   const loadRfidList = useCallback(async () => {
     setRefreshing(true);
-    dispatch(GetSpotData({baseUrl: baseUrl}));
+    store.dispatch(GetSpotData({baseUrl: baseUrl}));
     setRefreshing(false);
   }, [baseUrl, dispatch]);
 
