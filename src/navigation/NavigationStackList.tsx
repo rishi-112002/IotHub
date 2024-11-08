@@ -29,5 +29,5 @@ export type AppNavigationParams = {
 
   RfidReader:undefined ,
   RfidAdd:undefined ,
-  RfidEdit:undefined
+  RfidEdit:{readers:{}}
 };

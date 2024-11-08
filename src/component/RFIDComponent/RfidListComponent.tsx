@@ -30,7 +30,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
 }) => {
   // Memoized renderSpot for better performance
   const renderSpot = useCallback(
-    ({ item }:any) => <RFIDItemComponent handleDelete={handleDelete} item={item} />,
+    ({ item }:any) => <RFIDItemComponent handleDelete={handleDelete} reader={item} />,
     [handleDelete]
   );
 
@@ -50,7 +50,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
           onScroll={handleScroll}
           onRefresh={loadRfidList}
           refreshing={refreshing}
-          removeClippedSubviews={true} // Depending on list size, experiment with true/false
+          removeClippedSubviews={true}
           initialNumToRender={20} // Increase the number of items initially rendered
           maxToRenderPerBatch={10} // Number of items rendered per batch
           windowSize={15} // Increase window size to keep more items in memory

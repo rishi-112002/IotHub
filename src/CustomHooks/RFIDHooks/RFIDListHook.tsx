@@ -6,6 +6,9 @@ import {
   deleteRfidListAction,
 } from '../../reducer/RFIDList/RFIDListAction';
 import {RootState, store} from '../../reducer/Store';
+import showCustomToast from '../../reuseableComponent/modal/CustomToast';
+import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
+import React from 'react';
 
 export const RfidListHook = () => {
   // const dispatch = useDispatch();
@@ -39,6 +42,7 @@ export const RfidListHook = () => {
       store.dispatch(getRfidListAction({baseUrl}));
     } catch (error) {
       // Handle fetch error if necessary
+
       console.error('Error loading RFID list:', error);
     } finally {
       setRefreshing(false);
@@ -50,18 +54,29 @@ export const RfidListHook = () => {
     console.log('first');
   }, [baseUrl, loadRfidList]);
 
-  useEffect(() => {
-    // Display error if any
-    if (LError || DError) {
-      setErrorMessage(LError || DError);
-      setErrorAlertVisible(true);
-    }
-    console.log('Second');
-  }, [LError, DError]);
+  // useEffect(() => {
+  //   // Display error if any
+  //   if (LError || DError) {
+  //     setErrorMessage(LError || DError);
+  //     setErrorAlertVisible(true);
+  //   }
+  //   console.log('Second');
+  // }, [LError, DError]);
 
   const handleDelete = useCallback((id: string) => {
+    // console.log('RFID handle Delete :- ',id);
     setRfidToDelete(id);
     setAlertVisible(true);
+    // return(
+    //   <CustomAlert
+    //   isVisible={alertVisible}
+    //   onClose={() => setAlertVisible(false)}
+    //   onOkPress={confirmDelete}
+    //   title="Delete RFID"
+    //   message="Are you sure you want to delete this RFID?"
+    //   showCancel={true}
+    // />
+    // );
   }, []);
 
   const confirmDelete = useCallback(async () => {
@@ -71,22 +86,25 @@ export const RfidListHook = () => {
 
     setAlertVisible(false);
     try {
-      const resultAction = await store.dispatch(
-        deleteRfidListAction({id: rfidToDelete, buCode, token}),
-      );
-
-      if (deleteRfidListAction.fulfilled.match(resultAction)) {
-        setSuccessAlertVisible(true); // Show success alert
+      await store.dispatch(
+        deleteRfidListAction({id: rfidToDelete, buCode, token})
+      ).unwrap();
+        showCustomToast('success', 'RFID deleted successfully!');
         await loadRfidList(); // Refresh the list after successful deletion
-      } else {
-        // Handle potential error from deletion action
-        // setErrorMessage(DError);
-        setErrorAlertVisible(true);
-      }
+
+      // if (deleteRfidListAction.fulfilled.match(resultAction)) {
+      //   // setSuccessAlertVisible(true); // Show success alert
+      // } else {
+      //   // Handle potential error from deletion action
+      //   // setErrorMessage(DError);
+      //   // setErrorAlertVisible(true);
+      //   // console.log("COnfirm Delete :- ",DError);
+      // }
     } catch (error) {
-      console.log('Deletion error:', error);
+      showCustomToast('error', error || 'Something went wrong! Please try deleting again...');
+      // console.log('Deletion error:', error);
       // setErrorMessage(DError);
-      setErrorAlertVisible(true);
+      // setErrorAlertVisible(true);
     }
   }, [rfidToDelete, buCode, token, loadRfidList]);
 
