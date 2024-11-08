@@ -101,7 +101,7 @@ function GenericAddFunction(props: { id: any }) {
     setIsWeightBridgeEntryEnabled(prevState => !prevState);
 
   const [isActiveEnabled, setIsActiveEnabled] = useState(false);
-  const eventFromApi = GenericSpot.events; // Assuming this is the event id from the API response
+  // Assuming this is the event id from the API response
   const smartControllerOfSpot = GenericSpot.smartio;
 
   const smartControllerName = smartControllerOfSpot?.name;
@@ -112,6 +112,7 @@ function GenericAddFunction(props: { id: any }) {
   const displayId = displayOfSpot?.[0]?.id;
   // Find the event object with a matching id
   // const matchedprimaryReader = smartController.find(smartio => smartio.id === smartControllerOfSpot)
+  const eventFromApi = GenericSpot.events;
   const matchedEvent = events.find(event => event.id === eventFromApi);
   const primaryReaderOfSpot = GenericSpot.readers;
 
@@ -127,7 +128,6 @@ function GenericAddFunction(props: { id: any }) {
   const SecondaryReaderId = secondaryReader?.id;
   useEffect(() => {
     if (id) {
-      console.log("Setting delay with value:", GenericSpot?.delayAlertAfter);
       setFormData({
         name: GenericSpot.name || '',
         delay: GenericSpot.delayAlertAfter?.toString() || '',

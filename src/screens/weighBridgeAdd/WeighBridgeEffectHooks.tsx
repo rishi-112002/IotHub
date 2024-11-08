@@ -8,7 +8,7 @@ import {
   GetWeightParsers,
 } from '../../reducer/spotAddDetails/SpotAddDetailsAction';
 import { RootState, store } from '../../reducer/Store';
-import { WeighBridgeSpotData } from '../../reducer/weighBridge/WeighBridgeAction';
+import { WeighBridegeSpotDataEdit, WeighBridgeSpotData } from '../../reducer/weighBridge/WeighBridgeAction';
 import { Alert, Text, View } from 'react-native';
 import React from 'react';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
@@ -31,10 +31,21 @@ function WeighBridgeEffectHooks(props: { id: any }) {
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
+  const GenericSpots = useSelector(
+    (state: RootState) => state.weighBridge.genericData,
+  );
+  const readers = useSelector((state: RootState) => state.spotAddDetail.reader);
+
   const buCode = useSelector((state: RootState) => state.authentication.buCode);
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const uploadError = useSelector(
     (state: RootState) => state.weighBridge.error,
+  );
+  const updateStatus = useSelector(
+    (state: RootState) => state.weighBridge.updateStatus,
+  );
+  const WeighBridgeSpot = useSelector(
+    (state: RootState) => state.weighBridge.weighBridgeSpot,
   );
   const status = useSelector((state: RootState) => state.weighBridge.status);
   const deleteStatus = useSelector(
@@ -52,6 +63,11 @@ function WeighBridgeEffectHooks(props: { id: any }) {
   const smartControllerLoader = useSelector(
     (state: RootState) => state.spotAddDetail.smartControllerLoader,
   );
+  useEffect(() => {
+    if (id) {
+      store.dispatch(WeighBridegeSpotDataEdit({ id, baseUrl: baseUrls, buCode, token }));
+    }
+  }, [])
 
   const handleLogout = async () => {
     Alert.alert(
@@ -119,7 +135,6 @@ function WeighBridgeEffectHooks(props: { id: any }) {
   }, [uploadError, status, navigation, dispatch]);
 
   useEffect(() => {
-    console.log('delete Status', deleteStatus);
     switch (deleteStatus) {
       case 'failed':
         if (uploadError) {
@@ -151,6 +166,13 @@ function WeighBridgeEffectHooks(props: { id: any }) {
     smartController,
     displays,
     weightParsers,
+    WeighBridgeSpot,
+    baseUrls,
+    token,
+    buCode,
+    GenericSpots,
+    readers,
+    uploadError, dispatch, navigation, updateStatus, setLoader
   }; // Or some UI component if needed
 }
 const styles = StyleSheet.create({

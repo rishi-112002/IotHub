@@ -22,7 +22,6 @@ function CustomButton({
   loading = false,
   icon,
 }: ButtonProps) {
-  console.log("disable state of button", disabled)
   return (
     <TouchableOpacity
       onPress={onPress}

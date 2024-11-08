@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { deleteSpots, EditGenericSpot, SpotDataByType } from '../../api/EndPointsUrl';
+import { deleteSpots, EditSpot, SpotDataByType } from '../../api/EndPointsUrl';
 import axios from 'axios';
 
 export const uploadGenericData = createAsyncThunk(
@@ -87,7 +87,7 @@ export const DeleteGenericSpot = createAsyncThunk('deleteSpot', async (params: {
 
 export const GenericSpotData = createAsyncThunk('genericSpotData', async (params: { baseUrl: string | null, buCode: string | null, token: string | null, id: any }) => {
     const { baseUrl, buCode, token, id } = params;
-    const fullUrl = `${baseUrl}${EditGenericSpot}${id}`;
+    const fullUrl = `${baseUrl}${EditSpot}${id}`;
 
     try {
         const { data } = await axios.get(fullUrl);

@@ -108,6 +108,7 @@ function WeighBridgeAddForm(props: { id: any }) {
               label="Delay alert after (millisecond)"
               value={delay}
               editable={true}
+              type='input'
               style={styles.flexInput}
               errorMessage={errors.delay}
               keyboardType="numeric"
@@ -123,6 +124,7 @@ function WeighBridgeAddForm(props: { id: any }) {
               errorMessage={errors.event}
               label={'Type'}
               disable={false}
+              type='dropdown'
               editable={false}
               setTextInput={undefined}
               required={true}
@@ -134,6 +136,7 @@ function WeighBridgeAddForm(props: { id: any }) {
               label={'Smart Controller'}
               disable={false}
               style={styles.flexInput}
+              type='dropdown'
               editable={false}
               errorMessage={errors.selectedSmartConnector}
               required={true}
@@ -144,6 +147,7 @@ function WeighBridgeAddForm(props: { id: any }) {
               onPress={() => handleFocus('weightParsers')}
               label={'Weight parser'}
               disable={false}
+              type='dropdown'
               style={styles.flexInput}
               editable={false}
               errorMessage={errors.selectedWeightParser}
@@ -173,6 +177,7 @@ function WeighBridgeAddForm(props: { id: any }) {
               disable={false}
               style={styles.flexInput}
               editable={false}
+              type='dropdown'
               iconName=""
               errorMessage={errors.selectedDate}
               required={false}
@@ -211,6 +216,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                 keyboardType="numeric"
                 setTextInput={setDriverTagTimeOut}
                 required={true}
+                type='input'
               />
             )}
             <SwitchWithLabel
@@ -228,6 +234,8 @@ function WeighBridgeAddForm(props: { id: any }) {
                 keyboardType="numeric"
                 setTextInput={setSecurityTagTimeOut}
                 required={true}
+                type='input'
+
               />
             )}
 
@@ -242,6 +250,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                     onPress={() => handleFocus('displayA')}
                     label="Display"
                     editable={false}
+                    type='dropdown'
                     setTextInput={errors.selectedDisplayA}
                     required={false}
                   />
@@ -255,6 +264,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                         errorMessage={errors.selectedPrimaryReaderA}
                         label="Primary Reader"
                         editable={false}
+                        type='dropdown'
                         setTextInput={undefined}
                         required={true}
                       />
@@ -264,6 +274,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                         onPress={() => handleFocus('secondaryReaderA')}
                         label="Secondary Reader"
                         editable={false}
+                        type='dropdown'
                         setTextInput={undefined}
                         required={false}
                       />
@@ -275,6 +286,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                         onPress={() => handleFocus('genericSpotA')}
                         errorMessage={errors.selectedGenericSpotDirA}
                         label="Generic Spot"
+                        type='dropdown'
                         editable={false}
                         setTextInput={undefined}
                         required={true}
@@ -286,6 +298,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                     label="Valid Id state"
                     value={validIdA}
                     editable={true}
+                    type='input'
                     setTextInput={setValidIdA}
                     required={false}
                   />
@@ -304,6 +317,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                         label="Display"
                         editable={false}
                         required={false}
+                        type='dropdown'
                         setTextInput={undefined}
                       />
 
@@ -318,6 +332,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                             label="Primary Reader"
                             editable={false}
                             required={true}
+                            type='dropdown'
                             setTextInput={undefined}
                             errorMessage={errors.selectedPrimaryReaderB}
                           />
@@ -327,6 +342,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                             onPress={() => handleFocus('secondaryReaderB')}
                             label="Secondary Reader"
                             editable={false}
+                            type='dropdown'
                             required={false}
                             setTextInput={undefined}
                           />
@@ -338,6 +354,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                             onPress={() => handleFocus('genericSpotB')}
                             label="Generic Spot"
                             editable={false}
+                            type='dropdown'
                             required={true}
                             setTextInput={undefined}
                             errorMessage={errors.selectedGenericSpotDirB}
@@ -348,6 +365,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                       <CustomTextInput
                         label="Valid Id state"
                         value={validIdB}
+                        type='input'
                         editable={true}
                         setTextInput={setValidIdB}
                         required={false}
@@ -361,7 +379,6 @@ function WeighBridgeAddForm(props: { id: any }) {
               <CustomButton
                 label={id ? "update" : 'save'}
                 onPress={handleUploadData}
-                disabled={isFormValid()}
               />
             </View>
           </View>
