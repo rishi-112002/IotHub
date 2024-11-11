@@ -19,20 +19,20 @@ import {RfidListHook} from '../../CustomHooks/RFIDHooks/RFIDListHook';
 const Tab = createMaterialTopTabNavigator();
 
 const SpotDetailScreen = () => {
-  const {
-    // ListData,
-    // Loader,
-    // loadRfidList,
-    handleDelete,
-    // refreshing,
-    // buCode,
-    // alertVisible,
-    // setAlertVisible,
-    // confirmDelete,
-    // successAlertVisible,
-    // errorAlertVisible,
-    // errorMessage,
-  } = RfidListHook();
+  // const {
+  //   // ListData,
+  //   // Loader,
+  //   // loadRfidList,
+  //   handleDelete,
+  //   // refreshing,
+  //   // buCode,
+  //   // alertVisible,
+  //   // setAlertVisible,
+  //   // confirmDelete,
+  //   // successAlertVisible,
+  //   // errorAlertVisible,
+  //   // errorMessage,
+  // } = RfidListHook();
   // console.log('Spot Detail Screen :- ', handleDelete);
   const route = useRoute<RouteProp<{params: {data: any}}, 'params'>>();
   const item = route.params?.data;

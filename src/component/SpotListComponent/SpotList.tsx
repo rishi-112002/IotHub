@@ -70,7 +70,8 @@ const SpotList: React.FC<SpotListComponentProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 20,
+    // flex:1,
+    paddingBottom: 100,
   },
 });
 

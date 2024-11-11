@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 // src/components/SpotItem.tsx
 import React from 'react';
-import { View, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import {View, Text, TouchableOpacity, Animated, StyleSheet} from 'react-native';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
 import CustomMenu from '../../reuseableComponent/menuOptions/CustomMenu';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
 // import useFadeAnimation from '../../reuseableComponent/shimmer/FadeInAnimation';
 
 type SpotItemProps = {
@@ -19,17 +19,21 @@ type SpotItemProps = {
     delayed: boolean;
     currentState: string | null;
   };
-  baseUrl: string|null;
+  baseUrl: string | null;
 };
 
-const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
+const SpotItem = ({item, baseUrl}: SpotItemProps) => {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-//   const fadeAnim = useFadeAnimation();
+  //   const fadeAnim = useFadeAnimation();
 
   const getWeightDisplay = () => {
     if (item.weight !== null) {
       return (
-        <Text style={[styles.weightText, { color: item.weightStable ? 'green' : 'red' }]}>
+        <Text
+          style={[
+            styles.weightText,
+            {color: item.weightStable ? 'green' : 'red'},
+          ]}>
           {item.weight}
         </Text>
       );
@@ -42,19 +46,25 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
 
   return (
     <Animated.View style={styles.spotContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('SpotDetailScreen', { data: item })}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('SpotDetailScreen', {data: item})}>
         <View style={styles.contentContainer}>
           <Text style={styles.spotTitle}>
-            {item.name.length > 14 ? `${item.name.substring(0, 14)}...` : item.name}
+            {item.name.length > 14
+              ? `${item.name.substring(0, 14)}...`
+              : item.name}
           </Text>
           <View style={styles.rowContainer}>
             <View
               style={[
                 styles.statusContainer,
-                { backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2' },
-              ]}
-            >
-              <Text style={[styles.statusText, { color: item.active ? '#15803D' : '#B91C1C' }]}>
+                {backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2'},
+              ]}>
+              <Text
+                style={[
+                  styles.statusText,
+                  {color: item.active ? '#15803D' : '#B91C1C'},
+                ]}>
                 {item.active ? 'Connected' : 'Not-Connected'}
               </Text>
             </View>
@@ -69,20 +79,26 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
           <View
             style={[
               styles.delayedContainer,
-              { borderColor: item.delayed ? '#FEF2F2' : '#DCFCE7' },
-            ]}
-          >
-            <Text style={[styles.delayedText, { color: item.delayed ? '#B91C1C' : '#15803D' }]}>
+              {borderColor: item.delayed ? '#FEF2F2' : '#DCFCE7'},
+            ]}>
+            <Text
+              style={[
+                styles.delayedText,
+                {color: item.delayed ? '#B91C1C' : '#15803D'},
+              ]}>
               {item.delayed ? 'Delayed' : 'On Time'}
             </Text>
           </View>
           <View
             style={[
               styles.statusContainer,
-              { borderColor: item.currentState ? '#DCFCE7' : '#FEF2F2' },
-            ]}
-          >
-            <Text style={[styles.statusText, { color: item.currentState ? '#15803D' : '#B91C1C' }]}>
+              {borderColor: item.currentState ? '#DCFCE7' : '#FEF2F2'},
+            ]}>
+            <Text
+              style={[
+                styles.statusText,
+                {color: item.currentState ? '#15803D' : '#B91C1C'},
+              ]}>
               {item.currentState || 'No State Info'}
             </Text>
           </View>
