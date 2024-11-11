@@ -34,7 +34,7 @@ function CustomDrawerContent() {
                                 <Text style={styles.itemText}>Live Spot</Text>
                             </View>
                         )}
-                        onPress={() => navigation.navigate('HomeNavigation')}
+                        onPress={() => navigation.navigate('HomeNavigation', {screen:"HomeScreen"})}
                     />
                     {/* Spot Dropdown */}
                     <TouchableOpacity
@@ -55,14 +55,14 @@ function CustomDrawerContent() {
                     {isSpotExpanded && (
                         <View style={styles.subMenu}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('Weighbridges', { screen: 'WeighbridgesScreen' })}
+                                onPress={() => navigation.navigate('WeighbridgesNavigation')}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="scale" size={18} color={colors.gray} />
                                 <Text style={styles.subMenuText}>Weighbridges</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('GenericSpot', { screen: 'GenericSpotScreen' })}
+                                onPress={() => navigation.navigate('GenericSpot')}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="location-on" size={18} color={colors.gray} />

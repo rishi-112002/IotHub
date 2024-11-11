@@ -24,7 +24,7 @@ export default function DrawerNavigation() {
     // Set up the Drawer Navigator
     <Drawer.Navigator
       // Define the initial route based on the screen parameter passed in the route
-      initialRouteName={screen}
+      initialRouteName={"HomeNavigation"}
       // Disable the header for the screens (handled elsewhere)
       screenOptions={{headerShown: false}}
       // Pass custom drawer content component for rendering the drawer menu

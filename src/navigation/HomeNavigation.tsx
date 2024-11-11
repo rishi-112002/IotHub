@@ -6,14 +6,21 @@ import SpotListScreen from '../screens/SpotListScreen';
 import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
 import {AppNavigationParams} from './NavigationStackList';
 import EditRfidScreen from '../screens/RFID/EditRfidscreen';
+import { RouteProp, useRoute } from '@react-navigation/native';
 
 // Create the stack navigator with a parameterized type for AppNavigationParams
 const Stack = createStackNavigator<AppNavigationParams>();
 
 function HomeNavigation() {
+
+  // const route = useRoute<RouteProp<{params: AppNavigationParams}, 'params'>>();
+ 
+  // // Destructure the 'screen' value from route parameters to set the initial route
+  // const {screen}: any = route.params;
+ 
   return (
     // Set up the Stack Navigator
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='HomeScreen'>
       {/* Define the HomeScreen without a header */}
       <Stack.Screen
         name="HomeScreen"

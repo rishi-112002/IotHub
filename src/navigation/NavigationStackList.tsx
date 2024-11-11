@@ -17,18 +17,18 @@ export type AppNavigationParams = {
 
   // WeighBridge Screens
   WeighbridgesScreen: undefined;
-  WeighbridgesAddScreen:  { id: any };
+  WeighbridgesAddScreen: { id: any };
   WeighbridgesAddScreenSecound: { data: {} };
 
   // Root Drawer Screens
-  HomeNavigation: undefined;
-  Weighbridges: undefined;
-  GenericSpot: undefined;
-  RfidScreenNavigation: undefined;
+  HomeNavigation: { screen: string };
+  WeighbridgesNavigation: { screen: string };
+  GenericSpot: { screen: string };
+  RfidScreenNavigation: { screen: string };
 
 
 
-  RfidReader:undefined ,
-  RfidAdd:undefined ,
-  RfidEdit:{readers:{}}
+  RfidReader: undefined,
+  RfidAdd: undefined,
+  RfidEdit: { readers: {} }
 };
