@@ -18,7 +18,6 @@ const colors = {
     primarylight: '#9990FF',
     primaryLighter: '#C6C4FF',
     primaryLightest: '#E7E7FF',
-
     greenDarkest: '#198155',
     greenBase: '#23C16B',
     greenlight: '#4CD471',
@@ -43,13 +42,15 @@ const colors = {
     yellowLighter: '#FFD188',
     yellowLightest: 'FFEFD7',
 
-    darkblack:"#090A0A",
-    AppPrimaryColor:"#3629B7",
-    iconColorLight : "#82b1ff",
-    iconColorDark :"#4791db",
-    backgroundColor:"#f8f8ff",
-    gray:"#767577",
-    lightGray:"#d4d4d4"
+    darkblack: "#090A0A",
+    AppPrimaryColor: "#3629B7",
+    iconColorLight: "#82b1ff",
+    iconColorDark: "#4791db",
+    backgroundColor: "#f8f8ff",
+    gray: "#767577",
+    lightGray: "#d4d4d4",
+
+    inactiveTint: "#979DC2"
 };
 
 export default colors;

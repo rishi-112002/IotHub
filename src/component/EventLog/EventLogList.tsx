@@ -4,6 +4,7 @@ import { View, FlatList, Text, StyleSheet, Animated } from 'react-native';
 import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
+import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
 
 type EventLogItemType = {
   id: string;
@@ -35,7 +36,8 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
 
   const renderEventLog = useCallback(
     ({ item }: { item: EventLogItemType }) => (
-      <EventLogItem item={item} onInfoClick={onInfoClick} />
+      <CardItemWith_Icon iconName='event-note' view={<EventLogItem item={item} />} />
+
     ),
     [onInfoClick],
   );

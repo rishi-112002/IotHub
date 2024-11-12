@@ -7,7 +7,7 @@ import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBounci
 import EventlogsModals from '../../reuseableComponent/modal/EventLogsModal';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
-import React = require('react');
+import React from 'react';
 
 interface EventLogsScreenParams {
   baseUrls: string;

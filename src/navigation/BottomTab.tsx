@@ -3,16 +3,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from '../assets/color/colors';
 import CustomIcon from '../reuseableComponent/customIcons/CustomIcon';
 import DashBoard from '../screens/dashBoard/DashBoard';
-import DrawerNavigation from './DrawerNavigation';
+import { AppNavigationParams } from './NavigationStackList';
+import HomeNavigation from './HomeNavigation';
 
 
-type TabParamList = {
-    DashBoard: undefined;
-    LiveSpot: undefined;
-};
+
 
 // Create a Bottom Tab Navigator
-const Tab = createBottomTabNavigator<TabParamList>();
+const Tab = createBottomTabNavigator<AppNavigationParams>();
 
 function BottomTabNavigation() {
     return (
@@ -20,8 +18,8 @@ function BottomTabNavigation() {
             initialRouteName="DashBoard"
             screenOptions={({ route }) => ({
                 headerShown: false,
-                tabBarActiveTintColor: 'blue',
-                tabBarInactiveTintColor: 'gray',
+                tabBarActiveTintColor: colors.AppPrimaryColor,
+                tabBarInactiveTintColor: colors.inactiveTint,
                 tabBarStyle: {
                     elevation: 4,
                     shadowColor: colors.blueDarkest,
@@ -35,22 +33,23 @@ function BottomTabNavigation() {
                 tabBarIcon: ({ focused }) => {
                     let iconPath;
 
-                    if (route.name === 'LiveSpot') {
+                    if (route.name === 'LiveSpots') {
                         iconPath = focused
-                            ? require('../assets/icons/editIcon.png')
-                            : require('../assets/icons/editIcon.png');
+                            ? require('../assets/icons/LiveSpots.png')
+                            : require('../assets/icons/LiveSpots.png');
                     } else if (route.name === 'DashBoard') {
                         iconPath = focused
-                            ? require('../assets/icons/editIcon.png')
-                            : require('../assets/icons/editIcon.png');
+                            ? require('../assets/icons/dashBoard.png')
+                            : require('../assets/icons/dashBoard.png');
+
                     }
 
-                    return <CustomIcon iconPath={iconPath} onPress={undefined} />;
+                    return <CustomIcon iconPath={iconPath} onPress={undefined} style={{}} />;
                 },
             })}
         >
             <Tab.Screen name="DashBoard" component={DashBoard} />
-            <Tab.Screen name="LiveSpot" component={DrawerNavigation} />
+            <Tab.Screen name="LiveSpots" component={HomeNavigation} />
         </Tab.Navigator>
     );
 }

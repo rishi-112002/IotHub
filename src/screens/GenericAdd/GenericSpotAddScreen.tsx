@@ -1,4 +1,4 @@
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 import GenericAddForm from './GenericAddForm';
 import React from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';

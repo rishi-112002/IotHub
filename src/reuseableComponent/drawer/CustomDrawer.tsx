@@ -1,21 +1,24 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/react-in-jsx-scope */
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
+// import { RootDrawerTypes } from '../../navigation/DrawerNavigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducer/Store';
 import React from 'react';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
- 
-function CustomDrawerContent() {
+
+function CustomDrawerContent(props: { navigation: any }) {
+    const { navigation } = props
+
     const [isSpotExpanded, setIsSpotExpanded] = useState(false);
-    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
- 
+
+    console.log("navigatioN props", navigation)
     const user = useSelector((state: RootState) => state.authentication.userName);
- 
+
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView style={styles.container}>
@@ -24,7 +27,7 @@ function CustomDrawerContent() {
                     <Text style={styles.headerTitle}>IoT Hub</Text>
                     <Text style={styles.headerSubtitle}>Welcome, {user}!</Text>
                 </View>
- 
+
                 <View>
                     {/* Live Spot */}
                     <DrawerItem
@@ -34,7 +37,7 @@ function CustomDrawerContent() {
                                 <Text style={styles.itemText}>Live Spot</Text>
                             </View>
                         )}
-                        onPress={() => navigation.navigate('HomeNavigation', {screen:"HomeScreen"})}
+                        onPress={() => console.log("navigation acvsae" , navigation)}
                     />
                     {/* Spot Dropdown */}
                     <TouchableOpacity
@@ -51,11 +54,11 @@ function CustomDrawerContent() {
                             />
                         </View>
                     </TouchableOpacity>
- 
+
                     {isSpotExpanded && (
                         <View style={styles.subMenu}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('WeighbridgesNavigation')}
+                                onPress={() => navigation.navigate('Weighbridges')}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="scale" size={18} color={colors.gray} />
@@ -70,7 +73,7 @@ function CustomDrawerContent() {
                             </TouchableOpacity>
                         </View>
                     )}
- 
+
                     {/* RFID Reader's */}
                     <DrawerItem
                         label={() => (
@@ -81,7 +84,7 @@ function CustomDrawerContent() {
                         )}
                         onPress={() => navigation.navigate('RfidScreenNavigation')}
                     />
- 
+
                     {/* Settings */}
                     <DrawerItem
                         label={() => (
@@ -92,7 +95,7 @@ function CustomDrawerContent() {
                         )}
                         onPress={() => console.log('Settings')}
                     />
- 
+
                     {/* About */}
                     <DrawerItem
                         label={() => (
@@ -108,7 +111,7 @@ function CustomDrawerContent() {
         </View>
     );
 }
- 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -167,5 +170,5 @@ const styles = StyleSheet.create({
         color: colors.gray,
     },
 });
- 
+
 export default CustomDrawerContent;

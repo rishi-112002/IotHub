@@ -14,7 +14,6 @@ import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import WeighBridgeFunction from './weighBridgeFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 
@@ -82,7 +81,7 @@ function WeighBridgeAddForm(props: { id: any }) {
     <SequentialBouncingLoader />;
   }
   return (
-    <GestureHandlerRootView>
+    <View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {!smartControllerLoader ? (
           <View style={styles.container}>
@@ -386,7 +385,7 @@ function WeighBridgeAddForm(props: { id: any }) {
           <ActivityIndicator size={'large'} style={styles.flexInput} />
         )}
       </ScrollView>
-    </GestureHandlerRootView>
+    </View>
   );
 }
 

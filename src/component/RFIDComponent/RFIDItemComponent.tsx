@@ -1,6 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CardItemWith_Icon} from '../../reuseableComponent/card/CardItemWithIcon';
 import {ReaderCardContent} from '../../reuseableComponent/card/ReaderCardContent';
@@ -15,7 +14,7 @@ type init = {
 const RfidItem: React.FC<init> = ({reader, handleDelete}) => {
   // eslint-disable-next-line no-return-assign
   return (
-    <GestureHandlerRootView style={{flex: 1, paddingHorizontal: 10}}>
+   
       <SafeAreaView>
         <CardItemWith_Icon
           iconName="wifi-tethering"
@@ -24,7 +23,7 @@ const RfidItem: React.FC<init> = ({reader, handleDelete}) => {
           }
         />
       </SafeAreaView>
-    </GestureHandlerRootView>
+
   );
 };
 export default React.memo(RfidItem);

@@ -13,22 +13,30 @@ export type AppNavigationParams = {
 
   // Generic Spot Screens
   GenericSpotScreen: undefined;
-  GenericSpotAddScreen: { id: any };
+  GenericSpotAddScreen: undefined;
 
   // WeighBridge Screens
   WeighbridgesScreen: undefined;
-  WeighbridgesAddScreen: { id: any };
+  WeighbridgesAddScreen: undefined;
   WeighbridgesAddScreenSecound: { data: {} };
 
   // Root Drawer Screens
-  HomeNavigation: { screen: string };
-  WeighbridgesNavigation: { screen: string };
-  GenericSpot: { screen: string };
-  RfidScreenNavigation: { screen: string };
 
 
 
   RfidReader: undefined,
   RfidAdd: undefined,
   RfidEdit: { readers: {} }
+
+  DashBoard: undefined;
+  LiveSpot: undefined;
+
+  bottomTabNavigation: undefined
+  LiveSpots: undefined
+
+
+  HomeNavigation: undefined;
+  Weighbridges: { screen?: string };
+  GenericSpot: { screen?: string };
+  RfidScreenNavigation: undefined;
 };
