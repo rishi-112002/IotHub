@@ -1,14 +1,22 @@
 import React from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View, ImageStyle, StyleProp } from "react-native";
 
-function CustomIcon(props: { iconPath: any  , onPress:any}) {
-    const { iconPath , onPress } = props
+interface CustomIconProps {
+    iconPath: any;
+    onPress: any;
+    style?: StyleProp<ImageStyle>;
+}
+
+function CustomIcon(props: CustomIconProps) {
+    const { iconPath, onPress, style = {} } = props;
+    
     return (
         <View>
             <TouchableOpacity onPress={onPress}>
-                <Image source={iconPath} />
+                <Image source={iconPath} style={style} />
             </TouchableOpacity>
         </View>
-    )
+    );
 }
+
 export default CustomIcon;

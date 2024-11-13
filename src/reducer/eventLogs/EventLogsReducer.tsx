@@ -1,16 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { GetSpotEventLogs } from "./EventLogsAction"
+import { GetAllSpotEventLogs, GetSpotEventLogs, GetSpotEventLogsForToday } from "./EventLogsAction"
 
-   
+
 
 type AuthState = {
     eventLogs: [],
-    loader:boolean
+    eventLogsByTime: [],
+    loader: boolean,
+    eventLogsAll: [],
+    allEventLogLoader: boolean
 }
 
-const initState:AuthState = {
+const initState: AuthState = {
     eventLogs: [],
-    loader:false
+    eventLogsByTime: [],
+    loader: false,
+    eventLogsAll: [],
+    allEventLogLoader: false
+
 }
 export const eventLogsSlice = createSlice({
     name: "eventLogs",
@@ -19,16 +26,42 @@ export const eventLogsSlice = createSlice({
     extraReducers: builder => {
         builder.addCase(GetSpotEventLogs.fulfilled, (state, action) => {
             state.eventLogs = action.payload
-           state.loader = false
+            state.loader = false
         })
-        builder.addCase(GetSpotEventLogs.rejected, (state ) => {
+        builder.addCase(GetSpotEventLogs.rejected, (state) => {
             state.eventLogs = []
             console.log("error")
-           state.loader = false
+            state.loader = false
         })
         builder.addCase(GetSpotEventLogs.pending, (state) => {
             console.log("pending")
-           state.loader = true
+            state.loader = true
+        })
+        builder.addCase(GetSpotEventLogsForToday.fulfilled, (state, action) => {
+            state.eventLogsByTime = action.payload
+            state.loader = false
+        })
+        builder.addCase(GetSpotEventLogsForToday.rejected, (state) => {
+            state.eventLogsByTime = []
+            console.log("error")
+            state.loader = false
+        })
+        builder.addCase(GetSpotEventLogsForToday.pending, (state) => {
+            console.log("pending")
+            state.loader = true
+        })
+        builder.addCase(GetAllSpotEventLogs.fulfilled, (state, action) => {
+            state.eventLogsAll = action.payload
+            state.allEventLogLoader = false
+        })
+        builder.addCase(GetAllSpotEventLogs.rejected, (state) => {
+            state.eventLogsAll = []
+            console.log("error")
+            state.allEventLogLoader = false
+        })
+        builder.addCase(GetAllSpotEventLogs.pending, (state) => {
+            console.log("pending")
+            state.allEventLogLoader = true
         })
     }
 

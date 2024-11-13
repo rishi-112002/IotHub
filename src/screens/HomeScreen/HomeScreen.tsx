@@ -4,7 +4,7 @@ import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import SpotList from '../../component/SpotListComponent/SpotList';
 import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
-import React = require('react');
+import React from 'react';
 
 function HomeScreen() {
   const {spotListData, Loader, loadRfidList, refreshing, buCode} =

@@ -6,10 +6,10 @@ import SpotListScreen from '../screens/SpotListScreen';
 import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
 import {AppNavigationParams} from './NavigationStackList';
 import EditRfidScreen from '../screens/RFID/EditRfidscreen';
-
+ 
 // Create the stack navigator with a parameterized type for AppNavigationParams
 const Stack = createStackNavigator<AppNavigationParams>();
-
+ 
 function HomeNavigation() {
   return (
     // Set up the Stack Navigator
@@ -46,5 +46,6 @@ function HomeNavigation() {
     </Stack.Navigator>
   );
 }
-
+ 
 export default HomeNavigation;
+ 

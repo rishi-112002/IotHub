@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React, {useLayoutEffect} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, ScrollView} from 'react-native';
 import {useNavigation, RouteProp, useRoute} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useSelector} from 'react-redux';
@@ -10,7 +10,6 @@ import SpotInfo from './SpotInfo';
 import CustomMenu from '../../reuseableComponent/menuOptions/CustomMenu';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
-import {ScrollView} from 'react-native-gesture-handler';
 import DataTab from '../../reuseableComponent/card/DetailsCard';
 import {Colors2} from '../../assets/color/Colors2';
 import {RfidListHook} from '../../CustomHooks/RFIDHooks/RFIDListHook';

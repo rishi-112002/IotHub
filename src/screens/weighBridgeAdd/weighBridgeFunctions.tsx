@@ -1,25 +1,28 @@
-import {Alert} from 'react-native';
-import {RootState, store} from '../../reducer/Store';
-import {weighBridgeAdd} from '../../reducer/weighBridge/WeighBridgeAction';
+import { Alert } from 'react-native';
+import { RootState, store } from '../../reducer/Store';
+import { UpdateWeighBridgeSpot, weighBridgeAdd } from '../../reducer/weighBridge/WeighBridgeAction';
 import WeighBridgeEffectHooks from './WeighBridgeEffectHooks';
-import {types} from '../../assets/constants/Constant';
-import {useSelector} from 'react-redux';
-import {useState} from 'react';
+import { useEffect, useState } from 'react';
+import { types } from '../../assets/constants/Constant';
+import CustomToast from '../../reuseableComponent/modal/CustomToast';
+import { resetUpadteStatus } from '../../reducer/weighBridge/WeighBridgeReducer';
 
-function WeighBridgeFunction() {
+function WeighBridgeFunction(props: { id: any }) {
+  const { id } = props
   const [name, setName] = useState('');
   const [delay, setDelay] = useState('');
   const [minTagCount, setMinTagCount] = useState('');
   const [securityTagTimeOut, setSecurityTagTimeOut] = useState('');
   const [driverTagTimeOut, setDriverTagTimeOut] = useState('');
-  const [platformReadyTicks, setPlatformReadyTicks] = useState();
-  const [platformMaxWeight, setPlatformMaxWeight] = useState(0);
-  const [platformMinWeight, setPlatformMinWeight] = useState();
-  const [stableWeightTolerance, setStableWeightTolerance] = useState();
-  const [stableWeightTicks, setStableWeightTicks] = useState();
-  const [minVehicleWeight, setMinVehicleWeight] = useState(0);
+  const [platformReadyTicks, setPlatformReadyTicks] = useState('');
+  const [platformMaxWeight, setPlatformMaxWeight] = useState('');
+  const [platformMinWeight, setPlatformMinWeight] = useState('');
+  const [stableWeightTolerance, setStableWeightTolerance] = useState('');
+  const [stableWeightTicks, setStableWeightTicks] = useState('');
+  const [minVehicleWeight, setMinVehicleWeight] = useState('');
   const [expiryDateValue, setExpiryDateValue] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [isActiveEnabled, setIsActiveEnabled] = useState(false);
   const [currentField, setCurrentField] = useState<string | null>(null);
 
   const {
@@ -28,7 +31,9 @@ function WeighBridgeFunction() {
     smartController,
     smartControllerLoader,
     weightParsers,
-  } = WeighBridgeEffectHooks();
+    WeighBridgeSpot,
+    baseUrls, buCode, token, GenericSpots, readers, uploadError, dispatch, navigation, updateStatus, setLoader
+  } = WeighBridgeEffectHooks({ id: id });
   const [errors, setErrors] = useState<{
     name?: string;
     delay?: string;
@@ -73,15 +78,12 @@ function WeighBridgeFunction() {
     name: '',
     id: '',
   });
-  const [selectedEvent, setSelectedEvent] = useState<any>({name: '', id: ''});
+  const [selectedEvent, setSelectedEvent] = useState<any>({ name: '', id: '' });
   const [selectedWeightParser, setselectedWeightPars] = useState<any>({
     name: '',
     id: '',
   });
-  const GenericSpots = useSelector(
-    (state: RootState) => state.weighBridge.genericData,
-  );
-  const readers = useSelector((state: RootState) => state.spotAddDetail.reader);
+
 
   // Direction A states
   const [validIdA, setValidIdA] = useState('');
@@ -94,7 +96,7 @@ function WeighBridgeFunction() {
     id: '',
   });
   const [selectedSecondaryReaderA, setSelectedSecondaryReaderA] = useState<any>(
-    {name: '', id: ''},
+    { name: '', id: '' },
   );
 
   // Direction B states
@@ -108,7 +110,7 @@ function WeighBridgeFunction() {
     id: '',
   });
   const [selectedSecondaryReaderB, setSelectedSecondaryReaderB] = useState<any>(
-    {name: '', id: ''},
+    { name: '', id: '' },
   );
   const [selectedGenericSpotDirA, setSelectedGenericSpotDirA] = useState<any>({
     name: '',
@@ -119,11 +121,7 @@ function WeighBridgeFunction() {
     id: '',
   });
 
-  const buCode = useSelector((state: RootState) => state.authentication.buCode);
-  const baseUrls = useSelector(
-    (state: RootState) => state.authentication.baseUrl,
-  );
-  const token = useSelector((state: RootState) => state.authentication.token);
+
 
   const [isDriverTagEnabled, setIsDriverTagEnabled] = useState(false);
   const toggleDriverTagSwitch = () =>
@@ -142,7 +140,6 @@ function WeighBridgeFunction() {
     date: React.SetStateAction<string>,
     dateValue: any,
   ) => {
-    console.log('date', date, dateValue);
     setExpiryDateValue(dateValue);
     setSelectedDate(date);
     closeCalendarModal(); // Close the modal after selecting the date
@@ -225,9 +222,9 @@ function WeighBridgeFunction() {
     }
     return [];
   };
+
   const isFormValid = () => {
     return name?.trim() !== '' &&
-      delay?.trim() !== '' &&
       selectedEvent?.name?.trim() !== '' &&
       selectedSmartConnector?.name?.trim() !== '' &&
       selectedWeightParser?.name?.trim() !== '' &&
@@ -242,17 +239,19 @@ function WeighBridgeFunction() {
         selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE')
       ? selectedPrimaryReaderA?.name?.trim() !== ''
       : selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
-      ? typeof selectedGenericSpotDirA === 'string' &&
+        ? typeof selectedGenericSpotDirA === 'string' &&
         selectedGenericSpotDirA.trim() !== '' &&
         typeof selectedGenericSpotDirB === 'string' &&
         selectedGenericSpotDirB.trim() !== ''
-      : selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
-      ? typeof selectedGenericSpotDirA === 'string' &&
-        selectedGenericSpotDirA.trim() !== ''
-      : selectedPrimaryReaderB?.name?.trim() !== '';
+        : selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
+          ? typeof selectedGenericSpotDirA === 'string' &&
+          selectedGenericSpotDirA.trim() !== ''
+          : selectedPrimaryReaderB?.name?.trim() !== '';
   };
 
-  function handleUploadData() {
+  const handleUploadData = () => {
+    console.log('firstScreenData to pass');
+
     const newErrors: {
       name?: string;
       delay?: string;
@@ -267,8 +266,6 @@ function WeighBridgeFunction() {
       smartController?: string;
       smartControllerLoader?: string;
       weightParsers?: string;
-      isCalendarVisible?: string;
-      selectedDate?: string;
       selectedSecondaryReaderB?: string;
       securityTagTimeOut?: string;
       selectedEvent?: string;
@@ -294,136 +291,92 @@ function WeighBridgeFunction() {
       selectedGenericSpotDirB?: string;
     } = {};
     // Adding validation for each field
-    if (!selectedEvent?.id) {
-      newErrors.event = 'Event is required';
-    }
-    if (!name) {
-      newErrors.name = 'Name is required';
-    }
-    if (!delay) {
-      newErrors.delay = 'Delay is required';
-    }
-    if (isDriverTagEnabled && !driverTagTimeOut) {
-      newErrors.driverTagTimeOut = 'Driver Tag Timeout is required';
-    }
-    if (isSecurityTagEnabled && !securityTagTimeOut) {
-      newErrors.sequrityDelay = 'Security Delay is required';
-    }
-    if (!minTagCount) {
-      newErrors.minTagCount = 'Minimum Tag Count is required';
-    }
-    if (!selectedDate) {
-      newErrors.selectedDate = 'Selected Date is required';
-    }
-    if (!selectedSecondaryReaderB) {
-      newErrors.selectedSecondaryReaderB = 'Secondary Reader B is required';
-    }
-    if (!selectedSecondaryReaderA) {
-      newErrors.selectedSecondaryReaderA = 'Secondary Reader A is required';
-    }
-    if (!validIdA) {
-      newErrors.validIdA = 'Valid ID A is required';
-    }
-    if (!validIdB) {
-      newErrors.validIdB = 'Valid ID B is required';
-    }
-    if (!selectedSmartConnector.id) {
-      newErrors.selectedSmartConnector = 'Smart Connector is required';
-    }
-    if (!selectedWeightParser.id) {
-      newErrors.selectedWeightParser = 'Weight Parser is required';
-    }
-    if (!platformReadyTicks) {
-      newErrors.platformReadyTicks = 'Platform Ready Ticks is required';
-    }
-    if (!minVehicleWeight) {
-      newErrors.minVehicleWeight = 'Minimum Vehicle Weight is required';
-    }
-    if (!platformMaxWeight) {
-      newErrors.platformMaxWeight = 'Platform Max Weight is required';
-    }
-    if (!platformMinWeight) {
-      newErrors.platformMinWeight = 'Platform Min Weight is required';
-    }
-    if (!stableWeightTolerance) {
-      newErrors.stableWeightTolerance = 'Stable Weight Tolerance is required';
-    }
-    if (!stableWeightTicks) {
-      newErrors.stableWeightTicks = 'Stable Weight Ticks is required';
-    }
-    if (!selectedDisplayA.id) {
-      newErrors.selectedDisplayA = 'Display A is required';
-    }
-    if (!selectedPrimaryReaderA.id) {
-      newErrors.selectedPrimaryReaderA = 'Primary Reader A is required';
-    }
-    if (!selectedGenericSpotDirA.id) {
-      newErrors.selectedGenericSpotDirA =
-        'Generic Spot Direction A is required';
-    }
-    if (!selectedDisplayB.id) {
-      newErrors.selectedDisplayB = 'Display B is required';
-    }
-    if (!selectedPrimaryReaderB.id) {
-      newErrors.selectedPrimaryReaderB = 'Primary Reader B is required';
-    }
-    if (!selectedGenericSpotDirB.id) {
-      newErrors.selectedGenericSpotDirB =
-        'Generic Spot Direction B is required';
-    }
+    // if (!selectedEvent?.id) {
+    //   newErrors.event = 'Event is required';
+    // }
+    // if (!name) {
+    //   newErrors.name = 'Name is required';
+    // }
+    // if (!delay) {
+    //   newErrors.delay = 'Delay is required';
+    // }
+    // if (isDriverTagEnabled && !driverTagTimeOut) {
+    //   newErrors.driverTagTimeOut = 'Driver Tag Timeout is required';
+    // }
+    // if (isSecurityTagEnabled && !securityTagTimeOut) {
+    //   newErrors.sequrityDelay = 'Security Delay is required';
+    // }
+
+    // if (!selectedSmartConnector.id) {
+    //   newErrors.selectedSmartConnector = 'Smart Connector is required';
+    // }
+    // if (!selectedWeightParser.id) {
+    //   newErrors.selectedWeightParser = 'Weight Parser is required';
+    // }
+    // if (!platformReadyTicks) {
+    //   newErrors.platformReadyTicks = 'Platform Ready Ticks is required';
+    // }
+    // if (!minVehicleWeight) {
+    //   newErrors.minVehicleWeight = 'Minimum Vehicle Weight is required';
+    // }
+    // if (!platformMaxWeight) {
+    //   newErrors.platformMaxWeight = 'Platform Max Weight is required';
+    // }
+    // if (!platformMinWeight) {
+    //   newErrors.platformMinWeight = 'Platform Min Weight is required';
+    // }
+    // if (!stableWeightTolerance) {
+    //   newErrors.stableWeightTolerance = 'Stable Weight Tolerance is required';
+    // }
+    // if (!stableWeightTicks) {
+    //   newErrors.stableWeightTicks = 'Stable Weight Ticks is required';
+    // }
+    // if (platformMinWeight >= platformMaxWeight) {
+    //   newErrors.platformMinWeight = "Platform min weight is always less than Platform Max weight"
+    // }
+    // if (
+    //   platformMaxWeight >= minVehicleWeight
+    // ) {
+    //   newErrors.minVehicleWeight = "minVehicleWeight is  always more than Platform Max weight"
+    // }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
-    if (platformMaxWeight > minVehicleWeight) {
-      Alert.alert(
-        'Warning',
-        'Platform Max Weight is greater than Min Vehicle Weight',
-        [
-          {
-            text: 'OK',
-            onPress: () =>
-              console.log('OK Pressed', minVehicleWeight, platformMaxWeight),
-          },
-        ],
-        {cancelable: false},
-      );
-    }
-    console.log('selectedEvent.id', selectedEvent.id);
     let typeSpecificFields = {};
     switch (selectedEvent.id) {
       case 'UNIDIRECTIONAL_WEIGHBRIDGE':
         typeSpecificFields = {
           validDiDirA: validIdA,
-          primaryReaderIdDirA: selectedPrimaryReaderA.id,
-          displayIdDirA: selectedDisplayA.id,
+          primaryReaderIdDirA: Number(selectedPrimaryReaderA.id),
+          ...(displayAId && { displayIdDirA: Number(selectedDisplayA.id) })
         };
         break;
 
       case 'BIDIRECTIONAL_WEIGHBRIDGE':
         typeSpecificFields = {
-          primaryReaderIdDirB: selectedPrimaryReaderB.id,
+          primaryReaderIdDirB: Number(selectedPrimaryReaderB.id),
           validDiDirA: validIdA,
-          primaryReaderIdDirA: selectedPrimaryReaderA.id,
+          primaryReaderIdDirA: Number(selectedPrimaryReaderA.id),
           validDiDirB: validIdB,
-          displayIdDirA: selectedDisplayA.id,
-          displayIdDirB: selectedDisplayB.id,
+          ...(displayAId && { displayIdDirA: Number(selectedDisplayA.id) }),
+          ...(displayBId && { displayIdDirB: Number(selectedDisplayB.id) })
+
         };
         break;
       case 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER':
         typeSpecificFields = {
           validDiDirA: validIdA,
-          primaryReaderIdDirA: selectedPrimaryReaderA.id,
-          displayIdDirA: selectedDisplayA.id,
+          primaryReaderIdDirA: Number(selectedPrimaryReaderA.id),
+          ...(displayAId && { displayIdDirA: Number(selectedDisplayA.id) })
         };
         break;
 
       case 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER':
         typeSpecificFields = {
           validDiDirA: validIdA,
-          displayIdDirA: selectedDisplayA.id,
+          ...(displayAId && { displayIdDirA: Number(selectedDisplayA.id) })
         };
         break;
 
@@ -431,13 +384,16 @@ function WeighBridgeFunction() {
         typeSpecificFields = {
           validDiDirA: validIdA,
           validDiDirB: validIdB,
-          displayA: selectedDisplayA.id,
-          displayB: selectedDisplayB.id,
+          ...(displayAId && { displayIdDirA: Number(selectedDisplayA.id) }),
+
+          ...(displayBId && { displayIdDirB: Number(selectedDisplayB.id) })
+
         };
         break;
     }
     const input = {
-      active: false,
+      active: isActiveEnabled,
+      ...(WeighBridgeSpot?.id && { id: WeighBridgeSpot.id }),
       buCode: buCode,
       delayAlertAfter: delay ? Number(delay) : null,
       driverTag: isDriverTagEnabled,
@@ -453,29 +409,130 @@ function WeighBridgeFunction() {
       ticksForPlatformReady: Number(platformReadyTicks),
       ticksForStableWeight: Number(stableWeightTicks),
       type: selectedEvent.id,
-      weightParserId: selectedWeightParser.id,
-      genericSpotDirA: selectedGenericSpotDirA.id || null,
-      genericSpotDirB: selectedGenericSpotDirB.id || null,
+      weightParserId: Number(selectedWeightParser.id),
+      genericSpotDirA: Number(selectedGenericSpotDirA.id) || null,
+      genericSpotDirB: Number(selectedGenericSpotDirB.id) || null,
     };
     const dataToUpload = {
       ...typeSpecificFields,
       ...input,
     };
+    console.log('firstScreenData to pass i got on Click', dataToUpload);
     try {
+      console.log("hello from try of handle save ")
       store.dispatch(
-        weighBridgeAdd({
-          baseUrls: baseUrls,
-          weighData: dataToUpload,
-          token: token,
-          buCode: buCode,
-        }),
+        id ?
+          UpdateWeighBridgeSpot({
+            baseUrls: baseUrls,
+            weighData: dataToUpload,
+            token: token,
+            buCode: buCode,
+          }) :
+          weighBridgeAdd({
+            baseUrls: baseUrls,
+            weighData: dataToUpload,
+            token: token,
+            buCode: buCode,
+          })
+
       );
     } catch (error) {
-      console.log(error);
+      console.log("can i caught in error ", error);
     }
 
-    console.log('firstScreenData to pass', dataToUpload);
   }
+  //type
+  const eventFromApi = WeighBridgeSpot.type;
+  const matchedEvent = types.find(event => event.id === eventFromApi);
+  //genericA
+  const GenericSpotA = WeighBridgeSpot.genericSpotDirA;
+  const GenericSpotDirA = GenericSpots.find(spot => spot.id === GenericSpotA);
+  //GenericB
+  const GenericSpotB = WeighBridgeSpot.genericSpotDirB;
+  const GenericSpotDirB = GenericSpots.find(spot => spot.id === GenericSpotB);
+  //smartIo
+  const smartControllerOfSpot = WeighBridgeSpot.smartio;
+  const smartControllerName = smartControllerOfSpot?.name;
+  const smartControllerId = smartControllerOfSpot?.id;
+  //primaryReaders
+  const ReaderOfSpot = WeighBridgeSpot.readers;
+  const primaryReaderA = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === "PRIMARY" && item.direction === "A");
+  const primaryReaderB = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === "PRIMARY" && item.direction === "B");
+  const PrimaryReaderAName = primaryReaderA?.name;
+  const PrimaryReaderAId = primaryReaderA?.id;
+  const PrimaryReaderBName = primaryReaderB?.name;
+  const PrimaryReaderBId = primaryReaderB?.id;
+
+  //secoundaryReader
+  const secoundaryReaderA = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === "SECONDARY" && item.direction === "A");
+  const secoundaryReaderB = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === "SECONDARY" && item.direction === "B");
+  const secoundaryReaderAName = secoundaryReaderA?.name;
+  const secoundaryReaderAId = secoundaryReaderA?.id;
+  const secoundaryReaderBName = secoundaryReaderB?.name;
+  const secoundaryReaderBId = secoundaryReaderB?.id;
+
+  //displays
+  const displayOfSpot = WeighBridgeSpot.displays
+
+  const displayA = displayOfSpot?.find((item: { direction: string }) => item.direction === "A");
+  const displayB = displayOfSpot?.find((item: { direction: string }) => item.direction === "B");
+  const displayAName = displayA?.name;
+  const displayAId = displayA?.id;
+  const displayBName = displayB?.name;
+  const displayBId = displayB?.id;
+  console.log("expirydate" , WeighBridgeSpot.expiryDate)
+  useEffect(() => {
+    if (id) {
+      setName(WeighBridgeSpot.name)
+      setDelay(WeighBridgeSpot.delayAlertAfter?.toString() || '')
+      setValidIdA(WeighBridgeSpot.validDiDirA?.toString() || '')
+      setValidIdB(WeighBridgeSpot.validDiDirB?.toString() || '')
+      setSelectedEvent({ name: matchedEvent?.name || '', id: matchedEvent?.id || '' })
+      setSelectedSmartConnector({ name: smartControllerName || '', id: smartControllerId || "" })
+      setPlatformMaxWeight(WeighBridgeSpot.maxPlatformReadyWeight?.toString() || '')
+      setPlatformMinWeight(WeighBridgeSpot.minPlatformReadyWeight?.toString() || '')
+      setMinTagCount(WeighBridgeSpot.tagCount?.toString() || "")
+      setMinVehicleWeight(WeighBridgeSpot.minVehicleWeight?.toString() || '')
+      setStableWeightTicks(WeighBridgeSpot.ticksForStableWeight?.toString() || '')
+      setStableWeightTolerance(WeighBridgeSpot.stableWeightTolerance?.toString() || '')
+      setPlatformReadyTicks(WeighBridgeSpot.ticksForPlatformReady?.toString() || '')
+      setSelectedGenericSpotDirA({ name: GenericSpotDirA?.name || '', id: GenericSpotDirA?.id || '' })
+      setSelectedGenericSpotDirB({ name: GenericSpotDirB?.name || '', id: GenericSpotDirB?.id || '' })
+      setSelectedPrimaryReaderA({ name: PrimaryReaderAName || '', id: PrimaryReaderAId || '' })
+      setSelectedPrimaryReaderB({ name: PrimaryReaderBName || '', id: PrimaryReaderBId || '' })
+      setSelectedSecondaryReaderA({ name: secoundaryReaderAName || '', id: secoundaryReaderAId || '' })
+      setSelectedSecondaryReaderB({ name: secoundaryReaderBName || '', id: secoundaryReaderBId || '' })
+      setSelectedDisplayA({ name: displayAName || '', id: displayAId || '' })
+      setSelectedDisplayB({ name: displayBName || '', id: displayBId || '' })
+      if (WeighBridgeSpot && WeighBridgeSpot.smartio && WeighBridgeSpot.smartio.psr) {
+        const psrId = WeighBridgeSpot.smartio.psr.id;
+        const psrName = WeighBridgeSpot.smartio.psr.name;
+        setselectedWeightPars({ name: psrName || '', id: psrId || '' })
+      }
+      setDriverTagTimeOut(WeighBridgeSpot.driverTagTimeout?.toString() || '')
+      setSecurityTagTimeOut(WeighBridgeSpot.driverTagTimeout?.toString() || '')
+      setIsDriverTagEnabled(WeighBridgeSpot.driverTag)
+      setIsSecurityTagEnabled(WeighBridgeSpot.securityTag)
+      setIsActiveEnabled(WeighBridgeSpot.active)
+    }
+  }, [id, WeighBridgeSpot])
+  useEffect(() => {
+    console.log("updateStatus", updateStatus)
+    switch (updateStatus) {
+      case 'failed':
+        CustomToast('error', uploadError);
+        dispatch(resetUpadteStatus());
+        break;
+      case 'succeeded':
+        CustomToast('success', updateStatus);
+        dispatch(resetUpadteStatus());
+        navigation.navigate('WeighbridgesScreen');
+        break;
+      case 'loading':
+        setLoader(true);
+        break;
+    }
+  }, [uploadError, dispatch, navigation, updateStatus]);
   return {
     name,
     delay,

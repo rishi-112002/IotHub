@@ -1,21 +1,22 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/react-in-jsx-scope */
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-import { RootDrawerTypes } from '../../navigation/DrawerNavigation';
+// import { RootDrawerTypes } from '../../navigation/DrawerNavigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducer/Store';
 import React from 'react';
 
-function CustomDrawerContent() {
-    const [isSpotExpanded, setIsSpotExpanded] = useState(false);
-    const navigation = useNavigation<NavigationProp<RootDrawerTypes>>();
+function CustomDrawerContent(props: { navigation: any }) {
+    const { navigation } = props
 
+    const [isSpotExpanded, setIsSpotExpanded] = useState(false);
+
+    console.log("navigatioN props", navigation)
     const user = useSelector((state: RootState) => state.authentication.userName);
 
     return (
@@ -36,7 +37,7 @@ function CustomDrawerContent() {
                                 <Text style={styles.itemText}>Live Spot</Text>
                             </View>
                         )}
-                        onPress={() => navigation.navigate('HomeNavigation')}
+                        onPress={() => navigation.navigate("LiveSpots")}
                     />
                     {/* Spot Dropdown */}
                     <TouchableOpacity
@@ -57,14 +58,14 @@ function CustomDrawerContent() {
                     {isSpotExpanded && (
                         <View style={styles.subMenu}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('Weighbridges', { screen: 'WeighbridgesScreen' })}
+                                onPress={() => navigation.navigate('WeighBridgeNavigation')}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="scale" size={18} color={colors.gray} />
                                 <Text style={styles.subMenuText}>Weighbridges</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('GenericSpot', { screen: 'GenericSpotScreen' })}
+                                onPress={() => navigation.navigate('GenericSpot')}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="location-on" size={18} color={colors.gray} />

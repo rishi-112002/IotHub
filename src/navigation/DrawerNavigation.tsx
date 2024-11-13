@@ -4,40 +4,33 @@ import {
 } from '@react-navigation/drawer';
 import React from 'react';
 import CustomDrawerContent from '../reuseableComponent/drawer/CustomDrawer';
-import HomeNavigation from './HomeNavigation';
 import GenericNavigation from './GenericNavigation';
 import WeighBridgeNavigation from './WeighBridgeNavigation';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {AppNavigationParams} from './NavigationStackList';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { AppNavigationParams } from './NavigationStackList';
 import RfidScreenNavigation from './RfidNavigation';
+import BottomTabNavigation from './BottomTab';
+import EventLogsScreen from '../screens/HomeScreen/EventLogsScreen';
+import HomeNavigation from './HomeNavigation';
+import AllEventLogsScreen from '../screens/dashBoard/AllEventLogScreen';
 
-// Create the drawer navigator with a parameterized type for AppNavigationParams
 const Drawer = createDrawerNavigator<AppNavigationParams>();
-
 export default function DrawerNavigation() {
-  // Use the 'useRoute' hook to access the current route and its parameters
-  const route = useRoute<RouteProp<{params: AppNavigationParams}, 'params'>>();
-
-  // Destructure the 'screen' value from route parameters to set the initial route
-  const {screen}: any = route.params;
-
+  const route = useRoute<RouteProp<{ params: AppNavigationParams }, 'params'>>();
+  const { screen }: any = route.params;
+  console.log("screen name ", screen)
+  const navigation = useNavigation();
   return (
-    // Set up the Drawer Navigator
     <Drawer.Navigator
-      // Define the initial route based on the screen parameter passed in the route
-      initialRouteName={screen}
-      // Disable the header for the screens (handled elsewhere)
-      screenOptions={{headerShown: false}}
-      // Pass custom drawer content component for rendering the drawer menu
-      drawerContent={() => <CustomDrawerContent />}>
-      {/* Define the screens within the drawer navigation */}
-      <Drawer.Screen name="HomeNavigation" component={HomeNavigation} />
-      <Drawer.Screen name="Weighbridges" component={WeighBridgeNavigation} />
-      <Drawer.Screen name="GenericSpot" component={GenericNavigation} />
-      <Drawer.Screen
-        name="RfidScreenNavigation"
-        component={RfidScreenNavigation}
-      />
+      initialRouteName={"bottomTabNavigation"}
+      screenOptions={{ headerShown: true }}
+      drawerContent={() => <CustomDrawerContent navigation={navigation} />}>
+      <Drawer.Screen name="bottomTabNavigation" component={BottomTabNavigation}  options={{headerShown:false}} />
+      <Drawer.Screen name="WeighBridgeNavigation" component={WeighBridgeNavigation} options={{headerShown:false}}  />
+      <Drawer.Screen name="GenericSpot" component={GenericNavigation}  options={{headerShown:false}} />
+      <Drawer.Screen name="RfidScreenNavigation" component={RfidScreenNavigation}  options={{headerShown:false}} />
+      <Drawer.Screen name="EventLogScreen" component={EventLogsScreen}  options={{headerShown:false}} />
+      <Drawer.Screen name="LiveSpots" component={HomeNavigation} options={{headerShown:false}}  />
     </Drawer.Navigator>
   );
 }

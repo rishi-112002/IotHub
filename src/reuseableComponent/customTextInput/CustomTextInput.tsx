@@ -15,8 +15,9 @@ type CustomTextInputProps = {
   editable?: boolean;
   onPress?: () => void;
   disable?: boolean;
-  setTextInput: any
-  required: boolean
+  setTextInput: any;
+  required: boolean;
+  type?: 'input' | 'dropdown'; // New prop to define type
 } & TextInputProps;
 
 function CustomTextInput({
@@ -33,10 +34,11 @@ function CustomTextInput({
   value,
   setTextInput,
   required = false,
-  errorMessage: error,
+  type = 'input', // Default to 'input' type
   ...rest
 }: CustomTextInputProps) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
+
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
 
@@ -45,17 +47,25 @@ function CustomTextInput({
   }, [isFocused, value]);
 
   const inputContainerStyle = useMemo(() => {
-    return [styles.inputContainer, { borderColor: isFocused ? colors.blueLighter : '#ccc' }];
+    return [
+      styles.inputContainer,
+      { borderColor: isFocused ? colors.blueLighter : '#ccc' }
+    ];
   }, [isFocused]);
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {label && <Text style={labelStyle}>{label}<Text style={{ color: colors.redDarkest }}>{" "}{required && "*"}</Text></Text>}
+      {label && (
+        <Text style={labelStyle}>
+          {label}
+          <Text style={{ color: colors.redDarkest }}> {required && '*'}</Text>
+        </Text>
+      )}
       <TouchableOpacity
         style={inputContainerStyle}
-        onPress={editable ? undefined : onPress}
-        disabled={editable ? false : disable}
-        activeOpacity={editable ? 1 : 0.7}
+        onPress={type === 'dropdown' && editable ? onPress : undefined} // Use onPress for dropdown only
+        disabled={type === 'input' || editable} // Disable only if it's input or editable
+        activeOpacity={type === 'dropdown' ? 0.7 : 1}
       >
         <TextInput
           style={[styles.input, inputStyle]}
@@ -64,20 +74,34 @@ function CustomTextInput({
           onChangeText={(text) => setTextInput(text)}
           placeholder={placeholder}
           placeholderTextColor="#8292B4"
-          value={editable ? value : value}
-          editable={editable}
+          value={value}
+          editable={type === 'input' && editable} // Allow editing only if type is 'input' and editable
           {...rest}
         />
-        {iconName && (
-          <Icon name={iconName} size={24} color={isFocused ? colors.AppPrimaryColor : "#666"} style={styles.icon} onPress={handleVisibility} />
+        {iconName && type === 'input' && (
+          <Icon
+            name={iconName}
+            size={24}
+            color={isFocused ? colors.AppPrimaryColor : '#666'}
+            style={styles.icon}
+            onPress={handleVisibility}
+          />
         )}
-        {!editable && <Icon name="arrow-drop-down" size={30} color={colors.blueDarkest} style={styles.icon} />}
+        {type === 'dropdown' && (
+          <Icon
+            name="arrow-drop-down"
+            size={30}
+            color={colors.blueDarkest}
+            style={styles.icon}
+            onPress={onPress}
+          />
+        )}
       </TouchableOpacity>
       <View style={isFocused ? styles.underlineFocused : styles.underlineBlurred} />
       {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
