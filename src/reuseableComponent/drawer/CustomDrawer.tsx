@@ -37,7 +37,7 @@ function CustomDrawerContent(props: { navigation: any }) {
                                 <Text style={styles.itemText}>Live Spot</Text>
                             </View>
                         )}
-                        onPress={() => console.log("navigation acvsae" , navigation)}
+                        onPress={() => navigation.navigate("LiveSpots")}
                     />
                     {/* Spot Dropdown */}
                     <TouchableOpacity
@@ -58,7 +58,7 @@ function CustomDrawerContent(props: { navigation: any }) {
                     {isSpotExpanded && (
                         <View style={styles.subMenu}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('Weighbridges')}
+                                onPress={() => navigation.navigate('WeighBridgeNavigation')}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="scale" size={18} color={colors.gray} />

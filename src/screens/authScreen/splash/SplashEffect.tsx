@@ -43,7 +43,7 @@ function SplashEffect() {
       const splashTimeout = setTimeout(() => {
         if (baseUrls) {
           if (isLogeIn) {
-            navigation.navigate('Drawer', {screen: 'HomeNavigation'});
+            navigation.navigate('Drawer', {screen: 'bottomTabNavigation'});
           } else {
             navigation.navigate('LoginScreen');
           }
@@ -57,7 +57,7 @@ function SplashEffect() {
     } else {
       if (baseUrls) {
         if (isLogeIn) {
-          navigation.navigate('Drawer', {screen: 'HomeNavigation'});
+          navigation.navigate('Drawer', {screen: 'bottomTabNavigation'});
         } else {
           navigation.navigate('LoginScreen');
         }

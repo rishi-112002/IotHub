@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import { Colors2 } from '../../assets/color/Colors2';
+import CustomIcon from '../../reuseableComponent/customIcons/CustomIcon';
 
 type EventLogItemProps = {
   item: {
@@ -11,40 +12,50 @@ type EventLogItemProps = {
     type: string;
     createdAt: string;
     details: any;
-    spot: string,
-    vehicleNumber: any,
-    direction: any
-    tagId: any
-
+    spot: string;
+    vehicleNumber: any;
+    direction: any;
+    tagId: any;
   };
+  isSelected: boolean;
+  onToggle: () => void;
+
 };
 
-const EventLogItem: React.FC<EventLogItemProps> = ({ item }: EventLogItemProps) => {
-  const [detailsVisible, setDetailsVisible] = useState(false);
+const EventLogItem: React.FC<EventLogItemProps> = ({ item, isSelected, onToggle }: EventLogItemProps) => {
 
-  const toggleDetails = () => {
-    setDetailsVisible(!detailsVisible);
-  };
 
   return (
     <View style={{ flex: 1 }}>
       {/* Card Container */}
       <TouchableOpacity
 
-        onPress={toggleDetails}
+        onPress={onToggle}
         activeOpacity={0.7}
       >
         <View style={styles.contentContainer}>
           {/* Event Icon and Title */}
           <View style={styles.iconTitleContainer}>
-            <Text style={styles.spotTitle}>
-              {item.name.length > 25 ? `${item.name.substring(0, 25)}...` : item.name}
-            </Text>
+            <View style={{ flexDirection: "row", justifyContent: 'space-between', flex: 1 }}>
+              <View style={{
+                flexDirection: 'column', marginLeft: 10,
+              }}>
+                <Text style={styles.spotTitle}>
+                  {item.name.length > 25 ? `${item.name.substring(0, 25)}...` : item.name}
+                </Text>
+                <Text style={styles.typeText}>{item.type}</Text>
+              </View>
+
+              <CustomIcon iconPath={isSelected ? require("../../assets/icons/downArrowLight.png") : require("../../assets/icons/upArrrowLight.png")} onPress={undefined} />
+
+
+
+            </View>
           </View>
         </View>
 
         {/* Event Type */}
-        <Text style={styles.typeText}>{item.type}</Text>
+
 
         {/* Created At and Message ID */}
         <View style={{
@@ -55,7 +66,7 @@ const EventLogItem: React.FC<EventLogItemProps> = ({ item }: EventLogItemProps) 
         }}>
           <View style={styles.messageContainer}>
             <Text style={styles.label}>Spot</Text>
-            <Text style={styles.valueText}>{item.spot.substring(0,12)}</Text>
+            <Text style={styles.valueText}>{item.spot.substring(0, 12)}</Text>
           </View>
           <View style={styles.messageContainer}>
             <Text style={styles.label}>Message ID:</Text>
@@ -69,7 +80,7 @@ const EventLogItem: React.FC<EventLogItemProps> = ({ item }: EventLogItemProps) 
           </View>
 
         </View>
-        {detailsVisible && (
+        {isSelected && (
           <View>
             <View style={{
               flexDirection: 'row',
@@ -143,15 +154,11 @@ const styles = StyleSheet.create({
     fontSize: fontSizes.text,
     color: Colors2.SecondaryTextColor,
     fontWeight: 'bold',
-    marginLeft: 10,
-    flexShrink: 1,
   },
   typeText: {
     fontSize: fontSizes.smallText,
     color: Colors2.HelperTextColor,
     fontWeight: '500',
-    marginHorizontal: "3%",
-    marginTop: -10,
   },
   section: {
     flexDirection: 'row',
@@ -164,7 +171,7 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     flex: 1,
-    marginStart:10,
+    marginStart: 10,
     alignItems: 'flex-start',
   },
   label: {

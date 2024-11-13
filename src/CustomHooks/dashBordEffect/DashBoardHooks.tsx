@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState, store } from "../../reducer/Store";
 import { Animated } from "react-native";
 import { useEffect, useState } from "react";
-import { GetSpotEventLogsForToday } from "../../reducer/eventLogs/EventLogsAction";
+import { GetAllSpotEventLogs, GetSpotEventLogsForToday } from "../../reducer/eventLogs/EventLogsAction";
 import { GetSpotData } from "../../reducer/spotData/spotDataAction";
 
 function DashBoardHook() {
@@ -50,7 +50,7 @@ function DashBoardHook() {
         eventLogsByTime,
         connectedCount,
         disconnectedCount,
-        loading
+        loading,
     }
 }
 export default DashBoardHook;

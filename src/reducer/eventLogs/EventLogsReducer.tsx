@@ -1,18 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { GetSpotEventLogs, GetSpotEventLogsForToday } from "./EventLogsAction"
+import { GetAllSpotEventLogs, GetSpotEventLogs, GetSpotEventLogsForToday } from "./EventLogsAction"
 
 
 
 type AuthState = {
     eventLogs: [],
     eventLogsByTime: [],
-    loader: boolean
+    loader: boolean,
+    eventLogsAll: [],
+    allEventLogLoader: boolean
 }
 
 const initState: AuthState = {
     eventLogs: [],
     eventLogsByTime: [],
-    loader: false
+    loader: false,
+    eventLogsAll: [],
+    allEventLogLoader: false
+
 }
 export const eventLogsSlice = createSlice({
     name: "eventLogs",
@@ -44,6 +49,19 @@ export const eventLogsSlice = createSlice({
         builder.addCase(GetSpotEventLogsForToday.pending, (state) => {
             console.log("pending")
             state.loader = true
+        })
+        builder.addCase(GetAllSpotEventLogs.fulfilled, (state, action) => {
+            state.eventLogsAll = action.payload
+            state.allEventLogLoader = false
+        })
+        builder.addCase(GetAllSpotEventLogs.rejected, (state) => {
+            state.eventLogsAll = []
+            console.log("error")
+            state.allEventLogLoader = false
+        })
+        builder.addCase(GetAllSpotEventLogs.pending, (state) => {
+            console.log("pending")
+            state.allEventLogLoader = true
         })
     }
 

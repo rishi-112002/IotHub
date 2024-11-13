@@ -2,12 +2,9 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from '../assets/color/colors';
 import CustomIcon from '../reuseableComponent/customIcons/CustomIcon';
-import DashBoard from '../screens/dashBoard/DashBoard';
 import { AppNavigationParams } from './NavigationStackList';
 import HomeNavigation from './HomeNavigation';
-
-
-
+import DashBoardNavigation from './DashBoardNavigation';
 
 // Create a Bottom Tab Navigator
 const Tab = createBottomTabNavigator<AppNavigationParams>();
@@ -15,7 +12,7 @@ const Tab = createBottomTabNavigator<AppNavigationParams>();
 function BottomTabNavigation() {
     return (
         <Tab.Navigator
-            initialRouteName="DashBoard"
+            initialRouteName="DashBoardNavigation"
             screenOptions={({ route }) => ({
                 headerShown: false,
                 tabBarActiveTintColor: colors.AppPrimaryColor,
@@ -29,6 +26,7 @@ function BottomTabNavigation() {
                     borderTopRightRadius: 20,
                     position: 'absolute',
                     overflow: 'hidden', // Ensures rounded corners are visible
+                    display: route.name === 'DashBoardNavigation' || route.name === 'LiveSpots' ? 'flex' : 'none',
                 },
                 tabBarIcon: ({ focused }) => {
                     let iconPath;
@@ -37,18 +35,17 @@ function BottomTabNavigation() {
                         iconPath = focused
                             ? require('../assets/icons/LiveSpots.png')
                             : require('../assets/icons/LiveSpots.png');
-                    } else if (route.name === 'DashBoard') {
+                    } else if (route.name === 'DashBoardNavigation') {
                         iconPath = focused
                             ? require('../assets/icons/dashBoard.png')
                             : require('../assets/icons/dashBoard.png');
-
                     }
 
                     return <CustomIcon iconPath={iconPath} onPress={undefined} style={{}} />;
                 },
             })}
         >
-            <Tab.Screen name="DashBoard" component={DashBoard} />
+            <Tab.Screen name="DashBoardNavigation" component={DashBoardNavigation} />
             <Tab.Screen name="LiveSpots" component={HomeNavigation} />
         </Tab.Navigator>
     );

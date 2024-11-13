@@ -19,35 +19,36 @@ function AppNavigation() {
 
   // Render the navigation stack
   return (
-      <Stack.Navigator initialRouteName="SplashScreen">
-        <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
-        {/* If user is not logged in, show UrlScreen and LoginScreen */}
-        {!userName || userName === '' ? (
-          <Stack.Group>
-            <Stack.Screen
-              name="UrlScreen"
-              component={UrlScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="LoginScreen"
-              component={LoginForm}
-              options={{ headerShown: false }}
-            />
-          </Stack.Group>
-        ) : (
-          // If user is logged in, show the DrawerNavigation screen
+    <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      {/* If user is not logged in, show UrlScreen and LoginScreen */}
+      {!userName || userName === '' ? (
+        <Stack.Group>
           <Stack.Screen
-            name="Drawer"
-            component={DrawerNavigation}
+            name="UrlScreen"
+            component={UrlScreen}
             options={{ headerShown: false }}
           />
-        )}
-      </Stack.Navigator>
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginForm}
+            options={{ headerShown: false }}
+          />
+        </Stack.Group>
+      ) : (
+        // If user is logged in, show the DrawerNavigation screen
+        // If user is logged in, show the DrawerNavigation screen
+        <Stack.Screen
+          name="Drawer"
+          component={DrawerNavigation}
+          options={{ headerShown: false }} />
+
+      )}
+    </Stack.Navigator>
   );
 }
 

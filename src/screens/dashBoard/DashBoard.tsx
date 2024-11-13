@@ -1,15 +1,17 @@
 import React, { } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomHeader from "../../reuseableComponent/header/CustomHeader";
 import fontSizes from "../../assets/fonts/FontSize";
 import CustomIcon from "../../reuseableComponent/customIcons/CustomIcon";
 import colors from "../../assets/color/colors";
 import EventLogsList from "../../component/EventLog/EventLogList";
 import DashBoardHook from "../../CustomHooks/dashBordEffect/DashBoardHooks";
-import SequentialBouncingLoader from "../../reuseableComponent/loader/BallBouncingLoader";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { AppNavigationParams } from "../../navigation/NavigationStackList";
 
 function DashBoard() {
     const { translateY,
+        baseUrl,
         setModalVisible,
         setRequestData,
         buCode,
@@ -18,6 +20,8 @@ function DashBoard() {
         connectedCount,
         disconnectedCount,
     } = DashBoardHook()
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+
     return (
         <View style={{ flex: 1, backgroundColor: colors.white }}>
             <CustomHeader
@@ -33,7 +37,7 @@ function DashBoard() {
                 <View style={{ marginBottom: 10 }}>
 
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                    <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => navigation.navigate('LiveSpots')}>
                         <View style={{ flexDirection: 'row', columnGap: 10, flex: 1 }}>
                             <CustomIcon iconPath={require("../../assets/icons/LiveSpots.png")} onPress={undefined} />
 
@@ -50,10 +54,7 @@ function DashBoard() {
                             <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={undefined} />
 
                         </View>
-
-
-
-                    </View>
+                    </TouchableOpacity>
 
 
                     <View style={styles.row}>
@@ -100,7 +101,7 @@ function DashBoard() {
 
                 {/* Event Logs Card */}
                 <View style={{ flex: 1, marginVertical: 20 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => navigation.navigate("AllEventLogsScreen")}>
                         <View style={{ flexDirection: 'row', columnGap: 10, flex: 1 }}>
                             <CustomIcon iconPath={require("../../assets/icons/eventLogs.png")} onPress={undefined} />
                             <View style={{ flex: 1 }}>
@@ -114,7 +115,7 @@ function DashBoard() {
                         <View style={{ flex: 0.1, alignItems: 'center' }}>
                             <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={undefined} />
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
 
                     <View style={{

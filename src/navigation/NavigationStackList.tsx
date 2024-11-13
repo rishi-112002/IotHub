@@ -7,7 +7,7 @@ export type AppNavigationParams = {
 
   // Home Navigation
   HomeScreen: undefined;
-  EventLogScreen: { baseUrls: string | null; spotName: string };
+  EventLogScreen: { baseUrls: string | null; spotName: string, data: any };
   SpotDetailsScreen: { baseUrls: string | null; spotName: string };
   SpotDetailScreen: { data: any[] };
 
@@ -36,7 +36,11 @@ export type AppNavigationParams = {
 
 
   HomeNavigation: undefined;
-  Weighbridges: { screen?: string };
+  WeighBridgeNavigation: { screen?: string };
   GenericSpot: { screen?: string };
   RfidScreenNavigation: undefined;
+
+  AllEventLogsScreen: undefined;
+
+  DashBoardNavigation: undefined;
 };

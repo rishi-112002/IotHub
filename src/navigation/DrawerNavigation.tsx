@@ -10,6 +10,9 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { AppNavigationParams } from './NavigationStackList';
 import RfidScreenNavigation from './RfidNavigation';
 import BottomTabNavigation from './BottomTab';
+import EventLogsScreen from '../screens/HomeScreen/EventLogsScreen';
+import HomeNavigation from './HomeNavigation';
+import AllEventLogsScreen from '../screens/dashBoard/AllEventLogScreen';
 
 const Drawer = createDrawerNavigator<AppNavigationParams>();
 export default function DrawerNavigation() {
@@ -20,13 +23,14 @@ export default function DrawerNavigation() {
   return (
     <Drawer.Navigator
       initialRouteName={"bottomTabNavigation"}
-      screenOptions={{ headerShown: false }}
-      drawerContent={() => <CustomDrawerContent navigation={navigation } />}>
-      <Drawer.Screen name="bottomTabNavigation" component={BottomTabNavigation} />
-      <Drawer.Screen name="Weighbridges" component={WeighBridgeNavigation} />
-      <Drawer.Screen name="GenericSpot" component={GenericNavigation} />
-      <Drawer.Screen name="RfidScreenNavigation" component={RfidScreenNavigation} />
-
+      screenOptions={{ headerShown: true }}
+      drawerContent={() => <CustomDrawerContent navigation={navigation} />}>
+      <Drawer.Screen name="bottomTabNavigation" component={BottomTabNavigation}  options={{headerShown:false}} />
+      <Drawer.Screen name="WeighBridgeNavigation" component={WeighBridgeNavigation} options={{headerShown:false}}  />
+      <Drawer.Screen name="GenericSpot" component={GenericNavigation}  options={{headerShown:false}} />
+      <Drawer.Screen name="RfidScreenNavigation" component={RfidScreenNavigation}  options={{headerShown:false}} />
+      <Drawer.Screen name="EventLogScreen" component={EventLogsScreen}  options={{headerShown:false}} />
+      <Drawer.Screen name="LiveSpots" component={HomeNavigation} options={{headerShown:false}}  />
     </Drawer.Navigator>
   );
 }

@@ -1,5 +1,5 @@
 // EventLogList.tsx
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, FlatList, Text, StyleSheet, Animated } from 'react-native';
 import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
@@ -26,21 +26,23 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
   setModal,
   setRequestData,
 }) => {
-  const onInfoClick = useCallback(
-    (details: any) => {
-      setModal(true);
-      setRequestData(details);
-    },
-    [setModal, setRequestData],
-  );
-
+  const [selectedItemId, setSelectedItemId] = useState("");
   const renderEventLog = useCallback(
     ({ item }: { item: EventLogItemType }) => (
-      <CardItemWith_Icon iconName='event-note' view={<EventLogItem item={item} />} />
-
+      <CardItemWith_Icon
+        iconName='event-note'
+        view={
+          <EventLogItem
+            item={item}
+            isSelected={item.id === selectedItemId}
+            onToggle={() => setSelectedItemId(item.id === selectedItemId ? "" : item.id)}
+          />
+        }
+      />
     ),
-    [onInfoClick],
+    [selectedItemId]
   );
+
   const keyExtractor = useCallback((item: EventLogItemType) => item.id, []);
 
   return (
