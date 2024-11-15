@@ -10,13 +10,13 @@ import fontSizes from '../../assets/fonts/FontSize';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducer/Store';
 import React from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
-function CustomDrawerContent(props: { navigation: any }) {
-    const { navigation } = props
+function CustomDrawerContent() {
 
     const [isSpotExpanded, setIsSpotExpanded] = useState(false);
-
-    console.log("navigatioN props", navigation)
+    const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
     const user = useSelector((state: RootState) => state.authentication.userName);
 
     return (
@@ -37,7 +37,7 @@ function CustomDrawerContent(props: { navigation: any }) {
                                 <Text style={styles.itemText}>Live Spot</Text>
                             </View>
                         )}
-                        onPress={() => navigation.navigate("LiveSpots")}
+                        onPress={() => navigation.navigate("Drawer", { screen: "bottomTabNavigation" })}
                     />
                     {/* Spot Dropdown */}
                     <TouchableOpacity
@@ -58,14 +58,14 @@ function CustomDrawerContent(props: { navigation: any }) {
                     {isSpotExpanded && (
                         <View style={styles.subMenu}>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('WeighBridgeNavigation')}
+                                onPress={() => navigation.navigate("Drawer", { screen: 'WeighBridgeNavigation' })}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="scale" size={18} color={colors.gray} />
                                 <Text style={styles.subMenuText}>Weighbridges</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('GenericSpot')}
+                                onPress={() => navigation.navigate("Drawer", { screen: 'GenericSpotNavigation' })}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="location-on" size={18} color={colors.gray} />
@@ -82,7 +82,7 @@ function CustomDrawerContent(props: { navigation: any }) {
                                 <Text style={styles.itemText}>RFID Reader's</Text>
                             </View>
                         )}
-                        onPress={() => navigation.navigate('RfidScreenNavigation')}
+                        onPress={() => navigation.navigate("Drawer", { screen: 'RfidScreenNavigation' })}
                     />
 
                     {/* Settings */}
