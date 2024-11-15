@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, FlatList, Animated, ListRenderItem } from 'react-native';
+import { StyleSheet, FlatList, Animated, ListRenderItem, View } from 'react-native';
 import SpotItem from './SpotItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducer/Store';
@@ -43,7 +43,7 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <AnimatedFlatList
         data={spotData}
         renderItem={renderSpot}
@@ -64,14 +64,14 @@ const SpotList: React.FC<SpotListComponentProps> = ({
         onScroll={onScroll}
         contentContainerStyle={contentContainerStyle}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     // flex:1,
-    paddingBottom: 30,
+    // paddingBottom: 10,
   },
 });
 
