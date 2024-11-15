@@ -2003,12 +2003,12 @@
     invariant "^2.2.4"
     nullthrows "^1.1.1"
 
-"@react-navigation/bottom-tabs@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-7.0.0.tgz#297503d44a0e26c34772f645a6210acb57f2fbc5"
-  integrity sha512-IU+mI4q8Pi62EcEgROUSG1q8VJzNaLZKIPayxYLS/eZh+/54AfNX73uzY98N1m+InvO8yCmWtBrcsPZB1ddp8A==
+"@react-navigation/bottom-tabs@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-7.0.3.tgz#187c915d6518980f5de72130c430cec48bbc0cd5"
+  integrity sha512-pB8oBDV/NkKsi6c2cxd2Upq0u1xwgjLbTFoxvw8W4LN4hH4K4v5XcORe8QacFifGeKyND7gzqZkIS6gW9xJY/A==
   dependencies:
-    "@react-navigation/elements" "^2.0.0"
+    "@react-navigation/elements" "^2.0.2"
     color "^4.2.3"
 
 "@react-navigation/core@^7.0.0":
@@ -2038,6 +2038,13 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-2.0.0.tgz#ab8fa606de0812b94ea202d64b23621c75f6a4c0"
   integrity sha512-kt2Q5WLJ9jjJMA/Jt8S3z3Jub2V+HIJ2LM4z+dZqL00FVsTfa4rSk3BTktI3MmBiUCgzUo6jPOxkxsUbjoL/ig==
+  dependencies:
+    color "^4.2.3"
+
+"@react-navigation/elements@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-2.0.2.tgz#f80239c1c2f3cc27183915f5d2ec0d013cd060f0"
+  integrity sha512-RgvKIyrj6cecborOg+QcnI0pvKaOXDPAwnZ+0HCnnWQROTTQEOt7jYpx4B4YIqNW3ttc2EZRIPr069LYUmlViQ==
   dependencies:
     color "^4.2.3"
 

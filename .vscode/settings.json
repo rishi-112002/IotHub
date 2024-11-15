@@ -17,16 +17,19 @@
         "Genral",
         "iothub",
         "Kbutton",
+        "netinfo",
         "reduxjs",
         "RFDI",
         "Rfid",
         "Rfidscreen",
+        "Secound",
         "secoundary",
         "smartios",
         "Subviews",
         "Successfull",
         "Swipeable",
         "Tabler",
+        "Userlogin",
         "weightbridge"
     ]
 }
