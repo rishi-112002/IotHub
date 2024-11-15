@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Animated,
   StyleSheet,
@@ -20,13 +20,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Colors2} from '../../assets/color/Colors2';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-// Define types for the spot data
-interface Spot {
-  id: string;
-  name: string;
-  active: boolean;
-}
-
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 function HomeScreen() {
@@ -39,7 +32,7 @@ function HomeScreen() {
   const [modelShow, setModelShow] = useState<boolean>(false);
 
   // Filter spots based on the selected filter and search query
-  const filteredSpots = spotListData.filter(spot => {
+  const filteredSpots = spotListData.filter((spot: any) => {
     const matchesFilter =
       filter === 'all' ||
       (filter === 'connected' && spot?.active) ||
@@ -49,6 +42,9 @@ function HomeScreen() {
       .includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+
+  // Check if no results match both filter and search query
+  const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
 
   // Animated scroll logic for header and search bar visibility
   const scrollY = new Animated.Value(0);
@@ -62,7 +58,7 @@ function HomeScreen() {
   const clearSearch = () => setSearchQuery('');
 
   const clearFilter = () => {
-    setFilter('all'); // Reset filter to 'all'
+    setFilter('all');
   };
 
   // Scroll event handler
@@ -78,12 +74,13 @@ function HomeScreen() {
   // Handle filter selection
   const handleFilterPress = (selectedFilter: FilterOption) => {
     setFilter(selectedFilter);
-    setSearchQuery(''); // Optional: Clear search when filter is applied
-    setModelShow(false); // Close the filter menu after selection
+    setSearchQuery('');
+    setModelShow(false);
   };
 
   return (
     <SafeAreaView style={styles.container1}>
+      {/* Your Header and Search Bar Components */}
       <Animated.View style={[styles.headerContainer, {paddingTop: translateY}]}>
         <CustomHeader
           buCode={buCode}
@@ -149,18 +146,30 @@ function HomeScreen() {
         </Animated.View>
       </Animated.View>
 
-      {/* Loader or Spot List */}
       {Loader ? (
         <BouncingLoader />
       ) : (
         <Animated.View
           style={[styles.listWrapper, {transform: [{translateY: translateY}]}]}>
-          {/* Conditionally render FilterMenu as an overlay */}
+          {noResults ? (
+            <Text style={styles.noResultsText}>
+              No results found for "{searchQuery}"
+            </Text>
+          ) : (
+            <SpotList
+              spotData={filteredSpots}
+              loadRfidList={loadRfidList}
+              refreshing={refreshing}
+              onScroll={handleScroll}
+              contentContainerStyle={styles.listContainer}
+            />
+          )}
+          {/* FilterMenu rendering logic */}
           {modelShow && (
             <TouchableWithoutFeedback onPress={toggleFilterMenu}>
               <View style={styles.overlay}>
                 <View style={styles.triangle} />
-                <View style={styles.container}>
+                <View style={styles.filterMenuContainer}>
                   <TouchableOpacity
                     style={[
                       styles.filterItem,
@@ -194,13 +203,6 @@ function HomeScreen() {
               </View>
             </TouchableWithoutFeedback>
           )}
-          <SpotList
-            spotData={filteredSpots}
-            loadRfidList={loadRfidList}
-            refreshing={refreshing}
-            onScroll={handleScroll} // Pass the typed scroll handler
-            contentContainerStyle={styles.listContainer}
-          />
         </Animated.View>
       )}
     </SafeAreaView>
@@ -213,33 +215,41 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   overlay: {
+    // flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     zIndex: 9999,
-    elevation: 5,
+    elevation: 40,
   },
   triangle: {
+    elevation: 50,
     width: 0,
     height: 0,
-    borderLeftWidth: 22,
-    borderRightWidth: 22,
-    borderBottomWidth: 25,
+    borderLeftWidth: 20,
+    borderRightWidth: 20,
+    borderBottomWidth: 30,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
     borderBottomColor: colors.skyLighter,
     marginBottom: -10,
     marginLeft: '85%',
+    shadowColor: '#000',
+    shadowOffset: {width: 20, height: 200},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
-  container: {
-    width: '60%',
+  filterMenuContainer: {
+    // flex: 1,
+    width: '50%',
+    // height: '23%',
     backgroundColor: colors.skyLighter,
     padding: 16,
     borderRadius: 20,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: {width: 0, height: 20},
     shadowOpacity: 0.25,
     shadowRadius: 4,
     alignSelf: 'flex-end',
@@ -303,17 +313,14 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   listWrapper: {
-    marginTop: 10,
+    flex: 1,
+    marginTop: 8,
   },
   listContainer: {
     flex: 1,
   },
   selectedFilterContainer: {
     marginLeft: 10,
-    // borderWidth: 2,
-    // borderRadius: 20,
-    // borderColor: colors.blueBase,
-    // width: '30%',
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
@@ -321,12 +328,18 @@ const styles = StyleSheet.create({
   },
   selectedFilterText: {
     fontSize: fontSizes.smallText,
-    color: colors.darkGray,
+    color: colors.gray,
   },
   clearFilterButton: {
     padding: 5,
     borderRadius: 20,
     paddingRight: 20,
+  },
+  noResultsText: {
+    fontSize: 18,
+    color: colors.gray,
+    textAlign: 'center',
+    fontWeight: '500',
   },
 });
 
