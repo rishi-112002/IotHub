@@ -1,16 +1,18 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {GetSpotData} from './spotDataAction';
+import { createSlice } from '@reduxjs/toolkit';
+import { GetSpotData, GetSpotName } from './spotDataAction';
 
 type AuthState = {
   spotData: [];
   loader: boolean;
   error: string | null;
+  spotName: []
 };
 
 const initState: AuthState = {
   spotData: [],
   loader: true,
   error: null,
+  spotName: []
 };
 export const spotDataSlice = createSlice({
   name: 'spotData',
@@ -28,7 +30,21 @@ export const spotDataSlice = createSlice({
       state.loader = false;
     });
     builder.addCase(GetSpotData.pending, state => {
-      console.log('pending');
+      console.log('pending of GetSpotData');
+      state.loader = true;
+    });
+    builder.addCase(GetSpotName.fulfilled, (state, action) => {
+      state.spotName = action.payload;
+      state.loader = false;
+      console.log('done :- ');
+    });
+    builder.addCase(GetSpotName.rejected, (state, action) => {
+      state.spotName = [];
+      console.log('error');
+      state.loader = false;
+    });
+    builder.addCase(GetSpotName.pending, state => {
+      console.log('pending of GetSpotName');
       state.loader = true;
     });
   },

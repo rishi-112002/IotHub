@@ -7,9 +7,10 @@ import EventlogsModals from '../../reuseableComponent/modal/EventLogsModal';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../reducer/Store';
 
 interface EventLogsScreenParams {
-  baseUrls: string;
   spotName: string;
   data: any
 }
@@ -17,9 +18,11 @@ interface EventLogsScreenParams {
 function EventLogsScreen() {
   const route =
     useRoute<RouteProp<{ params: EventLogsScreenParams }, 'params'>>();
-  const { baseUrls, spotName, data } = route.params;
+  // const { spotName, data } = route.params;
+  const baseUrls = useSelector((state: RootState) => state.authentication.baseUrl);
+
   const navigation = useNavigation();
-  const { loader, eventLogs } = useEventLogs(baseUrls, spotName);
+  // const { loader, eventLogs } = useEventLogs(baseUrls, "PlantEntry");
   const [modalVisible, setModalVisible] = useState(false);
   const [requestData, setRequestData] = useState({});
 
@@ -27,21 +30,21 @@ function EventLogsScreen() {
     navigation.setOptions({
       headerTitle: () => (
         <Text style={{ color: colors.darkblack, fontSize: fontSizes.heading }}>
-          {spotName}
+          {/* {spotName} */}
         </Text>
       ),
     });
-  }, [navigation, spotName]);
+  }, [navigation]);
 
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
 
-        <EventLogsList
-          data={data ? data :eventLogs}
+        {/* <EventLogsList
+          data={eventLogs}
           setModal={setModalVisible}
           setRequestData={setRequestData}
-        />
+        /> */}
 
         {modalVisible && (
           <EventlogsModals

@@ -34,7 +34,7 @@ export const eventLogsSlice = createSlice({
             state.loader = false
         })
         builder.addCase(GetSpotEventLogs.pending, (state) => {
-            console.log("pending")
+            console.log("pending of  GetSpotEventLogs ")
             state.loader = true
         })
         builder.addCase(GetSpotEventLogsForToday.fulfilled, (state, action) => {
@@ -47,7 +47,7 @@ export const eventLogsSlice = createSlice({
             state.loader = false
         })
         builder.addCase(GetSpotEventLogsForToday.pending, (state) => {
-            console.log("pending")
+            console.log("pending of GetSpotEventLogsForToday")
             state.loader = true
         })
         builder.addCase(GetAllSpotEventLogs.fulfilled, (state, action) => {
@@ -56,11 +56,11 @@ export const eventLogsSlice = createSlice({
         })
         builder.addCase(GetAllSpotEventLogs.rejected, (state) => {
             state.eventLogsAll = []
-            console.log("error")
+            console.log("error getting all event Logs")
             state.allEventLogLoader = false
         })
         builder.addCase(GetAllSpotEventLogs.pending, (state) => {
-            console.log("pending")
+            console.log("pending of getting all event Logs")
             state.allEventLogLoader = true
         })
     }

@@ -1,78 +1,33 @@
-import { View } from 'react-native';
+import { Animated, View } from 'react-native';
 import EventLogsList from '../../component/EventLog/EventLogList';
-import React, { useState } from 'react';
+import React, { } from 'react';
 import AllEventLogHooks from '../../CustomHooks/EventLog/AllEventLogHook';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
-import { direction, EventNames, filters } from '../../assets/constants/Constant';
+import { filters } from '../../assets/constants/Constant';
 import FilterModal from '../../reuseableComponent/modal/FilterModal';
 import CustomDateTimePicker from '../../reuseableComponent/modal/CalendarWithTime';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
+import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
+import CustomSubHeader from '../../reuseableComponent/header/CustomSubHeader';
 
 function AllEventLogsScreen() {
+    const scrollY = new Animated.Value(0);
+    const diffClamp = Animated.diffClamp(scrollY, 0, 60);
+    const translateY = diffClamp.interpolate({
+        inputRange: [0, 70],
+        outputRange: [0, -70],
+    });
+    const paddingTopAnimated = scrollY.interpolate({
+        inputRange: [0, 110],
+        outputRange: [60, 0],
+        extrapolate: 'clamp',
+    });
 
-    const { eventLogsAll, setModalVisible, setRequestData, loader, isFocused, handleCloseModal, handleOpenModal, handleOptionSelected, selectedOption } = AllEventLogHooks();
-
+    const { setSelectedSpot, handleReset, setModalVisible, setRequestData, loader, isFocused, handleCloseModal, handleOptionSelected, getOptions, handleDateSelect, handleOptionSelect, openCalendarModal, selectedDirection, selectedName, selectedSpot, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, filteredLogs, handleFilterClick, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setToDateValue, setDateFromValue, filterBadgeVisible, navigation, setIsFocused } = AllEventLogHooks();
     if (loader) {
         <SequentialBouncingLoader />
     }
-    const [isCalendarVisible, setCalendarVisible] = useState(false);
-    const [selectedToDate, setSelectedToDate] = useState('');
-    const [ToDateValue, setToDateValue] = useState('');
-    const [selectedFromDate, setSelectedFromDate] = useState('');
-    const [DateFromValue, setDateFromValue] = useState('');
-
-    const openCalendarModal = () => setCalendarVisible(true);
-    const closeCalendarModal = () => setCalendarVisible(false);
-    const [GenericmodalVisible, setGenericmodalVisible] = useState(false);
-    const handleDateSelect = (
-        date: React.SetStateAction<string>,
-        dateValue: any,
-    ) => {
-        if (selectedOption.id === "FROM_DATE") {
-            setDateFromValue(dateValue);
-            setSelectedFromDate(date);
-        }
-        if (selectedOption.id === "TO_DATE") {
-            setToDateValue(dateValue);
-            setSelectedToDate(date);
-        }
-
-        closeCalendarModal(); // Close the modal after selecting the date
-    };
-    const [currentField, setCurrentField] = useState<string | null>(null);
-
-    const handleOptionSelect = (selected: any) => {
-        if (currentField === 'DIRECTION') {
-            // Handle direction selection
-            setRequestData((prevData) => ({ ...prevData, direction: selected }));
-        } else if (currentField === 'SPOT_NAME') {
-            // Handle spot selection
-            setRequestData((prevData) => ({ ...prevData, spot: selected }));
-        } else if (currentField === 'NAME') {
-            // Handle name selection
-            setRequestData((prevData) => ({ ...prevData, name: selected }));
-        }
-
-        // Reset modal visibility and field
-        setGenericmodalVisible(false);
-        setCurrentField(null);
-    };
-    const uniqueSpots = [...new Set(eventLogsAll.map((item:any) => item.spot))];
-
-    // Get unique names
-    const uniqueNames = [...new Set(eventLogsAll.map((item:any) => item.name))];
-
-    const getOptions = () => {
-        if (currentField === 'DIRECTION') {
-            return direction;
-        } else if (currentField === 'SPOT_NAME') {
-            return uniqueSpots;
-        } else if (currentField === 'NAME') {
-            return EventNames;
-        }
-        return [];
-    };
     return (
         <View style={{ flex: 1 }}>
             {loader ?
@@ -81,12 +36,47 @@ function AllEventLogsScreen() {
                 </View>
                 :
                 <View style={{ flex: 1 }}>
-                    <EventLogsList
-                        data={eventLogsAll}
-                        setModal={setModalVisible}
-                        setRequestData={setRequestData}
+                    <CustomSubHeader spotName={"EventLogs"}
+                        onPress={() => setIsFocused(true)}
+                        iconPath={require("../../assets/icons/filterSmall.png")}
+                        onBackPress={() => navigation.goBack()}
+                        translateY={translateY}
                     />
+                   
+                    <Animated.View style={{ paddingTop: paddingTopAnimated  , flex:1}}>
+
+                    {
+                        filterBadgeVisible &&
+                        <View style={{ flex: 0.06 }}>
+                            <ScrollableBadges badges={[
+                                { key: 'Spot', value: selectedSpot.name },
+                                { key: 'Direction', value: selectedDirection.name },
+                                { key: 'Name', value: selectedName.name },
+                                { key: 'From Date', value: selectedFromDate },
+                                { key: 'To Date', value: selectedToDate }
+                            ]}
+
+                                setSelectedSpot={setSelectedSpot}
+                                setSelectedDirection={setSelectedDirection}
+                                setSelectedFromDate={setSelectedFromDate}
+                                setSelectedName={setSelectedName}
+                                setSelectedToDate={setSelectedToDate}
+                                setToDateValue={setToDateValue}
+                                setDateFromValue={setDateFromValue} />
+                        </View>
+
+                    }
+                        <EventLogsList
+                            data={filteredLogs}
+                            setModal={setModalVisible}
+                            setRequestData={setRequestData}
+                            onScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
+                                scrollY.setValue(e.nativeEvent.contentOffset.y);
+                            }}
+                        />
+                    </Animated.View>
                     {isFocused &&
+
                         <FilterModal
                             filters={filters}
                             isVisible={isFocused}
@@ -96,7 +86,14 @@ function AllEventLogsScreen() {
                             DateFromValue={selectedFromDate}
                             ToDateValue={selectedToDate}
                             setCurrentFiled={setCurrentField}
-                            setGenericmodalVisible={setGenericmodalVisible} />
+                            setGenericmodalVisible={setGenericmodalVisible}
+                            name={selectedName}
+                            spot={selectedSpot}
+                            direction={selectedDirection}
+                            handleFilterClick={handleFilterClick}
+                            handleReset={handleReset} />
+
+
                     }
                     <CustomDateTimePicker
                         visible={isCalendarVisible}

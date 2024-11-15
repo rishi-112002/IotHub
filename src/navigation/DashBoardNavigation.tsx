@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AppNavigationParams } from './NavigationStackList';
 import DashBoard from '../screens/dashBoard/DashBoard';
 import AllEventLogsScreen from '../screens/dashBoard/AllEventLogScreen';
+import WeighBridgeNavigation from './WeighBridgeNavigation';
 
 // Create the stack navigator with a parameterized type for AppNavigationParams
 const Stack = createStackNavigator<AppNavigationParams>();
@@ -20,9 +21,11 @@ function DashBoardNavigation() {
             {/* Define the EventLogsScreen with a header shown */}
             <Stack.Screen
                 name="AllEventLogsScreen" component={AllEventLogsScreen}
-                options={{ headerShown: true, }}
-
+                options={{ headerShown: false }}
             />
+            {/* <Stack.Screen name="WeighBridgeNavigation" 
+            component={WeighBridgeNavigation} options={{ headerShown: false }} /> */}
+
 
             {/* Define the SpotListScreen with a header shown */}
         </Stack.Navigator>

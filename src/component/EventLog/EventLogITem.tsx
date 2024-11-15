@@ -46,7 +46,7 @@ const EventLogItem: React.FC<EventLogItemProps> = ({ item, isSelected, onToggle 
                 <Text style={styles.typeText}>{item.type}</Text>
               </View>
 
-              <CustomIcon iconPath={isSelected ? require("../../assets/icons/downArrowLight.png") : require("../../assets/icons/upArrrowLight.png")} onPress={undefined} />
+              <CustomIcon iconPath={!isSelected ? require("../../assets/icons/downArrowLight.png") : require("../../assets/icons/upArrrowLight.png")} onPress={undefined} />
 
 
 

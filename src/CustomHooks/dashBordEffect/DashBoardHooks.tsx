@@ -17,6 +17,7 @@ function DashBoardHook() {
     const baseUrl = useSelector((State: RootState) => State.authentication.baseUrl);
     const spotListData = useSelector((state: RootState) => state.spotData.spotData);
     const eventLogsByTime = useSelector((state: RootState) => state.eventLogs.eventLogsByTime);
+    const eventLogsAll = useSelector((state: RootState) => state.eventLogs.eventLogsAll);
     const loading = useSelector((state: RootState) => state.eventLogs.loader);
     const connectedCount = spotListData.filter((spot: any) => spot.active === true).length;
     const disconnectedCount = spotListData.filter((spot: any) => spot.active === false).length;
@@ -36,6 +37,7 @@ function DashBoardHook() {
     }, [baseUrl, formattedDate]);
     useEffect(() => {
         store.dispatch(GetSpotData({ baseUrl: baseUrl }));
+        store.dispatch(GetAllSpotEventLogs({ baseUrl: baseUrl }));
     }, [baseUrl])
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -51,6 +53,7 @@ function DashBoardHook() {
         connectedCount,
         disconnectedCount,
         loading,
+        eventLogsAll
     }
 }
 export default DashBoardHook;

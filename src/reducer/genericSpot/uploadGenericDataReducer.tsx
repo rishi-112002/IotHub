@@ -190,7 +190,7 @@ export const UploadGenericSlice = createSlice({
       state.loader = false;
     });
     builder.addCase(DeleteGenericSpot.pending, state => {
-      console.log('pending');
+      console.log('pending of DeleteGenericSpot');
       state.deleteStatus = 'loading';
       state.loader = true;
     })

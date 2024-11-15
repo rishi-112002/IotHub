@@ -12,12 +12,14 @@ type EventLogItemType = {
   type: string;
   createdAt: string;
   details: any;
+
 };
 
 type EventLogsListProps = {
   data: EventLogItemType[];
   setModal: (value: boolean) => void;
   setRequestData: (request: any) => void;
+  onScroll: any
 };
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -25,6 +27,7 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
   data,
   setModal,
   setRequestData,
+  onScroll,
 }) => {
   const [selectedItemId, setSelectedItemId] = useState("");
   const renderEventLog = useCallback(
@@ -52,17 +55,18 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
           data={data}
           renderItem={renderEventLog}
           keyExtractor={keyExtractor}
+          onScroll={onScroll}
           removeClippedSubviews={true} // Helps with large lists
-          initialNumToRender={100} // Initially render 10 items for performance
-          maxToRenderPerBatch={100} // Number of items rendered per batch
-          windowSize={150} // How many screens worth of content to render
-          getItemLayout={(_data, index) => ({
-            length: 90,
-            offset: 90 * index,
-            index,
-          })}
-          updateCellsBatchingPeriod={30} // Reduce lag in scrolling
-          scrollEventThrottle={16} // For smoother scroll handling
+          initialNumToRender={40} // Initially render 10 items for performance
+        // maxToRenderPerBatch={50} // Number of items rendered per batch
+        // windowSize={150} // How many screens worth of content to render
+        // getItemLayout={(_data, index) => ({
+        //   length: 90,
+        //   offset: 90 * index,
+        //   index,
+        // })}
+        // updateCellsBatchingPeriod={30} // Reduce lag in scrolling
+        // scrollEventThrottle={16} // For smoother scroll handling
         />
       ) : (
         <View style={styles.emptyContainer}>
