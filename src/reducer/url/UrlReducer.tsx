@@ -35,7 +35,7 @@ export const GetUrlsSlice = createSlice({
     builder.addCase(GetUrls.pending, (state) => {
       state.loader = true; // Set loader to true when request is pending
       state.error = null; // Clear any previous error on new request
-      console.log("pending");
+      console.log("pending of GetUrls");
     });
   },
 });

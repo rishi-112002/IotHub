@@ -11,7 +11,6 @@ import { AppNavigationParams } from './NavigationStackList';
 import RfidScreenNavigation from './RfidNavigation';
 import BottomTabNavigation from './BottomTab';
 import EventLogsScreen from '../screens/HomeScreen/EventLogsScreen';
-import HomeNavigation from './HomeNavigation';
 import AllEventLogsScreen from '../screens/dashBoard/AllEventLogScreen';
 
 const Drawer = createDrawerNavigator<AppNavigationParams>();
@@ -30,7 +29,7 @@ export default function DrawerNavigation() {
       <Drawer.Screen name="GenericSpot" component={GenericNavigation}  options={{headerShown:false}} />
       <Drawer.Screen name="RfidScreenNavigation" component={RfidScreenNavigation}  options={{headerShown:false}} />
       <Drawer.Screen name="EventLogScreen" component={EventLogsScreen}  options={{headerShown:false}} />
-      <Drawer.Screen name="LiveSpots" component={HomeNavigation} options={{headerShown:false}}  />
+      <Drawer.Screen name="AllEventLogsScreen" component={AllEventLogsScreen} options={{headerShown:false}}  />
     </Drawer.Navigator>
   );
 }

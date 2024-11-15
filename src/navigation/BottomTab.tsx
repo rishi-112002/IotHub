@@ -26,7 +26,6 @@ function BottomTabNavigation() {
                     borderTopRightRadius: 20,
                     position: 'absolute',
                     overflow: 'hidden', // Ensures rounded corners are visible
-                    display: route.name === 'DashBoardNavigation' || route.name === 'LiveSpots' ? 'flex' : 'none',
                 },
                 tabBarIcon: ({ focused }) => {
                     let iconPath;

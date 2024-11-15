@@ -43,6 +43,7 @@ function HomeNavigation() {
         component={EditRfidScreen}
         options={{headerShown: true}}
       />
+      
     </Stack.Navigator>
   );
 }

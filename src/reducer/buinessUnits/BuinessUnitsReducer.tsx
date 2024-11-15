@@ -27,7 +27,7 @@ export const businessUnitsSlice = createSlice({
            state.loader = false
         })
         builder.addCase(GetBuinessUnits.pending, (state) => {
-            console.log("pending")
+            console.log("pending of Buiness Units")
            state.loader = true
         })
     }

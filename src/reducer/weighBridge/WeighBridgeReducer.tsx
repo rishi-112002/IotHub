@@ -188,7 +188,7 @@ export const WeighBridgeSlice = createSlice({
             })
             .addCase(DeleteWeighBridgeSpot.pending, (state) => {
                 state.deleteStatus = 'loading';
-                console.log('pending');
+                console.log('pending of  DeleteWeighBridgeSpot');
                 state.loader = true;
 
             })
