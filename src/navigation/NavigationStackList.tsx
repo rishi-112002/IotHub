@@ -36,11 +36,13 @@ export type AppNavigationParams = {
 
 
   HomeNavigation: undefined;
-  WeighBridgeNavigation: { screen?: string };
-  GenericSpot: { screen?: string };
+  WeighBridgeNavigation: undefined;
+  GenericSpotNavigation: undefined;
   RfidScreenNavigation: undefined;
 
   AllEventLogsScreen: undefined;
 
   DashBoardNavigation: undefined;
+
+  DrawerStackNavigation: undefined;
 };
