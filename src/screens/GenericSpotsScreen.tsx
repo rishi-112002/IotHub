@@ -1,10 +1,10 @@
-import {ActivityIndicator, Animated, View, StyleSheet} from 'react-native';
+import { ActivityIndicator, Animated, View, StyleSheet } from 'react-native';
 import SpotsDataByTypeComponent from '../component/SpotsDataByTypeComponent';
 import FloatingActionCutomButton from '../reuseableComponent/customButton/FloatingActionCustomButton';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import CustomHeader from '../reuseableComponent/header/CustomHeader';
-import {AppNavigationParams} from '../navigation/NavigationStackList';
-import React, {useEffect, useRef} from 'react';
+import { AppNavigationParams } from '../navigation/NavigationStackList';
+import React, { useEffect, useRef } from 'react';
 import colors from '../assets/color/colors';
 import GenericScreenHooks from '../CustomHooks/genericHooks/GenericScreenHooks';
 import CustomAlert from '../reuseableComponent/PopUp/CustomPopUp';
@@ -20,7 +20,7 @@ function GenericSpot() {
     setIsVisible,
   } = GenericScreenHooks();
   const onHandlePress = () => {
-    navigation.navigate('GenericSpotAddScreen');
+    navigation.navigate('GenericSpotAddScreen', { id: undefined });
   };
 
   const scrollY = new Animated.Value(0);
@@ -71,11 +71,11 @@ function GenericSpot() {
         <ActivityIndicator size="large" style={styles.loader} />
       ) : (
         <Animated.View
-          style={[styles.contentContainer, {paddingTop: paddingTopAnimated}]}>
+          style={[styles.contentContainer, { paddingTop: paddingTopAnimated }]}>
           <SpotsDataByTypeComponent
             data={GenericSpots}
             type={'GENERIC_SPOT'}
-            handleScroll={(e: {nativeEvent: {contentOffset: {y: number}}}) => {
+            handleScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
             handleDelete={handleDelete}
@@ -87,7 +87,7 @@ function GenericSpot() {
         </Animated.View>
       )}
       {isVisible && (
-        <Animated.View style={[styles.modalContainer, {opacity: fadeAnim}]}>
+        <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
           <CustomAlert
             isVisible={isVisible}
             onClose={() => setIsVisible(false)}

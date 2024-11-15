@@ -5,14 +5,14 @@ import {
   StatusBar,
   Animated,
 } from 'react-native';
-import CustomButton from '../../reuseableComponent/customButton/CustomButton';
-import colors from '../../assets/color/colors';
-import BusinessUnitModal from '../../reuseableComponent/modal/BuinessUnitsModal';
-import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
-import SuccessLoader from '../../reuseableComponent/loader/LoginSuccessLoader';
-import LoginEffect from './login/LoginEffect';
-import React = require('react');
-import LoginStyles from './login/LoginStyles';
+import LoginStyles from './LoginStyles';
+import React from 'react';
+import colors from '../../../assets/color/colors';
+import SuccessLoader from '../../../reuseableComponent/loader/LoginSuccessLoader';
+import CustomTextInput from '../../../reuseableComponent/customTextInput/CustomTextInput';
+import BusinessUnitModal from '../../../reuseableComponent/modal/BuinessUnitsModal';
+import CustomButton from '../../../reuseableComponent/customButton/CustomButton';
+import LoginEffect from "../../../screens/authScreen/login/LoginEffect"
 function LoginForm() {
   const {
     loader,
@@ -35,7 +35,7 @@ function LoginForm() {
     handleLogin,
     isButtonDisabled,
   } = LoginEffect();
-  const {styles} = LoginStyles();
+  const { styles } = LoginStyles();
   return (
     <View style={styles.mainContainer}>
       <StatusBar backgroundColor={colors.AppPrimaryColor} />
@@ -49,7 +49,7 @@ function LoginForm() {
         style={[
           styles.container,
           {
-            transform: [{translateY: slideUpAnim}],
+            transform: [{ translateY: slideUpAnim }],
           },
         ]}>
         <Text style={styles.heading}>Welcome Back</Text>
@@ -59,6 +59,7 @@ function LoginForm() {
           value={userName}
           errorMessage={errors.userName}
           editable={true}
+          type='input'
           setTextInput={handleUserNameChange}
           required={false}
         />
@@ -70,6 +71,7 @@ function LoginForm() {
           iconName={passwordVisible ? 'visibility' : 'visibility-off'}
           handleVisibility={handleVisibityClick}
           editable={true}
+          type='input'
           setTextInput={setPassword}
           required={false}
         />
@@ -79,6 +81,7 @@ function LoginForm() {
             setTextInput={undefined}
             label="Business Unit"
             editable={false}
+            type='dropdown'
             onPress={() => handleOpenModal()}
             required={false}
           />
@@ -95,7 +98,7 @@ function LoginForm() {
         <View style={styles.textContainer}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('UrlScreen', {baseUrls});
+              navigation.navigate('UrlScreen', { baseUrls });
             }}>
             <Text style={styles.subText}>Update BaseUrl.?</Text>
           </TouchableOpacity>

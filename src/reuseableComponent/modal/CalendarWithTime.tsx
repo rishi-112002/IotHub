@@ -10,7 +10,9 @@ export default function CustomDateTimePicker(props: { visible: any, onClose: any
         return date.toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'numeric',
-            year: 'numeric'
+            year: 'numeric',
+            hour: 'numeric',
+            minute: "numeric"
         });
     };
 
@@ -21,11 +23,12 @@ export default function CustomDateTimePicker(props: { visible: any, onClose: any
                     <DateTimePicker
                         mode="single"
                         initialView="day"
+                        timePicker={true}
                         onChange={(params: any) => {
                             if (params?.date) {
                                 const selectedDate = new Date(params.date); // Convert the string to a Date object
                                 const formattedDate = formatDate(selectedDate);
-                                onDateSelect(formattedDate ,params.date );  // Return formatted date
+                                onDateSelect(formattedDate, params.date);  // Return formatted date
                             }
                         }}
                     />

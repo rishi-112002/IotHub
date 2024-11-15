@@ -1,8 +1,6 @@
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
-import {useCallback} from 'react';
-import React = require('react');
-
+import React, { useCallback } from 'react';
 function GenericAddComponentDropDowns(props: {
   smartController: any;
   display: any;
@@ -12,6 +10,8 @@ function GenericAddComponentDropDowns(props: {
   eventId: any;
   setCurrentField: any;
   setModalVisible: any;
+  id: any;
+  isActive: any;
 }) {
   const {
     display,
@@ -22,6 +22,8 @@ function GenericAddComponentDropDowns(props: {
     eventId,
     setModalVisible,
     setCurrentField,
+    id,
+    isActive
   } = props;
   const handleFocus = useCallback(
     (field: string) => {
@@ -39,7 +41,8 @@ function GenericAddComponentDropDowns(props: {
         style={style.input}
         label={'Smart Controller'}
         disable={false}
-        editable={false}
+        type='dropdown'
+        editable={!isActive || !id}
         setTextInput={undefined}
         required={false}
       />
@@ -50,7 +53,8 @@ function GenericAddComponentDropDowns(props: {
         errorMessage={undefined}
         label={'Display'}
         disable={false}
-        editable={false}
+        type='dropdown'
+        editable={!isActive || !id}
         setTextInput={undefined}
         required={false}
       />
@@ -61,7 +65,8 @@ function GenericAddComponentDropDowns(props: {
         style={style.input}
         label={'Event'}
         disable={false}
-        editable={false}
+        type='dropdown'
+        editable={!isActive || !id}
         setTextInput={undefined}
         required={false}
       />
@@ -73,7 +78,8 @@ function GenericAddComponentDropDowns(props: {
             style={style.input}
             label={'Primary Reader'}
             disable={eventId === 'NONE' ? true : false}
-            editable={false}
+            type='dropdown'
+            editable={!isActive || !id}
             setTextInput={undefined}
             required={true}
           />
@@ -84,7 +90,8 @@ function GenericAddComponentDropDowns(props: {
             onPress={() => handleFocus('secoundaryReader')}
             label={'Secoundary Reader'}
             disable={eventId === 'NONE' ? true : false}
-            editable={false}
+            type='dropdown'
+            editable={!isActive || !id}
             setTextInput={undefined}
             required={eventId !== 'TAG_ENTRY' ? true : false}
           />

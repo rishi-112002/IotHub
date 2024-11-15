@@ -40,7 +40,7 @@ export const SpotAddDetailsSlice = createSlice({
             state.smartControllerLoader = false
         })
         builder.addCase(GetSmartControllers.pending, (state) => {
-            console.log("pending")
+            console.log("pending  of  GetSmartControllers")
             state.smartControllerLoader = true
         })
         builder.addCase(GetDisplays.fulfilled, (state, action) => {
@@ -54,7 +54,7 @@ export const SpotAddDetailsSlice = createSlice({
             state.displaysLoader = false
         })
         builder.addCase(GetDisplays.pending, (state) => {
-            console.log("pending")
+            console.log("pending of GetDisplays")
             state.displaysLoader = true
         })
         builder.addCase(GetReader.fulfilled, (state, action) => {
@@ -68,7 +68,7 @@ export const SpotAddDetailsSlice = createSlice({
             state.readerLoader = false
         })
         builder.addCase(GetReader.pending, (state) => {
-            console.log("pending")
+            console.log("pending of GetReader")
             state.readerLoader = true
         })
         builder.addCase(GetWeightBridge.fulfilled, (state, action) => {
@@ -82,7 +82,7 @@ export const SpotAddDetailsSlice = createSlice({
             state.readerLoader = false
         })
         builder.addCase(GetWeightBridge.pending, (state) => {
-            console.log("pending")
+            console.log("pending of GetWeightBridge")
             state.readerLoader = true
         })
         builder.addCase(GetWeightParsers.fulfilled, (state, action) => {
@@ -96,7 +96,7 @@ export const SpotAddDetailsSlice = createSlice({
             state.readerLoader = false
         })
         builder.addCase(GetWeightParsers.pending, (state) => {
-            console.log("pending")
+            console.log("pending of GetWeightParsers")
             state.readerLoader = true
         })
     }

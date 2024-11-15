@@ -1,9 +1,10 @@
 // EventLogList.tsx
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, FlatList, Text, StyleSheet, Animated } from 'react-native';
 import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
+import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
 
 type EventLogItemType = {
   id: string;
@@ -11,12 +12,14 @@ type EventLogItemType = {
   type: string;
   createdAt: string;
   details: any;
+
 };
 
 type EventLogsListProps = {
   data: EventLogItemType[];
   setModal: (value: boolean) => void;
   setRequestData: (request: any) => void;
+  onScroll: any
 };
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -24,21 +27,25 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
   data,
   setModal,
   setRequestData,
+  onScroll,
 }) => {
-  const onInfoClick = useCallback(
-    (details: any) => {
-      setModal(true);
-      setRequestData(details);
-    },
-    [setModal, setRequestData],
-  );
-
+  const [selectedItemId, setSelectedItemId] = useState("");
   const renderEventLog = useCallback(
     ({ item }: { item: EventLogItemType }) => (
-      <EventLogItem item={item} onInfoClick={onInfoClick} />
+      <CardItemWith_Icon
+        iconName='event-note'
+        view={
+          <EventLogItem
+            item={item}
+            isSelected={item.id === selectedItemId}
+            onToggle={() => setSelectedItemId(item.id === selectedItemId ? "" : item.id)}
+          />
+        }
+      />
     ),
-    [onInfoClick],
+    [selectedItemId]
   );
+
   const keyExtractor = useCallback((item: EventLogItemType) => item.id, []);
 
   return (
@@ -48,17 +55,18 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
           data={data}
           renderItem={renderEventLog}
           keyExtractor={keyExtractor}
+          onScroll={onScroll}
           removeClippedSubviews={true} // Helps with large lists
-          initialNumToRender={100} // Initially render 10 items for performance
-          maxToRenderPerBatch={100} // Number of items rendered per batch
-          windowSize={150} // How many screens worth of content to render
-          getItemLayout={(_data, index) => ({
-            length: 90,
-            offset: 90 * index,
-            index,
-          })}
-          updateCellsBatchingPeriod={30} // Reduce lag in scrolling
-          scrollEventThrottle={16} // For smoother scroll handling
+          initialNumToRender={40} // Initially render 10 items for performance
+        // maxToRenderPerBatch={50} // Number of items rendered per batch
+        // windowSize={150} // How many screens worth of content to render
+        // getItemLayout={(_data, index) => ({
+        //   length: 90,
+        //   offset: 90 * index,
+        //   index,
+        // })}
+        // updateCellsBatchingPeriod={30} // Reduce lag in scrolling
+        // scrollEventThrottle={16} // For smoother scroll handling
         />
       ) : (
         <View style={styles.emptyContainer}>

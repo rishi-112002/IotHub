@@ -13,6 +13,7 @@ import {
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
+
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import SpotList from '../../component/SpotListComponent/SpotList';
@@ -21,6 +22,7 @@ import {Colors2} from '../../assets/color/Colors2';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 type FilterOption = 'connected' | 'not-connected' | 'all';
+
 
 function HomeScreen() {
   const {spotListData, Loader, loadRfidList, refreshing, buCode} =

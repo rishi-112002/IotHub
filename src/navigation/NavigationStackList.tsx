@@ -1,15 +1,15 @@
 export type AppNavigationParams = {
   // Root Stack Screens
-  UrlScreen: {baseUrls: string | null};
+  UrlScreen: { baseUrls: string | null };
   LoginScreen: undefined;
   SplashScreen: undefined;
-  Drawer: {screen: string};
+  Drawer: { screen: string };
 
   // Home Navigation
   HomeScreen: undefined;
-  EventLogScreen: {baseUrls: string | null; spotName: string};
-  SpotDetailsScreen: {baseUrls: string | null; spotName: string};
-  SpotDetailScreen: {data: any[]};
+  EventLogScreen: { baseUrls: string | null; spotName: string, data: any };
+  SpotDetailsScreen: { baseUrls: string | null; spotName: string };
+  SpotDetailScreen: { data: any[] };
 
   // Generic Spot Screens
   GenericSpotScreen: undefined;
@@ -18,16 +18,31 @@ export type AppNavigationParams = {
   // WeighBridge Screens
   WeighbridgesScreen: undefined;
   WeighbridgesAddScreen: undefined;
-  WeighbridgesAddScreenSecound: {data: {}};
+  WeighbridgesAddScreenSecound: { data: {} };
 
   // Root Drawer Screens
+
+
+
+  RfidReader: undefined,
+  RfidAdd: undefined,
+  RfidEdit: { readers: {} }
+
+  DashBoard: undefined;
+  LiveSpot: undefined;
+
+  bottomTabNavigation: undefined
+  LiveSpots: undefined
+
+
   HomeNavigation: undefined;
-  Weighbridges: undefined;
-  GenericSpot: undefined;
+  WeighBridgeNavigation: undefined;
+  GenericSpotNavigation: undefined;
   RfidScreenNavigation: undefined;
 
+  AllEventLogsScreen: undefined;
 
-  RfidReader:undefined ,
-  RfidAdd:undefined ,
-  RfidEdit:{readers:{}}
+  DashBoardNavigation: undefined;
+
+  DrawerStackNavigation: undefined;
 };

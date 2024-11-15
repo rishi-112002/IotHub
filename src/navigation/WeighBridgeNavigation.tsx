@@ -9,7 +9,7 @@ import WeighbridgesAddScreen from '../screens/weighBridgeAdd/WeighBridgeAddScree
 const Stack = createStackNavigator<AppNavigationParams>();
 function WeighBridgeNavigation() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='WeighbridgesScreen'>
             <Stack.Screen name="EventLogScreen" component={EventLogsScreen} options={{ headerShown: true }} />
             <Stack.Screen name="SpotDetailsScreen" component={SpotListScreen} options={{ headerShown: true }} />
             <Stack.Screen name="SpotDetailScreen" component={SpotDetailScreen} options={{ headerShown: true }} />

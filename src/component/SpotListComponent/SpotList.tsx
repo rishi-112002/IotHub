@@ -3,7 +3,6 @@ import { StyleSheet, FlatList, Animated, ListRenderItem, View } from 'react-nati
 import SpotItem from './SpotItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducer/Store';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface SpotData {
   id: string;
