@@ -1,18 +1,14 @@
 import React from 'react';
 import { View, Animated } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import colors from '../../assets/color/colors';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import FloatingActionCustomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
 import { RfidListHook } from '../../CustomHooks/RFIDHooks/RFIDListHook';
 import RfidListComponent from '../../component/RFIDComponent/RfidListComponent';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
 const RfidReader = () => {
-  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const {
-    ListData,
     Loader,
     loadRfidList,
     handleDelete,
@@ -21,6 +17,8 @@ const RfidReader = () => {
     alertVisible,
     setAlertVisible,
     confirmDelete,
+    rfidData,
+    navigation
   } = RfidListHook();
 
   const scrollY = new Animated.Value(0);
@@ -50,7 +48,7 @@ const RfidReader = () => {
 
       <Animated.View style={{ flex: 1, paddingTop: paddingTopAnimated }}>
         <RfidListComponent
-          ListData={ListData}
+          ListData={rfidData}
           Loader={Loader}
           scrollY={scrollY}
           handleDelete={handleDelete}

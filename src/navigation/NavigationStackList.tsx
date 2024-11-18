@@ -15,11 +15,11 @@ export type AppNavigationParams = {
 
   // Generic Spot Screens
   GenericSpotScreen: undefined;
-  GenericSpotAddScreen: undefined;
+  GenericSpotAddScreen: { id: any };
 
   // WeighBridge Screens
   WeighbridgesScreen: undefined;
-  WeighbridgesAddScreen: undefined;
+  WeighbridgesAddScreen: { id: any };
   WeighbridgesAddScreenSecound: { data: {} };
 
   // Root Drawer Screens
@@ -34,7 +34,7 @@ export type AppNavigationParams = {
   LiveSpot: undefined;
 
   bottomTabNavigation: undefined
-  LiveSpots: { screen: string, types: string }
+  LiveSpots: undefined
 
 
   HomeNavigation: undefined;

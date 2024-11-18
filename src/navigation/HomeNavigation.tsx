@@ -13,9 +13,6 @@ const Stack = createStackNavigator<AppNavigationParams>();
 type conectivityParams = { types: any, screen: any }
 
 function HomeNavigation() {
-  const route = useRoute<RouteProp<{ params: conectivityParams }, 'params'>>();
-  const conectivityType = route.params?.types || '';
-  console.log("conectivityType", conectivityType, route)
   return (
     // Set up the Stack Navigator
     <Stack.Navigator>
@@ -24,7 +21,6 @@ function HomeNavigation() {
         name="HomeScreen"
         component={HomeScreen}
         options={{ headerShown: false }}
-        initialParams={{ conectivityType }}
       />
       {/* Define the EventLogsScreen with a header shown */}
       <Stack.Screen

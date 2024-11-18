@@ -1,11 +1,16 @@
-import {useEffect, useCallback, useState, useMemo} from 'react';
-import {useSelector} from 'react-redux';
-import {RootState, store} from '../../reducer/Store';
+import { useEffect, useCallback, useState, useMemo, useContext, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useBackHandler } from '@react-native-community/hooks';
+import { RootState, store } from '../../reducer/Store';
 import {
   DeleteGenericSpot,
   GenericSpotsData,
 } from '../../reducer/genericSpot/uploadGenericDataAction';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { Animated } from 'react-native';
 
 const GenericScreenHooks = () => {
   const baseUrls = useSelector(
@@ -16,9 +21,61 @@ const GenericScreenHooks = () => {
   const GenericSpots = useSelector(
     (state: RootState) => state.uploadGeneric.GenericSpots,
   );
+  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+  const onHandlePress = () => {
+    navigation.navigate('GenericSpotAddScreen', { id: undefined });
+  };
+
+  const { genericTypeConnectivity, setGenericTypeConnectivity } = useContext(DataByConnectivityContext);
+  const GenericConnectedSpot = GenericSpots.filter((item: any) => item.active === true)
+  const GenericNotConnectedSpot = GenericSpots.filter((item: any) => item.active === false)
   const Loader = useSelector((state: RootState) => state.uploadGeneric.loader);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const scrollY = new Animated.Value(0);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 200);
+  const translateY = diffClamp.interpolate({
+    inputRange: [0, 200],
+    outputRange: [0, -200],
+  });
+  const paddingTopAnimated = scrollY.interpolate({
+    inputRange: [0, 110],
+    outputRange: [60, 0],
+    extrapolate: 'clamp',
+  });
+  const translateButtonY = diffClamp.interpolate({
+    inputRange: [0, 110],
+    outputRange: [0, 250],
+  });
+
+  // Animation for CustomAlert modal
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (isVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300, // Adjust duration for smoothness
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isVisible, fadeAnim]);
+
+  const spotsData =
+    genericTypeConnectivity === 'all'
+      ? GenericSpots
+      : genericTypeConnectivity === 'connected'
+        ? GenericConnectedSpot
+        : GenericNotConnectedSpot;
+
+  console.log("genericTypeConnectivity", genericTypeConnectivity)
+
 
   const getGenericData = useCallback(async () => {
     console.log('hello form useEffect');
@@ -65,6 +122,12 @@ const GenericScreenHooks = () => {
     }
   }, [deleteId, baseUrls, buCode, token, Loader]);
 
+  const handleResetConnectivity = () => {
+    navigation.goBack()
+    setGenericTypeConnectivity("all")
+    return true;
+  }
+  useBackHandler(handleResetConnectivity);
   return useMemo(
     () => ({
       GenericSpots,
@@ -74,6 +137,18 @@ const GenericScreenHooks = () => {
       isVisible,
       setIsVisible,
       getGenericData,
+      GenericConnectedSpot,
+      GenericNotConnectedSpot,
+      genericTypeConnectivity,
+      onHandlePress,
+      navigation,
+      translateY,
+      paddingTopAnimated,
+      scrollY,
+      spotsData,
+      translateButtonY,
+      fadeAnim
+
     }),
     [
       GenericSpots,
@@ -83,6 +158,17 @@ const GenericScreenHooks = () => {
       isVisible,
       setIsVisible,
       getGenericData,
+      GenericConnectedSpot,
+      GenericNotConnectedSpot,
+      genericTypeConnectivity,
+      onHandlePress,
+      navigation,
+      translateY,
+      paddingTopAnimated,
+      scrollY,
+      spotsData,
+      translateButtonY,
+      fadeAnim
     ],
   );
 };

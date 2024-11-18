@@ -1,23 +1,29 @@
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import {
   DeleteWeighBridgeSpot,
   WeighBridgeSpotData,
 } from '../../reducer/weighBridge/WeighBridgeAction';
-import {RootState, store} from '../../reducer/Store';
-import {useSelector} from 'react-redux';
+import { RootState, store } from '../../reducer/Store';
+import { useSelector } from 'react-redux';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import { useBackHandler } from '@react-native-community/hooks';
 
 function WeighBridgeScreenHooks() {
   // const [errorAlertVisible, setErrorAlertVisible] = useState(false);
   // const [errorMessage, setErrorMessage] = useState('');
+  const { weighBridgeTypeConnectivity, setWeighBridgeTypeConnectivity } = useContext(DataByConnectivityContext);
+
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
   const WeighbridgeSpots = useSelector(
     (state: RootState) => state.weighBridge.WeighBridgeSpots,
   );
+  const WeighBridgeConnectedSpot = WeighbridgeSpots.filter((spot: any) => spot.active === true)
+  const WeighBridgeNotConnectedSpot = WeighbridgeSpots.filter((spot: any) => spot.active === false)
   const Loader = useSelector((state: RootState) => state.weighBridge.loader);
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const buCode = useSelector((state: RootState) => state.authentication.buCode);
@@ -73,7 +79,16 @@ function WeighBridgeScreenHooks() {
       setDeleteId(null);
     }
   }, [deleteId, baseUrls, buCode, token]);
+  const handleResetConnectivity = () => {
+    navigation.goBack()
+    setWeighBridgeTypeConnectivity("all")
+    return true;
+  }
+  useBackHandler(handleResetConnectivity)
   return {
+    WeighBridgeConnectedSpot,
+    WeighBridgeNotConnectedSpot,
+    weighBridgeTypeConnectivity,
     genericData,
     Loader,
     handleDelete,
