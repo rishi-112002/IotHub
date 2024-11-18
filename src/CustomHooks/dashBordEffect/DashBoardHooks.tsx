@@ -21,6 +21,11 @@ function DashBoardHook() {
     const loading = useSelector((state: RootState) => state.eventLogs.loader);
     const connectedCount = spotListData.filter((spot: any) => spot.active === true).length;
     const disconnectedCount = spotListData.filter((spot: any) => spot.active === false).length;
+    const WeighBridgeDisConnected = spotListData.filter((spot: any) => spot.active === false && spot.type !== "GENERIC_SPOT").length;
+    const WeighBridgeConnected = spotListData.filter((spot: any) => spot.active === true && spot.type !== "GENERIC_SPOT").length;
+
+    const genericDisConnected = spotListData.filter((spot: any) => spot.active === false && spot.type === "GENERIC_SPOT").length;
+    const genericConnected = spotListData.filter((spot: any) => spot.active === true && spot.type === "GENERIC_SPOT").length;
 
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Set time to start of the day (midnight)
@@ -53,7 +58,13 @@ function DashBoardHook() {
         connectedCount,
         disconnectedCount,
         loading,
-        eventLogsAll
+        eventLogsAll,
+        WeighBridgeDisConnected,
+        WeighBridgeConnected,
+        genericDisConnected,
+        genericConnected
+
+
     }
 }
 export default DashBoardHook;

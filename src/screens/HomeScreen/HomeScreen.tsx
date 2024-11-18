@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Animated,
   StyleSheet,
@@ -12,24 +12,34 @@ import {
 } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
+import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
 
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import SpotList from '../../component/SpotListComponent/SpotList';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Colors2} from '../../assets/color/Colors2';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { Colors2 } from '../../assets/color/Colors2';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
 type FilterOption = 'connected' | 'not-connected' | 'all';
-
+type conectivityParams = { conectivityType: any }
 
 function HomeScreen() {
-  const {spotListData, Loader, loadRfidList, refreshing, buCode} =
+  const { spotListData, Loader, loadRfidList, refreshing, buCode } =
     SpotListHook();
-
+  const route = useRoute<RouteProp<{ params: conectivityParams }, 'params'>>();
+  const conectivityType = route.params?.conectivityType || '';
+  console.log("conectivityType in Home Screen", conectivityType)
   // State for filter and search query
-  const [filter, setFilter] = useState<FilterOption>('all');
+  const [filter, setFilter] = useState<FilterOption>(conectivityType);
+
+
+  useEffect(() => {
+    setFilter(conectivityType)
+  }, [conectivityType])
+
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [modelShow, setModelShow] = useState<boolean>(false);
 
@@ -83,7 +93,7 @@ function HomeScreen() {
   return (
     <SafeAreaView style={styles.container1}>
       {/* Your Header and Search Bar Components */}
-      <Animated.View style={[styles.headerContainer, {paddingTop: translateY}]}>
+      <Animated.View style={[styles.headerContainer, { paddingTop: translateY }]}>
         <CustomHeader
           buCode={buCode}
           userLogo={'account-circle'}
@@ -93,7 +103,7 @@ function HomeScreen() {
         <Animated.View
           style={[
             styles.searchBarContainer,
-            {transform: [{translateY: translateY}]},
+            { transform: [{ translateY: translateY }] },
           ]}>
           <View style={styles.searchWrapper}>
             <View style={styles.searchInput}>
@@ -152,7 +162,7 @@ function HomeScreen() {
         <BouncingLoader />
       ) : (
         <Animated.View
-          style={[styles.listWrapper, {transform: [{translateY: translateY}]}]}>
+          style={[styles.listWrapper, { transform: [{ translateY: translateY }] }]}>
           {noResults ? (
             <Text style={styles.noResultsText}>
               No results found for "{searchQuery}"
@@ -239,7 +249,7 @@ const styles = StyleSheet.create({
     marginBottom: -10,
     marginLeft: '85%',
     shadowColor: '#000',
-    shadowOffset: {width: 20, height: 200},
+    shadowOffset: { width: 20, height: 200 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
@@ -251,7 +261,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 20,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 20},
+    shadowOffset: { width: 0, height: 20 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     alignSelf: 'flex-end',
