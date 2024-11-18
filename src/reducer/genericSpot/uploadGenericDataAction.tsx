@@ -30,19 +30,19 @@ export const uploadGenericData = createAsyncThunk(
                 const message = err.response.data?.message || 'An error occurred during the upload.';
 
                 // Log the exact error response
-                console.error(`Upload failed with status ${status}: ${message}`);
+                // console.error(`Upload failed with status ${status}: ${message}`);
 
                 // Return the specific error message from the server
                 return rejectWithValue(`Upload error: ${message}`);
 
             } else if (err.request) {
                 // The request was made but no response was received (e.g., network issues)
-                console.error('No response received from the server:', err.request);
+                // console.error('No response received from the server:', err.request);
                 return rejectWithValue('No response from the server. Please check your network connection.');
 
             } else {
                 // Something happened in setting up the request that triggered an Error
-                console.error('Error in request setup:', err.message);
+                // console.error('Error in request setup:', err.message);
                 return rejectWithValue(`Upload error: ${err.message}`);
             }
         }
@@ -60,7 +60,7 @@ export const GenericSpotsData = createAsyncThunk('genericSpotsData', async (para
         };
         return Data;
     } catch (err) {
-        console.log(err);
+        // console.log(err);
     }
 })
 export const DeleteGenericSpot = createAsyncThunk('deleteSpot', async (params: { baseUrl: any, id: string, bucode: string | null, token: string | null }) => {
@@ -78,8 +78,8 @@ export const DeleteGenericSpot = createAsyncThunk('deleteSpot', async (params: {
         },);
         return { data, id };
     } catch (err) {
-        console.log(err);
-        console.log('url for delete', fullUrl)
+        // console.log(err);
+        // console.log('url for delete', fullUrl)
 
     }
 })
@@ -93,8 +93,8 @@ export const GenericSpotData = createAsyncThunk('genericSpotData', async (params
         const { data } = await axios.get(fullUrl);
         return data;
     } catch (err) {
-        console.log("url", fullUrl)
-        console.log(err);
+        // console.log("url", fullUrl)
+        // console.log(err);
     }
 })
 
@@ -126,19 +126,19 @@ export const UpdateGenericSpot = createAsyncThunk(
                 const message = err.response.data?.message || 'An error occurred during the upload.';
 
                 // Log the exact error response
-                console.error(`update failed with status ${status}: ${message}`);
+                // console.error(`update failed with status ${status}: ${message}`);
 
                 // Return the specific error message from the server
                 return rejectWithValue(`update error: ${message}`);
 
             } else if (err.request) {
                 // The request was made but no response was received (e.g., network issues)
-                console.error('No response received from the server:', err.request);
+                // console.error('No response received from the server:', err.request);
                 return rejectWithValue('No response from the server. Please check your network connection.');
 
             } else {
                 // Something happened in setting up the request that triggered an Error
-                console.error('Error in request setup:', err.message);
+                // console.error('Error in request setup:', err.message);
                 return rejectWithValue(`update error: ${err.message}`);
             }
         }

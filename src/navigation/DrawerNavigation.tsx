@@ -16,7 +16,7 @@ const Drawer = createDrawerNavigator<AppNavigationParams>();
 export default function DrawerNavigation() {
   const route = useRoute<RouteProp<{ params: AppNavigationParams }, 'params'>>();
   const { screen }: any = route.params;
-  console.log("screen name ", screen)
+  // console.log("screen name ", screen)
   const navigation = useNavigation();
   return (
     <Drawer.Navigator

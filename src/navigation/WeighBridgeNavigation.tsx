@@ -1,25 +1,43 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import EventLogsScreen from '../screens/HomeScreen/EventLogsScreen';
 import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
 import SpotListScreen from '../screens/SpotListScreen';
 import Weighbridges from '../screens/WeighbridgesScreen';
-import { AppNavigationParams } from './NavigationStackList';
+import {AppNavigationParams} from './NavigationStackList';
 import WeighbridgesAddScreen from '../screens/weighBridgeAdd/WeighBridgeAddScreen';
+import {slideFromRight} from './HomeNavigation';
 const Stack = createStackNavigator<AppNavigationParams>();
 function WeighBridgeNavigation() {
-    return (
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='WeighbridgesScreen'>
-            <Stack.Screen name="EventLogScreen" component={EventLogsScreen} options={{ headerShown: true }} />
-            <Stack.Screen name="SpotDetailsScreen" component={SpotListScreen} options={{ headerShown: true }} />
-            <Stack.Screen name="SpotDetailScreen" component={SpotDetailScreen} options={{ headerShown: true }} />
-            <Stack.Screen name="WeighbridgesScreen" component={Weighbridges} />
-            <Stack.Screen
-                name="WeighbridgesAddScreen"
-                component={WeighbridgesAddScreen}
-                options={{ headerShown: true }} // Add title here
-            />
-        </Stack.Navigator>
-    );
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...slideFromRight,
+        headerShown: false,
+      }}
+      initialRouteName="WeighbridgesScreen">
+      <Stack.Screen
+        name="EventLogScreen"
+        component={EventLogsScreen}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="SpotDetailsScreen"
+        component={SpotListScreen}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="SpotDetailScreen"
+        component={SpotDetailScreen}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen name="WeighbridgesScreen" component={Weighbridges} />
+      <Stack.Screen
+        name="WeighbridgesAddScreen"
+        component={WeighbridgesAddScreen}
+        options={{headerShown: true}}
+      />
+    </Stack.Navigator>
+  );
 }
 export default WeighBridgeNavigation;

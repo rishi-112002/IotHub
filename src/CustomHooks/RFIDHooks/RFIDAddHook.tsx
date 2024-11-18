@@ -66,7 +66,7 @@ export const useRfidAddForm = (
         navigation.navigate('RfidReader');
       }, -200);
     } catch (err) {
-      console.log('ADD ERROR: ', err);
+      // console.log('ADD ERROR: ', err);
       showCustomToast(
         'fail',
         err || 'Something went wrong! Please try again...',

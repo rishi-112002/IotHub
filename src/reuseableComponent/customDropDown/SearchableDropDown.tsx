@@ -35,7 +35,7 @@ function SearchableDropDown(props: { options: any, onOptionSelected: any, select
         setFilteredOptions(options);
         setIsFocused(false);
         onOptionSelected(option);
-        console.log("selected one code", option.code)
+        // console.log("selected one code", option.code)
     };
   
     return (

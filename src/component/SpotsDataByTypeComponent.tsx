@@ -12,15 +12,15 @@ function SpotsDataByTypeComponent(props: {
 }) {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const { data, handleScroll, handleDelete, type } = props;
-  console.log("type", type)
+  // console.log("type", type)
   const navigate = (id: any) => {
-    if (type === "GENERIC_SPOT") {
-      navigation.navigate("GenericSpotAddScreen", { id: id })
+    if (type === 'GENERIC_SPOT') {
+      navigation.navigate('GenericSpotAddScreen', { id: id });
     }
     else {
-      navigation.navigate("WeighbridgesAddScreen", { id: id })
+      navigation.navigate('WeighbridgesAddScreen', { id: id });
     }
-  }
+  };
   const renderSpot = ({ item }: any) => {
     return (
       <View>

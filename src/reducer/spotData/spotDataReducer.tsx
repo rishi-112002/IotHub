@@ -22,29 +22,29 @@ export const spotDataSlice = createSlice({
     builder.addCase(GetSpotData.fulfilled, (state, action) => {
       state.spotData = action.payload;
       state.loader = false;
-      console.log('done :- ');
+      // console.log('done :- ');
     });
     builder.addCase(GetSpotData.rejected, (state, action) => {
       state.error = action.payload as string;
-      console.log('error');
+      // console.log('error');
       state.loader = false;
     });
     builder.addCase(GetSpotData.pending, state => {
-      console.log('pending of GetSpotData');
+      // console.log('pending of GetSpotData');
       state.loader = true;
     });
     builder.addCase(GetSpotName.fulfilled, (state, action) => {
       state.spotName = action.payload;
       state.loader = false;
-      console.log('done :- ');
+      // console.log('done :- ');
     });
     builder.addCase(GetSpotName.rejected, (state, action) => {
       state.spotName = [];
-      console.log('error');
+      // console.log('error');
       state.loader = false;
     });
     builder.addCase(GetSpotName.pending, state => {
-      console.log('pending of GetSpotName');
+      // console.log('pending of GetSpotName');
       state.loader = true;
     });
   },

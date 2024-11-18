@@ -71,6 +71,7 @@ const EditRfidScreen: React.FC<readerParams> = () => {
             onPress={() => setDropdownVisible(true)}
             setTextInput={undefined}
             required={false}
+            type={'dropdown'}
           />
 
           {dropdownVisible && (

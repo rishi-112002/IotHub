@@ -53,7 +53,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
             setCurrentFiled(option.id);
         }
     }, [onOptionSelected, openCalendarModal, setGenericmodalVisible, setCurrentFiled]);
-    console.log("date i get in filter modal ", DateFromValue, ToDateValue)
+    // console.log("date i get in filter modal ", DateFromValue, ToDateValue)
 
     const renderItem = useCallback(({ item }: { item: { name: string; id: string, path: any } }) => (
         <TouchableOpacity style={styles.item} onPress={() => handleSelectFilter(item)}>

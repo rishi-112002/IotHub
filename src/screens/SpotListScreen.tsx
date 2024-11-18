@@ -1,10 +1,10 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   NavigationProp,
   RouteProp,
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import CustomSubHeader from '../reuseableComponent/header/CustomSubHeader';
 import {useSelector} from 'react-redux';
 import {RootState, store} from '../reducer/Store';
 import {useEffect, useLayoutEffect} from 'react';
@@ -31,16 +31,17 @@ function SpotListScreen() {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      // eslint-disable-next-line react/no-unstable-nested-components
       headerTitle: () => (
         <View>
           <Text style={styles.headerTitle}>{spotName || 'Spot Details'} </Text>
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, spotName]);
   useEffect(() => {
     store.dispatch(GetSpotDetails({baseUrl: baseUrls, spotName: spotName}));
-  }, []);
+  }, [baseUrls, spotName]);
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 1}}>

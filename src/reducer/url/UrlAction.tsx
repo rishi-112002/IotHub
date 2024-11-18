@@ -10,7 +10,7 @@ export const GetUrls = createAsyncThunk(
             const { data } = await axios.get(baseUrl);
             return data;
         } catch (err: any) {
-            console.error("Error fetching URLs:", err.message);
+            // console.error("Error fetching URLs:", err.message);
 
             // Return a custom error message or API response error
             return rejectWithValue(err.response?.data?.message || "Failed to fetch URLs");

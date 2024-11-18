@@ -122,8 +122,8 @@ function WeighBridgeEffectHooks(props: { id: any }) {
       dispatch(resetStatus());
       handleLogout();
     } else if (status === 'failed' && uploadError) {
-      console.log('Error for log out user', uploadError);
-      CustomToast('error', uploadError);
+      // console.log('Error for log out user', uploadError);
+      // CustomToast('error', uploadError);
       dispatch(resetStatus());
     } else if (status === 'succeeded') {
       CustomToast('success', 'uploaded successfully');

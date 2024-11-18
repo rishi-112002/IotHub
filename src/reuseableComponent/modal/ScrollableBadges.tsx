@@ -19,7 +19,7 @@ function ScrollableBadges(props: {
 
     const removeBadge = (key: any) => {
         setBadgeList(badgeList.filter((badge: any) => badge.key !== key));
-        console.log("key ", key)
+        // console.log("key ", key)
         if (key === "Spot") {
             setSelectedSpot("")
         }

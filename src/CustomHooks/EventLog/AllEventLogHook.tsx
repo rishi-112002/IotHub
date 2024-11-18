@@ -62,7 +62,7 @@ const AllEventLogHooks = () => {
         setSelectedOption(option);
     };
     useEffect(() => {
-        console.log("useEffect first")
+        // console.log("useEffect first")
         store.dispatch(GetAllSpotEventLogs({
             baseUrl,
         }));
@@ -70,7 +70,7 @@ const AllEventLogHooks = () => {
     }, [baseUrl]);
 
     useEffect(() => {
-        console.log("useEffect secound")
+        // console.log("useEffect secound")
 
         setFilteredLogs(eventLogsAll);
     }, [eventLogsAll])

@@ -48,7 +48,7 @@ function UrlEffect() {
   };
 
   const handleClick = async () => {
-    console.log("hello form handle Url screen")
+    // console.log("hello form handle Url screen")
     const newErrors: { url?: string } = {};
 
     if (!url) {
