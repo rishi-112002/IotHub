@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
+import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
 
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -24,7 +24,7 @@ import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 
 type FilterOption = 'connected' | 'not-connected' | 'all';
 function HomeScreen() {
-  const { spotListData, Loader, loadRfidList, refreshing, buCode } =
+  const {spotListData, Loader, loadRfidList, refreshing, buCode} =
     SpotListHook();
   const { spotTypeConnectivity, setSpotTypeConnectivity } = useContext(DataByConnectivityContext);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -39,6 +39,7 @@ function HomeScreen() {
       .includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+  // console.log('spotListData :- ', spotListData);
 
   // Check if no results match both filter and search query
   const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
@@ -78,7 +79,7 @@ function HomeScreen() {
   return (
     <SafeAreaView style={styles.container1}>
       {/* Your Header and Search Bar Components */}
-      <Animated.View style={[styles.headerContainer, { paddingTop: translateY }]}>
+      <Animated.View style={[styles.headerContainer, {paddingTop: translateY}]}>
         <CustomHeader
           buCode={buCode}
           userLogo={'account-circle'}
@@ -88,7 +89,7 @@ function HomeScreen() {
         <Animated.View
           style={[
             styles.searchBarContainer,
-            { transform: [{ translateY: translateY }] },
+            {transform: [{translateY: translateY}]},
           ]}>
           <View style={styles.searchWrapper}>
             <View style={styles.searchInput}>
@@ -147,7 +148,7 @@ function HomeScreen() {
         <BouncingLoader />
       ) : (
         <Animated.View
-          style={[styles.listWrapper, { transform: [{ translateY: translateY }] }]}>
+          style={[styles.listWrapper, {transform: [{translateY: translateY}]}]}>
           {noResults ? (
             <Text style={styles.noResultsText}>
               No results found for "{searchQuery}"
@@ -165,8 +166,8 @@ function HomeScreen() {
           {modelShow && (
             <TouchableWithoutFeedback onPress={toggleFilterMenu}>
               <View style={styles.overlay}>
-                <View style={styles.triangle} />
                 <View style={styles.filterMenuContainer}>
+                  {/* <View style={styles.triangle} /> */}
                   <TouchableOpacity
                     style={[
                       styles.filterItem,
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   overlay: {
-    // flex: 1,
+    flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -221,32 +222,14 @@ const styles = StyleSheet.create({
     zIndex: 9999,
     elevation: 40,
   },
-  triangle: {
-    elevation: 50,
-    width: 0,
-    height: 0,
-    borderLeftWidth: 20,
-    borderRightWidth: 20,
-    borderBottomWidth: 30,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: colors.skyLighter,
-    marginBottom: -10,
-    marginLeft: '85%',
-    shadowColor: '#000',
-    shadowOffset: { width: 20, height: 200 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-  },
   filterMenuContainer: {
-    // flex: 1,
+    marginTop: 5,
     width: '50%',
-    // height: '23%',
-    backgroundColor: colors.skyLighter,
-    padding: 16,
-    borderRadius: 20,
+    backgroundColor: 'white',
+    padding: 5,
+    borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 20 },
+    shadowOffset: {width: 0, height: 20},
     shadowOpacity: 0.25,
     shadowRadius: 4,
     alignSelf: 'flex-end',
@@ -312,6 +295,7 @@ const styles = StyleSheet.create({
   listWrapper: {
     flex: 1,
     marginTop: 8,
+    marginBottom: -70,
   },
   listContainer: {
     flex: 1,
@@ -333,6 +317,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   noResultsText: {
+    justifyContent: 'center',
     fontSize: 18,
     color: colors.gray,
     textAlign: 'center',

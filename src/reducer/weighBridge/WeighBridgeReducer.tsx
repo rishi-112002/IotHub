@@ -139,19 +139,19 @@ export const WeighBridgeSlice = createSlice({
                     state.status = 'failed';
                 }
                 if (state.WeighBridgeSpots) {
-                    console.log('new data in if', state.WeighBridgeSpots.length);
+                    // console.log('new data in if', state.WeighBridgeSpots.length);
                     state.WeighBridgeSpots = [...state.WeighBridgeSpots, newData];
-                    console.log('new data in after', state.WeighBridgeSpots.length);
+                    // console.log('new data in after', state.WeighBridgeSpots.length);
 
                 } else {
-                    console.log('new data in else', newData);
+                    // console.log('new data in else', newData);
                     state.genericData = newData;
                 }
             })
             .addCase(weighBridgeAdd.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload as string || 'Failed to upload weighBridge data';
-                console.log('error in reducer ', action.payload);
+                // console.log('error in reducer ', action.payload);
             })
             .addCase(WeighBridgeSpotData.pending, (state) => {
                 state.loader = true;
@@ -165,7 +165,7 @@ export const WeighBridgeSlice = createSlice({
 
             })
             .addCase(WeighBridgeSpotData.rejected, (state) => {
-                console.log('error');
+                // console.log('error');
                 state.loader = false;
                 state.WeighBridgeSpots = [];
                 state.genericData = [];
@@ -178,17 +178,17 @@ export const WeighBridgeSlice = createSlice({
                 state.deleteStatus = 'succeeded';
                 // Filter out the deleted spot from WeighBridgeSpots
                 state.WeighBridgeSpots = state.WeighBridgeSpots.filter(spot => spot.id !== deletedSpotId);
-                console.log('done');
+                // console.log('done');
             })
             .addCase(DeleteWeighBridgeSpot.rejected, (state) => {
                 state.response = [];
                 state.deleteStatus = 'failed';
-                console.log('error');
+                // console.log('error');
                 state.loader = false;
             })
             .addCase(DeleteWeighBridgeSpot.pending, (state) => {
                 state.deleteStatus = 'loading';
-                console.log('pending of  DeleteWeighBridgeSpot');
+                // console.log('pending of  DeleteWeighBridgeSpot');
                 state.loader = true;
 
             })
@@ -202,7 +202,7 @@ export const WeighBridgeSlice = createSlice({
                 state.weighBridgeSpot = action.payload; // Update GenericSpots
             })
             .addCase(WeighBridegeSpotDataEdit.rejected, state => {
-                console.log('error');
+                // console.log('error');
                 state.loader = false;
                 state.weighBridgeSpot = initialweighBridgeSpot; // Optionally reset both on error, or just one
             })
@@ -221,14 +221,14 @@ export const WeighBridgeSlice = createSlice({
                         state.WeighBridgeSpots[index] = updatedSpot;
                     }
 
-                    console.log("Update successful", updatedSpot);
+                    // console.log("Update successful", updatedSpot);
                 }
             )
             .addCase(UpdateWeighBridgeSpot.rejected, (state, action) => {
                 state.updateStatus = 'failed';
                 state.error =
                     (action.payload as string) || 'Failed to upload WeighBridge';
-                console.log('error in reducer ', action.payload);
+                // console.log('error in reducer ', action.payload);
             })
             .addCase(UpdateWeighBridgeSpot.pending, state => {
                 state.updateStatus = 'loading';

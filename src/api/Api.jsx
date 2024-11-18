@@ -12,7 +12,7 @@ export const fetchConfigDetails = async (baseURL) => {
         const response = await instance.get('/config.json');
         return response.data;
     } catch (error) {
-        console.error('Error fetching config details:', error);
+        // console.error('Error fetching config details:', error);
         return null;
     }
 };

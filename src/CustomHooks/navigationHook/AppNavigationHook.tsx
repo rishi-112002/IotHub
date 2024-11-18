@@ -50,12 +50,12 @@ function AppNavigationHooks() {
         try {
             store.dispatch(GetBaseUrl()); // Dispatch action to get the base URL
         } catch (error) {
-            console.error('Failed to fetch base URL from AsyncStorage', error);
+            // console.error('Failed to fetch base URL from AsyncStorage', error);
         }
     };
 
     // Debugging statement to log the current userName
-    console.log('userName', userName);
+    // console.log('userName', userName);
 
     // Function to fetch configuration details and save them in AsyncStorage and Redux
     const fetchConfiguration = async (url: string) => {
@@ -68,10 +68,10 @@ function AppNavigationHooks() {
                 ); // Save config details in AsyncStorage
                 const apiResponse = JSON.stringify(configDetails);
                 store.dispatch(responseDetails(apiResponse)); // Dispatch action to store config details in Redux
-                console.log(
-                    'URL and config saved successfully in AsyncStorage and Redux.',
-                    url,
-                );
+                // console.log(
+                //     'URL and config saved successfully in AsyncStorage and Redux.',
+                //     url,
+                // );
             } else {
                 Alert.alert(
                     'Invalid URL',
@@ -79,8 +79,8 @@ function AppNavigationHooks() {
                 );
             }
         } catch (error) {
-            console.log('url inside the fetchConfiguration', url);
-            console.error('Error fetching config details:', error);
+            // console.log('url inside the fetchConfiguration', url);
+            // console.error('Error fetching config details:', error);
             Alert.alert(
                 'Error',
                 'Failed to fetch configuration. Please check the URL and try again.',

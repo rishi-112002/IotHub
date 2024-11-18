@@ -94,7 +94,7 @@ export const deleteRfidListAction = createAsyncThunk(
       return data;
     } catch (error) {
       const message = handleError(error);
-      console.log('Action Delete Error:', message);
+      // console.log('Action Delete Error:', message);
       return rejectWithValue(message);
     }
   }

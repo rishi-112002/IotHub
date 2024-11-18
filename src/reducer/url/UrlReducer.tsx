@@ -22,20 +22,20 @@ export const GetUrlsSlice = createSlice({
       state.urls = action.payload; // Set URLs from the action payload
       state.loader = false; // Set loader to false as request is fulfilled
       state.error = null; // Clear any previous error
-      console.log("done");
+      // console.log("done");
     });
 
     builder.addCase(GetUrls.rejected, (state, action: PayloadAction<any>) => {
       state.urls = []; // Clear URLs on error
       state.error = action.payload || "An error occurred while fetching URLs"; // Set error from action or default message
       state.loader = false; // Stop the loader
-      console.log("error:", state.error);
+      // console.log("error:", state.error);
     });
 
     builder.addCase(GetUrls.pending, (state) => {
       state.loader = true; // Set loader to true when request is pending
       state.error = null; // Clear any previous error on new request
-      console.log("pending of GetUrls");
+      // console.log("pending of GetUrls");
     });
   },
 });

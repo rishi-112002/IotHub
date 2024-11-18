@@ -29,7 +29,7 @@ function CustomHeader(props: {
   );
   const {buCode, userLogo, title, translateY} = props;
   const [modalVisible, setModalVisible] = useState(false);
-  console.log('bucode', buCode);
+  // console.log('bucode', buCode);
   const Navigations = useNavigation();
   const openDrawer = () => {
     Navigations.dispatch(DrawerActions.toggleDrawer());

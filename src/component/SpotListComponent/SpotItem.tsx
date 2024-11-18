@@ -111,6 +111,7 @@ const SpotItem = ({item, baseUrl}: SpotItemProps) => {
 
 const styles = StyleSheet.create({
   spotContainer: {
+    // flex: 1,
     paddingHorizontal: 20,
   },
   contentContainer: {
