@@ -24,10 +24,10 @@ export const SpotListHook = () => {
     setRefreshing(false);
   }, [baseUrl, dispatch]);
 
-  useEffect(() => {
-    loadRfidList();
-    // console.log("LoaderRefresh UseEffect...");
-  }, [baseUrl, loadRfidList]);
+  // useEffect(() => {
+  //   loadRfidList();
+  //   // console.log("LoaderRefresh UseEffect...");
+  // }, [baseUrl, loadRfidList]);
 
   useEffect(() => {
     if (LError) {

@@ -1,4 +1,6 @@
+type FilterOption = 'connected' | 'not-connected' | 'all';
 export type AppNavigationParams = {
+
   // Root Stack Screens
   UrlScreen: { baseUrls: string | null };
   LoginScreen: undefined;
@@ -6,7 +8,7 @@ export type AppNavigationParams = {
   Drawer: { screen: string };
 
   // Home Navigation
-  HomeScreen: undefined;
+  HomeScreen: { types: string };
   EventLogScreen: { baseUrls: string | null; spotName: string, data: any };
   SpotDetailsScreen: { baseUrls: string | null; spotName: string };
   SpotDetailScreen: { data: any[] };
@@ -32,7 +34,7 @@ export type AppNavigationParams = {
   LiveSpot: undefined;
 
   bottomTabNavigation: undefined
-  LiveSpots: undefined
+  LiveSpots: { screen: string, types: string }
 
 
   HomeNavigation: undefined;
