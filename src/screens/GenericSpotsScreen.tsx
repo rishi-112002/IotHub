@@ -1,63 +1,28 @@
 import { ActivityIndicator, Animated, View, StyleSheet } from 'react-native';
 import SpotsDataByTypeComponent from '../component/SpotsDataByTypeComponent';
 import FloatingActionCutomButton from '../reuseableComponent/customButton/FloatingActionCustomButton';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import CustomHeader from '../reuseableComponent/header/CustomHeader';
-import { AppNavigationParams } from '../navigation/NavigationStackList';
-import React, { useEffect, useRef } from 'react';
+import React, {  } from 'react';
 import colors from '../assets/color/colors';
 import GenericScreenHooks from '../CustomHooks/genericHooks/GenericScreenHooks';
 import CustomAlert from '../reuseableComponent/PopUp/CustomPopUp';
 
 function GenericSpot() {
-  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+
   const {
     Loader,
-    GenericSpots,
     confirmDelete,
     handleDelete,
     isVisible,
     setIsVisible,
+    onHandlePress,
+    translateY,
+    paddingTopAnimated,
+    scrollY,
+    spotsData,
+    translateButtonY,
+    fadeAnim
   } = GenericScreenHooks();
-  const onHandlePress = () => {
-    navigation.navigate('GenericSpotAddScreen', { id: undefined });
-  };
-
-  const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, 200);
-  const translateY = diffClamp.interpolate({
-    inputRange: [0, 200],
-    outputRange: [0, -200],
-  });
-  const paddingTopAnimated = scrollY.interpolate({
-    inputRange: [0, 110],
-    outputRange: [60, 0],
-    extrapolate: 'clamp',
-  });
-  const translateButtonY = diffClamp.interpolate({
-    inputRange: [0, 110],
-    outputRange: [0, 250],
-  });
-
-  // Animation for CustomAlert modal
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    if (isVisible) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 300, // Adjust duration for smoothness
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [isVisible, fadeAnim]);
-
   return (
     <View style={styles.container}>
       <CustomHeader
@@ -73,7 +38,7 @@ function GenericSpot() {
         <Animated.View
           style={[styles.contentContainer, { paddingTop: paddingTopAnimated }]}>
           <SpotsDataByTypeComponent
-            data={GenericSpots}
+            data={spotsData}
             type={'GENERIC_SPOT'}
             handleScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);

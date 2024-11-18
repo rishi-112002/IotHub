@@ -27,7 +27,7 @@ const postRequest = async (url: string, data: any, config: any) => {
 
 export const CreateRFIDdata = createAsyncThunk(
   'CreateRFIDdata',
-  async ({ rfidData, token, buCode }, { rejectWithValue }) => {
+  async ({ rfidData, token, buCode }:any, { rejectWithValue }) => {
     const fullUrl = `${BASE_URL}${CreateRFIDListEndPoint}`;
     try {
       const data = await postRequest(fullUrl, rfidData, axiosConfig(token, buCode));
@@ -46,7 +46,7 @@ export const CreateRFIDdata = createAsyncThunk(
 
 export const EditRFIDdata = createAsyncThunk(
   'EditRFIDdata',
-  async ({ rfidData, token, buCode }:any, { rejectWithValue }) => {
+  async ({ rfidData, token, buCode }: any, { rejectWithValue }) => {
     // console.log('Action :- ', rfidData);
     const fullUrl = `${BASE_URL}${EditRFIDListEndPoint}`;
     try {
@@ -66,8 +66,8 @@ export const EditRFIDdata = createAsyncThunk(
 
 export const getRfidListAction = createAsyncThunk(
   'getRfidListAction',
-  async ({ baseUrl }, { rejectWithValue }) => {
-    
+  async ({ baseUrl }: any, { rejectWithValue }) => {
+
     const fullUrl = `${baseUrl}${RFIDListEndPoint}`;
     try {
       const { data } = await axios.get(fullUrl);
@@ -83,7 +83,7 @@ export const getRfidListAction = createAsyncThunk(
 
 export const deleteRfidListAction = createAsyncThunk(
   'deleteRfidListAction',
-  async ({ id, buCode, token }, { rejectWithValue }) => {
+  async ({ id, buCode, token }:any, { rejectWithValue }) => {
     const fullUrl = `${BASE_URL}/iv1/readers/remove/${id}`;
     try {
       const data = await axios.delete(fullUrl, axiosConfig(token, buCode));

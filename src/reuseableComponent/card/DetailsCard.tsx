@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
-import {CardItemWith_Icon} from './CardItemWithIcon';
-import {ReaderCardContent} from './ReaderCardContent';
-import {DisplayCardContent} from './DisplayCardContent';
-import {SpotCommandCardContent} from './SpotCommandContent';
+import { CardItemWith_Icon } from './CardItemWithIcon';
+import { ReaderCardContent } from './ReaderCardContent';
+import { DisplayCardContent } from './DisplayCardContent';
+import { SpotCommandCardContent } from './SpotCommandContent';
 
 // Define possible data types and structures
 export interface Reader {
@@ -48,7 +48,7 @@ const DataTab: React.FC<DataTabProps> = ({
   // handleDelete,
 }) => {
   // console.log('DataTab11111 :- ', handleDelete); 
-  const combinedStyles = {...styles, ...stylesOverride};
+  const combinedStyles = { ...styles, ...stylesOverride };
 
   // Render content based on the data type
   const renderData = () => {
@@ -58,7 +58,7 @@ const DataTab: React.FC<DataTabProps> = ({
           <CardItemWith_Icon
             key={item.id || index}
             iconName="wifi-tethering"
-            view={ReaderCardContent(item, allow)}
+            view={ReaderCardContent(item, allow, () => console.log("hey"))}
           />
         ));
       case 'displays':

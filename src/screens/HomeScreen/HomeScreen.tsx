@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Animated,
   StyleSheet,
@@ -18,36 +18,22 @@ import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import SpotList from '../../component/SpotListComponent/SpotList';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Colors2} from '../../assets/color/Colors2';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {RouteProp, useRoute} from '@react-navigation/native';
+import { Colors2 } from '../../assets/color/Colors2';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 
 type FilterOption = 'connected' | 'not-connected' | 'all';
-
-type conectivityParams = {conectivityType: any};
-
 function HomeScreen() {
   const {spotListData, Loader, loadRfidList, refreshing, buCode} =
     SpotListHook();
-  const route = useRoute<RouteProp<{params: conectivityParams}, 'params'>>();
-  const conectivityType = route.params?.conectivityType || '';
-  // console.log('conectivityType in Home Screen', conectivityType);
-  // State for filter and search query
-  const [filter, setFilter] = useState<FilterOption>(conectivityType);
-
-  useEffect(() => {
-    setFilter(conectivityType);
-  }, [conectivityType]);
-
+  const { spotTypeConnectivity, setSpotTypeConnectivity } = useContext(DataByConnectivityContext);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [modelShow, setModelShow] = useState<boolean>(false);
-
-  // Filter spots based on the selected filter and search query
   const filteredSpots = spotListData.filter((spot: any) => {
     const matchesFilter =
-      filter === 'all' ||
-      (filter === 'connected' && spot?.active) ||
-      (filter === 'not-connected' && !spot?.active);
+      spotTypeConnectivity === 'all' ||
+      (spotTypeConnectivity === 'connected' && spot?.active) ||
+      (spotTypeConnectivity === 'not-connected' && !spot?.active);
     const matchesSearch = spot?.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -70,7 +56,7 @@ function HomeScreen() {
   const clearSearch = () => setSearchQuery('');
 
   const clearFilter = () => {
-    setFilter('all');
+    setSpotTypeConnectivity('all');
   };
 
   // Scroll event handler
@@ -85,7 +71,7 @@ function HomeScreen() {
 
   // Handle filter selection
   const handleFilterPress = (selectedFilter: FilterOption) => {
-    setFilter(selectedFilter);
+    setSpotTypeConnectivity(selectedFilter);
     setSearchQuery('');
     setModelShow(false);
   };
@@ -143,10 +129,10 @@ function HomeScreen() {
             </TouchableOpacity>
           </View>
           {/* Display selected filter below search */}
-          {filter !== 'all' ? (
+          {spotTypeConnectivity !== 'all' ? (
             <View style={styles.selectedFilterContainer}>
               <Text style={styles.selectedFilterText}>
-                {filter === 'connected' ? 'Connected' : 'Not-Connected'}
+                {spotTypeConnectivity === 'connected' ? 'Connected' : 'Not-Connected'}
               </Text>
               <TouchableOpacity
                 onPress={clearFilter}
@@ -185,7 +171,7 @@ function HomeScreen() {
                   <TouchableOpacity
                     style={[
                       styles.filterItem,
-                      filter === 'connected' && styles.selectedFilter,
+                      spotTypeConnectivity === 'connected' && styles.selectedFilter,
                     ]}
                     onPress={() => handleFilterPress('connected')}>
                     <MaterialIcons name="link" size={24} color="black" />
@@ -195,7 +181,7 @@ function HomeScreen() {
                   <TouchableOpacity
                     style={[
                       styles.filterItem,
-                      filter === 'not-connected' && styles.selectedFilter,
+                      spotTypeConnectivity === 'not-connected' && styles.selectedFilter,
                     ]}
                     onPress={() => handleFilterPress('not-connected')}>
                     <MaterialIcons name="link-off" size={24} color="black" />
@@ -205,7 +191,7 @@ function HomeScreen() {
                   <TouchableOpacity
                     style={[
                       styles.filterItem,
-                      filter === 'all' && styles.selectedFilter,
+                      spotTypeConnectivity === 'all' && styles.selectedFilter,
                     ]}
                     onPress={() => handleFilterPress('all')}>
                     <MaterialIcons name="filter-list" size={24} color="black" />
@@ -236,24 +222,6 @@ const styles = StyleSheet.create({
     zIndex: 9999,
     elevation: 40,
   },
-  // triangle: {
-  //   // elevation: 70,
-  //   width: 0,
-  //   height: 0,
-  //   borderLeftWidth: 20,
-  //   borderRightWidth: 20,
-  //   borderBottomWidth: 28,
-  //   borderLeftColor: 'transparent',
-  //   borderRightColor: 'transparent',
-  //   borderBottomColor: 'white',
-  //   marginBottom: 0,
-  //   marginTop: -30,
-  //   marginLeft: '75%',
-  //   shadowColor: '#0000',
-  //   shadowOffset: {width: 20, height: 20},
-  //   shadowOpacity: 2.5,
-  //   shadowRadius: 10,
-  // },
   filterMenuContainer: {
     marginTop: 5,
     width: '50%',

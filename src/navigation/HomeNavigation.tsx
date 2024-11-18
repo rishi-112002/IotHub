@@ -7,49 +7,15 @@ import SpotListScreen from '../screens/SpotListScreen';
 import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
 import {AppNavigationParams} from './NavigationStackList';
 import EditRfidScreen from '../screens/RFID/EditRfidscreen';
-import {useRoute, RouteProp} from '@react-navigation/native';
 import {slideFromRight} from './NavigationTransition';
+import { useRoute, RouteProp } from '@react-navigation/native';
 type conectivityParams = {types: any; screen: any};
 const Stack = createStackNavigator<AppNavigationParams>();
 
-// export const slideFromLeft = {
-//   gestureDirection: 'horizontal',
-//   cardStyleInterpolator: ({current, layouts}) => {
-//     return {
-//       cardStyle: {
-//         transform: [
-//           {
-//             translateX: current.progress.interpolate({
-//               inputRange: [0, 1],
-//               outputRange: [-layouts.screen.width, 0], // Starts from the left
-//             }),
-//           },
-//         ],
-//       },
-//     };
-//   },
-//   transitionSpec: {
-//     open: {
-//       animation: 'timing',
-//       config: {
-//         duration: 300,
-//         easing: Easing.ease,
-//       },
-//     },
-//     close: {
-//       animation: 'timing',
-//       config: {
-//         duration: 300,
-//         easing: Easing.ease,
-//       },
-//     },
-//   },
-// };
 
 function HomeNavigation() {
   const route = useRoute<RouteProp<{params: conectivityParams}, 'params'>>();
   const conectivityType = route.params?.types || '';
-  // console.log('conectivityType', conectivityType, route);
   return (
     <Stack.Navigator
       initialRouteName="HomeScreen"
@@ -65,8 +31,7 @@ function HomeNavigation() {
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
-        options={{headerShown: false}}
-        initialParams={{conectivityType}}
+        options={{ headerShown: false }}
       />
 
       {/* Define the EventLogsScreen with a header shown */}

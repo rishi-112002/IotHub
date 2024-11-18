@@ -1,17 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useEffect, useState, useCallback, useMemo} from 'react';
-import {useSelector} from 'react-redux';
+import { useEffect, useState, useCallback, useMemo, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import {
   getRfidListAction,
   deleteRfidListAction,
 } from '../../reducer/RFIDList/RFIDListAction';
-import {RootState, store} from '../../reducer/Store';
+import { RootState, store } from '../../reducer/Store';
 import showCustomToast from '../../reuseableComponent/modal/CustomToast';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import React from 'react';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import { useBackHandler } from '@react-native-community/hooks';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
 export const RfidListHook = () => {
   // const dispatch = useDispatch();
+  const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+
+  const { rfidType , setRfidType } = useContext(DataByConnectivityContext);
+
   const ListData = useSelector(
     (state: RootState) => state.rfidList.RfidListData,
   );
@@ -25,7 +33,8 @@ export const RfidListHook = () => {
   const baseUrl = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
-
+  const usedRfid = ListData.filter((rfid: any) => rfid.direction === null && rfid.type === null)
+  const UnusedRfid = ListData.filter((rfid: any) => rfid.direction !== null && rfid.type !== null)
   const [refreshing, setRefreshing] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [rfidToDelete, setRfidToDelete] = useState<string | null>(null);
@@ -39,7 +48,7 @@ export const RfidListHook = () => {
     setSuccessAlertVisible(false); // Reset success alert before fetching data
     setErrorMessage(''); // Clear previous error message
     try {
-      store.dispatch(getRfidListAction({baseUrl}));
+      store.dispatch(getRfidListAction({ baseUrl }));
     } catch (error) {
       // Handle fetch error if necessary
 
@@ -78,6 +87,13 @@ export const RfidListHook = () => {
     // />
     // );
   }, []);
+  const rfidData =
+    rfidType === 'all'
+      ? ListData
+      : rfidType === 'used'
+        ? UnusedRfid
+        : usedRfid;
+
 
   const confirmDelete = useCallback(async () => {
     if (!rfidToDelete) {
@@ -87,10 +103,10 @@ export const RfidListHook = () => {
     setAlertVisible(false);
     try {
       await store.dispatch(
-        deleteRfidListAction({id: rfidToDelete, buCode, token})
+        deleteRfidListAction({ id: rfidToDelete, buCode, token })
       ).unwrap();
-        showCustomToast('success', 'RFID deleted successfully!');
-        await loadRfidList(); // Refresh the list after successful deletion
+      showCustomToast('success', 'RFID deleted successfully!');
+      await loadRfidList(); // Refresh the list after successful deletion
 
       // if (deleteRfidListAction.fulfilled.match(resultAction)) {
       //   // setSuccessAlertVisible(true); // Show success alert
@@ -107,7 +123,12 @@ export const RfidListHook = () => {
       // setErrorAlertVisible(true);
     }
   }, [rfidToDelete, buCode, token, loadRfidList]);
-
+  const handleResetConnectivity = () => {
+    navigation.goBack()
+    setRfidType("all")
+    return true;
+  }
+  useBackHandler(handleResetConnectivity);
   return useMemo(
     () => ({
       ListData,
@@ -124,6 +145,11 @@ export const RfidListHook = () => {
       errorAlertVisible,
       setErrorAlertVisible,
       errorMessage,
+      rfidType,
+      UnusedRfid,
+      usedRfid,
+      rfidData,
+      navigation
     }),
     [
       ListData,
@@ -137,6 +163,11 @@ export const RfidListHook = () => {
       successAlertVisible,
       errorAlertVisible,
       errorMessage,
+      rfidType,
+      UnusedRfid,
+      usedRfid,
+      rfidData,
+      navigation
     ],
   );
 };

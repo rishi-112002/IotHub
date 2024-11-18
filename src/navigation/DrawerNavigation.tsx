@@ -6,7 +6,7 @@ import React from 'react';
 import CustomDrawerContent from '../reuseableComponent/drawer/CustomDrawer';
 import GenericNavigation from './GenericNavigation';
 import WeighBridgeNavigation from './WeighBridgeNavigation';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { AppNavigationParams } from './NavigationStackList';
 import RfidScreenNavigation from './RfidNavigation';
 import BottomTabNavigation from './BottomTab';
@@ -14,9 +14,6 @@ import HomeNavigation from './HomeNavigation';
 
 const Drawer = createDrawerNavigator<AppNavigationParams>();
 export default function DrawerNavigation() {
-  const route = useRoute<RouteProp<{ params: AppNavigationParams }, 'params'>>();
-  const { screen }: any = route.params;
-  // console.log("screen name ", screen)
   const navigation = useNavigation();
   return (
     <Drawer.Navigator

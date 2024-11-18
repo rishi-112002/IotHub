@@ -1,10 +1,10 @@
-import {Animated, View, StyleSheet} from 'react-native';
+import { Animated, View, StyleSheet } from 'react-native';
 import SpotsDataByTypeComponent from '../component/SpotsDataByTypeComponent';
 import FloatingActionCutomButton from '../reuseableComponent/customButton/FloatingActionCustomButton';
 import CustomLoader from '../reuseableComponent/loader/CustomLoader';
 import colors from '../assets/color/colors';
 import CustomHeader from '../reuseableComponent/header/CustomHeader';
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import CustomAlert from '../reuseableComponent/PopUp/CustomPopUp';
 import WeighBridgeScreenHooks from '../CustomHooks/weighBridgeHooks/WeighBridgeScreenHooks';
 
@@ -17,6 +17,9 @@ function Weighbridges() {
     isVisible,
     navigation,
     setIsVisible,
+    WeighBridgeConnectedSpot,
+    WeighBridgeNotConnectedSpot,
+    weighBridgeTypeConnectivity
   } = WeighBridgeScreenHooks();
 
   const scrollY = new Animated.Value(0);
@@ -32,7 +35,7 @@ function Weighbridges() {
   });
   const translateButtonY = diffClamp.interpolate({
     inputRange: [0, 110],
-    outputRange: [0,250],
+    outputRange: [0, 250],
   });
 
   // Animation for CustomAlert modal
@@ -54,7 +57,12 @@ function Weighbridges() {
       }).start();
     }
   }, [isVisible, fadeAnim]);
-
+  const spotsData =
+    weighBridgeTypeConnectivity === 'all'
+      ? WeighbridgeSpots
+      : weighBridgeTypeConnectivity === 'connected'
+        ? WeighBridgeConnectedSpot
+        : WeighBridgeNotConnectedSpot;
   return (
     <View style={styles.container}>
       <CustomHeader
@@ -67,11 +75,11 @@ function Weighbridges() {
         <CustomLoader />
       ) : (
         <Animated.View
-          style={[styles.animatedContainer, {paddingTop: paddingTopAnimated}]}>
+          style={[styles.animatedContainer, { paddingTop: paddingTopAnimated }]}>
           <SpotsDataByTypeComponent
-            data={WeighbridgeSpots}
+            data={spotsData}
             type={'UNIDIRECTIONAL_WEIGHBRIDGE'}
-            handleScroll={(e: {nativeEvent: {contentOffset: {y: number}}}) => {
+            handleScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
             handleDelete={handleDelete}
@@ -85,7 +93,7 @@ function Weighbridges() {
 
       {/* Animated CustomAlert */}
       {isVisible && (
-        <Animated.View style={[styles.modalContainer, {opacity: fadeAnim}]}>
+        <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
           <CustomAlert
             isVisible={isVisible}
             onClose={() => setIsVisible(false)}

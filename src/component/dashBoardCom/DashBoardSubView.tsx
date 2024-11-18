@@ -7,24 +7,27 @@ import CustomIcon from "../../reuseableComponent/customIcons/CustomIcon";
 import { StyleSheet } from "react-native";
 
 function DashBoardSubView(props: {
-    navigation: any,
+    onPress: any,
+    onPressLeft: any,
+    onPressRight: any,
+    backGroundColor:string,
     subHeader: string, subHeaderCount: any,
     subHeadingLeft: string, subHeadingRight: string, subHeadingLeftCount: any, subHeadingRightCount: any
 }) {
-    const { navigation, subHeader, subHeaderCount, subHeadingLeft, subHeadingLeftCount, subHeadingRight, subHeadingRightCount } = props
+    const { onPress, onPressLeft, onPressRight, subHeader, subHeaderCount, subHeadingLeft, subHeadingLeftCount,backGroundColor, subHeadingRight, subHeadingRightCount } = props
     return (
         <View style={styles.column}>
 
 
-            <View style={{ flexDirection: 'column', justifyContent: 'space-between', backgroundColor: subHeader === "Connected" ? '#f0f4f7' : colors.redLightest, borderRadius: 20, rowGap: 10, padding: 7 }}>
-                <TouchableOpacity style={{
+            <View style={{ flexDirection: 'column', justifyContent: 'space-between', backgroundColor: backGroundColor, borderRadius: 20, rowGap: 10, padding: 7 }}>
+                {subHeader && <TouchableOpacity style={{
                     borderRadius: 15,
                     paddingHorizontal: 10,
                     rowGap: 10,
                     justifyContent: 'space-between',
                     flexDirection: 'row',
                     alignContent: 'center'
-                }} onPress={() => navigation.navigate('LiveSpots', { screen: "HomeScreen", types: "connected" })}>
+                }} onPress={onPress}>
 
                     <View style={{
                         flexDirection: 'row',
@@ -44,11 +47,11 @@ function DashBoardSubView(props: {
 
 
                         <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
-                            <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={undefined} />
+                            <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={onPress} />
                         </View>
 
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity>}
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20 }}>
 
                     <TouchableOpacity style={{
@@ -60,7 +63,7 @@ function DashBoardSubView(props: {
                         justifyContent: 'space-between',
                         flexDirection: 'column',
                         alignContent: 'center'
-                    }} onPress={() => navigation.navigate('LiveSpots', { screen: "HomeScreen", types: "not-connected" })}>
+                    }} onPress={onPressLeft}>
 
                         <Text style={{
                             fontSize: fontSizes.smallText,
@@ -79,7 +82,7 @@ function DashBoardSubView(props: {
                             }}>{subHeadingLeftCount}
                             </Text>
                             <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
-                                <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={undefined} />
+                                <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={onPressLeft} />
                             </View>
 
                         </View>
@@ -93,7 +96,7 @@ function DashBoardSubView(props: {
                         justifyContent: 'space-between',
                         flexDirection: 'column',
                         alignContent: 'center'
-                    }} onPress={() => navigation.navigate('LiveSpots', { screen: "HomeScreen", types: "not-connected" })}>
+                    }} onPress={onPressRight}>
 
                         <Text style={{
                             fontSize: fontSizes.smallText,
@@ -111,7 +114,7 @@ function DashBoardSubView(props: {
 
                             }}>{subHeadingRightCount}</Text>
                             <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
-                                <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={undefined} />
+                                <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={onPressRight} />
                             </View>
 
                         </View>
