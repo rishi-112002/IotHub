@@ -19,7 +19,7 @@ export const slideFromRight = {
         transform: [
           {
             translateX: current.progress.interpolate({
-              inputRange: [1, 1],
+              inputRange: [-0.5, 1],
               outputRange: [layouts.screen.width, 0],
               // easing: Easing.ease,
             }),
@@ -39,7 +39,7 @@ export const slideFromLeft = {
         transform: [
           {
             translateX: current.progress.interpolate({
-              inputRange: [1, 1],
+              inputRange: [-0.5, 1],
               outputRange: [-layouts.screen.width, 0], // Starts from the left
             }),
           },
@@ -53,12 +53,13 @@ function HomeNavigation() {
   return (
     <Stack.Navigator
       initialRouteName="HomeScreen"
-      screenOptions={({route}) => {
-        if (route.name === 'SpotDetailScreen') {
-          return slideFromRight;
-        }
-        return slideFromLeft;
-      }}>
+      // screenOptions={({route}) => {
+      //   if (route.name === 'SpotDetailScreen') {
+      //     return slideFromRight;
+      //   }
+      //   return slideFromLeft;
+      // }}
+    >
       {/* Define the HomeScreen without a header */}
       <Stack.Screen
         name="HomeScreen"
@@ -77,13 +78,15 @@ function HomeNavigation() {
       <Stack.Screen
         name="SpotDetailsScreen"
         component={SpotListScreen}
-        options={{headerShown: true}}
-      />
+        // options={{headerShown: true}}
+        options={slideFromRight}
+        />
 
       {/* Define the SpotDetailScreen with custom slide animation */}
       <Stack.Screen
         name="SpotDetailScreen"
         component={SpotDetailScreen}
+        options={slideFromRight}
         options={{headerShown: true}}
       />
 
