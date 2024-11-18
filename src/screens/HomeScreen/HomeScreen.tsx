@@ -23,7 +23,6 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
-
 function HomeScreen() {
   const {spotListData, Loader, loadRfidList, refreshing, buCode} =
     SpotListHook();
@@ -44,6 +43,7 @@ function HomeScreen() {
       .includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
+  console.log('spotListData :- ', spotListData);
 
   // Check if no results match both filter and search query
   const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
@@ -170,8 +170,8 @@ function HomeScreen() {
           {modelShow && (
             <TouchableWithoutFeedback onPress={toggleFilterMenu}>
               <View style={styles.overlay}>
-                <View style={styles.triangle} />
                 <View style={styles.filterMenuContainer}>
+                  {/* <View style={styles.triangle} /> */}
                   <TouchableOpacity
                     style={[
                       styles.filterItem,
@@ -227,29 +227,31 @@ const styles = StyleSheet.create({
     elevation: 40,
   },
   triangle: {
-    elevation: 50,
+    // elevation: 70,
     width: 0,
     height: 0,
     borderLeftWidth: 20,
     borderRightWidth: 20,
-    borderBottomWidth: 30,
+    borderBottomWidth: 28,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderBottomColor: colors.skyLighter,
-    marginBottom: -10,
-    marginLeft: '85%',
-    shadowColor: '#000',
-    shadowOffset: {width: 20, height: 200},
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    borderBottomColor: 'white',
+    marginBottom: 0,
+    marginTop: -30,
+    marginLeft: '75%',
+    shadowColor: '#0000',
+    shadowOffset: {width: 20, height: 20},
+    shadowOpacity: 2.5,
+    shadowRadius: 10,
   },
   filterMenuContainer: {
+    marginTop: 10,
     // flex: 1,
     width: '50%',
     // height: '23%',
-    backgroundColor: colors.skyLighter,
-    padding: 16,
-    borderRadius: 20,
+    backgroundColor: 'white',
+    padding: 5,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 20},
     shadowOpacity: 0.25,
@@ -338,6 +340,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   noResultsText: {
+    justifyContent: 'center',
     fontSize: 18,
     color: colors.gray,
     textAlign: 'center',
