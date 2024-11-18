@@ -92,7 +92,7 @@ const authSlice = createSlice({
         state.buCode = action.payload.buCode;
       })
       .addCase(CheckUserlogin.rejected, (state, action) => {
-        console.log('CheckUserloginRejected', action.error);
+        // console.log('CheckUserloginRejected', action.error);
         state.loading = false;
         state.isLogIn = false;
       })

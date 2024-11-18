@@ -17,12 +17,12 @@ export const loginUser = createAsyncThunk(
       const {data} = await axios.post(fullUrl, loginData);
 
       if (data.result === 'ERROR') {
-        console.log('Login failed: ', data);
+        // console.log('Login failed: ', data);
         return rejectWithValue(
           'Login failed: Invalid credentials or server error.',
         );
       }
-      console.log('loginData', loginData);
+      // console.log('loginData', loginData);
       await AsyncStorage.setItem('userName', loginData.username);
       await AsyncStorage.setItem('buCode', loginData.buCode);
       await AsyncStorage.setItem('token', data.result);
@@ -35,7 +35,7 @@ export const loginUser = createAsyncThunk(
 
       return detail;
     } catch (err) {
-      console.error('Login error in catch block: ', err);
+      // console.error('Login error in catch block: ', err);
       return rejectWithValue('Login error: Something went wrong.');
     }
   },
@@ -58,7 +58,7 @@ export const CheckUserlogin = createAsyncThunk(
         return thunkAPI.rejectWithValue('error');
       }
     } catch (error) {
-      console.log('error of catch', error);
+      // console.log('error of catch', error);
       return thunkAPI.rejectWithValue(error);
     }
   },

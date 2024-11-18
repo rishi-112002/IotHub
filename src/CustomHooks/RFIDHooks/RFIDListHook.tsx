@@ -51,7 +51,7 @@ export const RfidListHook = () => {
 
   useEffect(() => {
     loadRfidList();
-    console.log('first');
+    // console.log('first');
   }, [baseUrl, loadRfidList]);
 
   // useEffect(() => {

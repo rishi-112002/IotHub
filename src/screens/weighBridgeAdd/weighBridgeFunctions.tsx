@@ -191,7 +191,7 @@ function WeighBridgeFunction(props: { id: any }) {
       setModalVisible(!modalVisible);
       setCurrentField(field);
     } else {
-      console.log('filed', field);
+      // console.log('filed', field);
       openCalendarModal();
     }
     if (currentField?.includes('display')) {
@@ -250,7 +250,7 @@ function WeighBridgeFunction(props: { id: any }) {
   };
 
   const handleUploadData = () => {
-    console.log('firstScreenData to pass');
+    // console.log('firstScreenData to pass');
 
     const newErrors: {
       name?: string;
@@ -417,9 +417,9 @@ function WeighBridgeFunction(props: { id: any }) {
       ...typeSpecificFields,
       ...input,
     };
-    console.log('firstScreenData to pass i got on Click', dataToUpload);
+    // console.log('firstScreenData to pass i got on Click', dataToUpload);
     try {
-      console.log("hello from try of handle save ")
+      // console.log("hello from try of handle save ")
       store.dispatch(
         id ?
           UpdateWeighBridgeSpot({
@@ -437,7 +437,7 @@ function WeighBridgeFunction(props: { id: any }) {
 
       );
     } catch (error) {
-      console.log("can i caught in error ", error);
+      // console.log("can i caught in error ", error);
     }
 
   }
@@ -480,7 +480,7 @@ function WeighBridgeFunction(props: { id: any }) {
   const displayAId = displayA?.id;
   const displayBName = displayB?.name;
   const displayBId = displayB?.id;
-  console.log("expirydate" , WeighBridgeSpot.expiryDate)
+  // console.log("expirydate" , WeighBridgeSpot.expiryDate)
   useEffect(() => {
     if (id) {
       setName(WeighBridgeSpot.name)
@@ -517,7 +517,7 @@ function WeighBridgeFunction(props: { id: any }) {
     }
   }, [id, WeighBridgeSpot])
   useEffect(() => {
-    console.log("updateStatus", updateStatus)
+    // console.log("updateStatus", updateStatus)
     switch (updateStatus) {
       case 'failed':
         CustomToast('error', uploadError);

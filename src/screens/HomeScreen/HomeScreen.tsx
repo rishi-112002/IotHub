@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Animated,
   StyleSheet,
@@ -12,30 +12,28 @@ import {
 } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
+import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
 
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import SpotList from '../../component/SpotListComponent/SpotList';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Colors2 } from '../../assets/color/Colors2';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import {Colors2} from '../../assets/color/Colors2';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {RouteProp, useRoute} from '@react-navigation/native';
 
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
-type conectivityParams = { conectivityType: any }
+type conectivityParams = {conectivityType: any};
 
 function HomeScreen() {
-  const { spotListData, Loader, loadRfidList, refreshing, buCode } =
+  const {spotListData, Loader, loadRfidList, refreshing, buCode} =
     SpotListHook();
-  const route = useRoute<RouteProp<{ params: conectivityParams }, 'params'>>();
+  const route = useRoute<RouteProp<{params: conectivityParams}, 'params'>>();
   const conectivityType = route.params?.conectivityType || '';
-  console.log('conectivityType in Home Screen', conectivityType);
+  // console.log('conectivityType in Home Screen', conectivityType);
   // State for filter and search query
   const [filter, setFilter] = useState<FilterOption>(conectivityType);
-
 
   useEffect(() => {
     setFilter(conectivityType);
@@ -55,7 +53,7 @@ function HomeScreen() {
       .includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
-  console.log('spotListData :- ', spotListData);
+  // console.log('spotListData :- ', spotListData);
 
   // Check if no results match both filter and search query
   const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
@@ -95,7 +93,7 @@ function HomeScreen() {
   return (
     <SafeAreaView style={styles.container1}>
       {/* Your Header and Search Bar Components */}
-      <Animated.View style={[styles.headerContainer, { paddingTop: translateY }]}>
+      <Animated.View style={[styles.headerContainer, {paddingTop: translateY}]}>
         <CustomHeader
           buCode={buCode}
           userLogo={'account-circle'}
@@ -105,7 +103,7 @@ function HomeScreen() {
         <Animated.View
           style={[
             styles.searchBarContainer,
-            { transform: [{ translateY: translateY }] },
+            {transform: [{translateY: translateY}]},
           ]}>
           <View style={styles.searchWrapper}>
             <View style={styles.searchInput}>
@@ -164,7 +162,7 @@ function HomeScreen() {
         <BouncingLoader />
       ) : (
         <Animated.View
-          style={[styles.listWrapper, { transform: [{ translateY: translateY }] }]}>
+          style={[styles.listWrapper, {transform: [{translateY: translateY}]}]}>
           {noResults ? (
             <Text style={styles.noResultsText}>
               No results found for "{searchQuery}"
@@ -229,7 +227,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   overlay: {
-    // flex: 1,
+    flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -238,43 +236,32 @@ const styles = StyleSheet.create({
     zIndex: 9999,
     elevation: 40,
   },
-  triangle: {
-    // elevation: 70,
-    width: 0,
-    height: 0,
-    borderLeftWidth: 20,
-    borderRightWidth: 20,
-    borderBottomWidth: 28,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-// <<<<<<< HEAD
-    borderBottomColor: 'white',
-    marginBottom: 0,
-    marginTop: -30,
-    marginLeft: '75%',
-    shadowColor: '#0000',
-    shadowOffset: {width: 20, height: 20},
-    shadowOpacity: 2.5,
-    shadowRadius: 10,
-// =======
-//     borderBottomColor: colors.skyLighter,
-//     marginBottom: -10,
-//     marginLeft: '85%',
-//     shadowColor: '#000',
-//     shadowOffset: { width: 20, height: 200 },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-  },
+  // triangle: {
+  //   // elevation: 70,
+  //   width: 0,
+  //   height: 0,
+  //   borderLeftWidth: 20,
+  //   borderRightWidth: 20,
+  //   borderBottomWidth: 28,
+  //   borderLeftColor: 'transparent',
+  //   borderRightColor: 'transparent',
+  //   borderBottomColor: 'white',
+  //   marginBottom: 0,
+  //   marginTop: -30,
+  //   marginLeft: '75%',
+  //   shadowColor: '#0000',
+  //   shadowOffset: {width: 20, height: 20},
+  //   shadowOpacity: 2.5,
+  //   shadowRadius: 10,
+  // },
   filterMenuContainer: {
-    marginTop: 10,
-    // flex: 1,
+    marginTop: 5,
     width: '50%',
-    // height: '23%',
     backgroundColor: 'white',
     padding: 5,
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 20 },
+    shadowOffset: {width: 0, height: 20},
     shadowOpacity: 0.25,
     shadowRadius: 4,
     alignSelf: 'flex-end',
@@ -340,6 +327,7 @@ const styles = StyleSheet.create({
   listWrapper: {
     flex: 1,
     marginTop: 8,
+    marginBottom: -70,
   },
   listContainer: {
     flex: 1,

@@ -20,7 +20,7 @@ function CustomSearchBar({ placeholder = 'Search', onSearch, onCancel, searchIco
         setSearchText('');
         onCancel();
     };
-    console.log("handleSearch" , searchText)
+    // console.log("handleSearch" , searchText)
 
     return (
         <View style={styles.container}>

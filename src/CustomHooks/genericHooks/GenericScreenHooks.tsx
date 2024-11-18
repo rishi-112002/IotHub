@@ -21,7 +21,7 @@ const GenericScreenHooks = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const getGenericData = useCallback(async () => {
-    console.log('hello form useEffect');
+    // console.log('hello form useEffect');
     store.dispatch(
       GenericSpotsData({
         baseUrl: baseUrls,

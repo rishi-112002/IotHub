@@ -8,43 +8,9 @@ import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
 import {AppNavigationParams} from './NavigationStackList';
 import EditRfidScreen from '../screens/RFID/EditRfidscreen';
 import {useRoute, RouteProp} from '@react-navigation/native';
-import {Easing} from 'react-native-reanimated';
+import {slideFromRight} from './NavigationTransition';
 type conectivityParams = {types: any; screen: any};
 const Stack = createStackNavigator<AppNavigationParams>();
-
-export const slideFromRight = {
-  gestureDirection: 'horizontal',
-  cardStyleInterpolator: ({current, layouts}: any) => {
-    return {
-      cardStyle: {
-        transform: [
-          {
-            translateX: current.progress.interpolate({
-              inputRange: [0, 1],
-              outputRange: [layouts.screen.width, 0], // Starts from the right
-            }),
-          },
-        ],
-      },
-    };
-  },
-  transitionSpec: {
-    open: {
-      animation: 'timing',
-      config: {
-        duration: 300,
-        easing: Easing.ease, // Apply easing to the timing animation
-      },
-    },
-    close: {
-      animation: 'timing',
-      config: {
-        duration: 200,
-        easing: Easing.ease,
-      },
-    },
-  },
-};
 
 // export const slideFromLeft = {
 //   gestureDirection: 'horizontal',
@@ -83,7 +49,7 @@ export const slideFromRight = {
 function HomeNavigation() {
   const route = useRoute<RouteProp<{params: conectivityParams}, 'params'>>();
   const conectivityType = route.params?.types || '';
-  console.log('conectivityType', conectivityType, route);
+  // console.log('conectivityType', conectivityType, route);
   return (
     <Stack.Navigator
       initialRouteName="HomeScreen"
