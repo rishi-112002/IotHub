@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
+import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
 
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -24,7 +24,7 @@ import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 
 type FilterOption = 'connected' | 'not-connected' | 'all';
 function HomeScreen() {
-  const {spotListData, Loader, loadRfidList, refreshing, buCode} =
+  const { spotListData, Loader, loadRfidList, refreshing, buCode } =
     SpotListHook();
   const { spotTypeConnectivity, setSpotTypeConnectivity } = useContext(DataByConnectivityContext);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -79,7 +79,7 @@ function HomeScreen() {
   return (
     <SafeAreaView style={styles.container1}>
       {/* Your Header and Search Bar Components */}
-      <Animated.View style={[styles.headerContainer, {paddingTop: translateY}]}>
+      <Animated.View style={[styles.headerContainer, { paddingTop: translateY }]}>
         <CustomHeader
           buCode={buCode}
           userLogo={'account-circle'}
@@ -89,7 +89,7 @@ function HomeScreen() {
         <Animated.View
           style={[
             styles.searchBarContainer,
-            {transform: [{translateY: translateY}]},
+            { transform: [{ translateY: translateY }] },
           ]}>
           <View style={styles.searchWrapper}>
             <View style={styles.searchInput}>
@@ -148,19 +148,22 @@ function HomeScreen() {
         <BouncingLoader />
       ) : (
         <Animated.View
-          style={[styles.listWrapper, {transform: [{translateY: translateY}]}]}>
+          style={[styles.listWrapper, { transform: [{ translateY: translateY }] }]}>
           {noResults ? (
             <Text style={styles.noResultsText}>
               No results found for "{searchQuery}"
             </Text>
           ) : (
-            <SpotList
-              spotData={filteredSpots}
-              loadRfidList={loadRfidList}
-              refreshing={refreshing}
-              onScroll={handleScroll}
-              contentContainerStyle={styles.listContainer}
-            />
+            <View style={{paddingHorizontal:5}}>
+
+              <SpotList
+                spotData={filteredSpots}
+                loadRfidList={loadRfidList}
+                refreshing={refreshing}
+                onScroll={handleScroll}
+                contentContainerStyle={styles.listContainer}
+              />
+            </View>
           )}
           {/* FilterMenu rendering logic */}
           {modelShow && (
@@ -229,7 +232,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 20},
+    shadowOffset: { width: 0, height: 20 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     alignSelf: 'flex-end',

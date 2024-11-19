@@ -4,7 +4,7 @@ import { useSelector} from 'react-redux';
 import {GetSpotEventLogs} from '../../reducer/eventLogs/EventLogsAction';
 import {RootState, store} from '../../reducer/Store';
 
-const useEventLogs = (baseUrl: string, spotName: string) => {
+const useEventLogs = (baseUrl: any, spotName: string) => {
   const loader = useSelector((state: RootState) => state.eventLogs.loader);
   const eventLogs = useSelector(
     (state: RootState) => state.eventLogs.eventLogs,

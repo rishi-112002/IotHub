@@ -14,7 +14,7 @@ function DashBoardSubHeader(props: { heading: string, onPress: any, subHeading: 
                     <CustomIcon iconPath={iconPath} onPress={undefined} />
                     <View style={{ flex: 1 }}>
                         <Text style={styles.cardTitle}>{heading}</Text>
-                        <View style={{ flexDirection: 'row', marginBottom: 20 }}>
+                        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                             <Text style={{ fontSize: fontSizes.smallText }} >{subHeading} </Text>
                             <Text style={{ color: colors.darkblack, fontSize: fontSizes.text }}>
                                 {count}</Text>
