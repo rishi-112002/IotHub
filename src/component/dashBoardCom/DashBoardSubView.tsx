@@ -10,17 +10,21 @@ function DashBoardSubView(props: {
     onPress: any,
     onPressLeft: any,
     onPressRight: any,
-    backGroundColor:string,
+    backGroundColor: string,
     subHeader: string, subHeaderCount: any,
     subHeadingLeft: string, subHeadingRight: string, subHeadingLeftCount: any, subHeadingRightCount: any
 }) {
-    const { onPress, onPressLeft, onPressRight, subHeader, subHeaderCount, subHeadingLeft, subHeadingLeftCount,backGroundColor, subHeadingRight, subHeadingRightCount } = props
+    const { onPress, onPressLeft, onPressRight, subHeader, subHeaderCount, subHeadingLeft, subHeadingLeftCount, backGroundColor, subHeadingRight, subHeadingRightCount } = props
     return (
         <View style={styles.column}>
 
 
-            <View style={{ flexDirection: 'column', justifyContent: 'space-between', backgroundColor: backGroundColor, borderRadius: 20, rowGap: 10, padding: 7 }}>
+            <View style={subHeader ? {
+                flexDirection: 'column', justifyContent: 'space-between', backgroundColor: backGroundColor,
+                borderRadius: 20, padding: 10
+            } : { marginTop: -15 }}>
                 {subHeader && <TouchableOpacity style={{
+
                     borderRadius: 15,
                     paddingHorizontal: 10,
                     rowGap: 10,
@@ -52,17 +56,19 @@ function DashBoardSubView(props: {
 
                     </View>
                 </TouchableOpacity>}
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20 }}>
+
+                <View style={{ flexDirection: 'row', gap: 10, paddingEnd: 30, paddingVertical: 15 }}>
 
                     <TouchableOpacity style={{
                         backgroundColor: "#d1d8de",
                         borderRadius: 20,
-                        padding: 10,
+                        paddingHorizontal: 15,
+                        paddingVertical: 10,
                         rowGap: 10,
-                        width: "45%",
+                        width: "55%",
                         justifyContent: 'space-between',
                         flexDirection: 'column',
-                        alignContent: 'center'
+
                     }} onPress={onPressLeft}>
 
                         <Text style={{
@@ -90,12 +96,12 @@ function DashBoardSubView(props: {
                     <TouchableOpacity style={{
                         backgroundColor: "#d1d8de",
                         borderRadius: 20,
-                        padding: 10,
+                        paddingHorizontal: 10,
+                        paddingVertical: 10,
                         rowGap: 10,
-                        width: "45%",
+                        width: "55%",
                         justifyContent: 'space-between',
                         flexDirection: 'column',
-                        alignContent: 'center'
                     }} onPress={onPressRight}>
 
                         <Text style={{
@@ -127,6 +133,7 @@ function DashBoardSubView(props: {
 }
 const styles = StyleSheet.create({
     column: {
+        flex: 1,
         flexDirection: "column",
         justifyContent: "space-between",
         rowGap: 10
