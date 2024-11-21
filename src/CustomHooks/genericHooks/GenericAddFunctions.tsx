@@ -40,7 +40,6 @@ function GenericAddFunction(props: { id: any }) {
     minTagCount: '',
   });
 
-  // console.log("genericSpot", GenericSpot)
   const [modalVisible, setModalVisible] = useState(false);
 
   const [currentField, setCurrentField] = useState<string | null>(null);
@@ -150,7 +149,6 @@ function GenericAddFunction(props: { id: any }) {
     }
   }, [GenericSpot]);
   useEffect(() => {
-    // console.log("updateStatus", updateStatus)
     switch (updateStatus) {
       case 'failed':
         CustomToast('error', uploadError);
@@ -276,7 +274,6 @@ function GenericAddFunction(props: { id: any }) {
           : null
         : null,
     };
-    // console.log('data for save ', dataToSave);
 
     try {
       store.dispatch(
@@ -295,7 +292,6 @@ function GenericAddFunction(props: { id: any }) {
           })
       );
     } catch (error) {
-      // console.log('uploadError in Generic add screen', error);
     }
   }, [
     formData.name,
@@ -363,10 +359,8 @@ function GenericAddFunction(props: { id: any }) {
         ;
 
       if (isFormDataMatching) {
-        // console.log("if");
         setEditButtonOpacity(true);
       } else {
-        // console.log("else", selectedDisplay.id, displayId);
         setEditButtonOpacity(false);
       }
     }

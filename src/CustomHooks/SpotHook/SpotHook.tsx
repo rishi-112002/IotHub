@@ -49,11 +49,9 @@ export const SpotListHook = () => {
 
   useEffect(() => {
     if (LError) {
-      // console.log("LoadListError UseEffect...");
       Alert.alert('Error', LError, [{text: 'OK'}], {cancelable: false});
     }
   }, [LError]);
-  // console.log("LoaderRefresh UseEffect...")
 
   //   // Delete RFID item
   //   const handleDelete = useCallback(
@@ -70,7 +68,6 @@ export const SpotListHook = () => {
   //                 deleteRfidListAction({id, buCode, token}),
   //               );
   //               if (deleteRfidListAction.fulfilled.match(resultAction)) {
-  //                 console.log('Delete Success :- ',deleteRfidListAction.fulfilled.match(resultAction));
   //                 Alert.alert(
   //                   'Success',
   //                   'RFID deleted successfully!',
@@ -92,7 +89,6 @@ export const SpotListHook = () => {
 
   // Memoize output to avoid recalculations when nothing changes
   const filteredSpots = spotListData.filter((spot: any) => {
-    console.log('Name :- ', spot?.name);
     const matchesFilter =
       spotTypeConnectivity === 'all' ||
       (spotTypeConnectivity === 'connected' && spot?.active) ||
@@ -102,7 +98,6 @@ export const SpotListHook = () => {
       .includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
   });
-  // console.log('spotListData :- ', spotListData);
 
   // Check if no results match both filter and search query
   const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
@@ -133,7 +128,6 @@ export const SpotListHook = () => {
   // Toggle the filter menu modal visibility
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const toggleFilterMenu = () => {
-    console.log('Toggle function run');
     // setModelShow(prevState => !prevState);
     setModelShow(true);
   };
@@ -145,7 +139,6 @@ export const SpotListHook = () => {
     setSearchQuery('');
     setModelShow(false);
   };
-  console.log('Toggle function run');
 
   const handleResetConnectivity = () => {
     navigation.goBack();

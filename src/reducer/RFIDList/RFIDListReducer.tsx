@@ -122,7 +122,6 @@ export const rfidListSlice = createSlice({
       deleteRfidListAction,
       'delete',
       (state: AuthState, action: any) => {
-        // console.log('REDUCER DELETE MESSAGE :- ', action);
         state.RfidListData = state.RfidListData.filter(
           item => item.id !== action.payload.id,
         );

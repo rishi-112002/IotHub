@@ -73,11 +73,9 @@ const GenericScreenHooks = () => {
         ? GenericConnectedSpot
         : GenericNotConnectedSpot;
 
-  console.log("genericTypeConnectivity", genericTypeConnectivity)
 
 
   const getGenericData = useCallback(async () => {
-    // console.log('hello form useEffect');
     store.dispatch(
       GenericSpotsData({
         baseUrl: baseUrls,

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import colors from '../assets/color/colors';
@@ -14,7 +15,7 @@ function BottomTabNavigation() {
     return (
         <Tab.Navigator
             initialRouteName="DashBoard"
-            screenOptions={({ route }) => ({    
+            screenOptions={({ route }) => ({
                 headerShown: false,
                 tabBarActiveTintColor: colors.AppPrimaryColor,
                 tabBarInactiveTintColor: colors.inactiveTint,
@@ -32,7 +33,6 @@ function BottomTabNavigation() {
                     overflow: 'hidden', // Ensures rounded corners are visible
                 },
                 tabBarIcon: ({ focused }: any) => {
-                    console.log("route" , route)
                     let iconPath;
 
                     if (route.name === 'LiveSpots') {
@@ -50,7 +50,7 @@ function BottomTabNavigation() {
                                 tintColor: focused ? colors.AppPrimaryColor : colors.inactiveTint,
                             }} />
                         </View>
-                    )
+                    );
                 },
             })}
         >

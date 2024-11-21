@@ -33,11 +33,9 @@ function CustomHeader(props: {
   const [modalVisible, setModalVisible] = useState(false);
   const Navigations = useNavigation();
   const openDrawer = useCallback(() => {
-    console.log("darwer Appears")
     Navigations.dispatch(DrawerActions.toggleDrawer());
   }, [Navigations]);
   useEffect(() => {
-    console.log("hello from drawer")
   }, [Navigations])
   const handleLogout = async () => {
     Alert.alert(

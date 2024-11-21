@@ -60,7 +60,6 @@ function UrlEffect() {
       try {
         // Await the dispatch and get the result
         const resultAction = await store.dispatch(GetUrls({ baseUrl: url }));
-        console.log('resultAction:', resultAction);
   
         if (GetUrls.fulfilled.match(resultAction)) {
           // Thunk succeeded, save the base URL and update state

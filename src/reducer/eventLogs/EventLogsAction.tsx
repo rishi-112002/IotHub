@@ -11,7 +11,6 @@ export const GetSpotEventLogs = createAsyncThunk("getSpotEventLogs", async (para
         const { data } = await axios.get(fullUrl);
         return data;
     } catch (err) {
-        // console.log(err);
     }
 })
 export const GetSpotEventLogsForToday = createAsyncThunk("getSpotEventLogsForToday ", async (params: { baseUrl: string|null, time: string }) => {
@@ -22,7 +21,6 @@ export const GetSpotEventLogsForToday = createAsyncThunk("getSpotEventLogsForTod
         const { data } = await axios.get(fullUrl);
         return data;
     } catch (err) {
-        // console.log(err);
     }
 })
 export const GetAllSpotEventLogs = createAsyncThunk("getAllSpotEventLogs ", async (params: { baseUrl: string|null}) => {
@@ -33,6 +31,5 @@ export const GetAllSpotEventLogs = createAsyncThunk("getAllSpotEventLogs ", asyn
         const { data } = await axios.get(fullUrl);
         return data;
     } catch (err) {
-        // console.log(err);
     }
 })

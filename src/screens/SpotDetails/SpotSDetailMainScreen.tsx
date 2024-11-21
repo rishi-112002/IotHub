@@ -32,7 +32,6 @@ const SpotDetailScreen = () => {
   //   // errorAlertVisible,
   //   // errorMessage,
   // } = RfidListHook();
-  // console.log('Spot Detail Screen :- ', handleDelete);
   const route = useRoute<RouteProp<{ params: { data: any } }, 'params'>>();
   const item = route.params?.data;
   const baseUrls = useSelector(

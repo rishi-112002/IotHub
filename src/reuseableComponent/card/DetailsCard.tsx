@@ -47,7 +47,6 @@ const DataTab: React.FC<DataTabProps> = ({
   allow = false,
   // handleDelete,
 }) => {
-  // console.log('DataTab11111 :- ', handleDelete); 
   const combinedStyles = { ...styles, ...stylesOverride };
 
   // Render content based on the data type

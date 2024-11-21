@@ -34,13 +34,6 @@ function HomeScreen() {
   const handleSearchPress = () => {
     setIsSearchVisible(!isSearchVisible);
   };
-  console.log('searchQuery :-', searchQuery);
-  console.log('modelShow :-', modelShow);
-  console.log('toggleFilterMenu :-', toggleFilterMenu);
-  console.log('handleFilterPress :-', handleFilterPress);
-  // console.log('searchQuery :-', searchQuery);
-  // console.log('searchQuery :-', searchQuery);
-  // console.log('searchQuery :-', searchQuery);
 
   return (
     <SafeAreaView style={styles.container1}>

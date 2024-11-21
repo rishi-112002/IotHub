@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet } from 'react-native';
+import {View, ScrollView, StyleSheet} from 'react-native';
 import React from 'react';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
@@ -10,9 +10,8 @@ import GenericAddInputComponent from './GenericAddInputComponent';
 import GenericAddFunction from '../../CustomHooks/genericHooks/GenericAddFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 
-function GenericAddForm(props: { id: any }) {
-  const { id } = props
-  console.log("id in genericAdd form ", id)
+function GenericAddForm(props: {id: any}) {
+  const {id} = props;
   const {
     loader,
     smartControllerLoader,
@@ -43,8 +42,8 @@ function GenericAddForm(props: { id: any }) {
     toggleDriverTagSwitch,
     toggleWeightBridgeEntrySwitch,
     handleFocus,
-    editButtonOpacity
-  } = GenericAddFunction({ id });
+    editButtonOpacity,
+  } = GenericAddFunction({id});
   if (smartControllerLoader || displayLoader || readerLoader || loader) {
     return (
       <View style={styles.loaderContainer}>
@@ -63,7 +62,9 @@ function GenericAddForm(props: { id: any }) {
             isActive={isActiveEnabled}
             onChangeValue={toggleActiveSwitch}
             handleInputChange={handleInputChange}
-            errors={errors} id={id} />
+            errors={errors}
+            id={id}
+          />
           <View>
             <GenericAddComponentDropDowns
               smartController={selectedSmartConnector.name}
@@ -74,7 +75,9 @@ function GenericAddForm(props: { id: any }) {
               eventId={selectedEvent.id}
               setCurrentField={setCurrentField}
               setModalVisible={setModalVisible}
-              id={id} isActive={isActiveEnabled} />
+              id={id}
+              isActive={isActiveEnabled}
+            />
           </View>
           <SwitchWithLabel
             value={isDriverTagEnabled}
@@ -86,7 +89,7 @@ function GenericAddForm(props: { id: any }) {
               label="Driver Tag TimeOut (In MilliSecound)"
               value={formData.driverTagTimeOut}
               style={styles.flexContainer}
-              type='input'
+              type="input"
               editable={!isActiveEnabled || !id}
               errorMessage={errors.driverTagTimeOut}
               keyboardType="numeric"
@@ -106,7 +109,7 @@ function GenericAddForm(props: { id: any }) {
               label="Security Tag TimeOut (In milliSecound)"
               value={formData.sequrityTagTimeOut}
               editable={!isActiveEnabled || !id}
-              type='input'
+              type="input"
               style={styles.flexContainer}
               errorMessage={errors.sequrityDelay}
               keyboardType="numeric"
@@ -129,7 +132,7 @@ function GenericAddForm(props: { id: any }) {
                 onPress={() => handleFocus('weightbridge')}
                 errorMessage={errors.weighBridge}
                 label="WeighBridge"
-                type='dropdown'
+                type="dropdown"
                 setTextInput={undefined}
                 required={true}
                 editable={!isActiveEnabled || !id}
@@ -156,7 +159,11 @@ function GenericAddForm(props: { id: any }) {
             valueKey="id"
           />
           <View>
-            <CustomButton label={id ? "update" : "save"} onPress={handleSaveData} disabled={!!id && !!editButtonOpacity} />
+            <CustomButton
+              label={id ? 'update' : 'save'}
+              onPress={handleSaveData}
+              disabled={!!id && !!editButtonOpacity}
+            />
           </View>
         </View>
       ) : (

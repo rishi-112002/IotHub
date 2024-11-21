@@ -40,7 +40,6 @@ function DashBoard() {
     const [isLoading, setIsLoading] = useState(true);
     // Show loader for 3 seconds
     useEffect(() => {
-        console.log('hello from dashBoard');
         const timer = setTimeout(() => {
             setIsLoading(false);
         }, 2000);

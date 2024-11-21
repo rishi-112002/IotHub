@@ -20,7 +20,6 @@ function UrlScreen() {
     urlError
   } = UrlEffect();
   const {styles} = UrlStyles();
-  console.log("urlError",urlError)
   return (
     <View style={styles.mainContainer}>
       <View style={styles.row}>

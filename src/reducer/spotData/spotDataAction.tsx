@@ -13,12 +13,10 @@ export const GetSpotData = createAsyncThunk('getSpotData', async (params: { base
   const { baseUrl } = params;
   const fullUrl = `${baseUrl}${spotDetails}`;
   try {
-    // console.log('url of getSpotData', fullUrl);
     const { data } = await axios.get(fullUrl);
     return data;
   } catch (error) {
     const message = handleError(error);
-    // console.log('Create Error:', message);
     return rejectWithValue(message);
   }
 })
@@ -27,7 +25,6 @@ export const GetSpotName = createAsyncThunk('getSpotName', async (params: { base
   const { baseUrl } = params;
   const fullUrl = `${baseUrl}${spotDetails}`;
   try {
-    // console.log('url of getSpotName', fullUrl);
     const { data } = await axios.get(fullUrl);
     const formattedOptions = data.map((item: any) => ({
       name: item.name,
@@ -36,7 +33,6 @@ export const GetSpotName = createAsyncThunk('getSpotName', async (params: { base
     return formattedOptions;
   } catch (error) {
     const message = handleError(error);
-    // console.log('Create Error:', message);
     return rejectWithValue(message);
   }
 })

@@ -65,11 +65,9 @@ export const RfidListHook = () => {
 
   useEffect(() => {
     loadRfidList();
-    // console.log('first');
   }, [baseUrl, loadRfidList]);
 
   const filteredRfid = ListData.filter((spot: any) => {
-    // console.log('Name :- ', spot?.name);
     // const matchesFilter =
     //   spotTypeConnectivity === 'all' ||
     //   (spotTypeConnectivity === 'connected' && spot?.active) ||
@@ -87,11 +85,9 @@ export const RfidListHook = () => {
   //     setErrorMessage(LError || DError);
   //     setErrorAlertVisible(true);
   //   }
-  //   console.log('Second');
   // }, [LError, DError]);
 
   const handleDelete = useCallback((id: string) => {
-    // console.log('RFID handle Delete :- ',id);
     setRfidToDelete(id);
     setAlertVisible(true);
     // return(
@@ -127,14 +123,12 @@ export const RfidListHook = () => {
       //   // Handle potential error from deletion action
       //   // setErrorMessage(DError);
       //   // setErrorAlertVisible(true);
-      //   // console.log("COnfirm Delete :- ",DError);
       // }
     } catch (error) {
       showCustomToast(
         'error',
         error || 'Something went wrong! Please try deleting again...',
       );
-      // console.log('Deletion error:', error);
       // setErrorMessage(DError);
       // setErrorAlertVisible(true);
     }

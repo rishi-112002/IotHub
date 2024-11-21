@@ -15,6 +15,5 @@ export const GetBuinessUnits = createAsyncThunk("getBuinessunits", async (params
         }));
         return formattedOptions;
     } catch (err) {
-        // console.log(err);
     }
 })

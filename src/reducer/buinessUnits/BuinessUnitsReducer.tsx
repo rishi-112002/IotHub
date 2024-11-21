@@ -18,15 +18,12 @@ export const businessUnitsSlice = createSlice({
     builder.addCase(GetBuinessUnits.fulfilled, (state, action) => {
       state.buinessunits = action.payload;
       state.loader = false;
-      //    console.log("done")
     });
     builder.addCase(GetBuinessUnits.rejected, state => {
       state.buinessunits = [];
-      // console.log("error")
       state.loader = false;
     });
     builder.addCase(GetBuinessUnits.pending, state => {
-      // console.log("pending of Buiness Units")
       state.loader = true;
     });
   },

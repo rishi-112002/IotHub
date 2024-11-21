@@ -60,7 +60,6 @@ export const GenericSpotsData = createAsyncThunk('genericSpotsData', async (para
         };
         return Data;
     } catch (err) {
-        // console.log(err);
     }
 })
 export const DeleteGenericSpot = createAsyncThunk('deleteSpot', async (params: { baseUrl: any, id: string, bucode: string | null, token: string | null }) => {
@@ -78,8 +77,6 @@ export const DeleteGenericSpot = createAsyncThunk('deleteSpot', async (params: {
         },);
         return { data, id };
     } catch (err) {
-        // console.log(err);
-        // console.log('url for delete', fullUrl)
 
     }
 })
@@ -93,8 +90,6 @@ export const GenericSpotData = createAsyncThunk('genericSpotData', async (params
         const { data } = await axios.get(fullUrl);
         return data;
     } catch (err) {
-        // console.log("url", fullUrl)
-        // console.log(err);
     }
 })
 
