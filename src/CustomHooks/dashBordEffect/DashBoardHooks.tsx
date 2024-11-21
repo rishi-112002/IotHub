@@ -52,11 +52,12 @@ function DashBoardHook() {
         // Clear the interval when the component unmounts
         return () => clearInterval(interval);
     }, [baseUrl, formattedDate]);
+
     useEffect(() => {
         store.dispatch(GetSpotData({ baseUrl: baseUrl }));
         store.dispatch(GetAllSpotEventLogs({ baseUrl: baseUrl }));
         store.dispatch(getRfidListAction({ baseUrl }));
-    }, [baseUrl])
+    }, [baseUrl]);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [requestData, setRequestData] = useState({});

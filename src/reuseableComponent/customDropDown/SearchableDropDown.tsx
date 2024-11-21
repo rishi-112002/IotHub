@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react';
 import {
     View,
     TextInput,
@@ -8,14 +8,14 @@ import {
     StyleSheet,
     Keyboard,
     ActivityIndicator,
-} from "react-native";
-import { useSelector } from "react-redux";
+} from 'react-native';
+import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { RootState } from "../../../reducer/Store";
+import { RootState } from '../../reducer/Store';
 
 
 function SearchableDropDown(props: { options: any, onOptionSelected: any, selectedOption: any }) {
-    const { options, onOptionSelected, selectedOption } = props
+    const { options, onOptionSelected, selectedOption } = props;
     const [searchText, setSearchText] = useState(selectedOption);
     const [filteredOptions, setFilteredOptions] = useState(options);
     const [isFocused, setIsFocused] = useState(false);
@@ -27,7 +27,7 @@ function SearchableDropDown(props: { options: any, onOptionSelected: any, select
             )
         );
     };
-    const { loader } = useSelector((State: RootState) => State.buinessUnits)
+    const { loader } = useSelector((State: RootState) => State.buinessUnits);
 
     const onOptionPress = (option: any) => {
         Keyboard.dismiss();
@@ -37,7 +37,7 @@ function SearchableDropDown(props: { options: any, onOptionSelected: any, select
         onOptionSelected(option);
         // console.log("selected one code", option.code)
     };
-  
+
     return (
         <View style={styles.container}>
             <View style={styles.inputContainer}>
@@ -48,7 +48,7 @@ function SearchableDropDown(props: { options: any, onOptionSelected: any, select
                     style={styles.input}
                     onFocus={() => setIsFocused(true)}
                 />
-              
+
                 <Icon name="mic" size={24} color="#007BFF" style={styles.icon} />
             </View>
 
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     inputContainer: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 10,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        color: "black",
+        color: 'black',
         fontSize: 15,
         paddingVertical: 10,
     },
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     list: {
-        backgroundColor: "#f9f9f9",
+        backgroundColor: '#f9f9f9',
         maxHeight: 200,
         borderColor: '#ccc',
         borderWidth: 1,
@@ -109,12 +109,12 @@ const styles = StyleSheet.create({
     listItem: {
         padding: 15,
         borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
+        borderBottomColor: '#ddd',
         backgroundColor: '#fff',
     },
     itemText: {
         fontSize: 16,
-        color: "#333",
+        color: '#333',
     },
     loaderContainer: {
         alignItems: 'center',
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     loadingText: {
         marginTop: 10,
         fontSize: 16,
-        color: "#333",
+        color: '#333',
     },
 });
 

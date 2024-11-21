@@ -11,7 +11,7 @@ export type AppNavigationParams = {
   HomeScreen: { types: string };
   EventLogScreen: { baseUrls: string | null; spotName: string, data: any };
   SpotDetailsScreen: { baseUrls: string | null; spotName: string };
-  SpotDetailScreen: { data: any[] };
+  SpotDetailScreen: { data: any };
 
   // Generic Spot Screens
   GenericSpotScreen: undefined;

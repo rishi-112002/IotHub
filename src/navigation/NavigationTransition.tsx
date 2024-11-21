@@ -20,14 +20,14 @@ export const slideFromRight = {
       open: {
         animation: 'timing',
         config: {
-          duration: 300,
+          duration: 400,
           easing: Easing.ease, // Apply easing to the timing animation
         },
       },
       close: {
         animation: 'timing',
         config: {
-          duration: 200,
+          duration: 400,
           easing: Easing.ease,
         },
       },

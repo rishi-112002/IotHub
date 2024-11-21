@@ -28,13 +28,12 @@ export const CardItemWith_Icon: React.FC<ChildComponentProps> = ({
 
 const combinedStyles = StyleSheet.create({
   tabItem: {
-    marginTop:5,
     borderWidth: 2,
     backgroundColor: colors.white,
     borderColor: Colors2.DividerColor,
     borderRadius: 10,
     padding: 10,
-    marginBottom: 12,
+    marginBottom: 5,
     elevation: 5,
   },
   statusText: {

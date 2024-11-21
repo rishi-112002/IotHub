@@ -5,7 +5,8 @@ const fontSizes = {
     subheading: 15,
     text: 14,
     smallText: 12,
-    vSmallText:10,
+    vSmallText: 10,
+    title: 16,
 };
 
 export default fontSizes;

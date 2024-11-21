@@ -117,7 +117,7 @@ function LoginEffect() {
   const handleLoginStatus = () => {
     if (loginStatus === 'succeeded') {
       setLoader(false);
-      navigation.navigate('HomeScreen');
+      navigation.navigate('Drawer', {screen:'bottomTabNavigation'});
     } else if (loginStatus === 'failed') {
       showCustomToast(
         'error',

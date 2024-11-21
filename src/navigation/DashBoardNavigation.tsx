@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AppNavigationParams } from './NavigationStackList';
 import DashBoard from '../screens/dashBoard/DashBoard';
 import AllEventLogsScreen from '../screens/dashBoard/AllEventLogScreen';
-import WeighBridgeNavigation from './WeighBridgeNavigation';
 
 // Create the stack navigator with a parameterized type for AppNavigationParams
 const Stack = createStackNavigator<AppNavigationParams>();
