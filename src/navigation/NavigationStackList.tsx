@@ -30,7 +30,7 @@ export type AppNavigationParams = {
   RfidAdd: undefined,
   RfidEdit: { readers: {} }
 
-  DashBoard: undefined;
+  DashBoardScreen: undefined;
   LiveSpot: undefined;
 
   bottomTabNavigation: undefined
@@ -44,7 +44,7 @@ export type AppNavigationParams = {
 
   AllEventLogsScreen: undefined;
 
-  DashBoardNavigation: undefined;
+  DashBoard: undefined;
 
   DrawerStackNavigation: undefined;
 };

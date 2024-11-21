@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, ScrollView} from 'react-native';
+import { View, ScrollView } from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import LoadingModal from '../../reuseableComponent/loader/CustomLoaderFaiz';
-import {useEditRfid} from '../../CustomHooks/RFIDHooks/RFIDEditHook';
-import {MODEL_LIST} from '../../assets/constants/Constant';
-import {RouteProp, useRoute} from '@react-navigation/native';
+import { useEditRfid } from '../../CustomHooks/RFIDHooks/RFIDEditHook';
+import { MODEL_LIST } from '../../assets/constants/Constant';
+import { RouteProp, useRoute } from '@react-navigation/native';
 
 // Define MODEL_LIST here
 
@@ -22,8 +22,8 @@ interface readerParams {
   };
 }
 
-const EditRfidScreen: React.FC<readerParams> = () => {
-  const route = useRoute<RouteProp<{params: readerParams}, 'params'>>();
+function EditRfidScreen() {
+  const route = useRoute<RouteProp<{ params: readerParams }, 'params'>>();
   const readers = route.params?.readers || '';
   console.log('Edit Screen :- ', readers);
 
@@ -47,11 +47,11 @@ const EditRfidScreen: React.FC<readerParams> = () => {
   } = useEditRfid(readers);
 
   return (
-    <ScrollView contentContainerStyle={{backgroundColor: colors.white}}>
+    <ScrollView contentContainerStyle={{ backgroundColor: colors.white }}>
       {Loader || smartControllerLoader ? (
         <LoadingModal visible={Loader} message="Processing your request..." />
       ) : (
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           <CustomTextInput
             label="Name"
             value={name}

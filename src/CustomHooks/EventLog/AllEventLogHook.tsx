@@ -1,14 +1,11 @@
 // src/hooks/useEventLogs.ts
-import {useEffect, useLayoutEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {GetAllSpotEventLogs} from '../../reducer/eventLogs/EventLogsAction';
 import {RootState, store} from '../../reducer/Store';
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
-import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
+import {Animated} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import CustomIcon from '../../reuseableComponent/customIcons/CustomIcon';
 import {GetSpotName} from '../../reducer/spotData/spotDataAction';
 import {direction, EventNames} from '../../assets/constants/Constant';
 
@@ -59,6 +56,17 @@ const AllEventLogHooks = () => {
   const handleOpenModal = () => {
     setIsFocused(true);
   };
+  const scrollY = new Animated.Value(0);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 100);
+  const translateY = diffClamp.interpolate({
+    inputRange: [0, 70],
+    outputRange: [0, -70],
+  });
+  const paddingTopAnimated = scrollY.interpolate({
+    inputRange: [0, 110],
+    outputRange: [70, 0],
+    extrapolate: 'clamp',
+  });
   const handleOptionSelected = (option: any) => {
     setSelectedOption(option);
   };
@@ -79,22 +87,6 @@ const AllEventLogHooks = () => {
   }, [eventLogsAll]);
   const [filteredLogs, setFilteredLogs] = useState([]);
   const [currentField, setCurrentField] = useState<string | null>(null);
-  // useLayoutEffect(() => {
-  //     console.log("third")
-
-  //     navigation.setOptions({
-  //         headerTitle: () => (
-  //             <Text style={{ color: colors.darkblack, fontSize: fontSizes.heading }}>
-  //                 {"Event Logs"}
-  //             </Text>
-  //         ),
-  //         headerRight: () => (
-  //             <TouchableOpacity style={{ padding: 5, marginEnd: 20 }}>
-  //                 <CustomIcon iconPath={require("../../assets/icons/filterSmall.png")} onPress={() => setIsFocused(true)} />
-  //             </TouchableOpacity>
-  //         ),
-  //     });
-  // }, [navigation]);
 
   const handleFilterClick = useMemo(() => {
     return () => {
@@ -180,7 +172,7 @@ const AllEventLogHooks = () => {
     if (isFilterWork) {
       handleFilter();
     }
-  }, [handleFilter]);
+  }, [handleFilter, isFilterWork]);
 
   useEffect(() => {
     if (
@@ -260,6 +252,9 @@ const AllEventLogHooks = () => {
   };
 
   return {
+    scrollY,
+    translateY,
+    paddingTopAnimated,
     setIsFocused,
     navigation,
     filterBadgeVisible,

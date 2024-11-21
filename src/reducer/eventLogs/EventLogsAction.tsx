@@ -3,7 +3,7 @@ import axios from "axios";
 import { evenLogs, EventLofsForToday, getAllSpotEventLogsUrl } from "../../api/EndPointsUrl";
 
 
-export const GetSpotEventLogs = createAsyncThunk("getSpotEventLogs", async (params: { baseUrl: string, spotName: string }) => {
+export const GetSpotEventLogs = createAsyncThunk("getSpotEventLogs", async (params: { baseUrl: string|null, spotName: string }) => {
     const { baseUrl, spotName } = params
     const fullUrl = `${baseUrl}${evenLogs}?spot=${spotName}&limit=500`
 

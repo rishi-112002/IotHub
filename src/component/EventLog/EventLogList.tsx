@@ -4,7 +4,8 @@ import { View, FlatList, Text, StyleSheet, Animated } from 'react-native';
 import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
+import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
+// import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
 
 type EventLogItemType = {
   id: string;
@@ -14,15 +15,13 @@ type EventLogItemType = {
   details: any;
 
 };
-
+const ITEM_HEIGHT = 90;
 type EventLogsListProps = {
   data: EventLogItemType[];
   setModal: (value: boolean) => void;
   setRequestData: (request: any) => void;
   onScroll: any
 };
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-
 const EventLogsList: React.FC<EventLogsListProps> = ({
   data,
   setModal,
@@ -30,15 +29,19 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
   onScroll,
 }) => {
   const [selectedItemId, setSelectedItemId] = useState("");
+  const onToggle = useCallback((id: string) => {
+    setSelectedItemId((prevId) => (prevId === id ? "" : id));
+  }, []);
+
   const renderEventLog = useCallback(
-    ({ item }: { item: EventLogItemType }) => (
+    ({ item }: any) => (
       <CardItemWith_Icon
-        iconName='event-note'
+        iconName="event-note"
         view={
           <EventLogItem
             item={item}
             isSelected={item.id === selectedItemId}
-            onToggle={() => setSelectedItemId(item.id === selectedItemId ? "" : item.id)}
+            onToggle={() => onToggle(item.id)}
           />
         }
       />
@@ -46,27 +49,21 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
     [selectedItemId]
   );
 
-  const keyExtractor = useCallback((item: EventLogItemType) => item.id, []);
 
+  const keyExtractor = useCallback((item: any) => item.id, []);
   return (
     <View style={styles.listContainer}>
       {data.length > 0 ? (
-        <AnimatedFlatList
+        <FlatList
           data={data}
+          removeClippedSubviews={true}
           renderItem={renderEventLog}
           keyExtractor={keyExtractor}
           onScroll={onScroll}
-          removeClippedSubviews={true} // Helps with large lists
-          initialNumToRender={40} // Initially render 10 items for performance
-        // maxToRenderPerBatch={50} // Number of items rendered per batch
-        // windowSize={150} // How many screens worth of content to render
-        // getItemLayout={(_data, index) => ({
-        //   length: 90,
-        //   offset: 90 * index,
-        //   index,
-        // })}
-        // updateCellsBatchingPeriod={30} // Reduce lag in scrolling
-        // scrollEventThrottle={16} // For smoother scroll handling
+          initialNumToRender={10} // Number of items rendered initially
+          maxToRenderPerBatch={30} // Number of items rendered per batch
+          windowSize={50}
+
         />
       ) : (
         <View style={styles.emptyContainer}>
@@ -83,7 +80,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.white
   },
-  flatListContent: { paddingBottom: 10 },
+  flatListContent: { flexGrow: 1 },
   emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   emptyText: { fontSize: fontSizes.subheading, color: 'gray' },
 });

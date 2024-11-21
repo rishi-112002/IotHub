@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {CardItemWith_Icon} from '../../reuseableComponent/card/CardItemWithIcon';
+import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
 import {ReaderCardContent} from '../../reuseableComponent/card/ReaderCardContent';
 import { Reader } from '../../reuseableComponent/card/DetailsCard';
 

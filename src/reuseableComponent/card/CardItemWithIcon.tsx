@@ -1,19 +1,16 @@
-import React from 'react';
-import {View,StyleSheet} from 'react-native';
+
+import React, { memo } from 'react';
+import { View, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
-import {Colors2} from '../../assets/color/Colors2';
+import { Colors2 } from '../../assets/color/Colors2';
 import fontSizes from '../../assets/fonts/FontSize';
 
-interface ChildComponentProps {
+interface CardItemWithIconProps {
   view: React.ReactNode;
   iconName: string;
 }
-
-export const CardItemWith_Icon: React.FC<ChildComponentProps> = ({
-  view,
-  iconName,
-}) => {
+const CardItemWith_Icon: React.FC<CardItemWithIconProps> = ({ iconName, view }) => {
   return (
     <View style={combinedStyles.tabItem}>
       <View style={combinedStyles.row}>
@@ -26,8 +23,10 @@ export const CardItemWith_Icon: React.FC<ChildComponentProps> = ({
   );
 };
 
+export default memo(CardItemWith_Icon);
 const combinedStyles = StyleSheet.create({
   tabItem: {
+    marginTop: 2,
     borderWidth: 2,
     backgroundColor: colors.white,
     borderColor: Colors2.DividerColor,
