@@ -3,7 +3,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import EventLogsScreen from '../screens/HomeScreen/EventLogsScreen';
-import SpotListScreen from '../screens/SpotListScreen';
+import SpotListScreen from '../screens/HomeScreen/SpotListScreen';
 import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
 import {AppNavigationParams} from './NavigationStackList';
 import EditRfidScreen from '../screens/RFID/EditRfidscreen';
@@ -20,12 +20,6 @@ function HomeNavigation() {
     <Stack.Navigator
       initialRouteName="HomeScreen"
       screenOptions={slideFromRight}
-      // screenOptions={({route}) => {
-      //   if (route.name === 'SpotDetailScreen') {
-      //     return slideFromRight;
-      //   }
-      //   return slideFromRight;
-      // }}
     >
       {/* Define the HomeScreen without a header */}
       <Stack.Screen

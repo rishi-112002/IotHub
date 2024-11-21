@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   CheckUserlogin,
   ClearResponse,
@@ -6,41 +6,6 @@ import {
   loginUser,
   logoutUser,
 } from './LoginAction';
-interface UserState {
-  userData: any;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
-}
-const userInitialState: UserState = {
-  userData: null,
-  status: 'idle',
-  error: null,
-};
-
-const userSlice = createSlice({
-  name: 'user',
-  initialState: userInitialState,
-  reducers: {},
-  extraReducers: builder => {
-    builder
-      .addCase(loginUser.pending, state => {
-        state.status = 'loading';
-      })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
-        // Replace `any` with a more specific type if possible
-        state.userData = action.payload;
-        if (state.userData.result !== 'ERROR') {
-          state.status = 'succeeded';
-        } else {
-          state.status = 'failed';
-        }
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message || 'Failed to login';
-      });
-  },
-});
 interface AuthState {
   isLogIn: boolean;
   token: string | null;
@@ -49,6 +14,9 @@ interface AuthState {
   loading: boolean;
   error: string | null;
   baseUrl: string | null;
+  userData: any,
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+
 }
 
 const initialState: AuthState = {
@@ -59,6 +27,8 @@ const initialState: AuthState = {
   loading: false,
   error: '',
   baseUrl: '',
+  userData: null,
+  status: 'idle'
 };
 const authSlice = createSlice({
   name: 'auth',
@@ -67,21 +37,37 @@ const authSlice = createSlice({
     setBaseUrl: (state, action) => {
       state.baseUrl = action.payload;
     },
+    handleLogOut: (state) => {
+      state.userName = ""
+      state.isLogIn = false;
+      
+      state.status = "idle"
+    }
   },
   extraReducers: builder => {
     builder
       .addCase(loginUser.pending, state => {
         state.loading = true;
+        state.status = 'loading';
+
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        state.userData = action.payload;
         state.loading = false;
         state.isLogIn = true;
         state.token = action.payload.token;
         state.userName = action.payload.userName;
         state.buCode = action.payload.buCode;
+        if (state.userData.result !== 'ERROR') {
+          state.status = 'succeeded';
+        } else {
+          state.status = 'failed';
+        }
       })
       .addCase(loginUser.rejected, state => {
         state.loading = false;
+        state.status = 'failed';
+
       })
 
       .addCase(CheckUserlogin.fulfilled, (state, action) => {
@@ -114,5 +100,5 @@ const authSlice = createSlice({
       });
   },
 });
-export const {setBaseUrl} = authSlice.actions;
-export {userSlice, authSlice};
+export const { setBaseUrl, handleLogOut } = authSlice.actions;
+export { authSlice };

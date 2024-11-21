@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomMenu from '../../reuseableComponent/menuOptions/CustomMenu';
@@ -19,12 +19,16 @@ type SpotItemProps = {
   baseUrl: string | null;
 };
 
+
 const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+  const OnHandlePress = useCallback((item: any) => {
+    navigation.navigate('SpotDetailScreen', { data: item });
+  }, [navigation]);
   return (
     <Animated.View style={styles.spotContainer}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('SpotDetailScreen', { data: item })}>
+        onPress={() => OnHandlePress(item)}>
         <View>
           <View style={{ flexDirection: "row", justifyContent: 'space-between', flex: 1 }}>
             <View style={{ flex: 0.9 }}>
@@ -147,3 +151,7 @@ const styles = StyleSheet.create({
 });
 
 export default SpotItem;
+function item(): unknown {
+  throw new Error('Function not implemented.');
+}
+

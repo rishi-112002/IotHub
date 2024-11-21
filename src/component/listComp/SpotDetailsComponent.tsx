@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Card } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import colors from '../assets/color/colors';
-import fontSizes from '../assets/fonts/FontSize';
-import Card from '../reuseableComponent/card/CustomCard';
+import colors from '../../assets/color/colors';
+import fontSizes from '../../assets/fonts/FontSize';
 
 // This component takes 'spotData' as a prop and renders various details about a spot.
 const SpotDetailsComponent = (props: { spotData: any }) => {

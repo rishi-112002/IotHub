@@ -17,7 +17,7 @@ function CustomDrawerContent() {
 
     const [isSpotExpanded, setIsSpotExpanded] = useState(false);
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-    const user = useSelector((state: RootState) => state.authentication.userName);
+    // const user = useSelector((state: RootState) => state.authentication.userName);
 
     return (
         <View style={{ flex: 1 }}>
@@ -25,7 +25,7 @@ function CustomDrawerContent() {
                 {/* Drawer Header */}
                 <View style={styles.header}>
                     <Text style={styles.headerTitle}>IoT Hub</Text>
-                    <Text style={styles.headerSubtitle}>Welcome, {user}!</Text>
+                    {/* <Text style={styles.headerSubtitle}>Welcome, {user}!</Text> */}
                 </View>
 
                 <View>

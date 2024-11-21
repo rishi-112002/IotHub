@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { GetAllSpotEventLogs } from '../../reducer/eventLogs/EventLogsAction';
 import { RootState, store } from '../../reducer/Store';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Animated, Text, TouchableOpacity } from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import { useNavigation } from '@react-navigation/native';
@@ -58,6 +58,17 @@ const AllEventLogHooks = () => {
     const handleOpenModal = () => {
         setIsFocused(true);
     };
+    const scrollY = new Animated.Value(0);
+    const diffClamp = Animated.diffClamp(scrollY, 0, 100);
+    const translateY = diffClamp.interpolate({
+        inputRange: [0, 70],
+        outputRange: [0, -70],
+    });
+    const paddingTopAnimated = scrollY.interpolate({
+        inputRange: [0, 110],
+        outputRange: [70, 0],
+        extrapolate: 'clamp',
+    });
     const handleOptionSelected = (option: any) => {
         setSelectedOption(option);
     };
@@ -75,23 +86,7 @@ const AllEventLogHooks = () => {
         setFilteredLogs(eventLogsAll);
     }, [eventLogsAll])
     const [filteredLogs, setFilteredLogs] = useState([]);
-    const [currentField, setCurrentField] = useState<string | null>(null);
-    // useLayoutEffect(() => {
-    //     console.log("third")
-
-    //     navigation.setOptions({
-    //         headerTitle: () => (
-    //             <Text style={{ color: colors.darkblack, fontSize: fontSizes.heading }}>
-    //                 {"Event Logs"}
-    //             </Text>
-    //         ),
-    //         headerRight: () => (
-    //             <TouchableOpacity style={{ padding: 5, marginEnd: 20 }}>
-    //                 <CustomIcon iconPath={require("../../assets/icons/filterSmall.png")} onPress={() => setIsFocused(true)} />
-    //             </TouchableOpacity>
-    //         ),
-    //     });
-    // }, [navigation]);
+    const [currentField, setCurrentField] = useState<string | null>(null);;
 
     const handleFilterClick = useMemo(() => {
         return () => {
@@ -215,7 +210,7 @@ const AllEventLogHooks = () => {
         return [];
     };
 
-    return { setIsFocused,navigation,filterBadgeVisible, loader, setToDateValue, setDateFromValue, handleReset, handleFilterClick, filteredLogs, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, eventLogsAll, spotName, setModalVisible, setRequestData, isFocused, handleCloseModal, handleOpenModal, handleOptionSelected, selectedOption, handleOptionSelect, getOptions, handleDateSelect, openCalendarModal, selectedName, selectedDirection, selectedSpot, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setSelectedSpot };
+    return {scrollY, translateY, paddingTopAnimated,setIsFocused,navigation,filterBadgeVisible, loader, setToDateValue, setDateFromValue, handleReset, handleFilterClick, filteredLogs, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, eventLogsAll, spotName, setModalVisible, setRequestData, isFocused, handleCloseModal, handleOpenModal, handleOptionSelected, selectedOption, handleOptionSelect, getOptions, handleDateSelect, openCalendarModal, selectedName, selectedDirection, selectedSpot, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setSelectedSpot };
 };
 
 export default AllEventLogHooks;

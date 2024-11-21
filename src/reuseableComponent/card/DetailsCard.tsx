@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
-import { CardItemWith_Icon } from './CardItemWithIcon';
+import  CardItemWith_Icon  from './CardItemWithIcon';
 import { ReaderCardContent } from './ReaderCardContent';
 import { DisplayCardContent } from './DisplayCardContent';
 import { SpotCommandCardContent } from './SpotCommandContent';

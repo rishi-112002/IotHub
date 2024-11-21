@@ -1,7 +1,8 @@
 
-import GenericAddForm from './GenericAddForm';
+import GenericAddForm from '../../component/genericComp/GenericAddForm';
 import React from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { Text, View } from 'react-native';
 interface genericAdd {
   id: any;
 }
@@ -9,8 +10,11 @@ function GenericAddScreen() {
 
   const route = useRoute<RouteProp<{ params: genericAdd }, 'params'>>();
   const id = route.params?.id || '';
+  console.log("id", id)
   return (
-    <GenericAddForm id={id} />
+    <View style={{ flex: 1 }}>
+      <GenericAddForm id={id} />
+    </View>
   );
 }
 export default GenericAddScreen;

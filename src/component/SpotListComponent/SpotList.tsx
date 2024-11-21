@@ -3,7 +3,7 @@ import { StyleSheet, FlatList, Animated, ListRenderItem, View } from 'react-nati
 import SpotItem from './SpotItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducer/Store';
-import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
+import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
 
 interface SpotData {
   id: string;
@@ -36,9 +36,9 @@ const SpotList: React.FC<SpotListComponentProps> = ({
 }) => {
   const baseUrl = useSelector((state: RootState) => state.authentication.baseUrl);
 
-  const keyExtractor = useCallback((item: SpotData) => item.id, []);
+  const keyExtractor = useCallback((item: any) => item.id, []);
 
-  const renderSpot: ListRenderItem<SpotData> = useCallback(
+  const renderSpot: ListRenderItem<any> = useCallback(
     ({ item }) => <CardItemWith_Icon
       iconName={item.active ? 'location-on' : "location-off"}
       view={<SpotItem item={item} baseUrl={baseUrl} />} />,

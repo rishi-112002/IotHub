@@ -1,56 +1,62 @@
-import { ActivityIndicator, Animated, View, StyleSheet } from 'react-native';
-import SpotsDataByTypeComponent from '../component/SpotsDataByTypeComponent';
-import FloatingActionCutomButton from '../reuseableComponent/customButton/FloatingActionCustomButton';
-import CustomHeader from '../reuseableComponent/header/CustomHeader';
-import React, {  } from 'react';
-import colors from '../assets/color/colors';
-import GenericScreenHooks from '../CustomHooks/genericHooks/GenericScreenHooks';
-import CustomAlert from '../reuseableComponent/PopUp/CustomPopUp';
+import { Animated, View, StyleSheet } from 'react-native';
+import React from 'react';
+import colors from '../../assets/color/colors';
+import SpotsDataByTypeComponent from '../../component/listComp/SpotsDataByTypeComponent';
+import WeighBridgeScreenHooks from '../../CustomHooks/weighBridgeHooks/WeighBridgeScreenHooks';
+import FloatingActionCutomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
+import CustomHeader from '../../reuseableComponent/header/CustomHeader';
+import CustomLoader from '../../reuseableComponent/loader/CustomLoader';
+import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 
-function GenericSpot() {
 
+function Weighbridges() {
   const {
     Loader,
     confirmDelete,
     handleDelete,
     isVisible,
+    navigation,
     setIsVisible,
-    onHandlePress,
-    translateY,
+    spotsData,
     paddingTopAnimated,
     scrollY,
-    spotsData,
     translateButtonY,
-    fadeAnim
-  } = GenericScreenHooks();
+    fadeAnim,
+    translateY
+  } = WeighBridgeScreenHooks();
+
   return (
     <View style={styles.container}>
       <CustomHeader
         buCode={undefined}
         userLogo={'account-circle'}
-        title={'GenericSpot'}
+        title={'Weighbridges'}
         translateY={translateY}
-      />
-
+        onSearchPress={undefined}
+        onFilterPress={undefined}
+        searchIcon={require("../../assets/icons/search.png")}
+        filterIcon={require("../../assets/icons/filterMedium.png")} />
       {Loader ? (
-        <ActivityIndicator size="large" style={styles.loader} />
+        <CustomLoader />
       ) : (
         <Animated.View
-          style={[styles.contentContainer, { paddingTop: paddingTopAnimated }]}>
+          style={[styles.animatedContainer, { paddingTop: paddingTopAnimated }]}>
           <SpotsDataByTypeComponent
             data={spotsData}
-            type={'GENERIC_SPOT'}
+            type={'UNIDIRECTIONAL_WEIGHBRIDGE'}
             handleScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
               scrollY.setValue(e.nativeEvent.contentOffset.y);
             }}
             handleDelete={handleDelete}
           />
           <FloatingActionCutomButton
-            onPress={onHandlePress}
+            onPress={() => navigation.navigate('WeighbridgesAddScreen', { id: undefined })}
             translateButtonY={translateButtonY}
           />
         </Animated.View>
       )}
+
+      {/* Animated CustomAlert */}
       {isVisible && (
         <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
           <CustomAlert
@@ -71,13 +77,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
   },
-  loader: {
-    flex: 1,
-  },
-  contentContainer: {
+  animatedContainer: {
     position: 'relative',
     flex: 1,
-    backgroundColor: colors.white,
   },
   modalContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -86,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GenericSpot;
+export default Weighbridges;

@@ -103,7 +103,8 @@ function AppNavigationHooks() {
                 GetBuinessUnits({ baseUrl: baseUrls, buCode: buCode, token: token }),
             ); // Dispatch action to get business units
         }
-    }, [baseUrls, buCode, dispatch, token]);
+    }, [baseUrls, buCode, token]);
+
     return {
         userName,
         loading

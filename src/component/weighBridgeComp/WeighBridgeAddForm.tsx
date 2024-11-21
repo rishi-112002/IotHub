@@ -8,14 +8,14 @@ import {
   View,
 } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
-import WeighBridgeComponent from './WeighBridgeAddComponent';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import WeighBridgeFunction from './weighBridgeFunctions';
+import WeighBridgeFunction from '../../CustomHooks/weighBridgeHooks/weighBridgeFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
+import WeighBridgeComponent from './WeighBridgeAddComponent';
 
 function WeighBridgeAddForm(props: { id: any }) {
   const { id } = props;

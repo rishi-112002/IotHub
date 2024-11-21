@@ -1,39 +1,44 @@
-import {useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Alert,
   Animated,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-import {useSelector} from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import UserModal from '../modal/HeaderModalEditAndLogout';
-import {RootState, store} from '../../reducer/Store';
+import { RootState, store } from '../../reducer/Store';
 import colors from '../../assets/color/colors';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
-import {logoutUser} from '../../reducer/Login/LoginAction';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { logoutUser } from '../../reducer/Login/LoginAction';
 import React from 'react';
+import { handleLogOut } from '../../reducer/Login/LoginReducer';
+import CustomIcon from '../customIcons/CustomIcon';
 
 function CustomHeader(props: {
   buCode: any;
   userLogo: any;
   title: any;
   translateY: any;
+  onSearchPress: any;
+  onFilterPress: any;
+  searchIcon: any;
+  filterIcon: any
 }) {
-  const userName = useSelector(
-    (State: RootState) => State.authentication.userName,
-  );
-  const {buCode, userLogo, title, translateY} = props;
+  const userName = useSelector((state: RootState) => state.authentication.userName, shallowEqual);
+  const { searchIcon, filterIcon, onFilterPress, onSearchPress, title, translateY } = props;
   const [modalVisible, setModalVisible] = useState(false);
-  // console.log('bucode', buCode);
   const Navigations = useNavigation();
-  const openDrawer = () => {
+  const openDrawer = useCallback(() => {
+    console.log("darwer Appears")
     Navigations.dispatch(DrawerActions.toggleDrawer());
-  };
+  }, [Navigations]);
+  useEffect(() => {
+    console.log("hello from drawer")
+  }, [Navigations])
   const handleLogout = async () => {
     Alert.alert(
       'Confirm Logout', // Alert title
@@ -49,17 +54,18 @@ function CustomHeader(props: {
           onPress: () => {
             setModalVisible(false);
             store.dispatch(logoutUser()); // Log out the user
+            store.dispatch(handleLogOut());
           },
         },
       ],
-      {cancelable: false}, // Prevents closing the alert by tapping outside of it
+      { cancelable: false }, // Prevents closing the alert by tapping outside of it
     );
   };
 
   return (
     <Animated.View
       style={{
-        transform: [{translateY: translateY}],
+        transform: [{ translateY: translateY }],
         elevation: 5,
         zIndex: 100000,
       }}>
@@ -73,18 +79,19 @@ function CustomHeader(props: {
               style={styles.burgerIcon}
             />
           </TouchableOpacity>
-          <Image
+          {/* <Image
             source={require('../../assets/images/iotHubLogo.png')}
             style={styles.logo}
-          />
+          /> */}
           <Text style={styles.appName}>{title}</Text>
         </View>
-        <View style={styles.rightSection}>
-          <Text style={styles.username}>{buCode}</Text>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <MaterialIcons name={userLogo} size={25} color={colors.darkblack} />
-          </TouchableOpacity>
-        </View>
+        {searchIcon && filterIcon &&
+
+          <View style={styles.rightSection}>
+            <CustomIcon iconPath={searchIcon} onPress={onSearchPress} />
+            <CustomIcon iconPath={filterIcon} onPress={onFilterPress} />
+          </View>
+        }
         {modalVisible && (
           <UserModal
             modalVisible={modalVisible}
@@ -133,6 +140,7 @@ const styles = StyleSheet.create({
   rightSection: {
     flexDirection: 'row',
     alignItems: 'center',
+    columnGap: 15
   },
   username: {
     color: colors.darkblack,
