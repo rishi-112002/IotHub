@@ -43,7 +43,7 @@ function DashBoard() {
         console.log("hello from dashBoard")
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 3000);
+        }, 2000);
 
         return () => clearTimeout(timer); // Clean up timer on unmount
     }, []);
@@ -68,7 +68,7 @@ function DashBoard() {
                         flexDirection: 'row', // Arrange items in a row
                         columnGap: 15 // Add padding if needed
                     }}
-                        showsHorizontalScrollIndicator={true} // Show horizontal scroll indicator
+                        showsHorizontalScrollIndicator={false} // Show horizontal scroll indicator
                         scrollEnabled={true}
                         horizontal={true} >
                         <DashBoardSubView subHeader={"Connected"} subHeaderCount={connectedCount} subHeadingLeft={"Generic-spot"} subHeadingRight={"WeighBridge-spot"}

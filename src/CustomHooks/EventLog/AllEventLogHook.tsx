@@ -1,19 +1,17 @@
 // src/hooks/useEventLogs.ts
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { GetAllSpotEventLogs } from '../../reducer/eventLogs/EventLogsAction';
 import { RootState, store } from '../../reducer/Store';
 import React from 'react';
-import { Animated, Text, TouchableOpacity } from 'react-native';
-import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
+import { Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import CustomIcon from '../../reuseableComponent/customIcons/CustomIcon';
 import { GetSpotName } from '../../reducer/spotData/spotDataAction';
 import { direction, EventNames } from '../../assets/constants/Constant';
 
 const AllEventLogHooks = () => {
     const navigation = useNavigation();
+    const [filterCount, setFilterCount] = useState(0)
     const loader = useSelector((state: RootState) => state.eventLogs.allEventLogLoader);
     const baseUrl = useSelector((state: RootState) => state.authentication.baseUrl);
     const spotName = useSelector((state: RootState) => state.spotData.spotName);
@@ -162,6 +160,7 @@ const AllEventLogHooks = () => {
         setSelectedSpot("")
         setFilteredLogs(eventLogsAll)
         setIsFocused(false)
+        setFilterCount(0)
     }
 
 
@@ -210,7 +209,7 @@ const AllEventLogHooks = () => {
         return [];
     };
 
-    return {scrollY, translateY, paddingTopAnimated,setIsFocused,navigation,filterBadgeVisible, loader, setToDateValue, setDateFromValue, handleReset, handleFilterClick, filteredLogs, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, eventLogsAll, spotName, setModalVisible, setRequestData, isFocused, handleCloseModal, handleOpenModal, handleOptionSelected, selectedOption, handleOptionSelect, getOptions, handleDateSelect, openCalendarModal, selectedName, selectedDirection, selectedSpot, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setSelectedSpot };
+    return {scrollY, translateY, paddingTopAnimated,setIsFocused,navigation,filterBadgeVisible, loader, setToDateValue, setDateFromValue, handleReset, handleFilterClick, filteredLogs, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, eventLogsAll, spotName, setModalVisible, setRequestData, isFocused, handleCloseModal, handleOpenModal, handleOptionSelected, selectedOption, handleOptionSelect, getOptions, handleDateSelect, openCalendarModal, selectedName, selectedDirection, selectedSpot, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setSelectedSpot,setFilterCount , filterCount };
 };
 
 export default AllEventLogHooks;

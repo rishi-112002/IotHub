@@ -1,7 +1,6 @@
 import React from 'react';
 import CustomDateTimePicker from '../../reuseableComponent/modal/CalendarWithTime';
 import {
-  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -27,7 +26,6 @@ function WeighBridgeAddForm(props: { id: any }) {
     minTagCount,
     setMinTagCount,
     handleUploadData,
-    isFormValid,
     loader,
     smartControllerLoader,
     getOptions,
@@ -75,13 +73,16 @@ function WeighBridgeAddForm(props: { id: any }) {
     selectedPrimaryReaderB,
     selectedGenericSpotDirB,
     errors,
+
   } = WeighBridgeFunction({ id: id });
 
   if (loader) {
-    <SequentialBouncingLoader />;
+    <View style={{ flex: 1 }}>
+      <SequentialBouncingLoader />;
+    </View>
   }
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {!smartControllerLoader ? (
           <View style={styles.container}>
@@ -381,9 +382,13 @@ function WeighBridgeAddForm(props: { id: any }) {
               />
             </View>
           </View>
-        ) : (
-          <ActivityIndicator size={'large'} style={styles.flexInput} />
-        )}
+        )
+
+          : (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: "90%" }}>
+              <SequentialBouncingLoader />
+            </View>
+          )}
       </ScrollView>
     </View>
   );
@@ -398,6 +403,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     backgroundColor: colors.white,
     flexGrow: 1,
+    // flex:1,
   },
   container: {
     padding: 20,

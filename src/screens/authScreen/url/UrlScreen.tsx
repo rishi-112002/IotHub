@@ -12,14 +12,15 @@ function UrlScreen() {
     errors,
     handleClick,
     handleUrlChange,
-    isButtonDisabled,
     loading,
     navigation,
     setUrl,
     slideUpAnim,
     url,
+    urlError
   } = UrlEffect();
   const {styles} = UrlStyles();
+  console.log("urlError",urlError)
   return (
     <View style={styles.mainContainer}>
       <View style={styles.row}>
