@@ -6,14 +6,21 @@ export const GetUrls = createAsyncThunk(
     async (params: { baseUrl: string }, { rejectWithValue }) => {
         const { baseUrl } = params;
 
+        console.log("Data for URL is", baseUrl);
         try {
             const { data } = await axios.get(baseUrl);
             return data;
         } catch (err: any) {
-            // console.error("Error fetching URLs:", err.message);
+            // Safely extract error message
+            const errorMessage =
+                err?.response?.data?.message || // API response message
+                err?.message ||                // Axios error message
+                "An unknown error occurred";   // Fallback message
 
-            // Return a custom error message or API response error
-            return rejectWithValue(err.response?.data?.message || "Failed to fetch URLs");
+            console.log("Caught in catch block:", errorMessage);
+
+            // Pass the error message to rejectWithValue
+            return rejectWithValue(errorMessage);
         }
     }
 );

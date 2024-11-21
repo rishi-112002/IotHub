@@ -21,6 +21,7 @@ type FilterModalProps = {
     spot: any;
     handleFilterClick: any;
     handleReset: any
+    setFilterCount: any
 };
 
 const FilterModal: React.FC<FilterModalProps> = ({
@@ -34,9 +35,14 @@ const FilterModal: React.FC<FilterModalProps> = ({
     setCurrentFiled,
     setGenericmodalVisible,
     handleReset,
-    direction, name, spot, handleFilterClick
+    direction, name, spot, handleFilterClick,
+    setFilterCount
+
 }) => {
     const [filteredOptions, setFilteredOptions] = useState(filters);
+
+
+
     useEffect(() => {
         if (isVisible) {
             setFilteredOptions(filters);
@@ -68,6 +74,24 @@ const FilterModal: React.FC<FilterModalProps> = ({
             <CustomIcon iconPath={item.path} onPress={undefined} />
         </TouchableOpacity>
     ), [handleSelectFilter, DateFromValue, ToDateValue, spot.name, name.name, direction.name]);
+    const calculateFilterCount = useCallback(() => {
+        let count = 0;
+
+        if (DateFromValue) count++;
+        if (ToDateValue) {
+            count = count + 1
+        };
+        if (spot.name) count++;
+        if (name.name) count++;
+        if (direction.name) count++;
+
+        setFilterCount(count);
+    }, [DateFromValue, ToDateValue, spot.name, name.name, direction.name]);
+
+    useEffect(() => {
+        calculateFilterCount();
+    }, [DateFromValue, ToDateValue, spot.name, name.name, direction.name]);
+
     return (
         <Modal transparent={true} animationType="slide" visible={isVisible} onRequestClose={handleCloseModal}>
             <View style={styles.modalContainer}>

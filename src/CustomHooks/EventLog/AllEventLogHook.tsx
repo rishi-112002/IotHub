@@ -11,6 +11,7 @@ import {direction, EventNames} from '../../assets/constants/Constant';
 
 const AllEventLogHooks = () => {
   const navigation = useNavigation();
+  const [filterCount, setFilterCount] = useState(0);
   const loader = useSelector(
     (state: RootState) => state.eventLogs.allEventLogLoader,
   );
@@ -204,6 +205,7 @@ const AllEventLogHooks = () => {
     setSelectedSpot('');
     setFilteredLogs(eventLogsAll);
     setIsFocused(false);
+    setFilterCount(0);
   };
 
   const handleDateSelect = (
@@ -292,6 +294,8 @@ const AllEventLogHooks = () => {
     setSelectedName,
     setSelectedToDate,
     setSelectedSpot,
+    setFilterCount,
+    filterCount,
   };
 };
 

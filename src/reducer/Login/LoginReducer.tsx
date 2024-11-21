@@ -37,12 +37,6 @@ const authSlice = createSlice({
     setBaseUrl: (state, action) => {
       state.baseUrl = action.payload;
     },
-    handleLogOut: (state) => {
-      state.userName = ""
-      state.isLogIn = false;
-      
-      state.status = "idle"
-    }
   },
   extraReducers: builder => {
     builder
@@ -88,6 +82,7 @@ const authSlice = createSlice({
         state.token = '';
         state.userName = '';
         state.buCode = '';
+        state.status = "idle"
       })
       .addCase(GetBaseUrl.fulfilled, (state, action) => {
         state.baseUrl = action.payload;
@@ -100,5 +95,5 @@ const authSlice = createSlice({
       });
   },
 });
-export const { setBaseUrl, handleLogOut } = authSlice.actions;
+export const { setBaseUrl } = authSlice.actions;
 export { authSlice };

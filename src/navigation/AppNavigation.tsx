@@ -13,7 +13,7 @@ function AppNavigation() {
   const { loading, userName } = AppNavigationHooks();
 
   // Display the splash screen while loading
-  console.log("Loading state of login", loading);
+  console.log('Loading state of login', loading, userName);
   if (loading) {
     return <SplashScreen />;
   }
@@ -21,33 +21,27 @@ function AppNavigation() {
   return (
     <Stack.Navigator initialRouteName="SplashScreen">
       {/* If user is not logged in, show UrlScreen and LoginScreen */}
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="UrlScreen"
+        component={UrlScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="LoginScreen"
+        component={LoginForm}
+        options={{ headerShown: false }}
+      />
 
-
-      {!userName || userName === '' ? (
-        <Stack.Group>
-          <Stack.Screen
-            name="SplashScreen"
-            component={SplashScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="UrlScreen"
-            component={UrlScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="LoginScreen"
-            component={LoginForm}
-            options={{ headerShown: false }}
-          />
-        </Stack.Group>
-      ) : (
-        <Stack.Screen
-          name="Drawer"
-          component={DrawerNavigation}
-          options={{ headerShown: false }}
-        />
-      )}
+      <Stack.Screen
+        name="Drawer"
+        component={DrawerNavigation}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }

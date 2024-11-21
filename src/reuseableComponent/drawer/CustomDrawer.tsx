@@ -1,31 +1,78 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/react-in-jsx-scope */
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Image, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-// import { RootDrawerTypes } from '../../navigation/DrawerNavigation';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../reducer/Store';
 import React from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { useSelector } from 'react-redux';
+import { RootState, store } from '../../reducer/Store';
+import { logoutUser } from '../../reducer/Login/LoginAction';
+import SequentialBouncingLoader from '../loader/BallBouncingLoader';
 
 function CustomDrawerContent() {
 
     const [isSpotExpanded, setIsSpotExpanded] = useState(false);
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-    // const user = useSelector((state: RootState) => state.authentication.userName);
+    const user = useSelector((state: RootState) => state.authentication.userName);
+    const loading = useSelector((state: RootState) => state.authentication.loading);
+    const buCode = useSelector((state: RootState) => state.authentication.buCode);
+    const handleLogout = async () => {
+        Alert.alert(
+            'Confirm Logout', // Alert title
+            'Are you sure you want to log out?', // Alert message
+            [
+                {
+                    text: 'Cancel', // Cancel button
+                    style: 'cancel', // This makes the button appear more prominent
+                },
+                {
+                    text: 'OK', // OK button
+                    onPress: () => {
+                        store.dispatch(logoutUser());
+                        navigation.navigate("LoginScreen")
+                    },
+                },
+            ],
+            { cancelable: false }, // Prevents closing the alert by tapping outside of it
+        );
+    };
+    if (loading) {
+        <View style={{ flex: 1 }}>
+            <SequentialBouncingLoader />
+        </View>
+    }
 
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView style={styles.container}>
                 {/* Drawer Header */}
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>IoT Hub</Text>
-                    {/* <Text style={styles.headerSubtitle}>Welcome, {user}!</Text> */}
+                    <View style={{ flexDirection: "row" }}>
+                        <Image
+                            source={require('../../assets/images/iotHubLogo.png')}
+                            style={styles.logo}
+                        />
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: "space-between",
+                            alignItems: 'center'
+                        }}>
+
+                            <View>
+                                <Text style={styles.headerTitle}>IoT Hub</Text>
+                                <Text style={styles.headerSubtitle}>Welcome, {user}!</Text>
+                            </View>
+                            <View style={{ borderRadius: 20, borderWidth: 1, borderColor: colors.white, padding: 5 }}>
+
+                                <Text style={{ textAlign: 'center', color: colors.white, fontSize: fontSizes.vSmallText }}>{buCode}</Text>
+                            </View>
+                        </View>
+
+                    </View>
                 </View>
 
                 <View>
@@ -34,7 +81,7 @@ function CustomDrawerContent() {
                         label={() => (
                             <View style={styles.itemContainer}>
                                 <MaterialIcons name="gps-fixed" size={20} color={colors.darkblack} />
-                                <Text style={styles.itemText}>Live Spot</Text>
+                                <Text style={styles.itemText}>DashBoard</Text>
                             </View>
                         )}
                         onPress={() => navigation.navigate("Drawer", { screen: "bottomTabNavigation" })}
@@ -106,6 +153,15 @@ function CustomDrawerContent() {
                         )}
                         onPress={() => console.log('About')}
                     />
+                    <DrawerItem
+                        label={() => (
+                            <View style={styles.itemContainer}>
+                                <MaterialIcons name="logout" size={20} color={colors.darkblack} />
+                                <Text style={styles.itemText}>LogOut</Text>
+                            </View>
+                        )}
+                        onPress={handleLogout}
+                    />
                 </View>
             </DrawerContentScrollView>
         </View>
@@ -117,12 +173,23 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.white,
     },
+    logo: {
+        marginTop: 3,
+        width: 22,
+        height: 22,
+        marginRight: 10,
+        tintColor: colors.white,
+    },
     header: {
-        padding: 15,
+        flex: 1,
+        marginVertical: -15,
+        marginHorizontal: -15,
+        padding: 20,
         backgroundColor: colors.AppPrimaryColor,
+        marginBottom: 5
     },
     headerTitle: {
-        fontSize: fontSizes.subheading,
+        fontSize: fontSizes.subheader,
         fontWeight: 'bold',
         color: colors.white,
     },
