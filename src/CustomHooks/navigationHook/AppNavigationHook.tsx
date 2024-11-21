@@ -51,13 +51,6 @@ function AppNavigationHooks() {
         }
     };
 
-    // Debugging statement to log the current userName
-    // console.log('userName', userName);
-
-    // Function to fetch configuration details and save them in AsyncStorage and Redux
-   
-
-    // Effect to check internet connection, fetch base URL, and initialize app on first render
     useEffect(() => {
         netinfo(); // Check for internet connectivity
         getBaseUrl(); // Fetch the base URL from storage
