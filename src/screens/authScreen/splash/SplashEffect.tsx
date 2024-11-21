@@ -11,8 +11,8 @@ import { AppNavigationParams } from '../../../navigation/NavigationStackList';
 import { RootState } from '../../../reducer/Store';
 
 function SplashEffect() {
-  const isLogeIn = useSelector(
-    (state: RootState) => state.authentication.isLogIn,
+  const userName = useSelector(
+    (state: RootState) => state.authentication.userName,
   );
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
@@ -40,8 +40,9 @@ function SplashEffect() {
         logoOpacity.value = withTiming(1, { duration: 500 });
       }, 400);
       const splashTimeout = setTimeout(() => {
+        console.log("userName inside SplashScreen" , userName)
         if (baseUrls) {
-          if (isLogeIn) {
+          if (userName) {
             navigation.navigate('Drawer', { screen: 'bottomTabNavigation' });
           } else {
             navigation.navigate('LoginScreen');
@@ -56,7 +57,7 @@ function SplashEffect() {
       }
     }, [
       baseUrls,
-      isLogeIn,
+      userName,
       navigation,
       ring1Scale,
       ring2Scale,

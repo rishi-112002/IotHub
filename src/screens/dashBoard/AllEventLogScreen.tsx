@@ -1,6 +1,6 @@
 import { Animated, StyleSheet, View } from 'react-native';
 import EventLogsList from '../../component/EventLog/EventLogList';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import AllEventLogHooks from '../../CustomHooks/EventLog/AllEventLogHook';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
@@ -12,9 +12,10 @@ import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import CustomSubHeader from '../../reuseableComponent/header/CustomSubHeader';
 
 function AllEventLogsScreen() {
-   
 
-    const { setSelectedSpot, handleReset, setModalVisible, setRequestData, loader, isFocused, handleCloseModal, handleOptionSelected, getOptions, handleDateSelect, handleOptionSelect, openCalendarModal, selectedDirection, selectedName, selectedSpot, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, filteredLogs, handleFilterClick, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setToDateValue, setDateFromValue, filterBadgeVisible, navigation, setIsFocused ,translateY,paddingTopAnimated,scrollY} = AllEventLogHooks();
+
+    const { setSelectedSpot, handleReset, setModalVisible, setRequestData, loader, isFocused, handleCloseModal, handleOptionSelected, getOptions, handleDateSelect, handleOptionSelect, openCalendarModal, selectedDirection, selectedName, selectedSpot, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, filteredLogs, handleFilterClick, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setToDateValue, setDateFromValue, filterBadgeVisible, navigation, setIsFocused, translateY, paddingTopAnimated, scrollY,filterCount,setFilterCount } = AllEventLogHooks();
+   
     if (loader) {
         <SequentialBouncingLoader />
     }
@@ -29,42 +30,46 @@ function AllEventLogsScreen() {
                     <CustomSubHeader
                         spotName={"EventLogs"}
                         onPress={() => setIsFocused(true)}
-                        iconPath={require("../../assets/icons/filterSmall.png")}
+                        iconPath={require("../../assets/icons/filterMedium.png")}
                         onBackPress={() => navigation.goBack()}
                         translateY={translateY}
-                    />
+                        filterCount={filterCount} />
 
                     <Animated.View style={[styles.contentContainer, { paddingTop: paddingTopAnimated }]}>
-                        <EventLogsList
-                            data={filteredLogs}
-                            setModal={setModalVisible}
-                            setRequestData={setRequestData}
-                            onScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
-                                scrollY.setValue(e.nativeEvent.contentOffset.y);
-                            }}
-                        />
-                    </Animated.View>
-                    {
-                        filterBadgeVisible &&
-                        <View style={{ flex: 0.06 }}>
-                            <ScrollableBadges badges={[
-                                { key: 'Spot', value: selectedSpot.name },
-                                { key: 'Direction', value: selectedDirection.name },
-                                { key: 'Name', value: selectedName.name },
-                                { key: 'From Date', value: selectedFromDate },
-                                { key: 'To Date', value: selectedToDate }
-                            ]}
 
-                                setSelectedSpot={setSelectedSpot}
-                                setSelectedDirection={setSelectedDirection}
-                                setSelectedFromDate={setSelectedFromDate}
-                                setSelectedName={setSelectedName}
-                                setSelectedToDate={setSelectedToDate}
-                                setToDateValue={setToDateValue}
-                                setDateFromValue={setDateFromValue} />
+                        {
+                            filterBadgeVisible &&
+                            <View style={{ flex: 0.05 }}>
+                                <ScrollableBadges badges={[
+                                    { key: 'Spot', value: selectedSpot.name },
+                                    { key: 'Direction', value: selectedDirection.name },
+                                    { key: 'Name', value: selectedName.name },
+                                    { key: 'From Date', value: selectedFromDate },
+                                    { key: 'To Date', value: selectedToDate }
+                                ]}
+
+                                    setSelectedSpot={setSelectedSpot}
+                                    setSelectedDirection={setSelectedDirection}
+                                    setSelectedFromDate={setSelectedFromDate}
+                                    setSelectedName={setSelectedName}
+                                    setSelectedToDate={setSelectedToDate}
+                                    setToDateValue={setToDateValue}
+                                    setDateFromValue={setDateFromValue} />
+                            </View>
+
+                        }
+                        <View style={{ flex: 1 }}>
+                            <EventLogsList
+                                data={filteredLogs}
+                                setModal={setModalVisible}
+                                setRequestData={setRequestData}
+                                onScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
+                                    scrollY.setValue(e.nativeEvent.contentOffset.y);
+                                }}
+                            />
                         </View>
+                    </Animated.View>
 
-                    }
                     {isFocused &&
 
                         <FilterModal
@@ -81,7 +86,8 @@ function AllEventLogsScreen() {
                             spot={selectedSpot}
                             direction={selectedDirection}
                             handleFilterClick={handleFilterClick}
-                            handleReset={handleReset} />
+                            handleReset={handleReset}
+                            setFilterCount={setFilterCount} />
 
 
                     }

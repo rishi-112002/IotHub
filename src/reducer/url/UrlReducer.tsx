@@ -27,7 +27,7 @@ export const GetUrlsSlice = createSlice({
 
     builder.addCase(GetUrls.rejected, (state, action: PayloadAction<any>) => {
       state.urls = []; // Clear URLs on error
-      state.error = action.payload || "An error occurred while fetching URLs"; // Set error from action or default message
+      state.error = action.payload || "Network error occurred. Please try again."; // Set error from action or default message
       state.loader = false; // Stop the loader
       // console.log("error:", state.error);
     });

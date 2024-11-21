@@ -24,6 +24,9 @@ function UrlEffect() {
   const isLogedIn = useSelector(
     (state: RootState) => state.authentication.isLogIn,
   );
+  const urlError = useSelector(
+    (state: RootState) => state.getUrls.error,
+  );
 
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const dispatch = useDispatch();
@@ -48,32 +51,37 @@ function UrlEffect() {
   };
 
   const handleClick = async () => {
-    // console.log("hello form handle Url screen")
     const newErrors: { url?: string } = {};
-
+  
     if (!url) {
       newErrors.url = 'Please enter the URL';
     } else {
       setLoading(true);
       try {
-        // Wait for dispatch to complete and check the result
-        const resultAction = store.dispatch(GetUrls({ baseUrl: url }));
-
-        if (!GetUrls.fulfilled.match(resultAction)) {
+        // Await the dispatch and get the result
+        const resultAction = await store.dispatch(GetUrls({ baseUrl: url }));
+        console.log('resultAction:', resultAction);
+  
+        if (GetUrls.fulfilled.match(resultAction)) {
+          // Thunk succeeded, save the base URL and update state
           await AsyncStorage.setItem('baseurl', url);
           dispatch(setBaseUrl(url));
-
+  
           // Navigate based on login status
           if (url === passedBaseUrl && isLogedIn) {
-            navigation.navigate('HomeScreen');
+            navigation.navigate('Drawer', { screen: 'bottomTabNavigation' });
           } else {
             navigation.navigate('LoginScreen');
           }
-        } else {
-          // Handle errors from the action if any
-          showCustomToast('error', 'Please check the URL and try again.');
+        } else if (GetUrls.rejected.match(resultAction)) {
+          // Thunk failed, handle errors
+          const errorMessage = resultAction.payload as string;
+          console.error('URL Fetch Error:', errorMessage);
+          showCustomToast('error', errorMessage || 'Please check the URL and try again.');
         }
       } catch (error) {
+        // Handle unexpected errors
+        console.error('Unexpected Error:', error);
         showCustomToast(
           'error',
           'Failed to fetch configuration. Please check the URL and try again.',
@@ -82,10 +90,10 @@ function UrlEffect() {
         setLoading(false); // Hide loader after processing
       }
     }
-
+  
     setErrors(newErrors);
   };
-
+  
   // Slide-up animation
   useEffect(() => {
     Animated.timing(slideUpAnim, {
@@ -107,6 +115,7 @@ function UrlEffect() {
     handleClick,
     isButtonDisabled,
     errors,
+    urlError,
   };
 }
 export default UrlEffect;
