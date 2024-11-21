@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { apiResponseList } from './Reducer'
-import { userSlice, authSlice } from './Login/LoginReducer';
+import { authSlice } from './Login/LoginReducer';
 import { businessUnitsSlice } from './buinessUnits/BuinessUnitsReducer';
 import { spotDataSlice } from './spotData/spotDataReducer';
 import { eventLogsSlice } from './eventLogs/EventLogsReducer';
@@ -14,7 +14,6 @@ export const store = configureStore({
   reducer: {
     apiResponse: apiResponseList.reducer,
     buinessUnits: businessUnitsSlice.reducer,
-    loginUser: userSlice.reducer,
     authentication: authSlice.reducer,
     spotData: spotDataSlice.reducer,
     eventLogs: eventLogsSlice.reducer,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import CustomHeader from "../../reuseableComponent/header/CustomHeader";
 import colors from "../../assets/color/colors";
@@ -6,6 +6,7 @@ import EventLogsList from "../../component/EventLog/EventLogList";
 import DashBoardHook from "../../CustomHooks/dashBordEffect/DashBoardHooks";
 import DashBoardSubHeader from "../../component/dashBoardCom/DashBoardSubHeader";
 import DashBoardSubView from "../../component/dashBoardCom/DashBoardSubView";
+import SequentialBouncingLoader from "../../reuseableComponent/loader/BallBouncingLoader";
 function DashBoard() {
     const { translateY,
         buCode,
@@ -35,19 +36,27 @@ function DashBoard() {
         handleWeighBridgeNotConnectedClick,
     } = DashBoardHook()
 
+    const [isLoading, setIsLoading] = useState(true);
 
+    // Show loader for 3 seconds
+    useEffect(() => {
+        console.log("hello from dashBoard")
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 3000);
+
+        return () => clearTimeout(timer); // Clean up timer on unmount
+    }, []);
     return (
 
         <View style={{ flex: 1, backgroundColor: colors.white }}>
             <CustomHeader
                 buCode={buCode}
                 userLogo={'account-circle'}
-                title={'IotHub'}
-                translateY={translateY}
-            />
-
+                title={'DashBoard'}
+                translateY={translateY} onSearchPress={undefined} onFilterPress={undefined} searchIcon={undefined} filterIcon={undefined}            />
             {/* Card Section */}
-            <View style={styles.container}>
+            {!isLoading ? <View style={styles.container}>
 
                 <View style={{ marginBottom: 15 }}>
                     <DashBoardSubHeader
@@ -99,12 +108,12 @@ function DashBoard() {
                 <View style={{ flex: 1 }}>
                     <DashBoardSubHeader heading={"Event Logs"} subHeading={"Today Event :-"} count={eventLogsByTime.length}
                         iconPath={require("../../assets/icons/eventLogs.png")}
-                        onPress={() => navigation.navigate('AllEventLogsScreen')} />
+                        onPress={() => navigation.navigate('Drawer', { screen: 'AllEventLogsScreen' })} />
 
                     <View style={{
                         flex: 1,
                         marginBottom: 40,
-                        marginTop: -10
+
                     }}>
                         <EventLogsList
                             data={eventLogsByTime}
@@ -115,6 +124,10 @@ function DashBoard() {
                 </View>
 
             </View>
+                :
+                <View style={{ flex: 1 }}>
+                    <SequentialBouncingLoader />
+                </View>}
         </View >
     );
 }

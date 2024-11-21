@@ -6,15 +6,15 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {RootState, store} from '../reducer/Store';
+import {RootState, store} from '../../reducer/Store';
 import {useEffect, useLayoutEffect} from 'react';
-import {GetSpotDetails} from '../reducer/spotDetails/spotDetailsAction';
+import {GetSpotDetails} from '../../reducer/spotDetails/spotDetailsAction';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import SpotDetailsComponent from '../component/SpotDetailsComponent';
-import colors from '../assets/color/colors';
-import fontSizes from '../assets/fonts/FontSize';
-import {AppNavigationParams} from '../navigation/NavigationStackList';
+import colors from '../../assets/color/colors';
+import fontSizes from '../../assets/fonts/FontSize';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
 import React from 'react';
+import SpotDetailsComponent from '../../component/listComp/SpotDetailsComponent';
 interface SpotDetailsScreenParams {
   baseUrls: string;
   spotName: string;

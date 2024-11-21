@@ -19,7 +19,7 @@ function LoginEffect() {
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [loader, setLoader] = useState(false); // Loader state
-  const loginStatus = useSelector((state: RootState) => state.loginUser.status);
+  const loginStatus = useSelector((state: RootState) => state.authentication.status);
   const [isFocused, setIsFocused] = useState(false);
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
@@ -115,9 +115,10 @@ function LoginEffect() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleLoginStatus = () => {
+    console.log("loginStatus",loginStatus)
     if (loginStatus === 'succeeded') {
       setLoader(false);
-      navigation.navigate('HomeScreen');
+      navigation.navigate('Drawer', {screen:"bottomTabNavigation"});
     } else if (loginStatus === 'failed') {
       showCustomToast(
         'error',
@@ -129,7 +130,7 @@ function LoginEffect() {
 
   useEffect(() => {
     handleLoginStatus();
-  }, [handleLoginStatus, loginStatus]);
+  }, [handleLoginStatus]);
 
   return {
     loader,

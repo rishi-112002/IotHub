@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import {
   DeleteWeighBridgeSpot,
   WeighBridgeSpotData,
@@ -10,6 +10,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
 import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 import { useBackHandler } from '@react-native-community/hooks';
+import { Animated } from 'react-native';
 
 function WeighBridgeScreenHooks() {
   // const [errorAlertVisible, setErrorAlertVisible] = useState(false);
@@ -79,6 +80,51 @@ function WeighBridgeScreenHooks() {
       setDeleteId(null);
     }
   }, [deleteId, baseUrls, buCode, token]);
+
+
+  const scrollY = new Animated.Value(0);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 60);
+  const translateY = diffClamp.interpolate({
+    inputRange: [0, 60],
+    outputRange: [0, -60],
+  });
+  const paddingTopAnimated = scrollY.interpolate({
+    inputRange: [0, 110],
+    outputRange: [60, 0],
+    extrapolate: 'clamp',
+  });
+  const translateButtonY = diffClamp.interpolate({
+    inputRange: [0, 110],
+    outputRange: [0, 250],
+  });
+
+  // Animation for CustomAlert modal
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  // Trigger the fade-in effect when `isVisible` changes to true
+  useEffect(() => {
+    if (isVisible) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 300, // Adjust duration for smoothness
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isVisible, fadeAnim]);
+  const spotsData =
+    weighBridgeTypeConnectivity === 'all'
+      ? WeighbridgeSpots
+      : weighBridgeTypeConnectivity === 'connected'
+        ? WeighBridgeConnectedSpot
+        : WeighBridgeNotConnectedSpot;
+
+
   const handleResetConnectivity = () => {
     navigation.goBack()
     setWeighBridgeTypeConnectivity("all")
@@ -86,9 +132,7 @@ function WeighBridgeScreenHooks() {
   }
   useBackHandler(handleResetConnectivity)
   return {
-    WeighBridgeConnectedSpot,
-    WeighBridgeNotConnectedSpot,
-    weighBridgeTypeConnectivity,
+    spotsData,
     genericData,
     Loader,
     handleDelete,
@@ -97,6 +141,11 @@ function WeighBridgeScreenHooks() {
     setIsVisible,
     WeighbridgeSpots,
     navigation,
+    paddingTopAnimated,
+    scrollY,
+    translateButtonY,
+    fadeAnim,
+    translateY
   };
 }
 export default WeighBridgeScreenHooks;

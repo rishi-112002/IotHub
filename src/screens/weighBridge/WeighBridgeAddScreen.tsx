@@ -1,5 +1,5 @@
 import React from 'react';
-import WeighBridgeAddForm from './WeighBridgeAddForm';
+import WeighBridgeAddForm from '../../component/weighBridgeComp/WeighBridgeAddForm';
 import { RouteProp, useRoute } from '@react-navigation/native';
 interface WeighbridgesAddScreenParams {
     id: any;

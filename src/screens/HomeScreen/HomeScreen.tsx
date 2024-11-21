@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import {
   Animated,
   StyleSheet,
@@ -6,8 +6,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
   TouchableWithoutFeedback,
 } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
@@ -20,61 +18,11 @@ import SpotList from '../../component/SpotListComponent/SpotList';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Colors2 } from '../../assets/color/Colors2';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 
-type FilterOption = 'connected' | 'not-connected' | 'all';
 function HomeScreen() {
-  const { spotListData, Loader, loadRfidList, refreshing, buCode } =
+  const { Loader, modelShow, filteredSpots, noResults, handleFilterPress, handleScroll, loadRfidList, clearFilter, spotTypeConnectivity, refreshing, toggleFilterMenu, buCode, clearSearch, translateY, searchQuery, setSearchQuery } =
     SpotListHook();
-  const { spotTypeConnectivity, setSpotTypeConnectivity } = useContext(DataByConnectivityContext);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [modelShow, setModelShow] = useState<boolean>(false);
-  const filteredSpots = spotListData.filter((spot: any) => {
-    const matchesFilter =
-      spotTypeConnectivity === 'all' ||
-      (spotTypeConnectivity === 'connected' && spot?.active) ||
-      (spotTypeConnectivity === 'not-connected' && !spot?.active);
-    const matchesSearch = spot?.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
-  // console.log('spotListData :- ', spotListData);
 
-  // Check if no results match both filter and search query
-  const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
-
-  // Animated scroll logic for header and search bar visibility
-  const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, 130);
-  const translateY = diffClamp.interpolate({
-    inputRange: [-20, 130],
-    outputRange: [15, -130],
-  });
-
-  // Clear search functionality
-  const clearSearch = () => setSearchQuery('');
-
-  const clearFilter = () => {
-    setSpotTypeConnectivity('all');
-  };
-
-  // Scroll event handler
-  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    scrollY.setValue(e.nativeEvent.contentOffset.y);
-  };
-
-  // Toggle the filter menu modal visibility
-  const toggleFilterMenu = () => {
-    setModelShow(prevState => !prevState);
-  };
-
-  // Handle filter selection
-  const handleFilterPress = (selectedFilter: FilterOption) => {
-    setSpotTypeConnectivity(selectedFilter);
-    setSearchQuery('');
-    setModelShow(false);
-  };
 
   return (
     <SafeAreaView style={styles.container1}>
@@ -83,9 +31,12 @@ function HomeScreen() {
         <CustomHeader
           buCode={buCode}
           userLogo={'account-circle'}
-          title={'IotHub'}
+          title={'LiveSpot'}
           translateY={translateY}
-        />
+          onSearchPress={undefined}
+          onFilterPress={undefined}
+          searchIcon={require("../../assets/icons/search.png")}
+          filterIcon={require("../../assets/icons/filterMedium.png")} />
         <Animated.View
           style={[
             styles.searchBarContainer,
@@ -154,7 +105,7 @@ function HomeScreen() {
               No results found for "{searchQuery}"
             </Text>
           ) : (
-            <View style={{paddingHorizontal:5}}>
+            <View style={{ paddingHorizontal: 5 }}>
 
               <SpotList
                 spotData={filteredSpots}

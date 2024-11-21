@@ -44,6 +44,10 @@ const RfidReader = () => {
         buCode={buCode}
         userLogo={'account-circle'}
         translateY={translateY}
+        onSearchPress={undefined}
+        onFilterPress={undefined}
+        searchIcon={require("../../assets/icons/search.png")}
+        filterIcon={require("../../assets/icons/filterMedium.png")} 
       />
 
       <Animated.View style={{ flex: 1, paddingTop: paddingTopAnimated }}>

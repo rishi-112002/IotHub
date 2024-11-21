@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -18,15 +18,15 @@ type EventLogItemProps = {
     tagId: any;
   };
   isSelected: boolean;
-  onToggle: () => void;
+  onToggle: any;
 
 };
 
-const EventLogItem: React.FC<EventLogItemProps> = ({ item, isSelected, onToggle }: EventLogItemProps) => {
+const EventLogItem = memo(({ item, isSelected, onToggle }: EventLogItemProps) => {
 
-
+  const formattedDetails = useMemo(() => JSON.stringify(item.details, null, 2), [item.details]);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, }}>
       {/* Card Container */}
       <TouchableOpacity
 
@@ -109,7 +109,7 @@ const EventLogItem: React.FC<EventLogItemProps> = ({ item, isSelected, onToggle 
               <View style={styles.detailsContainer}>
 
                 <Text style={styles.detailsText}>
-                  {JSON.stringify(item.details, null, 2)}
+                  {formattedDetails}
                 </Text>
               </View>
             </View>
@@ -119,7 +119,7 @@ const EventLogItem: React.FC<EventLogItemProps> = ({ item, isSelected, onToggle 
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   cardContainer: {

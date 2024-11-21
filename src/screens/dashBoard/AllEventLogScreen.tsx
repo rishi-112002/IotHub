@@ -1,6 +1,6 @@
-import { Animated, View } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 import EventLogsList from '../../component/EventLog/EventLogList';
-import React, { } from 'react';
+import React, { useRef } from 'react';
 import AllEventLogHooks from '../../CustomHooks/EventLog/AllEventLogHook';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
@@ -12,19 +12,9 @@ import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import CustomSubHeader from '../../reuseableComponent/header/CustomSubHeader';
 
 function AllEventLogsScreen() {
-    const scrollY = new Animated.Value(0);
-    const diffClamp = Animated.diffClamp(scrollY, 0, 60);
-    const translateY = diffClamp.interpolate({
-        inputRange: [0, 70],
-        outputRange: [0, -70],
-    });
-    const paddingTopAnimated = scrollY.interpolate({
-        inputRange: [0, 110],
-        outputRange: [60, 0],
-        extrapolate: 'clamp',
-    });
+   
 
-    const { setSelectedSpot, handleReset, setModalVisible, setRequestData, loader, isFocused, handleCloseModal, handleOptionSelected, getOptions, handleDateSelect, handleOptionSelect, openCalendarModal, selectedDirection, selectedName, selectedSpot, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, filteredLogs, handleFilterClick, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setToDateValue, setDateFromValue, filterBadgeVisible, navigation, setIsFocused } = AllEventLogHooks();
+    const { setSelectedSpot, handleReset, setModalVisible, setRequestData, loader, isFocused, handleCloseModal, handleOptionSelected, getOptions, handleDateSelect, handleOptionSelect, openCalendarModal, selectedDirection, selectedName, selectedSpot, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, filteredLogs, handleFilterClick, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setToDateValue, setDateFromValue, filterBadgeVisible, navigation, setIsFocused ,translateY,paddingTopAnimated,scrollY} = AllEventLogHooks();
     if (loader) {
         <SequentialBouncingLoader />
     }
@@ -36,15 +26,24 @@ function AllEventLogsScreen() {
                 </View>
                 :
                 <View style={{ flex: 1 }}>
-                    <CustomSubHeader spotName={"EventLogs"}
+                    <CustomSubHeader
+                        spotName={"EventLogs"}
                         onPress={() => setIsFocused(true)}
                         iconPath={require("../../assets/icons/filterSmall.png")}
                         onBackPress={() => navigation.goBack()}
                         translateY={translateY}
                     />
-                   
-                    <Animated.View style={{ paddingTop: paddingTopAnimated  , flex:1}}>
 
+                    <Animated.View style={[styles.contentContainer, { paddingTop: paddingTopAnimated }]}>
+                        <EventLogsList
+                            data={filteredLogs}
+                            setModal={setModalVisible}
+                            setRequestData={setRequestData}
+                            onScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
+                                scrollY.setValue(e.nativeEvent.contentOffset.y);
+                            }}
+                        />
+                    </Animated.View>
                     {
                         filterBadgeVisible &&
                         <View style={{ flex: 0.06 }}>
@@ -66,15 +65,6 @@ function AllEventLogsScreen() {
                         </View>
 
                     }
-                        <EventLogsList
-                            data={filteredLogs}
-                            setModal={setModalVisible}
-                            setRequestData={setRequestData}
-                            onScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
-                                scrollY.setValue(e.nativeEvent.contentOffset.y);
-                            }}
-                        />
-                    </Animated.View>
                     {isFocused &&
 
                         <FilterModal
@@ -114,5 +104,25 @@ function AllEventLogsScreen() {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: colors.white,
+    },
+    loader: {
+        flex: 1,
+    },
+    contentContainer: {
+        position: 'relative',
+        flex: 1,
+        backgroundColor: colors.white,
+    },
+    modalContainer: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+});
 
 export default AllEventLogsScreen;

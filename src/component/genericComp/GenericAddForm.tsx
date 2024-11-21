@@ -7,11 +7,12 @@ import GenericAddComponentDropDowns from './GenericAddComponentDropDowns';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import GenericAddInputComponent from './GenericAddInputComponent';
-import GenericAddFunction from './GenericAddFunctions';
+import GenericAddFunction from '../../CustomHooks/genericHooks/GenericAddFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 
 function GenericAddForm(props: { id: any }) {
   const { id } = props
+  console.log("id in genericAdd form ", id)
   const {
     loader,
     smartControllerLoader,
@@ -155,7 +156,7 @@ function GenericAddForm(props: { id: any }) {
             valueKey="id"
           />
           <View>
-            <CustomButton label={id ? "update" : "save"} onPress={handleSaveData} disabled={id && editButtonOpacity} />
+            <CustomButton label={id ? "update" : "save"} onPress={handleSaveData} disabled={!!id && !!editButtonOpacity} />
           </View>
         </View>
       ) : (

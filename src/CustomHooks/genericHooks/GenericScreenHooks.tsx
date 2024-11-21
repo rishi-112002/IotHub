@@ -25,7 +25,6 @@ const GenericScreenHooks = () => {
   const onHandlePress = () => {
     navigation.navigate('GenericSpotAddScreen', { id: undefined });
   };
-
   const { genericTypeConnectivity, setGenericTypeConnectivity } = useContext(DataByConnectivityContext);
   const GenericConnectedSpot = GenericSpots.filter((item: any) => item.active === true)
   const GenericNotConnectedSpot = GenericSpots.filter((item: any) => item.active === false)
