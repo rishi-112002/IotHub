@@ -13,7 +13,7 @@ function AppNavigation() {
   const { loading, userName } = AppNavigationHooks();
 
   // Display the splash screen while loading
-  console.log("Loading state of login", loading, userName);
+  console.log('Loading state of login', loading, userName);
   if (loading) {
     return <SplashScreen />;
   }
@@ -21,8 +21,6 @@ function AppNavigation() {
   return (
     <Stack.Navigator initialRouteName="SplashScreen">
       {/* If user is not logged in, show UrlScreen and LoginScreen */}
-
-
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}

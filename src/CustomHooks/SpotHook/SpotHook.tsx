@@ -1,12 +1,17 @@
 import {useEffect, useState, useCallback, useMemo, useContext} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {Alert, Animated, NativeScrollEvent, NativeSyntheticEvent} from 'react-native';
+import {
+  Alert,
+  Animated,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from 'react-native';
 import {RootState, store} from '../../reducer/Store';
 import {GetSpotData} from '../../reducer/spotData/spotDataAction';
-import { useBackHandler } from '@react-native-community/hooks';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
-import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import {useBackHandler} from '@react-native-community/hooks';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 export const SpotListHook = () => {
@@ -15,11 +20,15 @@ export const SpotListHook = () => {
   const baseUrl = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
-  const { spotTypeConnectivity, setSpotTypeConnectivity } = useContext(DataByConnectivityContext);
+  const {spotTypeConnectivity, setSpotTypeConnectivity} = useContext(
+    DataByConnectivityContext,
+  );
 
   const Loader = useSelector((state: RootState) => state.spotData.loader);
   const LError = useSelector((state: RootState) => state.spotData.error);
-  const spotListData = useSelector((state: RootState) => state.spotData.spotData);
+  const spotListData = useSelector(
+    (state: RootState) => state.spotData.spotData,
+  );
   const buCode = useSelector((State: RootState) => State.authentication.buCode);
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
 
@@ -30,7 +39,7 @@ export const SpotListHook = () => {
     setRefreshing(true);
     store.dispatch(GetSpotData({baseUrl: baseUrl}));
     setRefreshing(false);
-  }, [baseUrl, dispatch]);
+  }, [baseUrl]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [modelShow, setModelShow] = useState<boolean>(false);
 
@@ -83,6 +92,7 @@ export const SpotListHook = () => {
 
   // Memoize output to avoid recalculations when nothing changes
   const filteredSpots = spotListData.filter((spot: any) => {
+    console.log('Name :- ', spot?.name);
     const matchesFilter =
       spotTypeConnectivity === 'all' ||
       (spotTypeConnectivity === 'connected' && spot?.active) ||
@@ -99,46 +109,86 @@ export const SpotListHook = () => {
 
   // Animated scroll logic for header and search bar visibility
   const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, 130);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 180);
   const translateY = diffClamp.interpolate({
-    inputRange: [-20, 130],
-    outputRange: [15, -130],
+    inputRange: [0, 130],
+    outputRange: [0, -100],
   });
 
   // Clear search functionality
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const clearSearch = () => setSearchQuery('');
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const clearFilter = () => {
     setSpotTypeConnectivity('all');
   };
 
   // Scroll event handler
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollY.setValue(e.nativeEvent.contentOffset.y);
   };
 
   // Toggle the filter menu modal visibility
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const toggleFilterMenu = () => {
-    setModelShow(prevState => !prevState);
+    console.log('Toggle function run');
+    // setModelShow(prevState => !prevState);
+    setModelShow(true);
   };
 
   // Handle filter selection
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleFilterPress = (selectedFilter: FilterOption) => {
     setSpotTypeConnectivity(selectedFilter);
     setSearchQuery('');
     setModelShow(false);
   };
-  
+  console.log('Toggle function run');
+
   const handleResetConnectivity = () => {
-    navigation.goBack()
-    setSpotTypeConnectivity("all")
+    navigation.goBack();
+    setSpotTypeConnectivity('all');
     return true;
-  }
+  };
   useBackHandler(handleResetConnectivity);
   return useMemo(
     () => ({
-      Loader,modelShow,filteredSpots,noResults, handleFilterPress, handleScroll, loadRfidList: loadSpotList,clearFilter,spotTypeConnectivity, refreshing,toggleFilterMenu, buCode,clearSearch ,translateY ,searchQuery,setSearchQuery
+      Loader,
+      modelShow,
+      filteredSpots,
+      noResults,
+      handleFilterPress,
+      handleScroll,
+      loadRfidList: loadSpotList,
+      clearFilter,
+      spotTypeConnectivity,
+      refreshing,
+      toggleFilterMenu,
+      buCode,
+      clearSearch,
+      translateY,
+      searchQuery,
+      setSearchQuery,
     }),
-    [ Loader,modelShow,filteredSpots,noResults, handleFilterPress, handleScroll, loadSpotList,clearFilter,spotTypeConnectivity, refreshing,toggleFilterMenu, buCode,clearSearch ,translateY ,searchQuery,setSearchQuery],
+    [
+      Loader,
+      modelShow,
+      filteredSpots,
+      noResults,
+      handleFilterPress,
+      handleScroll,
+      loadSpotList,
+      clearFilter,
+      spotTypeConnectivity,
+      refreshing,
+      toggleFilterMenu,
+      buCode,
+      clearSearch,
+      translateY,
+      searchQuery,
+      setSearchQuery,
+    ],
   );
 };

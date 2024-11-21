@@ -1,24 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, useCallback, useMemo, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import {useEffect, useState, useCallback, useMemo, useContext} from 'react';
+import {useSelector} from 'react-redux';
 import {
   getRfidListAction,
   deleteRfidListAction,
 } from '../../reducer/RFIDList/RFIDListAction';
-import { RootState, store } from '../../reducer/Store';
+import {RootState, store} from '../../reducer/Store';
 import showCustomToast from '../../reuseableComponent/modal/CustomToast';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import React from 'react';
-import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
-import { useBackHandler } from '@react-native-community/hooks';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
+import {useBackHandler} from '@react-native-community/hooks';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
 
 export const RfidListHook = () => {
   // const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
 
-  const { rfidType , setRfidType } = useContext(DataByConnectivityContext);
+  const {rfidType, setRfidType} = useContext(DataByConnectivityContext);
 
   const ListData = useSelector(
     (state: RootState) => state.rfidList.RfidListData,
@@ -33,14 +33,19 @@ export const RfidListHook = () => {
   const baseUrl = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
-  const usedRfid = ListData.filter((rfid: any) => rfid.direction === null && rfid.type === null)
-  const UnusedRfid = ListData.filter((rfid: any) => rfid.direction !== null && rfid.type !== null)
+  const usedRfid = ListData.filter(
+    (rfid: any) => rfid.direction === null && rfid.type === null,
+  );
+  const UnusedRfid = ListData.filter(
+    (rfid: any) => rfid.direction !== null && rfid.type !== null,
+  );
   const [refreshing, setRefreshing] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
   const [rfidToDelete, setRfidToDelete] = useState<string | null>(null);
   const [successAlertVisible, setSuccessAlertVisible] = useState(false);
   const [errorAlertVisible, setErrorAlertVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const loadRfidList = useCallback(async () => {
     setRefreshing(true);
@@ -48,7 +53,7 @@ export const RfidListHook = () => {
     setSuccessAlertVisible(false); // Reset success alert before fetching data
     setErrorMessage(''); // Clear previous error message
     try {
-      store.dispatch(getRfidListAction({ baseUrl }));
+      store.dispatch(getRfidListAction({baseUrl}));
     } catch (error) {
       // Handle fetch error if necessary
 
@@ -62,6 +67,19 @@ export const RfidListHook = () => {
     loadRfidList();
     // console.log('first');
   }, [baseUrl, loadRfidList]);
+
+  const filteredRfid = ListData.filter((spot: any) => {
+    // console.log('Name :- ', spot?.name);
+    // const matchesFilter =
+    //   spotTypeConnectivity === 'all' ||
+    //   (spotTypeConnectivity === 'connected' && spot?.active) ||
+    //   (spotTypeConnectivity === 'not-connected' && !spot?.active);
+    const matchesSearch = spot?.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    // return matchesFilter && matchesSearch;
+    return matchesSearch;
+  });
 
   // useEffect(() => {
   //   // Display error if any
@@ -87,13 +105,8 @@ export const RfidListHook = () => {
     // />
     // );
   }, []);
-  const rfidData =
-    rfidType === 'all'
-      ? ListData
-      : rfidType === 'used'
-        ? UnusedRfid
-        : usedRfid;
-
+  // const rfidData =
+  //   rfidType === 'all' ? ListData : rfidType === 'used' ? UnusedRfid : usedRfid;
 
   const confirmDelete = useCallback(async () => {
     if (!rfidToDelete) {
@@ -102,9 +115,9 @@ export const RfidListHook = () => {
 
     setAlertVisible(false);
     try {
-      await store.dispatch(
-        deleteRfidListAction({ id: rfidToDelete, buCode, token })
-      ).unwrap();
+      await store
+        .dispatch(deleteRfidListAction({id: rfidToDelete, buCode, token}))
+        .unwrap();
       showCustomToast('success', 'RFID deleted successfully!');
       await loadRfidList(); // Refresh the list after successful deletion
 
@@ -117,17 +130,20 @@ export const RfidListHook = () => {
       //   // console.log("COnfirm Delete :- ",DError);
       // }
     } catch (error) {
-      showCustomToast('error', error || 'Something went wrong! Please try deleting again...');
+      showCustomToast(
+        'error',
+        error || 'Something went wrong! Please try deleting again...',
+      );
       // console.log('Deletion error:', error);
       // setErrorMessage(DError);
       // setErrorAlertVisible(true);
     }
   }, [rfidToDelete, buCode, token, loadRfidList]);
   const handleResetConnectivity = () => {
-    navigation.goBack()
-    setRfidType("all")
+    navigation.goBack();
+    setRfidType('all');
     return true;
-  }
+  };
   useBackHandler(handleResetConnectivity);
   return useMemo(
     () => ({
@@ -148,8 +164,10 @@ export const RfidListHook = () => {
       rfidType,
       UnusedRfid,
       usedRfid,
-      rfidData,
-      navigation
+      filteredRfid,
+      navigation,
+      searchQuery,
+      setSearchQuery,
     }),
     [
       ListData,
@@ -166,8 +184,9 @@ export const RfidListHook = () => {
       rfidType,
       UnusedRfid,
       usedRfid,
-      rfidData,
-      navigation
+      filteredRfid,
+      navigation,
+      setSearchQuery,
     ],
   );
 };

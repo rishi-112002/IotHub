@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import {
   createDrawerNavigator,
@@ -17,7 +18,7 @@ const Drawer = createDrawerNavigator<AppNavigationParams>();
 export default function DrawerNavigation() {
   return (
     <Drawer.Navigator
-      initialRouteName={"bottomTabNavigation"}
+      initialRouteName={'bottomTabNavigation'}
       screenOptions={{ headerShown: true }}
       drawerContent={() => <View style={{ flex: 1 }}>
         <CustomDrawerContent />

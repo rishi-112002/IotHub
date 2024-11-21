@@ -130,6 +130,8 @@ dependencies {
     implementation("com.facebook.react:react-android")
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
+        implementation 'com.facebook.fbjni:fbjni:0.3.0'
+
     } else {
         implementation jscFlavor
     }
