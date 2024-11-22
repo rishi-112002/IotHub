@@ -23,7 +23,8 @@ export const SpotListHook = () => {
   const {spotTypeConnectivity, setSpotTypeConnectivity} = useContext(
     DataByConnectivityContext,
   );
-
+  const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
   const Loader = useSelector((state: RootState) => state.spotData.loader);
   const LError = useSelector((state: RootState) => state.spotData.error);
   const spotListData = useSelector(
@@ -50,6 +51,7 @@ export const SpotListHook = () => {
   useEffect(() => {
     if (LError) {
       Alert.alert('Error', LError, [{text: 'OK'}], {cancelable: false});
+      // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
     }
   }, [LError]);
 
@@ -104,10 +106,19 @@ export const SpotListHook = () => {
 
   // Animated scroll logic for header and search bar visibility
   const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, 180);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 110);
   const translateY = diffClamp.interpolate({
-    inputRange: [0, 130],
-    outputRange: [0, -100],
+    inputRange: [0, 110],
+    outputRange: [0, -110],
+  });
+  const paddingTopAnimated = scrollY.interpolate({
+    inputRange: [0, 110],
+    outputRange: [60, 0],
+    extrapolate: 'clamp',
+  });
+  const translateButtonY = diffClamp.interpolate({
+    inputRange: [0, 110],
+    outputRange: [0, 250],
   });
 
   // Clear search functionality
@@ -140,6 +151,13 @@ export const SpotListHook = () => {
     setModelShow(false);
   };
 
+  useEffect(() => {
+    if (spotTypeConnectivity !== 'all') {
+      setFilterCount(1);
+      setFilterBadgeVisible(true);
+    }
+  }, [spotTypeConnectivity]);
+
   const handleResetConnectivity = () => {
     navigation.goBack();
     setSpotTypeConnectivity('all');
@@ -164,6 +182,12 @@ export const SpotListHook = () => {
       translateY,
       searchQuery,
       setSearchQuery,
+      setSpotTypeConnectivity,
+      filterBadgeVisible,
+      setFilterBadgeVisible,
+      filterCount,
+      setFilterCount,
+      paddingTopAnimated,
     }),
     [
       Loader,
@@ -182,6 +206,12 @@ export const SpotListHook = () => {
       translateY,
       searchQuery,
       setSearchQuery,
+      setSpotTypeConnectivity,
+      filterBadgeVisible,
+      setFilterBadgeVisible,
+      filterCount,
+      setFilterCount,
+      paddingTopAnimated,
     ],
   );
 };

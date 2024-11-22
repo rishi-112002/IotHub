@@ -1,11 +1,11 @@
 import React from 'react';
-// import {Provider} from 'react-redux';
-// import {store} from './src/reducer/Store';
-// import AppNavigation from './src/navigation/AppNavigation';
-// import {NavigationContainer} from '@react-navigation/native';
-// import {MenuProvider} from 'react-native-popup-menu';
-// import Toast from 'react-native-toast-message';
-// import {InputProvider} from './src/contextApi/DataByConnectivity';
+import {Provider} from 'react-redux';
+import {store} from './src/reducer/Store';
+import AppNavigation from './src/navigation/AppNavigation';
+import {NavigationContainer} from '@react-navigation/native';
+import {MenuProvider} from 'react-native-popup-menu';
+import Toast from 'react-native-toast-message';
+import {InputProvider} from './src/contextApi/DataByConnectivity';
 import ShowBottomSheet from './src/MY/ShowBottomSheet';
 
 function App() {

@@ -1,19 +1,23 @@
 import React from 'react';
-import {TextInput, View, TouchableOpacity, StyleSheet} from 'react-native';
+import { TextInput, View, TouchableOpacity, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors'; // Ensure this is properly imported
 import fontSizes from '../../assets/fonts/FontSize'; // Ensure this is properly imported
+import { Colors2 } from '../../assets/color/Colors2';
 
-function SearchBar({
-  searchQuery,
-  setSearchQuery,
-  clearSearch,
-  placeholder = 'Search...',
+function SearchBar(props: {
+  searchQuery: any,
+  setSearchQuery: any,
+  clearSearch: any,
+  placeholder: any,
 }) {
+  const { clearSearch, placeholder = "search...", searchQuery, setSearchQuery } = props
+
+
   return (
     <View style={styles.searchWrapper}>
       <View style={styles.searchInput}>
-        <MaterialIcons name="search" size={30} color={colors.IconColor} />
+        <MaterialIcons name="search" size={25} color={Colors2.SecondaryTextColor} />
         <TextInput
           style={styles.textInput}
           placeholder={placeholder}
@@ -35,8 +39,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 60,
-    marginBottom: -50,
   },
   searchInput: {
     // flex: 1,

@@ -8,14 +8,32 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import colors from '../../assets/color/colors'; // Ensure this is properly imported
+type type = "used" | "connectivity"
+function FilterModal(props: {
+  isVisible: boolean,
+  toggleFilterMenu: any,
+  spotTypeConnectivity: any,
+  handleFilterPress: any,
+  type: type
+}) {
+  const { handleFilterPress, isVisible, spotTypeConnectivity, toggleFilterMenu, type } = props
+  const handleConnectedPress = () => {
+    if (type === "connectivity") {
+      handleFilterPress('connected')
+    }
+    else {
+      handleFilterPress("used")
+    }
+  }
 
-function FilterModal({
-  isVisible,
-  toggleFilterMenu,
-  spotTypeConnectivity,
-  handleFilterPress,
-}: any) {
+  const handleNotConnectedPress = () => {
+    if (type === "connectivity") {
+      handleFilterPress('not-connected')
+    }
+    else {
+      handleFilterPress("un-used")
+    }
+  }
   return (
     <Modal
       animationType="fade"
@@ -31,20 +49,20 @@ function FilterModal({
                   styles.filterItem,
                   spotTypeConnectivity === 'connected' && styles.selectedFilter,
                 ]}
-                onPress={() => handleFilterPress('connected')}>
+                onPress={handleConnectedPress}>
                 <MaterialIcons name="link" size={24} color="black" />
-                <Text style={styles.filterText}>Connected</Text>
+                <Text style={styles.filterText}> {type === "connectivity" ? "Connected" : "Used"}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[
                   styles.filterItem,
                   spotTypeConnectivity === 'not-connected' &&
-                    styles.selectedFilter,
+                  styles.selectedFilter,
                 ]}
-                onPress={() => handleFilterPress('not-connected')}>
+                onPress={handleNotConnectedPress}>
                 <MaterialIcons name="link-off" size={24} color="black" />
-                <Text style={styles.filterText}>Not Connected</Text>
+                <Text style={styles.filterText}>{type === "connectivity" ? "Not-Connected" : "Un-Used"}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity

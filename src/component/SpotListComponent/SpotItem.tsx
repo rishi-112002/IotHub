@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useCallback, useMemo } from 'react';
 import { View, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -29,8 +31,9 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
     <Animated.View style={styles.spotContainer}>
       <TouchableOpacity
         onPress={() => OnHandlePress(item)}>
+
         <View>
-          <View style={{ flexDirection: "row", justifyContent: 'space-between', flex: 1 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
             <View style={{ flex: 0.9 }}>
               <Text style={styles.spotTitle}>
                 {item.name}
@@ -41,9 +44,9 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
                   {
                     marginTop: 5,
                     color: item.active ? '#15803D' : '#B91C1C',
-                    width: item.active ? "28%" : "35%",
+                    width: item.active ? '28%' : '35%',
                     backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
-                    paddingStart: 10, borderRadius: 20
+                    paddingStart: 10, borderRadius: 20,
                   },
                 ]}>
                 {item.active ? 'Connected' : 'Not-Connected'}
@@ -59,17 +62,17 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
           <View>
             <Text style={styles.label}>Expiry date:</Text>
             <Text style={styles.statusText}>
-              {item.expiryDate ? item.expiryDate : "null"}
+              {item.expiryDate ? item.expiryDate : 'null'}
             </Text>
           </View>
           <View
             style={[
-              styles.delayedContainer
+              styles.delayedContainer,
             ]}>
             <Text style={styles.label}>Delay:</Text>
             <Text
               style={[
-                styles.statusText
+                styles.statusText,
               ]}>
               {item.delayed ? 'Delayed' : 'On Time'}
             </Text>
@@ -81,7 +84,7 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
             <Text style={styles.label}>Current State:</Text>
             <Text
               style={[
-                styles.statusText
+                styles.statusText,
               ]}>
               {item.currentState || 'No State Info'}
             </Text>
@@ -151,7 +154,4 @@ const styles = StyleSheet.create({
 });
 
 export default SpotItem;
-function item(): unknown {
-  throw new Error('Function not implemented.');
-}
 

@@ -6,16 +6,40 @@ import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
 import CustomIcon from '../customIcons/CustomIcon';
 
+// <<<<<<< HEAD
+// function CustomSubHeader(props: {
+//   spotName: string;
+//   translateY: any;
+//   onPress: any;
+//   iconPath: any;
+//   onBackPress: any;
+//   filterCount: number;
+// }) {
+//   const {spotName, onPress, iconPath, onBackPress, translateY, filterCount} =
+//     props;
+// =======
 function CustomSubHeader(props: {
+  searchIconPath: any;
+  onSearchPress: any;
   spotName: string;
   translateY: any;
   onPress: any;
-  iconPath: any;
+  filterIconPath: any;
   onBackPress: any;
   filterCount: number;
 }) {
-  const {spotName, onPress, iconPath, onBackPress, translateY, filterCount} =
-    props;
+  const {
+    searchIconPath,
+    onSearchPress,
+    spotName,
+    onPress,
+    filterIconPath: iconPath,
+    onBackPress,
+    translateY,
+    filterCount,
+  } = props;
+
+  // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
   return (
     <Animated.View
       style={{
@@ -35,7 +59,8 @@ function CustomSubHeader(props: {
           </TouchableOpacity>
         </View>
         <View style={styles.rightSection}>
-          <Text style={styles.spotName}>{spotName}</Text>
+          {/* <Text style={styles.spotName}>{spotName}</Text>
+<<<<<<< HEAD
           <TouchableOpacity style={{padding: 5}} onPress={onPress}>
             <View style={styles.iconWrapper}>
               {filterCount > 0 && (
@@ -43,8 +68,27 @@ function CustomSubHeader(props: {
                   <Text style={styles.filterCountText}>{filterCount}</Text>
                 </View>
               )}
+======= */}
+          <TouchableOpacity style={{padding: 5}} onPress={onPress}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                columnGap: 15,
+              }}>
+              <CustomIcon iconPath={searchIconPath} onPress={onSearchPress} />
+              <View style={styles.iconWrapper}>
+                {filterCount > 0 && (
+                  <View style={styles.filterCountBadge}>
+                    <Text style={styles.filterCountText}>{filterCount}</Text>
+                  </View>
+                )}
+                {/* >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63 */}
 
-              <CustomIcon iconPath={iconPath} onPress={onPress} />
+                <CustomIcon iconPath={iconPath} onPress={onPress} />
+              </View>
             </View>
           </TouchableOpacity>
         </View>

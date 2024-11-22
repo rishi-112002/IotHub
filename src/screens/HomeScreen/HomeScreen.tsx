@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {Animated, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -9,6 +10,7 @@ import SearchBar from '../../reuseableComponent/Filter/SearchFilter'; // Import 
 import FilterModal from '../../reuseableComponent/Filter/FilterModle'; // Import the FilterModal component
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
+import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 
 function HomeScreen() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -29,6 +31,10 @@ function HomeScreen() {
     searchQuery,
     setSearchQuery,
     spotTypeConnectivity,
+    setSpotTypeConnectivity,
+    setFilterCount,
+    filterCount,
+    filterBadgeVisible,
   } = SpotListHook();
 
   const handleSearchPress = () => {
@@ -48,6 +54,7 @@ function HomeScreen() {
           onFilterPress={toggleFilterMenu}
           searchIcon={require('../../assets/icons/search.png')} // Ensure this file exists and is correct
           filterIcon={require('../../assets/icons/filterMedium.png')} // Ensure this file exists and is correct
+          filterCount={undefined}
         />
         <Animated.View
           style={[
@@ -59,7 +66,32 @@ function HomeScreen() {
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               clearSearch={clearSearch}
+              placeholder={undefined}
             />
+          )}
+        </Animated.View>
+        <Animated.View
+          style={[
+            // styles.searchBarContainer,
+            {marginTop: -10},
+            {transform: [{translateY: translateY}]},
+          ]}>
+          {filterBadgeVisible && spotTypeConnectivity !== 'all' && (
+            <View>
+              <ScrollableBadges
+                badges={[{key: 'Connectivity', value: spotTypeConnectivity}]}
+                filterCount={filterCount}
+                setFilterCount={setFilterCount}
+                setSelectedSpot={undefined}
+                setSelectedDirection={undefined}
+                setSelectedFromDate={undefined}
+                setSelectedName={undefined}
+                setSelectedToDate={undefined}
+                setToDateValue={undefined}
+                setDateFromValue={undefined}
+                setConnectivity={setSpotTypeConnectivity}
+              />
+            </View>
           )}
         </Animated.View>
       </Animated.View>
@@ -76,6 +108,7 @@ function HomeScreen() {
               No results found for "{searchQuery}"
             </Text>
           ) : (
+            // <View style={{flex: 1}}>
             <SpotList
               spotData={filteredSpots}
               loadRfidList={loadRfidList}
@@ -83,10 +116,12 @@ function HomeScreen() {
               onScroll={handleScroll}
               contentContainerStyle={styles.listContainer}
             />
+            // </View>
           )}
           {modelShow && (
             <View style={{flex: 1}}>
               <FilterModal
+                type="connectivity"
                 isVisible={modelShow}
                 toggleFilterMenu={toggleFilterMenu}
                 spotTypeConnectivity={spotTypeConnectivity}
@@ -108,12 +143,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   headerContainer: {
-    paddingTop: 25,
+    // flex: 0.1
+    // paddingTop: 25,
+    // backgroundColor: "pink"
   },
   listWrapper: {
-    flex: 1,
-    marginTop: 50,
-    marginBottom: -70,
+    flex: 1.9,
+    marginTop: 2,
+    marginBottom: -50,
   },
   listContainer: {
     // flex: 1,
@@ -126,8 +163,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   searchBarContainer: {
-    // marginBottom: -20,
-    // marginTop: 5,
+    // flex: 1
+    marginTop: 60,
+    marginBottom: 10,
+    // backgroundColor: "red"
   },
 });
 

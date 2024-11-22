@@ -1,18 +1,34 @@
-import { useEffect, useCallback, useState, useMemo, useContext, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { useBackHandler } from '@react-native-community/hooks';
-import { RootState, store } from '../../reducer/Store';
+import {
+  useEffect,
+  useCallback,
+  useState,
+  useMemo,
+  useContext,
+  useRef,
+} from 'react';
+import {useSelector} from 'react-redux';
+import {useBackHandler} from '@react-native-community/hooks';
+import {RootState, store} from '../../reducer/Store';
 import {
   DeleteGenericSpot,
   GenericSpotsData,
 } from '../../reducer/genericSpot/uploadGenericDataAction';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
-import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
-import { Animated } from 'react-native';
+import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import {Animated} from 'react-native';
+type FilterOption = 'connected' | 'not-connected' | 'all';
 
 const GenericScreenHooks = () => {
+  const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleSearchPress = () => {
+    setIsSearchVisible(!isSearchVisible); // Toggle search bar visibility
+  };
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
@@ -22,12 +38,19 @@ const GenericScreenHooks = () => {
     (state: RootState) => state.uploadGeneric.GenericSpots,
   );
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onHandlePress = () => {
-    navigation.navigate('GenericSpotAddScreen', { id: undefined });
+    navigation.navigate('GenericSpotAddScreen', {id: undefined});
   };
-  const { genericTypeConnectivity, setGenericTypeConnectivity } = useContext(DataByConnectivityContext);
-  const GenericConnectedSpot = GenericSpots.filter((item: any) => item.active === true)
-  const GenericNotConnectedSpot = GenericSpots.filter((item: any) => item.active === false)
+  const {genericTypeConnectivity, setGenericTypeConnectivity} = useContext(
+    DataByConnectivityContext,
+  );
+  const GenericConnectedSpot = GenericSpots.filter(
+    (item: any) => item.active === true,
+  );
+  const GenericNotConnectedSpot = GenericSpots.filter(
+    (item: any) => item.active === false,
+  );
   const Loader = useSelector((state: RootState) => state.uploadGeneric.loader);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -66,15 +89,16 @@ const GenericScreenHooks = () => {
     }
   }, [isVisible, fadeAnim]);
 
-  const spotsData =
-    genericTypeConnectivity === 'all'
-      ? GenericSpots
-      : genericTypeConnectivity === 'connected'
-        ? GenericConnectedSpot
-        : GenericNotConnectedSpot;
+  // <<<<<<< HEAD
+  //   const spotsData =
+  //     genericTypeConnectivity === 'all'
+  //       ? GenericSpots
+  //       : genericTypeConnectivity === 'connected'
+  //         ? GenericConnectedSpot
+  //         : GenericNotConnectedSpot;
 
-
-
+  // =======
+  // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
   const getGenericData = useCallback(async () => {
     store.dispatch(
       GenericSpotsData({
@@ -119,11 +143,45 @@ const GenericScreenHooks = () => {
     }
   }, [deleteId, baseUrls, buCode, token, Loader]);
 
+  const spotsData = GenericSpots.filter((spot: any) => {
+    const matchesFilter =
+      genericTypeConnectivity === 'all' ||
+      (genericTypeConnectivity === 'connected' && spot?.active) ||
+      (genericTypeConnectivity === 'not-connected' && !spot?.active);
+    const matchesSearch = searchQuery
+      ? Object.values(spot).some(value =>
+          String(value).toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+      : true;
+    return matchesFilter && matchesSearch;
+  });
+
+  const [modelShow, setModelShow] = useState<boolean>(false);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const toggleFilterMenu = () => {
+    setModelShow(prevState => !prevState);
+    setModelShow(true);
+  };
+
+  // Handle filter selection
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleFilterPress = (selectedFilter: FilterOption) => {
+    setGenericTypeConnectivity(selectedFilter);
+    setFilterCount(1);
+    setModelShow(false);
+  };
+  useEffect(() => {
+    if (genericTypeConnectivity !== 'all') {
+      setFilterBadgeVisible(true);
+    }
+  }, [genericTypeConnectivity]);
+
   const handleResetConnectivity = () => {
-    navigation.goBack()
-    setGenericTypeConnectivity("all")
+    navigation.goBack();
+    setGenericTypeConnectivity('all');
     return true;
-  }
+  };
   useBackHandler(handleResetConnectivity);
   return useMemo(
     () => ({
@@ -144,8 +202,19 @@ const GenericScreenHooks = () => {
       scrollY,
       spotsData,
       translateButtonY,
-      fadeAnim
-
+      fadeAnim,
+      handleSearchPress,
+      isSearchVisible,
+      setSearchQuery,
+      searchQuery,
+      modelShow,
+      setModelShow,
+      toggleFilterMenu,
+      handleFilterPress,
+      filterBadgeVisible,
+      setFilterCount,
+      filterCount,
+      setGenericTypeConnectivity,
     }),
     [
       GenericSpots,
@@ -165,7 +234,19 @@ const GenericScreenHooks = () => {
       scrollY,
       spotsData,
       translateButtonY,
-      fadeAnim
+      fadeAnim,
+      handleSearchPress,
+      isSearchVisible,
+      setSearchQuery,
+      searchQuery,
+      modelShow,
+      setModelShow,
+      toggleFilterMenu,
+      handleFilterPress,
+      filterBadgeVisible,
+      setFilterCount,
+      filterCount,
+      setGenericTypeConnectivity,
     ],
   );
 };

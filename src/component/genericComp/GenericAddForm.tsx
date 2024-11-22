@@ -10,8 +10,13 @@ import GenericAddInputComponent from './GenericAddInputComponent';
 import GenericAddFunction from '../../CustomHooks/genericHooks/GenericAddFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 
+// <<<<<<< HEAD
+// function GenericAddForm(props: {id: any}) {
+//   const {id} = props;
+// =======
 function GenericAddForm(props: {id: any}) {
   const {id} = props;
+  // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
   const {
     loader,
     smartControllerLoader,

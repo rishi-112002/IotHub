@@ -11,20 +11,27 @@ import { AppNavigationParams } from '../../navigation/NavigationStackList';
 import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Animated } from 'react-native';
+type FilterOption = 'connected' | 'not-connected' | 'all';
 
 function WeighBridgeScreenHooks() {
   // const [errorAlertVisible, setErrorAlertVisible] = useState(false);
   // const [errorMessage, setErrorMessage] = useState('');
-  const { weighBridgeTypeConnectivity, setWeighBridgeTypeConnectivity } = useContext(DataByConnectivityContext);
+  const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
 
+
+  const { weighBridgeTypeConnectivity, setWeighBridgeTypeConnectivity } = useContext(DataByConnectivityContext);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const handleSearchPress = () => {
+    setIsSearchVisible(!isSearchVisible); // Toggle search bar visibility
+  };
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
   const WeighbridgeSpots = useSelector(
     (state: RootState) => state.weighBridge.WeighBridgeSpots,
   );
-  const WeighBridgeConnectedSpot = WeighbridgeSpots.filter((spot: any) => spot.active === true)
-  const WeighBridgeNotConnectedSpot = WeighbridgeSpots.filter((spot: any) => spot.active === false)
   const Loader = useSelector((state: RootState) => state.weighBridge.loader);
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const buCode = useSelector((state: RootState) => state.authentication.buCode);
@@ -117,13 +124,42 @@ function WeighBridgeScreenHooks() {
       }).start();
     }
   }, [isVisible, fadeAnim]);
-  const spotsData =
-    weighBridgeTypeConnectivity === 'all'
-      ? WeighbridgeSpots
-      : weighBridgeTypeConnectivity === 'connected'
-        ? WeighBridgeConnectedSpot
-        : WeighBridgeNotConnectedSpot;
+  const spotsData = WeighbridgeSpots.filter((spot: any) => {
+    const matchesFilter =
+      weighBridgeTypeConnectivity === 'all' ||
+      (weighBridgeTypeConnectivity === 'connected' && spot?.active) ||
+      (weighBridgeTypeConnectivity === 'not-connected' && !spot?.active);
+    const matchesSearch = searchQuery
+      ? Object.values(spot).some((value) =>
+        String(value).toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      : true;
+    return matchesFilter && matchesSearch;
+  });
+  useEffect(() => {
+    if (weighBridgeTypeConnectivity !== "all") {
+      setFilterCount(1)
+      setFilterBadgeVisible(true)
+    }
+  }, [weighBridgeTypeConnectivity])
 
+
+  const [modelShow, setModelShow] = useState<boolean>(false);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const toggleFilterMenu = () => {
+    setModelShow(prevState => !prevState);
+    setModelShow(true);
+  };
+
+  // Handle filter selection
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleFilterPress = (selectedFilter: FilterOption) => {
+    setWeighBridgeTypeConnectivity(selectedFilter);
+    setFilterCount(1)
+    // setSearchQuery('');
+    setModelShow(false);
+  };
 
   const handleResetConnectivity = () => {
     navigation.goBack()
@@ -145,7 +181,21 @@ function WeighBridgeScreenHooks() {
     scrollY,
     translateButtonY,
     fadeAnim,
-    translateY
+    translateY,
+    handleSearchPress,
+    isSearchVisible,
+    setSearchQuery,
+    searchQuery,
+    modelShow,
+    setModelShow,
+    toggleFilterMenu,
+    handleFilterPress,
+    weighBridgeTypeConnectivity,
+    filterBadgeVisible,
+    setFilterCount, 
+    filterCount,
+    setWeighBridgeTypeConnectivity
+
   };
 }
 export default WeighBridgeScreenHooks;

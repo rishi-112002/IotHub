@@ -39,35 +39,38 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   const keyExtractor = useCallback((item: any) => item.id, []);
 
   const renderSpot: ListRenderItem<any> = useCallback(
-    ({ item }) => <CardItemWith_Icon
-      iconName={item.active ? 'location-on' : "location-off"}
-      view={<SpotItem item={item} baseUrl={baseUrl} />} />,
+
+    ({ item }) =>
+
+      <CardItemWith_Icon
+        iconName={item.active ? 'location-on' : "location-off"}
+        view={<SpotItem item={item} baseUrl={baseUrl} />} />,
     [baseUrl]
   );
 
   return (
-    <View>
-      <AnimatedFlatList
-        data={spotData}
-        renderItem={renderSpot}
-        keyExtractor={keyExtractor}
-        onRefresh={loadRfidList}
-        refreshing={refreshing}
-        removeClippedSubviews={true} // Helps with large lists
-        initialNumToRender={100} // Initially render 10 items for performance
-        maxToRenderPerBatch={100} // Number of items rendered per batch
-        windowSize={150} // How many screens worth of content to render
-        getItemLayout={(_data, index) => ({
-          length: 90,
-          offset: 90 * index,
-          index,
-        })}
-        updateCellsBatchingPeriod={30} // Reduce lag in scrolling
-        scrollEventThrottle={20}
-        onScroll={onScroll}
-        contentContainerStyle={contentContainerStyle}
-      />
-    </View>
+
+    <FlatList
+      style={{ flex: 1 }}
+      data={spotData}
+      renderItem={renderSpot}
+      keyExtractor={keyExtractor}
+      onRefresh={loadRfidList}
+      refreshing={refreshing}
+      removeClippedSubviews={true} // Helps with large lists
+      initialNumToRender={10} // Initially render 10 items for performance
+      maxToRenderPerBatch={15} // Number of items rendered per batch
+      windowSize={25} // How many screens worth of content to render
+      // getItemLayout={(_data, index) => ({
+      //   length: 90,
+      //   offset: 90 * index,
+      //   index,
+      // })}
+      updateCellsBatchingPeriod={10} // Reduce lag in scrolling
+      scrollEventThrottle={10}
+      onScroll={onScroll}
+      contentContainerStyle={contentContainerStyle}
+    />
   );
 };
 

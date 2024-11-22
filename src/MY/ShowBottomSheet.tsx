@@ -19,7 +19,6 @@ const ShowBottomSheet: React.FC = () => {
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
-            console.log('hello Button');
           }}
           style={styles.button}>
           <Text style={styles.buttonText}>Show Comments</Text>
