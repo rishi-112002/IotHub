@@ -87,7 +87,6 @@ export const useGenericAddEffect = (id: any) => {
   }, [uploadError, dispatch, status, navigation]);
 
   useEffect(() => {
-    // console.log("updateStatus", updateStatus)
     switch (updateStatus) {
       case 'failed':
         CustomToast('error', uploadError);
@@ -106,21 +105,18 @@ export const useGenericAddEffect = (id: any) => {
   useEffect(() => {
     switch (deleteStatus) {
       case 'failed':
-        // console.log('deleteStatus:', deleteStatus); // Make sure this logs the correct value
         CustomToast('error', uploadError);
 
         dispatch(resetDeleteStatus());
         setLoader(false); // Reset loader after failure
         break;
       case 'succeeded':
-        // console.log('deleteStatus:', deleteStatus);
         CustomToast('success', status);
 
         dispatch(resetDeleteStatus());
         setLoader(false); // Reset loader after success
         break;
       case 'loading':
-        // console.log('deleteStatus:', deleteStatus);
         setLoader(true); // Start loader when loading
         break;
       default:

@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import CustomHeader from "../../reuseableComponent/header/CustomHeader";
-import colors from "../../assets/color/colors";
-import EventLogsList from "../../component/EventLog/EventLogList";
-import DashBoardHook from "../../CustomHooks/dashBordEffect/DashBoardHooks";
-import DashBoardSubHeader from "../../component/dashBoardCom/DashBoardSubHeader";
-import DashBoardSubView from "../../component/dashBoardCom/DashBoardSubView";
-import SequentialBouncingLoader from "../../reuseableComponent/loader/BallBouncingLoader";
+/* eslint-disable react-native/no-inline-styles */
+
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import CustomHeader from '../../reuseableComponent/header/CustomHeader';
+import colors from '../../assets/color/colors';
+import EventLogsList from '../../component/EventLog/EventLogList';
+import DashBoardHook from '../../CustomHooks/dashBordEffect/DashBoardHooks';
+import DashBoardSubHeader from '../../component/dashBoardCom/DashBoardSubHeader';
+import DashBoardSubView from '../../component/dashBoardCom/DashBoardSubView';
+import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 function DashBoard() {
     const { translateY,
         buCode,
@@ -34,21 +36,16 @@ function DashBoard() {
         handleRfidUnUsedClick,
         handleWeighBridgeConnectedClick,
         handleWeighBridgeNotConnectedClick,
-    } = DashBoardHook()
-
+    } = DashBoardHook();
     const [isLoading, setIsLoading] = useState(true);
-
     // Show loader for 3 seconds
     useEffect(() => {
-        console.log("hello from dashBoard")
         const timer = setTimeout(() => {
             setIsLoading(false);
         }, 2000);
-
         return () => clearTimeout(timer); // Clean up timer on unmount
     }, []);
     return (
-
         <View style={{ flex: 1, backgroundColor: colors.white }}>
             <CustomHeader
                 buCode={buCode}
@@ -57,27 +54,26 @@ function DashBoard() {
                 translateY={translateY} onSearchPress={undefined} onFilterPress={undefined} searchIcon={undefined} filterIcon={undefined}            />
             {/* Card Section */}
             {!isLoading ? <View style={styles.container}>
-
                 <View style={{ marginBottom: 15 }}>
                     <DashBoardSubHeader
-                        heading={"LiveSpot"} subHeading={"Total count :-"}
+                        heading={'LiveSpot'} subHeading={'Total count :-'}
                         count={spotListData.length}
-                        iconPath={require("../../assets/icons/LiveSpots.png")}
+                        iconPath={require('../../assets/icons/LiveSpots.png')}
                         onPress={handleAllClick} />
                     <ScrollView contentContainerStyle={{
                         flexDirection: 'row', // Arrange items in a row
-                        columnGap: 15 // Add padding if needed
+                        columnGap: 15, // Add padding if needed
                     }}
                         showsHorizontalScrollIndicator={false} // Show horizontal scroll indicator
                         scrollEnabled={true}
                         horizontal={true} >
-                        <DashBoardSubView subHeader={"Connected"} subHeaderCount={connectedCount} subHeadingLeft={"Generic-spot"} subHeadingRight={"WeighBridge-spot"}
+                        <DashBoardSubView subHeader={'Connected'} subHeaderCount={connectedCount} subHeadingLeft={'Generic-spot'} subHeadingRight={'WeighBridge-spot'}
                             subHeadingLeftCount={genericConnected} subHeadingRightCount={WeighBridgeConnected}
                             onPress={handleConnectedClick}
                             onPressLeft={handleGenericConnectedClick}
                             onPressRight={handleWeighBridgeConnectedClick} backGroundColor={colors.greeenLightest} />
-                        <DashBoardSubView subHeader={"Not-Connected"} subHeaderCount={disconnectedCount} subHeadingLeft={"Generic-spot"}
-                            subHeadingRight={"WeighBridge-spot"}
+                        <DashBoardSubView subHeader={'Not-Connected'} subHeaderCount={disconnectedCount} subHeadingLeft={'Generic-spot'}
+                            subHeadingRight={'WeighBridge-spot'}
                             subHeadingLeftCount={genericDisConnected}
                             subHeadingRightCount={WeighBridgeDisConnected}
                             onPress={handleNotConnectedClick}
@@ -87,33 +83,29 @@ function DashBoard() {
                     </ScrollView>
                 </View>
                 <View style={{ flex: 0.4 }}>
-                    <DashBoardSubHeader heading={"Rf-Id"} subHeading={"Total rfid :-"} count={rfidCount} iconPath={require("../../assets/icons/rfid.png")}
+                    <DashBoardSubHeader heading={'Rf-Id'} subHeading={'Total rfid :-'} count={rfidCount} iconPath={require('../../assets/icons/rfid.png')}
                         onPress={handleRfidAllClick} />
                     <View style={{ marginEnd: 15, flex: 1 }}>
                         <DashBoardSubView
-                            subHeader={""}
-                            subHeaderCount={""}
-                            subHeadingLeft={"Rfid-used"}
-                            subHeadingRight={"Rfid-unused"}
+                            subHeader={''}
+                            subHeaderCount={''}
+                            subHeadingLeft={'Rfid-used'}
+                            subHeadingRight={'Rfid-unused'}
                             subHeadingLeftCount={rfidUsedCount}
                             subHeadingRightCount={rfidUnUsedCount}
                             onPress={undefined}
                             onPressLeft={handleRfidUsedClick}
                             onPressRight={handleRfidUnUsedClick}
-                            backGroundColor={"#f0f4f7"} />
-
+                            backGroundColor={'#f0f4f7'} />
                     </View>
-
                 </View>
                 <View style={{ flex: 1 }}>
-                    <DashBoardSubHeader heading={"Event Logs"} subHeading={"Today Event :-"} count={eventLogsByTime.length}
-                        iconPath={require("../../assets/icons/eventLogs.png")}
+                    <DashBoardSubHeader heading={'Event Logs'} subHeading={'Today Event :-'} count={eventLogsByTime.length}
+                        iconPath={require('../../assets/icons/eventLogs.png')}
                         onPress={() => navigation.navigate('Drawer', { screen: 'AllEventLogsScreen' })} />
-
                     <View style={{
                         flex: 1,
                         marginBottom: 40,
-
                     }}>
                         <EventLogsList
                             data={eventLogsByTime}
@@ -122,7 +114,6 @@ function DashBoard() {
                             onScroll={undefined} />
                     </View>
                 </View>
-
             </View>
                 :
                 <View style={{ flex: 1 }}>
@@ -131,7 +122,6 @@ function DashBoard() {
         </View >
     );
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -139,5 +129,5 @@ const styles = StyleSheet.create({
         paddingTop: 70,
     },
 });
-
 export default DashBoard;
+

@@ -10,15 +10,19 @@ import CustomDateTimePicker from '../../reuseableComponent/modal/CalendarWithTim
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import CustomSubHeader from '../../reuseableComponent/header/CustomSubHeader';
+import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 
 function AllEventLogsScreen() {
 
 
-    const { setSelectedSpot, handleReset, setModalVisible, setRequestData, loader, isFocused, handleCloseModal, handleOptionSelected, getOptions, handleDateSelect, handleOptionSelect, openCalendarModal, selectedDirection, selectedName, selectedSpot, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, filteredLogs, handleFilterClick, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setToDateValue, setDateFromValue, filterBadgeVisible, navigation, setIsFocused, translateY, paddingTopAnimated, scrollY,filterCount,setFilterCount } = AllEventLogHooks();
-   
+    const { setSelectedSpot, handleReset, setModalVisible, setRequestData, loader, isFocused, handleCloseModal, handleOptionSelected, getOptions, handleDateSelect, handleOptionSelect, openCalendarModal, selectedDirection, selectedName, selectedSpot, isCalendarVisible, selectedFromDate, selectedToDate, setCurrentField, setGenericmodalVisible, closeCalendarModal, GenericmodalVisible, filteredLogs, handleFilterClick, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedToDate, setToDateValue, setDateFromValue, filterBadgeVisible, navigation, setIsFocused, translateY, paddingTopAnimated, scrollY, filterCount, setFilterCount ,isSearchVisible,searchQuery,setSearchQuery,handleSearchPress}
+     = AllEventLogHooks();
+
     if (loader) {
         <SequentialBouncingLoader />
     }
+  
+
     return (
         <View style={{ flex: 1 }}>
             {loader ?
@@ -30,31 +34,47 @@ function AllEventLogsScreen() {
                     <CustomSubHeader
                         spotName={"EventLogs"}
                         onPress={() => setIsFocused(true)}
-                        iconPath={require("../../assets/icons/filterMedium.png")}
+                        filterIconPath={require("../../assets/icons/filterMedium.png")}
+                        searchIconPath={require("../../assets/icons/search.png")}
                         onBackPress={() => navigation.goBack()}
                         translateY={translateY}
-                        filterCount={filterCount} />
-
+                        filterCount={filterCount}
+                        onSearchPress={handleSearchPress} />
                     <Animated.View style={[styles.contentContainer, { paddingTop: paddingTopAnimated }]}>
 
+
+                        {isSearchVisible && (
+                            <Animated.View
+                            style={[
+                                { transform: [{ translateY: translateY }] },
+                            ]}>
+                                <SearchBar
+                                    searchQuery={searchQuery}
+                                    setSearchQuery={setSearchQuery}
+                                    clearSearch={()=> setSearchQuery("")}
+                                    placeholder={undefined} />
+                            </Animated.View>
+                        )}
                         {
                             filterBadgeVisible &&
                             <View style={{ flex: 0.05 }}>
                                 <ScrollableBadges badges={[
-                                    { key: 'Spot', value: selectedSpot.name },
-                                    { key: 'Direction', value: selectedDirection.name },
-                                    { key: 'Name', value: selectedName.name },
-                                    { key: 'From Date', value: selectedFromDate },
-                                    { key: 'To Date', value: selectedToDate }
-                                ]}
-
+                                        { key: 'Spot', value: selectedSpot.name },
+                                        { key: 'Direction', value: selectedDirection.name },
+                                        { key: 'Name', value: selectedName.name },
+                                        { key: 'From Date', value: selectedFromDate },
+                                        { key: 'To Date', value: selectedToDate }
+                                    ]}
+                                    setFilterCount={setFilterCount}
+                                    filterCount={filterCount}
                                     setSelectedSpot={setSelectedSpot}
                                     setSelectedDirection={setSelectedDirection}
                                     setSelectedFromDate={setSelectedFromDate}
                                     setSelectedName={setSelectedName}
                                     setSelectedToDate={setSelectedToDate}
                                     setToDateValue={setToDateValue}
-                                    setDateFromValue={setDateFromValue} />
+                                    setDateFromValue={setDateFromValue} 
+                                    setConnectivity={undefined} />
                             </View>
 
                         }

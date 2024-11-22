@@ -11,8 +11,16 @@ import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
 import { Animated } from 'react-native';
+type FilterOption = 'connected' | 'not-connected' | 'all';
 
 const GenericScreenHooks = () => {
+  const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const handleSearchPress = () => {
+    setIsSearchVisible(!isSearchVisible); // Toggle search bar visibility
+  };
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
@@ -66,16 +74,6 @@ const GenericScreenHooks = () => {
     }
   }, [isVisible, fadeAnim]);
 
-  const spotsData =
-    genericTypeConnectivity === 'all'
-      ? GenericSpots
-      : genericTypeConnectivity === 'connected'
-        ? GenericConnectedSpot
-        : GenericNotConnectedSpot;
-
-  console.log("genericTypeConnectivity", genericTypeConnectivity)
-
-
   const getGenericData = useCallback(async () => {
     // console.log('hello form useEffect');
     store.dispatch(
@@ -121,6 +119,44 @@ const GenericScreenHooks = () => {
     }
   }, [deleteId, baseUrls, buCode, token, Loader]);
 
+  const spotsData = GenericSpots.filter((spot: any) => {
+    const matchesFilter =
+      genericTypeConnectivity === 'all' ||
+      (genericTypeConnectivity === 'connected' && spot?.active) ||
+      (genericTypeConnectivity === 'not-connected' && !spot?.active);
+    const matchesSearch = searchQuery
+      ? Object.values(spot).some((value) =>
+        String(value).toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      : true;
+    return matchesFilter && matchesSearch;
+  });
+
+  const [modelShow, setModelShow] = useState<boolean>(false);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const toggleFilterMenu = () => {
+    // console.log('Toggle function run');
+    setModelShow(prevState => !prevState);
+    setModelShow(true);
+  };
+
+  // Handle filter selection
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleFilterPress = (selectedFilter: FilterOption) => {
+    console.log("selected Filter", selectedFilter)
+    setGenericTypeConnectivity(selectedFilter);
+    setFilterCount(1)
+    setModelShow(false);
+  };
+  useEffect(() => {
+    if (genericTypeConnectivity !== "all") {
+      setFilterBadgeVisible(true)
+    }
+  }, [genericTypeConnectivity])
+
+
+
   const handleResetConnectivity = () => {
     navigation.goBack()
     setGenericTypeConnectivity("all")
@@ -146,8 +182,19 @@ const GenericScreenHooks = () => {
       scrollY,
       spotsData,
       translateButtonY,
-      fadeAnim
-
+      fadeAnim,
+      handleSearchPress,
+      isSearchVisible,
+      setSearchQuery,
+      searchQuery,
+      modelShow,
+      setModelShow,
+      toggleFilterMenu,
+      handleFilterPress,
+      filterBadgeVisible,
+      setFilterCount,
+      filterCount,
+      setGenericTypeConnectivity,
     }),
     [
       GenericSpots,
@@ -167,7 +214,20 @@ const GenericScreenHooks = () => {
       scrollY,
       spotsData,
       translateButtonY,
-      fadeAnim
+      fadeAnim,
+      handleSearchPress,
+      isSearchVisible,
+      setSearchQuery,
+      searchQuery,
+      modelShow,
+      setModelShow,
+      toggleFilterMenu,
+      handleFilterPress,
+      filterBadgeVisible,
+      setFilterCount,
+      filterCount,
+      setGenericTypeConnectivity,
+      handleSearchPress
     ],
   );
 };

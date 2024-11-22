@@ -12,7 +12,6 @@ import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 
 function GenericAddForm(props: { id: any }) {
   const { id } = props
-  console.log("id in genericAdd form ", id)
   const {
     loader,
     smartControllerLoader,

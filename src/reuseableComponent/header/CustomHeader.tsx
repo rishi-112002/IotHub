@@ -15,8 +15,8 @@ import colors from '../../assets/color/colors';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { logoutUser } from '../../reducer/Login/LoginAction';
 import React from 'react';
-import { handleLogOut } from '../../reducer/Login/LoginReducer';
 import CustomIcon from '../customIcons/CustomIcon';
+import fontSizes from '../../assets/fonts/FontSize';
 
 function CustomHeader(props: {
   buCode: any;
@@ -26,19 +26,16 @@ function CustomHeader(props: {
   onSearchPress: any;
   onFilterPress: any;
   searchIcon: any;
-  filterIcon: any
+  filterIcon: any;
+  filterCount: any
 }) {
   const userName = useSelector((state: RootState) => state.authentication.userName, shallowEqual);
-  const { searchIcon, filterIcon, onFilterPress, onSearchPress, title, translateY } = props;
+  const { filterCount, searchIcon, filterIcon, onFilterPress, onSearchPress, title, translateY } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const Navigations = useNavigation();
   const openDrawer = useCallback(() => {
-    console.log("darwer Appears")
     Navigations.dispatch(DrawerActions.toggleDrawer());
   }, [Navigations]);
-  useEffect(() => {
-    console.log("hello from drawer")
-  }, [Navigations])
   const handleLogout = async () => {
     Alert.alert(
       'Confirm Logout', // Alert title
@@ -54,7 +51,6 @@ function CustomHeader(props: {
           onPress: () => {
             setModalVisible(false);
             store.dispatch(logoutUser()); // Log out the user
-            store.dispatch(handleLogOut());
           },
         },
       ],
@@ -79,17 +75,19 @@ function CustomHeader(props: {
               style={styles.burgerIcon}
             />
           </TouchableOpacity>
-          {/* <Image
-            source={require('../../assets/images/iotHubLogo.png')}
-            style={styles.logo}
-          /> */}
           <Text style={styles.appName}>{title}</Text>
         </View>
         {searchIcon && filterIcon &&
 
           <View style={styles.rightSection}>
             <CustomIcon iconPath={searchIcon} onPress={onSearchPress} />
-            <CustomIcon iconPath={filterIcon} onPress={onFilterPress} />
+            <View style={styles.iconWrapper}>
+              {filterCount > 0 &&
+                <View style={styles.filterCountBadge}>
+                  <Text style={styles.filterCountText}>{filterCount}</Text>
+                </View>}
+              <CustomIcon iconPath={filterIcon} onPress={onFilterPress} />
+            </View>
           </View>
         }
         {modalVisible && (
@@ -131,6 +129,26 @@ const styles = StyleSheet.create({
     height: 30,
     marginRight: 10,
     tintColor: colors.darkblack,
+  },
+  iconWrapper: {
+    position: "relative",
+  },
+  filterCountBadge: {
+    position: "absolute",
+    top: -5,
+    right: -5,
+    backgroundColor: colors.redDarkest,
+    borderRadius: 10,
+    height: 15,
+    width: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
+  },
+  filterCountText: {
+    color: colors.white,
+    fontSize: fontSizes.vSmallText,
+    fontWeight: "bold",
   },
   appName: {
     fontSize: 18,
