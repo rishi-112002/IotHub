@@ -53,7 +53,7 @@ export const slideFromRight:StackNavigationOptions = {
     open: {
       animation: 'timing',
       config: {
-        duration: 300,
+        duration: 400,
         easing: Easing.ease, // Apply easing to the timing animation
 // >>>>>>> 3b12c3e38f8b6699fe219c4a411b6c28c318353e
       },
@@ -61,7 +61,7 @@ export const slideFromRight:StackNavigationOptions = {
     close: {
       animation: 'timing',
       config: {
-        duration: 200,
+        duration: 300,
         easing: Easing.ease,
       },
     },
