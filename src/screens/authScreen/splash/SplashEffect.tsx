@@ -40,7 +40,6 @@ function SplashEffect() {
         logoOpacity.value = withTiming(1, { duration: 500 });
       }, 400);
       const splashTimeout = setTimeout(() => {
-        console.log("userName inside SplashScreen" , userName)
         if (baseUrls) {
           if (userName) {
             navigation.navigate('Drawer', { screen: 'bottomTabNavigation' });

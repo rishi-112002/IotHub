@@ -117,7 +117,6 @@ function LoginEffect() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleLoginStatus = () => {
-    console.log('loginStatus', loginStatus);
     if (loginStatus === 'succeeded') {
       setLoader(false);
       navigation.navigate('Drawer', {screen: 'bottomTabNavigation'});

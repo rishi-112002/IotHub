@@ -1,17 +1,17 @@
-import {useEffect, useState, useCallback, useMemo, useContext} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import { useEffect, useState, useCallback, useMemo, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Alert,
   Animated,
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
-import {RootState, store} from '../../reducer/Store';
-import {GetSpotData} from '../../reducer/spotData/spotDataAction';
-import {useBackHandler} from '@react-native-community/hooks';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
-import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
+import { RootState, store } from '../../reducer/Store';
+import { GetSpotData } from '../../reducer/spotData/spotDataAction';
+import { useBackHandler } from '@react-native-community/hooks';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 export const SpotListHook = () => {
@@ -20,10 +20,11 @@ export const SpotListHook = () => {
   const baseUrl = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
-  const {spotTypeConnectivity, setSpotTypeConnectivity} = useContext(
+  const { spotTypeConnectivity, setSpotTypeConnectivity } = useContext(
     DataByConnectivityContext,
   );
-
+  const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
+  const [filterCount, setFilterCount] = useState(0);
   const Loader = useSelector((state: RootState) => state.spotData.loader);
   const LError = useSelector((state: RootState) => state.spotData.error);
   const spotListData = useSelector(
@@ -37,7 +38,7 @@ export const SpotListHook = () => {
   // Load RFID list
   const loadSpotList = useCallback(async () => {
     setRefreshing(true);
-    store.dispatch(GetSpotData({baseUrl: baseUrl}));
+    store.dispatch(GetSpotData({ baseUrl: baseUrl }));
     setRefreshing(false);
   }, [baseUrl]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -50,7 +51,7 @@ export const SpotListHook = () => {
   useEffect(() => {
     if (LError) {
       // console.log("LoadListError UseEffect...");
-      Alert.alert('Error', LError, [{text: 'OK'}], {cancelable: false});
+      Alert.alert('Error', LError, [{ text: 'OK' }], { cancelable: false });
     }
   }, [LError]);
   // console.log("LoaderRefresh UseEffect...")
@@ -92,7 +93,6 @@ export const SpotListHook = () => {
 
   // Memoize output to avoid recalculations when nothing changes
   const filteredSpots = spotListData.filter((spot: any) => {
-    console.log('Name :- ', spot?.name);
     const matchesFilter =
       spotTypeConnectivity === 'all' ||
       (spotTypeConnectivity === 'connected' && spot?.active) ||
@@ -112,7 +112,7 @@ export const SpotListHook = () => {
   const diffClamp = Animated.diffClamp(scrollY, 0, 180);
   const translateY = diffClamp.interpolate({
     inputRange: [0, 130],
-    outputRange: [0, -100],
+    outputRange: [0, -50],
   });
 
   // Clear search functionality
@@ -147,6 +147,13 @@ export const SpotListHook = () => {
   };
   console.log('Toggle function run');
 
+  useEffect(() => {
+    if (spotTypeConnectivity !== "all") {
+      setFilterCount(1)
+      setFilterBadgeVisible(true)
+    }
+  }, [spotTypeConnectivity])
+
   const handleResetConnectivity = () => {
     navigation.goBack();
     setSpotTypeConnectivity('all');
@@ -171,6 +178,11 @@ export const SpotListHook = () => {
       translateY,
       searchQuery,
       setSearchQuery,
+      setSpotTypeConnectivity,
+      filterBadgeVisible,
+      setFilterBadgeVisible,
+      filterCount,
+      setFilterCount
     }),
     [
       Loader,
@@ -189,6 +201,11 @@ export const SpotListHook = () => {
       translateY,
       searchQuery,
       setSearchQuery,
+      setSpotTypeConnectivity,
+      filterBadgeVisible,
+      setFilterBadgeVisible,
+      filterCount,
+      setFilterCount
     ],
   );
 };

@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
-import {View, Animated, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { View, Animated, StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import FloatingActionCustomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
-import {RfidListHook} from '../../CustomHooks/RFIDHooks/RFIDListHook';
+import { RfidListHook } from '../../CustomHooks/RFIDHooks/RFIDListHook';
 import RfidListComponent from '../../component/RFIDComponent/RfidListComponent';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter'; // Import your custom search component
+import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
+import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 
-const RfidReader = ({navigation}) => {
+const RfidReader = ({ navigation }: any) => {
   const {
     Loader,
     loadRfidList,
@@ -21,12 +23,17 @@ const RfidReader = ({navigation}) => {
     filteredRfid,
     setSearchQuery,
     searchQuery,
+    handleSearchPress,
+    isSearchVisible,
+    modelShow,
+    toggleFilterMenu,
+    handleFilterPress,
+    filterBadgeVisible,
+    filterCount,
+    setFilterCount,
+    rfidType,
+    setRfidType
   } = RfidListHook();
-
-  const [isSearchVisible, setIsSearchVisible] = useState(false); // State to control search bar visibility
-  // const [searchQuery, setSearchQuery] = useState(''); // State to hold the search query
-  // const [filteredData, setFilteredData] = useState(rfidData); // Filtered RFID data based on search
-
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 100);
   const translateY = diffClamp.interpolate({
@@ -45,55 +52,43 @@ const RfidReader = ({navigation}) => {
     outputRange: [0, 100],
   });
 
-  // Handle search input change
-  // const handleSearchChange = query => {
-  //   setSearchQuery(query);
-
-  //   // Filter RFID data based on search query
-  //   if (query.length > 0) {
-  //     const filtered = rfidData.filter(
-  //       item => item.name.toLowerCase().includes(query.toLowerCase()), // Modify this condition to suit your data structure
-  //     );
-  //     setFilteredData(filtered);
-  //   } else {
-  //     setFilteredData(rfidData); // Reset the filtered data when query is empty
-  //   }
-  // };
-
-  // Toggle search bar visibility
-  const handleSearchPress = () => {
-    setIsSearchVisible(!isSearchVisible); // Toggle search bar visibility
-  };
-
   return (
-    <View style={{flex: 1, backgroundColor: colors.white}}>
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
       <CustomHeader
         title="RFID Readers"
         buCode={buCode}
         userLogo={'account-circle'}
         translateY={translateY}
         onSearchPress={handleSearchPress} // Set search press handler
-        onFilterPress={undefined}
+        onFilterPress={toggleFilterMenu}
         searchIcon={require('../../assets/icons/search.png')}
-        filterIcon={require('../../assets/icons/filterMedium.png')}
-      />
+        filterIcon={require('../../assets/icons/filterMedium.png')} filterCount={filterCount} />
 
       {/* Conditionally render search bar */}
-      {isSearchVisible && (
-        <Animated.View
-          style={[
-            styles.searchBarContainer,
-            {transform: [{translateY: translateY}]},
-          ]}>
-          <SearchBar
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            clearSearch={undefined}
-          />
-        </Animated.View>
-      )}
 
-      <Animated.View style={{flex: 1, paddingTop: paddingTopAnimated}}>
+      <Animated.View style={{ flex: 1, paddingTop: paddingTopAnimated }}>
+        {isSearchVisible && (
+          <Animated.View
+            style={[
+              { transform: [{ translateY: translateY }] },
+            ]}>
+            <SearchBar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              clearSearch={() => setSearchQuery("")}
+              placeholder={undefined} />
+          </Animated.View>
+        )}
+        {
+          filterBadgeVisible && rfidType !== "all" &&
+          < View style={{ flex: 0.06 }}>
+            <ScrollableBadges badges={[
+              { key: 'Connectivity', value: rfidType },
+            ]} filterCount={filterCount} setFilterCount={setFilterCount}
+              setSelectedSpot={undefined} setSelectedDirection={undefined} setSelectedFromDate={undefined} setSelectedName={undefined} setSelectedToDate={undefined} setToDateValue={undefined} setDateFromValue={undefined}
+              setConnectivity={setRfidType} />
+          </View>
+        }
         <RfidListComponent
           ListData={filteredRfid} // Use filtered data here
           Loader={Loader}
@@ -106,6 +101,14 @@ const RfidReader = ({navigation}) => {
           }}
           buttonVisible={false}
         />
+        {modelShow && (
+          <FilterModal
+            isVisible={modelShow}
+            toggleFilterMenu={toggleFilterMenu}
+            spotTypeConnectivity={rfidType}
+            handleFilterPress={handleFilterPress} type={"used"} />
+        )
+        }
 
         {alertVisible && (
           <CustomAlert

@@ -37,9 +37,10 @@ const FilterModal: React.FC<FilterModalProps> = ({
     handleReset,
     direction, name, spot, handleFilterClick,
     setFilterCount
-
+    
 }) => {
     const [filteredOptions, setFilteredOptions] = useState(filters);
+    let count = 0;
 
 
 
@@ -75,7 +76,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
         </TouchableOpacity>
     ), [handleSelectFilter, DateFromValue, ToDateValue, spot.name, name.name, direction.name]);
     const calculateFilterCount = useCallback(() => {
-        let count = 0;
 
         if (DateFromValue) count++;
         if (ToDateValue) {

@@ -1,24 +1,31 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useEffect, useState, useCallback, useMemo, useContext} from 'react';
-import {useSelector} from 'react-redux';
+import { useEffect, useState, useCallback, useMemo, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import {
   getRfidListAction,
   deleteRfidListAction,
 } from '../../reducer/RFIDList/RFIDListAction';
-import {RootState, store} from '../../reducer/Store';
+import { RootState, store } from '../../reducer/Store';
 import showCustomToast from '../../reuseableComponent/modal/CustomToast';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import React from 'react';
-import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
-import {useBackHandler} from '@react-native-community/hooks';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import { useBackHandler } from '@react-native-community/hooks';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+
+type FilterOption = 'used' | 'un-used' | 'all';
 
 export const RfidListHook = () => {
   // const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-
-  const {rfidType, setRfidType} = useContext(DataByConnectivityContext);
+  const [filterCount, setFilterCount] = useState(0);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const handleSearchPress = () => {
+    setIsSearchVisible(!isSearchVisible); // Toggle search bar visibility
+  };
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const { rfidType, setRfidType } = useContext(DataByConnectivityContext);
 
   const ListData = useSelector(
     (state: RootState) => state.rfidList.RfidListData,
@@ -45,7 +52,7 @@ export const RfidListHook = () => {
   const [successAlertVisible, setSuccessAlertVisible] = useState(false);
   const [errorAlertVisible, setErrorAlertVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
 
   const loadRfidList = useCallback(async () => {
     setRefreshing(true);
@@ -53,7 +60,7 @@ export const RfidListHook = () => {
     setSuccessAlertVisible(false); // Reset success alert before fetching data
     setErrorMessage(''); // Clear previous error message
     try {
-      store.dispatch(getRfidListAction({baseUrl}));
+      store.dispatch(getRfidListAction({ baseUrl }));
     } catch (error) {
       // Handle fetch error if necessary
 
@@ -68,18 +75,34 @@ export const RfidListHook = () => {
     // console.log('first');
   }, [baseUrl, loadRfidList]);
 
-  const filteredRfid = ListData.filter((spot: any) => {
-    // console.log('Name :- ', spot?.name);
-    // const matchesFilter =
-    //   spotTypeConnectivity === 'all' ||
-    //   (spotTypeConnectivity === 'connected' && spot?.active) ||
-    //   (spotTypeConnectivity === 'not-connected' && !spot?.active);
-    const matchesSearch = spot?.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    // return matchesFilter && matchesSearch;
-    return matchesSearch;
+  // const filteredRfid = ListData.filter((spot: any) => {
+  //   // console.log('Name :- ', spot?.name);
+  //   // const matchesFilter =
+  //   //   spotTypeConnectivity === 'all' ||
+  //   //   (spotTypeConnectivity === 'connected' && spot?.active) ||
+  //   //   (spotTypeConnectivity === 'not-connected' && !spot?.active);
+  //   const matchesSearch = spot?.name
+  //     .toLowerCase()
+  //     .includes(searchQuery.toLowerCase());
+  //   // return matchesFilter && matchesSearch;
+  //   return matchesSearch;
+  // });
+
+
+  const filteredRfid = ListData.filter((rfid: any) => {
+    const matchesFilter =
+      rfidType === 'all' ||
+      (rfidType === 'un-used' && rfid.direction === null && rfid.type === null) ||
+      (rfidType === 'used' && rfid.direction !== null && rfid.type !== null);
+    const matchesSearch = searchQuery
+      ? Object.values(rfid).some((value) =>
+        String(value).toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      : true;
+    return matchesFilter && matchesSearch;
   });
+
+
 
   // useEffect(() => {
   //   // Display error if any
@@ -116,7 +139,7 @@ export const RfidListHook = () => {
     setAlertVisible(false);
     try {
       await store
-        .dispatch(deleteRfidListAction({id: rfidToDelete, buCode, token}))
+        .dispatch(deleteRfidListAction({ id: rfidToDelete, buCode, token }))
         .unwrap();
       showCustomToast('success', 'RFID deleted successfully!');
       await loadRfidList(); // Refresh the list after successful deletion
@@ -139,6 +162,32 @@ export const RfidListHook = () => {
       // setErrorAlertVisible(true);
     }
   }, [rfidToDelete, buCode, token, loadRfidList]);
+
+
+  const [modelShow, setModelShow] = useState<boolean>(false);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const toggleFilterMenu = () => {
+    // console.log('Toggle function run');
+    setModelShow(prevState => !prevState);
+    setModelShow(true);
+  };
+
+  // Handle filter selection
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleFilterPress = (selectedFilter: FilterOption) => {
+    console.log("selected Filter", selectedFilter)
+    setRfidType(selectedFilter);
+    setModelShow(false);
+  };
+  useEffect(() => {
+    if (rfidType !== "all") {
+      setFilterCount(1)
+      setFilterBadgeVisible(true)
+    }
+  }, [rfidType])
+
+
   const handleResetConnectivity = () => {
     navigation.goBack();
     setRfidType('all');
@@ -168,6 +217,15 @@ export const RfidListHook = () => {
       navigation,
       searchQuery,
       setSearchQuery,
+      handleSearchPress,
+      isSearchVisible,
+      modelShow,
+      toggleFilterMenu,
+      handleFilterPress,
+      filterBadgeVisible,
+      filterCount,
+      setFilterCount,
+      setRfidType
     }),
     [
       ListData,
@@ -187,6 +245,16 @@ export const RfidListHook = () => {
       filteredRfid,
       navigation,
       setSearchQuery,
+      handleSearchPress,
+      isSearchVisible,
+      modelShow,
+      toggleFilterMenu,
+      handleFilterPress,
+      filterBadgeVisible,
+      filterCount,
+      setFilterCount,
+      setRfidType
+
     ],
   );
 };

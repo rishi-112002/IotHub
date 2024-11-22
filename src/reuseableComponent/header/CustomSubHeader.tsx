@@ -5,10 +5,10 @@ import fontSizes from "../../assets/fonts/FontSize";
 import colors from "../../assets/color/colors";
 import CustomIcon from "../customIcons/CustomIcon";
 
-function CustomSubHeader(props: { spotName: string, translateY: any, onPress: any, iconPath: any, onBackPress: any, filterCount: number }) {
-  const { spotName, onPress, iconPath, onBackPress, translateY, filterCount } = props;
+function CustomSubHeader(props: { searchIconPath: any, onSearchPress: any, spotName: string, translateY: any, onPress: any, filterIconPath: any, onBackPress: any, filterCount: number }) {
+  const { searchIconPath, onSearchPress, spotName, onPress, filterIconPath: iconPath, onBackPress, translateY, filterCount } = props;
 
-  console.log("filterCount in header" , filterCount)
+  console.log("filterCount in header", filterCount)
   return (
     <Animated.View
       style={{
@@ -18,6 +18,7 @@ function CustomSubHeader(props: { spotName: string, translateY: any, onPress: an
       }}>
       <View style={styles.headerContainer}>
         <View style={styles.leftSection}>
+
           <TouchableOpacity onPress={onBackPress}>
             <MaterialIcons
               name="arrow-back"
@@ -30,13 +31,19 @@ function CustomSubHeader(props: { spotName: string, translateY: any, onPress: an
         <View style={styles.rightSection}>
           <Text style={styles.spotName}>{spotName}</Text>
           <TouchableOpacity style={{ padding: 5 }} onPress={onPress}>
-            <View style={styles.iconWrapper}>
-              {filterCount >0&& 
-              <View style={styles.filterCountBadge}>
-                <Text style={styles.filterCountText}>{filterCount}</Text>
-              </View>}
+            <View style={{
+              flex: 1, flexDirection: "row", justifyContent: "center",
+              alignItems: 'center', columnGap: 15
+            }}>
+              <CustomIcon iconPath={searchIconPath} onPress={onSearchPress} />
+              <View style={styles.iconWrapper}>
+                {filterCount > 0 &&
+                  <View style={styles.filterCountBadge}>
+                    <Text style={styles.filterCountText}>{filterCount}</Text>
+                  </View>}
 
-              <CustomIcon iconPath={iconPath} onPress={onPress} />
+                <CustomIcon iconPath={iconPath} onPress={onPress} />
+              </View>
             </View>
           </TouchableOpacity>
         </View>

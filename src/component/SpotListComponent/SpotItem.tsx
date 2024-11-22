@@ -29,6 +29,7 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
     <Animated.View style={styles.spotContainer}>
       <TouchableOpacity
         onPress={() => OnHandlePress(item)}>
+        
         <View>
           <View style={{ flexDirection: "row", justifyContent: 'space-between', flex: 1 }}>
             <View style={{ flex: 0.9 }}>
@@ -151,7 +152,4 @@ const styles = StyleSheet.create({
 });
 
 export default SpotItem;
-function item(): unknown {
-  throw new Error('Function not implemented.');
-}
 

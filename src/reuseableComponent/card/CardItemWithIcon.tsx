@@ -11,6 +11,7 @@ interface CardItemWithIconProps {
   iconName: string;
 }
 const CardItemWith_Icon: React.FC<CardItemWithIconProps> = ({ iconName, view }) => {
+  console.log("for list of spots")
   return (
     <View style={combinedStyles.tabItem}>
       <View style={combinedStyles.row}>

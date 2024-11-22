@@ -5,11 +5,14 @@ import fontSizes from '../../assets/fonts/FontSize';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function ScrollableBadges(props: {
+    filterCount: any,
+    setFilterCount: any
     badges: any, setSelectedSpot: any,
     setSelectedDirection: any, setSelectedFromDate: any
-    setSelectedName: any, setSelectedToDate: any, setToDateValue: any, setDateFromValue: any
+    setSelectedName: any, setSelectedToDate: any, setToDateValue: any, setDateFromValue: any,
+    setConnectivity: any
 }) {
-    const { badges, setSelectedDirection, setDateFromValue, setSelectedFromDate, setSelectedName, setSelectedSpot, setSelectedToDate, setToDateValue } = props;
+    const { setConnectivity, filterCount, setFilterCount, badges, setSelectedDirection, setDateFromValue, setSelectedFromDate, setSelectedName, setSelectedSpot, setSelectedToDate, setToDateValue } = props;
     // Filter out entries where the value is empty or null
     const [badgeList, setBadgeList] = useState(badges.filter((badge: any) => badge.value));
     useEffect(() => {
@@ -20,20 +23,37 @@ function ScrollableBadges(props: {
     const removeBadge = (key: any) => {
         setBadgeList(badgeList.filter((badge: any) => badge.key !== key));
         // console.log("key ", key)
+        let count = filterCount;
+
         if (key === "Spot") {
+            count = count - 1
+            setFilterCount(count)
             setSelectedSpot("")
         }
+        else if (key === "Connectivity") {
+            count = count - 1
+            setConnectivity("all")
+            setFilterCount(count)
+        }
         else if (key === "Direction") {
+            count = count - 1
+            setFilterCount(count)
             setSelectedDirection("")
         }
         else if (key === "Name") {
+            count = count - 1
+            setFilterCount(count)
             setSelectedName("")
         }
         else if (key === "From Date") {
+            count = count - 1
+            setFilterCount(count)
             setSelectedFromDate("")
             setDateFromValue("")
         }
         else if (key === "To Date") {
+            count = count - 1
+            setFilterCount(count)
             setSelectedToDate("")
             setToDateValue("")
         }
@@ -45,8 +65,9 @@ function ScrollableBadges(props: {
                 <View key={index} style={styles.badgeContainer}>
 
                     <Text style={styles.badgeText}>
-                        {badge.key}: {badge.value}
+                        {badge.key === "Connectivity" ? " " : `${badge.key};`} {badge.value}
                     </Text>
+
                     <TouchableOpacity onPress={() => removeBadge(badge.key)}>
                         <Icon name="cancel" size={15} color={colors.blueBase} />
                     </TouchableOpacity>
@@ -64,7 +85,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
     },
     badgeContainer: {
-        marginTop:10,
+        marginTop: 10,
         backgroundColor: colors.white,
         borderWidth: 1,
         borderColor: colors.blueBase,

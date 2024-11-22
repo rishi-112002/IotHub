@@ -25,7 +25,6 @@ interface readerParams {
 function EditRfidScreen() {
   const route = useRoute<RouteProp<{ params: readerParams }, 'params'>>();
   const readers = route.params?.readers || '';
-  console.log('Edit Screen :- ', readers);
 
   const {
     name,

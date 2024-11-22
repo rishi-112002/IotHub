@@ -1,13 +1,13 @@
 // src/hooks/useEventLogs.ts
-import {useEffect, useMemo, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {GetAllSpotEventLogs} from '../../reducer/eventLogs/EventLogsAction';
-import {RootState, store} from '../../reducer/Store';
+import { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { GetAllSpotEventLogs } from '../../reducer/eventLogs/EventLogsAction';
+import { RootState, store } from '../../reducer/Store';
 import React from 'react';
-import {Animated} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {GetSpotName} from '../../reducer/spotData/spotDataAction';
-import {direction, EventNames} from '../../assets/constants/Constant';
+import { Animated } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { GetSpotName } from '../../reducer/spotData/spotDataAction';
+import { direction, EventNames } from '../../assets/constants/Constant';
 
 const AllEventLogHooks = () => {
   const navigation = useNavigation();
@@ -41,7 +41,7 @@ const AllEventLogHooks = () => {
   const [ToDateValue, setToDateValue] = useState('');
   const [selectedFromDate, setSelectedFromDate] = useState('');
   const [DateFromValue, setDateFromValue] = useState('');
-  const [selectedName, setSelectedName] = useState<any>({name: '', id: ''});
+  const [selectedName, setSelectedName] = useState<any>({ name: '', id: '' });
   const openCalendarModal = () => setCalendarVisible(true);
   const closeCalendarModal = () => setCalendarVisible(false);
   const [GenericmodalVisible, setGenericmodalVisible] = useState(false);
@@ -53,6 +53,11 @@ const AllEventLogHooks = () => {
   const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
 
   const [requestData, setRequestData] = useState({});
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const handleSearchPress = () => {
+    setIsSearchVisible(!isSearchVisible); // Toggle search bar visibility
+  };
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleOpenModal = () => {
     setIsFocused(true);
@@ -72,17 +77,15 @@ const AllEventLogHooks = () => {
     setSelectedOption(option);
   };
   useEffect(() => {
-    // console.log("useEffect first")
     store.dispatch(
       GetAllSpotEventLogs({
         baseUrl,
       }),
     );
-    store.dispatch(GetSpotName({baseUrl: baseUrl}));
+    store.dispatch(GetSpotName({ baseUrl: baseUrl }));
   }, [baseUrl]);
 
   useEffect(() => {
-    // console.log("useEffect secound")
 
     setFilteredLogs(eventLogsAll);
   }, [eventLogsAll]);
@@ -131,6 +134,7 @@ const AllEventLogHooks = () => {
   ]);
 
   const handleFilter = useMemo(() => {
+    console.log("searchQuery", searchQuery);
     return () => {
       const fromDate = DateFromValue ? new Date(DateFromValue) : null;
       const toDate = ToDateValue ? new Date(ToDateValue) : null;
@@ -148,13 +152,17 @@ const AllEventLogHooks = () => {
           : true;
         const matchesFromDate = fromDate ? logDate >= fromDate : true;
         const matchesToDate = toDate ? logDate <= toDate : true;
-
+        const matchesSearch = searchQuery
+          ? Object.values(log).some((value) =>
+            String(value).toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          : true;
         return (
           matchesSpot &&
           matchesName &&
           matchesDirection &&
           matchesFromDate &&
-          matchesToDate
+          matchesToDate && matchesSearch
         );
       });
 
@@ -167,13 +175,14 @@ const AllEventLogHooks = () => {
     selectedDirection,
     DateFromValue,
     ToDateValue,
+    searchQuery
   ]);
 
   useEffect(() => {
-    if (isFilterWork) {
-      handleFilter();
-    }
-  }, [handleFilter, isFilterWork]);
+
+    handleFilter();
+
+  }, [handleFilter, isFilterWork , searchQuery , setSearchQuery]);
 
   useEffect(() => {
     if (
@@ -296,6 +305,11 @@ const AllEventLogHooks = () => {
     setSelectedSpot,
     setFilterCount,
     filterCount,
+    setIsSearchVisible,
+    isSearchVisible,
+    setSearchQuery,
+    searchQuery,
+    handleSearchPress
   };
 };
 
