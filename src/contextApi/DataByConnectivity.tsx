@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, {createContext, useState} from 'react';
 
 // Define the context type
 interface DataByConnectivityType {
@@ -15,22 +15,23 @@ interface DataByConnectivityType {
 // Create the context with default values
 export const DataByConnectivityContext = createContext<DataByConnectivityType>({
   genericTypeConnectivity: 'all', // Default type
-  setGenericTypeConnectivity: () => { }, // Placeholder
+  setGenericTypeConnectivity: () => {}, // Placeholder
   weighBridgeTypeConnectivity: 'all', // Default type
-  setWeighBridgeTypeConnectivity: () => { }, // Placeholder
+  setWeighBridgeTypeConnectivity: () => {}, // Placeholder
   spotTypeConnectivity: 'all', // Default type
-  setSpotTypeConnectivity: () => { }, // Placeholder
+  setSpotTypeConnectivity: () => {}, // Placeholder
   rfidType: 'all',
-  setRfidType: () => { }
+  setRfidType: () => {},
 });
 
 // Create a provider component
-export const InputProvider = (props: { children: React.ReactNode }) => {
-  const { children } = props;
+export const InputProvider = (props: {children: React.ReactNode}) => {
+  const {children} = props;
 
   // States for different types
   const [genericTypeConnectivity, setGenericTypeConnectivity] = useState('all');
-  const [weighBridgeTypeConnectivity, setWeighBridgeTypeConnectivity] = useState('all');
+  const [weighBridgeTypeConnectivity, setWeighBridgeTypeConnectivity] =
+    useState('all');
   const [spotTypeConnectivity, setSpotTypeConnectivity] = useState('all');
   const [rfidType, setRfidType] = useState('all');
 
@@ -44,9 +45,8 @@ export const InputProvider = (props: { children: React.ReactNode }) => {
         spotTypeConnectivity,
         setSpotTypeConnectivity,
         rfidType,
-        setRfidType
-      }}
-    >
+        setRfidType,
+      }}>
       {children}
     </DataByConnectivityContext.Provider>
   );

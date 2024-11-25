@@ -34,7 +34,6 @@ function FilterModal(props: {
       handleFilterPress("un-used")
     }
   }
-  console.log("hello from modal ", spotTypeConnectivity)
   return (
     <Modal
       animationType="fade"

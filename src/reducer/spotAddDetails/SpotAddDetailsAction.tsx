@@ -21,7 +21,6 @@ export const GetSmartControllers = createAsyncThunk(
       }));
       return formattedOptions;
     } catch (err) {
-      // console.log(err);
     }
   },
 );
@@ -38,7 +37,6 @@ export const GetDisplays = createAsyncThunk(
       }));
       return formattedOptions;
     } catch (err) {
-      // console.log(err);
     }
   },
 );
@@ -55,7 +53,6 @@ export const GetReader = createAsyncThunk(
       }));
       return formattedOptions;
     } catch (err) {
-      // console.log(err);
     }
   },
 );
@@ -73,7 +70,6 @@ export const GetWeightBridge = createAsyncThunk(
       }));
       return formattedOptions;
     } catch (err) {
-      // console.log(err);
     }
   },
 );
@@ -92,7 +88,6 @@ export const GetWeightParsers = createAsyncThunk(
 
       return formattedOptions;
     } catch (err) {
-      // console.log("weightParsersError", err);
     }
   },
 );

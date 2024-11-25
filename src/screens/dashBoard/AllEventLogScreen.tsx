@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import { Animated, StyleSheet, View } from 'react-native';
 import EventLogsList from '../../component/EventLog/EventLogList';
 import React, { useRef, useState } from 'react';
@@ -19,9 +20,9 @@ function AllEventLogsScreen() {
      = AllEventLogHooks();
 
     if (loader) {
-        <SequentialBouncingLoader />
+        <SequentialBouncingLoader />;
     }
-  
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -32,10 +33,10 @@ function AllEventLogsScreen() {
                 :
                 <View style={{ flex: 1 }}>
                     <CustomSubHeader
-                        spotName={"EventLogs"}
+                        spotName={'EventLogs'}
                         onPress={() => setIsFocused(true)}
-                        filterIconPath={require("../../assets/icons/filterMedium.png")}
-                        searchIconPath={require("../../assets/icons/search.png")}
+                        filterIconPath={require('../../assets/icons/filterMedium.png')}
+                        searchIconPath={require('../../assets/icons/search.png')}
                         onBackPress={() => navigation.goBack()}
                         translateY={translateY}
                         filterCount={filterCount}
@@ -51,7 +52,7 @@ function AllEventLogsScreen() {
                                 <SearchBar
                                     searchQuery={searchQuery}
                                     setSearchQuery={setSearchQuery}
-                                    clearSearch={()=> setSearchQuery("")}
+                                    clearSearch={()=> setSearchQuery('')}
                                     placeholder={undefined} />
                             </Animated.View>
                         )}
@@ -63,7 +64,7 @@ function AllEventLogsScreen() {
                                         { key: 'Direction', value: selectedDirection.name },
                                         { key: 'Name', value: selectedName.name },
                                         { key: 'From Date', value: selectedFromDate },
-                                        { key: 'To Date', value: selectedToDate }
+                                        { key: 'To Date', value: selectedToDate },
                                     ]}
                                     setFilterCount={setFilterCount}
                                     filterCount={filterCount}
@@ -73,7 +74,7 @@ function AllEventLogsScreen() {
                                     setSelectedName={setSelectedName}
                                     setSelectedToDate={setSelectedToDate}
                                     setToDateValue={setToDateValue}
-                                    setDateFromValue={setDateFromValue} 
+                                    setDateFromValue={setDateFromValue}
                                     setConnectivity={undefined} />
                             </View>
 

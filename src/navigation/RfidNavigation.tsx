@@ -4,7 +4,7 @@ import RfidReader from '../screens/RFID/RFIDReaderScreen';
 import RfidAddScreen from '../screens/RFID/AddRFIDScreen';
 import {AppNavigationParams} from './NavigationStackList';
 import EditRfidScreen from '../screens/RFID/EditRfidscreen';
-import {slideFromRight} from './HomeNavigation';
+import { slideFromRight } from './NavigationTransition';
 const Stack = createStackNavigator<AppNavigationParams>();
 function RfidScreenNavigation() {
   return (

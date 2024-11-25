@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import { useCallback, useState } from 'react';
 import {
   Alert,
   Animated,
@@ -37,6 +38,7 @@ function CustomHeader(props: {
   const openDrawer = useCallback(() => {
     Navigations.dispatch(DrawerActions.toggleDrawer());
   }, [Navigations]);
+
   const handleLogout = async () => {
     Alert.alert(
       'Confirm Logout', // Alert title
@@ -132,24 +134,24 @@ const styles = StyleSheet.create({
     tintColor: colors.darkblack,
   },
   iconWrapper: {
-    position: "relative",
+    position: 'relative',
   },
   filterCountBadge: {
-    position: "absolute",
+    position: 'absolute',
     top: -5,
     right: -5,
     backgroundColor: colors.redDarkest,
     borderRadius: 10,
     height: 15,
     width: 15,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: 10,
   },
   filterCountText: {
     color: colors.white,
     fontSize: fontSizes.vSmallText,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   appName: {
     fontSize: 18,
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
   rightSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    columnGap: 15
+    columnGap: 15,
   },
   username: {
     color: colors.darkblack,

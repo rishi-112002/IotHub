@@ -34,11 +34,9 @@ export const CreateRFIDdata = createAsyncThunk(
       if (!data) {
         return rejectWithValue('Upload failed: Invalid data or server error.');
       }
-      // console.log('Upload success', data);
       return data;
     } catch (error) {
       const message = handleError(error);
-      // console.log('Create Error:', message);
       return rejectWithValue(message);
     }
   }
@@ -47,18 +45,15 @@ export const CreateRFIDdata = createAsyncThunk(
 export const EditRFIDdata = createAsyncThunk(
   'EditRFIDdata',
   async ({ rfidData, token, buCode }: any, { rejectWithValue }) => {
-    // console.log('Action :- ', rfidData);
     const fullUrl = `${BASE_URL}${EditRFIDListEndPoint}`;
     try {
       const data = await postRequest(fullUrl, rfidData, axiosConfig(token, buCode));
       if (!data) {
         return rejectWithValue('Upload failed: Invalid data or server error.');
       }
-      // console.log('Edit success', data);
       return data;
     } catch (error) {
       const message = handleError(error);
-      // console.log('Edit Error:', message);
       return rejectWithValue(message);
     }
   }
@@ -71,11 +66,9 @@ export const getRfidListAction = createAsyncThunk(
     const fullUrl = `${baseUrl}${RFIDListEndPoint}`;
     try {
       const { data } = await axios.get(fullUrl);
-      // console.log("Rfid List Data : - ",data)
       return data;
     } catch (error) {
       const message = handleError(error);
-      // console.log('Get Error:', message);
       return rejectWithValue(message);
     }
   }
@@ -90,11 +83,9 @@ export const deleteRfidListAction = createAsyncThunk(
       if (data.result === 'ERROR') {
         return rejectWithValue('Error: Invalid credentials or server error.');
       }
-      // console.log('Successfully deleted:', data);
       return data;
     } catch (error) {
       const message = handleError(error);
-      // console.log('Action Delete Error:', message);
       return rejectWithValue(message);
     }
   }

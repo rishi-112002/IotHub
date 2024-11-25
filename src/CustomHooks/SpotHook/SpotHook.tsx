@@ -1,17 +1,17 @@
-import { useEffect, useState, useCallback, useMemo, useContext } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import {useEffect, useState, useCallback, useMemo, useContext} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {
   Alert,
   Animated,
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
-import { RootState, store } from '../../reducer/Store';
-import { GetSpotData } from '../../reducer/spotData/spotDataAction';
-import { useBackHandler } from '@react-native-community/hooks';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { AppNavigationParams } from '../../navigation/NavigationStackList';
-import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import {RootState, store} from '../../reducer/Store';
+import {GetSpotData} from '../../reducer/spotData/spotDataAction';
+import {useBackHandler} from '@react-native-community/hooks';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 export const SpotListHook = () => {
@@ -20,7 +20,7 @@ export const SpotListHook = () => {
   const baseUrl = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
-  const { spotTypeConnectivity, setSpotTypeConnectivity } = useContext(
+  const {spotTypeConnectivity, setSpotTypeConnectivity} = useContext(
     DataByConnectivityContext,
   );
   const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
@@ -38,7 +38,7 @@ export const SpotListHook = () => {
   // Load RFID list
   const loadSpotList = useCallback(async () => {
     setRefreshing(true);
-    store.dispatch(GetSpotData({ baseUrl: baseUrl }));
+    store.dispatch(GetSpotData({baseUrl: baseUrl}));
     setRefreshing(false);
   }, [baseUrl]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -50,11 +50,10 @@ export const SpotListHook = () => {
 
   useEffect(() => {
     if (LError) {
-      // console.log("LoadListError UseEffect...");
-      Alert.alert('Error', LError, [{ text: 'OK' }], { cancelable: false });
+      Alert.alert('Error', LError, [{text: 'OK'}], {cancelable: false});
+      // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
     }
   }, [LError]);
-  // console.log("LoaderRefresh UseEffect...")
 
   //   // Delete RFID item
   //   const handleDelete = useCallback(
@@ -71,7 +70,6 @@ export const SpotListHook = () => {
   //                 deleteRfidListAction({id, buCode, token}),
   //               );
   //               if (deleteRfidListAction.fulfilled.match(resultAction)) {
-  //                 console.log('Delete Success :- ',deleteRfidListAction.fulfilled.match(resultAction));
   //                 Alert.alert(
   //                   'Success',
   //                   'RFID deleted successfully!',
@@ -104,18 +102,26 @@ export const SpotListHook = () => {
       : true;
     return matchesFilter && matchesSearch;
   });
-  // console.log('spotListData :- ', spotListData);
 
   // Check if no results match both filter and search query
   const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
 
   // Animated scroll logic for header and search bar visibility
   const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, 180);
+  const diffClamp = Animated.diffClamp(scrollY, 0, 110);
   const translateY = diffClamp.interpolate({
-    inputRange: [0, 130],
-    outputRange: [0, -50],
+    inputRange: [0, 110],
+    outputRange: [0, -110],
   });
+  const paddingTopAnimated = scrollY.interpolate({
+    inputRange: [0, 110],
+    outputRange: [60, 0],
+    extrapolate: 'clamp',
+  });
+  // const translateButtonY = diffClamp.interpolate({
+  //   inputRange: [0, 110],
+  //   outputRange: [0, 250],
+  // });
 
   // Clear search functionality
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,14 +152,13 @@ export const SpotListHook = () => {
     setSearchQuery('');
     setModelShow(false);
   };
-  console.log('Toggle function run');
 
   useEffect(() => {
-    if (spotTypeConnectivity !== "all") {
-      setFilterCount(1)
-      setFilterBadgeVisible(true)
+    if (spotTypeConnectivity !== 'all') {
+      setFilterCount(1);
+      setFilterBadgeVisible(true);
     }
-  }, [spotTypeConnectivity])
+  }, [spotTypeConnectivity]);
 
   const handleResetConnectivity = () => {
     navigation.goBack();
@@ -183,7 +188,8 @@ export const SpotListHook = () => {
       filterBadgeVisible,
       setFilterBadgeVisible,
       filterCount,
-      setFilterCount
+      setFilterCount,
+      paddingTopAnimated,
     }),
     [
       Loader,
@@ -206,7 +212,8 @@ export const SpotListHook = () => {
       filterBadgeVisible,
       setFilterBadgeVisible,
       filterCount,
-      setFilterCount
+      setFilterCount,
+      paddingTopAnimated,
     ],
   );
 };

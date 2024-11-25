@@ -134,7 +134,6 @@ const AllEventLogHooks = () => {
   ]);
 
   const handleFilter = useMemo(() => {
-    console.log("searchQuery", searchQuery);
     return () => {
       const fromDate = DateFromValue ? new Date(DateFromValue) : null;
       const toDate = ToDateValue ? new Date(ToDateValue) : null;

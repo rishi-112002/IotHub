@@ -148,7 +148,6 @@ function WeighBridgeScreenHooks() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const toggleFilterMenu = () => {
-    // console.log('Toggle function run');
     setModelShow(prevState => !prevState);
     setModelShow(!modelShow);
   };

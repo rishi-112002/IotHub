@@ -22,10 +22,8 @@ export const weighBridgeAdd = createAsyncThunk(
       });
 
       if (!data) {
-        // console.log('Upload failed: ', data);
         return rejectWithValue('Upload failed: Invalid data or server error.');
       }
-      // console.log('Upload success:', data);
       return data;
     } catch (err: any) {
       if (err.response) {
@@ -60,7 +58,6 @@ export const WeighBridgeSpotData = createAsyncThunk(
   ) => {
     const { baseUrl, spotType, buCode, token } = params;
     const fullUrl = `${baseUrl}${SpotDataByType}`;
-    // console.log('Full URL:', fullUrl, 'Token:', token, 'BU Code:', buCode);
     try {
       const { data } = await axios.get(fullUrl);
       const genericData = (data || []).filter(
@@ -80,7 +77,6 @@ export const WeighBridgeSpotData = createAsyncThunk(
       };
       return result;
     } catch (err: any) {
-      // console.log('Error in WeighBridgeSpotData:', err);
       return rejectWithValue('Failed to fetch weigh bridge spot data.');
     }
   },
@@ -103,10 +99,8 @@ export const DeleteWeighBridgeSpot = createAsyncThunk(
           'client-name': 'iothub',
         },
       });
-      // console.log('URL for delete:', fullUrl, 'Response:', data);
       return { data, id };
     } catch (err: any) {
-      // console.log('Error in DeleteWeighBridgeSpot:', err);
       return rejectWithValue('Failed to delete weigh bridge spot.');
     }
   },
@@ -119,8 +113,6 @@ export const WeighBridegeSpotDataEdit = createAsyncThunk('weighBridegeSpotData',
     const { data } = await axios.get(fullUrl);
     return data;
   } catch (err) {
-    // console.log("url", fullUrl)
-    // console.log(err);
   }
 })
 
@@ -144,10 +136,8 @@ export const UpdateWeighBridgeSpot = createAsyncThunk(
           if (!data) {
               return rejectWithValue('update failed: Invalid data or server error.');
           }
-          // console.log("hello form api call")
           return data;
       } catch (err: any) {
-        // console.log("hello form api call error")
 
           // Check if the error response is available
           if (err.response) {
