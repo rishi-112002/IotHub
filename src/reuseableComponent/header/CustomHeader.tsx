@@ -17,6 +17,7 @@ import { logoutUser } from '../../reducer/Login/LoginAction';
 import React from 'react';
 import CustomIcon from '../customIcons/CustomIcon';
 import fontSizes from '../../assets/fonts/FontSize';
+import { Colors2 } from '../../assets/color/Colors2';
 
 function CustomHeader(props: {
   buCode: any;
@@ -80,13 +81,13 @@ function CustomHeader(props: {
         {searchIcon && filterIcon &&
 
           <View style={styles.rightSection}>
-            <CustomIcon iconPath={searchIcon} onPress={onSearchPress} />
+            <CustomIcon iconPath={searchIcon} onPress={onSearchPress} style={{tintColor:Colors2.SecondaryTextColor}} />
             <View style={styles.iconWrapper}>
               {filterCount > 0 &&
                 <View style={styles.filterCountBadge}>
                   <Text style={styles.filterCountText}>{filterCount}</Text>
                 </View>}
-              <CustomIcon iconPath={filterIcon} onPress={onFilterPress} />
+              <CustomIcon iconPath={filterIcon} onPress={onFilterPress} style={{tintColor:Colors2.SecondaryTextColor}}/>
             </View>
           </View>
         }

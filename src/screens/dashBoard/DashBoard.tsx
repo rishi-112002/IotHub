@@ -38,6 +38,14 @@ function DashBoard() {
         handleWeighBridgeNotConnectedClick,
     } = DashBoardHook();
     const [isLoading, setIsLoading] = useState(true);
+
+
+    const sortedLogs = [...eventLogsByTime].sort(
+        (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    // Get the top N most recent logs, e.g., top 10
+    const topRecentLogs = sortedLogs.slice(0, 10);
     // Show loader for 3 seconds
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -50,8 +58,9 @@ function DashBoard() {
             <CustomHeader
                 buCode={buCode}
                 userLogo={'account-circle'}
+
                 title={'DashBoard'}
-                translateY={translateY} onSearchPress={undefined} onFilterPress={undefined} searchIcon={undefined} filterIcon={undefined}            />
+                translateY={translateY} onSearchPress={undefined} onFilterPress={undefined} searchIcon={undefined} filterIcon={undefined} filterCount={undefined} />
             {/* Card Section */}
             {!isLoading ? <View style={styles.container}>
                 <View style={{ marginBottom: 15 }}>
@@ -71,7 +80,7 @@ function DashBoard() {
                             subHeadingLeftCount={genericConnected} subHeadingRightCount={WeighBridgeConnected}
                             onPress={handleConnectedClick}
                             onPressLeft={handleGenericConnectedClick}
-                            onPressRight={handleWeighBridgeConnectedClick} backGroundColor={colors.greeenLightest} />
+                            onPressRight={handleWeighBridgeConnectedClick} backGroundColor={colors.greenSoftneer} />
                         <DashBoardSubView subHeader={'Not-Connected'} subHeaderCount={disconnectedCount} subHeadingLeft={'Generic-spot'}
                             subHeadingRight={'WeighBridge-spot'}
                             subHeadingLeftCount={genericDisConnected}
@@ -79,7 +88,7 @@ function DashBoard() {
                             onPress={handleNotConnectedClick}
                             onPressLeft={handleGenericNotConnectedClick}
                             onPressRight={handleWeighBridgeNotConnectedClick}
-                            backGroundColor={colors.redLightest} />
+                            backGroundColor={colors.redSoftner} />
                     </ScrollView>
                 </View>
                 <View style={{ flex: 0.4 }}>
@@ -96,19 +105,19 @@ function DashBoard() {
                             onPress={undefined}
                             onPressLeft={handleRfidUsedClick}
                             onPressRight={handleRfidUnUsedClick}
-                            backGroundColor={'#f0f4f7'} />
+                            backGroundColor={colors.white} />
                     </View>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <DashBoardSubHeader heading={'Event Logs'} subHeading={'Today Event :-'} count={eventLogsByTime.length}
+                    <DashBoardSubHeader heading={'Event Logs'} subHeading={'Total Event :-'} count={eventLogsByTime.length}
                         iconPath={require('../../assets/icons/eventLogs.png')}
                         onPress={() => navigation.navigate('Drawer', { screen: 'AllEventLogsScreen' })} />
                     <View style={{
                         flex: 1,
-                        marginBottom: 40,
+                        marginBottom: 60,
                     }}>
                         <EventLogsList
-                            data={eventLogsByTime}
+                            data={topRecentLogs}
                             setModal={setModalVisible}
                             setRequestData={setRequestData}
                             onScroll={undefined} />

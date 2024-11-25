@@ -14,12 +14,12 @@ function BottomTabNavigation() {
     return (
         <Tab.Navigator
             initialRouteName="DashBoard"
-            screenOptions={({ route }) => ({    
+            screenOptions={({ route }) => ({
                 headerShown: false,
                 tabBarActiveTintColor: colors.AppPrimaryColor,
                 tabBarInactiveTintColor: colors.inactiveTint,
                 tabBarStyle: {
-
+                 
                     elevation: 4,
                     shadowColor: colors.blueDarkest,
                     backgroundColor: colors.white,
@@ -32,7 +32,7 @@ function BottomTabNavigation() {
                     overflow: 'hidden', // Ensures rounded corners are visible
                 },
                 tabBarIcon: ({ focused }: any) => {
-                    console.log("route" , route)
+                    console.log("route", route)
                     let iconPath;
 
                     if (route.name === 'LiveSpots') {
@@ -58,6 +58,7 @@ function BottomTabNavigation() {
 
                 tabBarLabelStyle: {
                     fontSize: fontSizes.text,
+                  
                 },
             }} />
             <Tab.Screen name="LiveSpots" component={HomeNavigation} />

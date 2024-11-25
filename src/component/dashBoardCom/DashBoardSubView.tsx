@@ -60,7 +60,7 @@ function DashBoardSubView(props: {
                 <View style={{ flexDirection: 'row', gap: 10, paddingEnd: 30, paddingVertical: 15 }}>
 
                     <TouchableOpacity style={{
-                        backgroundColor: "#d1d8de",
+                        backgroundColor: "#f1f4f8",
                         borderRadius: 20,
                         paddingHorizontal: 15,
                         paddingVertical: 10,
@@ -94,7 +94,7 @@ function DashBoardSubView(props: {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={{
-                        backgroundColor: "#d1d8de",
+                        backgroundColor: "#f1f4f8",
                         borderRadius: 20,
                         paddingHorizontal: 10,
                         paddingVertical: 10,

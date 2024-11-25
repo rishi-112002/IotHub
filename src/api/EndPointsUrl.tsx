@@ -15,5 +15,5 @@ export const RFIDListEndPoint = '/iv1/readers/list';
 export const CreateRFIDListEndPoint = '/iv1/readers/create';
 export const EditRFIDListEndPoint = '/iv1/readers/update';
 export const EditSpot = "/iv1/spots/"
-export const EventLofsForToday = "/iv1/eventLogs/list?spot=ALL&limit=500&"
+export const EventLofsForToday = "/iv1/eventLogs/list?spot=ALL"
 export const getAllSpotEventLogsUrl = "/iv1/eventLogs/list?spot=ALL"

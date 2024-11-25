@@ -39,12 +39,14 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   const keyExtractor = useCallback((item: any) => item.id, []);
 
   const renderSpot: ListRenderItem<any> = useCallback(
-
-    ({ item }) =>
-
-      <CardItemWith_Icon
-        iconName={item.active ? 'location-on' : "location-off"}
-        view={<SpotItem item={item} baseUrl={baseUrl} />} />,
+    ({ item }) => {
+      return (
+        <CardItemWith_Icon
+          iconName={item.active ? 'location-on' : 'location-off'}
+          view={<SpotItem item={item} baseUrl={baseUrl} />}
+        />
+      );
+    },
     [baseUrl]
   );
 
@@ -61,11 +63,11 @@ const SpotList: React.FC<SpotListComponentProps> = ({
       initialNumToRender={10} // Initially render 10 items for performance
       maxToRenderPerBatch={15} // Number of items rendered per batch
       windowSize={25} // How many screens worth of content to render
-      // getItemLayout={(_data, index) => ({
-      //   length: 90,
-      //   offset: 90 * index,
-      //   index,
-      // })}
+      getItemLayout={(_data, index) => ({
+        length: 90,
+        offset: 90 * index,
+        index,
+      })}
       updateCellsBatchingPeriod={10} // Reduce lag in scrolling
       scrollEventThrottle={10}
       onScroll={onScroll}

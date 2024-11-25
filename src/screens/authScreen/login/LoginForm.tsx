@@ -55,7 +55,7 @@ function LoginForm() {
         <Text style={styles.heading}>Welcome Back</Text>
         <Text style={styles.sub_heading}>Hey There, SignIn To Continue</Text>
         <CustomTextInput
-          label="Username"
+          label="User Name"
           value={userName}
           errorMessage={errors.userName}
           editable={true}

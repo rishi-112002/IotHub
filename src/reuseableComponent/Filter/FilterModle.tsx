@@ -41,7 +41,7 @@ function FilterModal(props: {
       transparent={true}
       visible={isVisible}
       onRequestClose={() => toggleFilterMenu()}>
-      <TouchableWithoutFeedback onPress={() => toggleFilterMenu()}>
+      <TouchableWithoutFeedback onPress={toggleFilterMenu}>
         <View style={styles.overlay}>
           <TouchableWithoutFeedback>
             <View style={styles.filterMenuContainer}>

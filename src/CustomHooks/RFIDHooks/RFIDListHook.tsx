@@ -170,7 +170,7 @@ export const RfidListHook = () => {
   const toggleFilterMenu = () => {
     // console.log('Toggle function run');
     setModelShow(prevState => !prevState);
-    setModelShow(true);
+    setModelShow(!modelShow);
   };
 
   // Handle filter selection

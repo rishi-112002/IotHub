@@ -103,7 +103,7 @@ function HomeScreen() {
 
           )}
           {modelShow && (
-            <View style={{ flex: 1 }}>
+            <View>
               <FilterModal
                 type='connectivity'
                 isVisible={modelShow}
