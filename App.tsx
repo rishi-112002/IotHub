@@ -6,7 +6,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {MenuProvider} from 'react-native-popup-menu';
 import Toast from 'react-native-toast-message';
 import {InputProvider} from './src/contextApi/DataByConnectivity';
+import BottomShow from './src/MY/ShowWithDependency';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import DraggableBottomSheet from './src/MY/WithDependency';
 import ShowBottomSheet from './src/MY/ShowBottomSheet';
+// import SimpleBottomSheet from './src/MY/WithDependency';
+// import ShowBottomSheet from './src/MY/ShowBottomSheet';
 
 function App() {
   return (
@@ -20,6 +25,7 @@ function App() {
         </NavigationContainer>
       </InputProvider>
     </Provider >
+    // <ShowBottomSheet />
     // <ShowBottomSheet />
   );
 }

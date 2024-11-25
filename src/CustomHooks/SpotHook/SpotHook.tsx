@@ -116,10 +116,10 @@ export const SpotListHook = () => {
     outputRange: [60, 0],
     extrapolate: 'clamp',
   });
-  const translateButtonY = diffClamp.interpolate({
-    inputRange: [0, 110],
-    outputRange: [0, 250],
-  });
+  // const translateButtonY = diffClamp.interpolate({
+  //   inputRange: [0, 110],
+  //   outputRange: [0, 250],
+  // });
 
   // Clear search functionality
   // eslint-disable-next-line react-hooks/exhaustive-deps
