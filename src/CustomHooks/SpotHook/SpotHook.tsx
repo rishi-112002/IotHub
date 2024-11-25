@@ -95,9 +95,11 @@ export const SpotListHook = () => {
       spotTypeConnectivity === 'all' ||
       (spotTypeConnectivity === 'connected' && spot?.active) ||
       (spotTypeConnectivity === 'not-connected' && !spot?.active);
-    const matchesSearch = spot?.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
+    const matchesSearch = searchQuery
+      ? Object.values(spot).some((value) =>
+        String(value).toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      : true;
     return matchesFilter && matchesSearch;
   });
 
@@ -139,8 +141,8 @@ export const SpotListHook = () => {
   // Toggle the filter menu modal visibility
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const toggleFilterMenu = () => {
-    // setModelShow(prevState => !prevState);
-    setModelShow(true);
+    console.log('Toggle function run');
+    setModelShow(!modelShow);
   };
 
   // Handle filter selection

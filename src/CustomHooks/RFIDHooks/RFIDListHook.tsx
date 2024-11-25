@@ -174,7 +174,7 @@ export const RfidListHook = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const toggleFilterMenu = () => {
     setModelShow(prevState => !prevState);
-    setModelShow(true);
+    setModelShow(!modelShow);
   };
 
   // Handle filter selection

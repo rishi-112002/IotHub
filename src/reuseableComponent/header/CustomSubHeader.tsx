@@ -1,54 +1,26 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
 import CustomIcon from '../customIcons/CustomIcon';
+import { Colors2 } from '../../assets/color/Colors2';
 
-// <<<<<<< HEAD
-// function CustomSubHeader(props: {
-//   spotName: string;
-//   translateY: any;
-//   onPress: any;
-//   iconPath: any;
-//   onBackPress: any;
-//   filterCount: number;
-// }) {
-//   const {spotName, onPress, iconPath, onBackPress, translateY, filterCount} =
-//     props;
-// =======
-function CustomSubHeader(props: {
-  searchIconPath: any;
-  onSearchPress: any;
-  spotName: string;
-  translateY: any;
-  onPress: any;
-  filterIconPath: any;
-  onBackPress: any;
-  filterCount: number;
-}) {
-  const {
-    searchIconPath,
-    onSearchPress,
-    spotName,
-    onPress,
-    filterIconPath: iconPath,
-    onBackPress,
-    translateY,
-    filterCount,
-  } = props;
+function CustomSubHeader(props: { searchIconPath: any, onSearchPress: any, spotName: string, translateY: any, onPress: any, filterIconPath: any, onBackPress: any, filterCount: number }) {
+  const { searchIconPath, onSearchPress, spotName, onPress, filterIconPath: iconPath, onBackPress, translateY, filterCount } = props;
 
-  // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
+  console.log('filterCount in header', filterCount);
   return (
     <Animated.View
       style={{
-        transform: [{translateY: translateY}],
+        transform: [{ translateY: translateY }],
         elevation: 5,
         zIndex: 100000,
       }}>
       <View style={styles.headerContainer}>
         <View style={styles.leftSection}>
+
           <TouchableOpacity onPress={onBackPress}>
             <MaterialIcons
               name="arrow-back"
@@ -59,39 +31,25 @@ function CustomSubHeader(props: {
           </TouchableOpacity>
         </View>
         <View style={styles.rightSection}>
-          {/* <Text style={styles.spotName}>{spotName}</Text>
-<<<<<<< HEAD
-          <TouchableOpacity style={{padding: 5}} onPress={onPress}>
-            <View style={styles.iconWrapper}>
-              {filterCount > 0 && (
-                <View style={styles.filterCountBadge}>
-                  <Text style={styles.filterCountText}>{filterCount}</Text>
-                </View>
-              )}
-======= */}
-          <TouchableOpacity style={{padding: 5}} onPress={onPress}>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                columnGap: 15,
-              }}>
-              <CustomIcon iconPath={searchIconPath} onPress={onSearchPress} />
+          <Text style={styles.spotName}>{spotName}</Text>
+          <TouchableOpacity style={{ padding: 5 }} onPress={onPress}>
+            <View style={{
+              flex: 1, flexDirection: 'row', justifyContent: 'center',
+              alignItems: 'center', columnGap: 15,
+            }}>
+              <CustomIcon iconPath={searchIconPath} onPress={onSearchPress}  style={{tintColor:Colors2.SecondaryTextColor}}/>
               <View style={styles.iconWrapper}>
-                {filterCount > 0 && (
+                {filterCount > 0 &&
                   <View style={styles.filterCountBadge}>
                     <Text style={styles.filterCountText}>{filterCount}</Text>
-                  </View>
-                )}
-                {/* >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63 */}
+                  </View>}
 
-                <CustomIcon iconPath={iconPath} onPress={onPress} />
+                <CustomIcon iconPath={iconPath} onPress={onPress} style={{tintColor:Colors2.SecondaryTextColor}}/>
               </View>
             </View>
           </TouchableOpacity>
         </View>
+
       </View>
     </Animated.View>
   );

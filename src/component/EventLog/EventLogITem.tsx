@@ -41,15 +41,12 @@ const EventLogItem = memo(({ item, isSelected, onToggle }: EventLogItemProps) =>
                 flexDirection: 'column', marginLeft: 10,
               }}>
                 <Text style={styles.spotTitle}>
-                  {item.name.length > 25 ? `${item.name.substring(0, 25)}...` : item.name}
+                  {item.name}
                 </Text>
                 <Text style={styles.typeText}>{item.type}</Text>
               </View>
 
-              <CustomIcon iconPath={!isSelected ? require("../../assets/icons/downArrowLight.png") : require("../../assets/icons/upArrrowLight.png")} onPress={undefined} />
-
-
-
+              <CustomIcon iconPath={!isSelected ? require("../../assets/icons/downArrowLight.png") : require("../../assets/icons/upArrrowLight.png")} onPress={onToggle} />
             </View>
           </View>
         </View>
@@ -151,14 +148,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   spotTitle: {
-    fontSize: fontSizes.text,
+    fontSize: fontSizes.title,
     color: Colors2.SecondaryTextColor,
-    fontWeight: 'bold',
   },
   typeText: {
     fontSize: fontSizes.smallText,
-    color: Colors2.HelperTextColor,
-    fontWeight: '500',
+    color: Colors2.SecondaryTextColor,
   },
   section: {
     flexDirection: 'row',
@@ -192,7 +187,7 @@ const styles = StyleSheet.create({
   },
   detailsText: {
     fontSize: fontSizes.smallText,
-    color: colors.darkblack,
+    color: Colors2.HelperTextColor,
   },
 });
 

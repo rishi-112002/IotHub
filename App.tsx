@@ -10,21 +10,24 @@ import BottomShow from './src/MY/ShowWithDependency';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import DraggableBottomSheet from './src/MY/WithDependency';
 import ShowBottomSheet from './src/MY/ShowBottomSheet';
+import {NetworkProvider} from './src/contextApi/NetworkContex';
 // import SimpleBottomSheet from './src/MY/WithDependency';
 // import ShowBottomSheet from './src/MY/ShowBottomSheet';
 
 function App() {
   return (
     <Provider store={store}>
-      <InputProvider>
-        <NavigationContainer>
-          <MenuProvider>
-            <AppNavigation />
-            <Toast />
-          </MenuProvider>
-        </NavigationContainer>
-      </InputProvider>
-    </Provider >
+      <NetworkProvider>
+        <InputProvider>
+          <NavigationContainer>
+            <MenuProvider>
+              <AppNavigation />
+              <Toast />
+            </MenuProvider>
+          </NavigationContainer>
+        </InputProvider>
+      </NetworkProvider>
+    </Provider>
     // <ShowBottomSheet />
     // <ShowBottomSheet />
   );

@@ -156,8 +156,8 @@ function CustomDrawerContent() {
                     <DrawerItem
                         label={() => (
                             <View style={styles.itemContainer}>
-                                <MaterialIcons name="logout" size={20} color={colors.darkblack} />
-                                <Text style={styles.itemText}>LogOut</Text>
+                                <MaterialIcons name="logout" size={20} color={colors.redBase} />
+                                <Text style={[styles.itemText, { color: colors.redBase }]}>LogOut</Text>
                             </View>
                         )}
                         onPress={handleLogout}

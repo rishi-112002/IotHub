@@ -11,9 +11,11 @@ import FilterModal from '../../reuseableComponent/Filter/FilterModle'; // Import
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
+import {useNetwork} from '../../contextApi/NetworkContex';
 
 function HomeScreen() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const {isConnected} = useNetwork();
 
   const {
     Loader,
@@ -98,38 +100,47 @@ function HomeScreen() {
 
       {/* Conditionally render Search Bar */}
 
-      {Loader ? (
-        <BouncingLoader />
-      ) : (
-        <Animated.View
-          style={[styles.listWrapper, {transform: [{translateY: translateY}]}]}>
-          {noResults ? (
-            <Text style={styles.noResultsText}>
-              No results found for "{searchQuery}"
-            </Text>
-          ) : (
-            // <View style={{flex: 1}}>
-            <SpotList
-              spotData={filteredSpots}
-              loadRfidList={loadRfidList}
-              refreshing={refreshing}
-              onScroll={handleScroll}
-              contentContainerStyle={styles.listContainer}
-            />
-            // </View>
-          )}
-          {modelShow && (
-            <View style={{flex: 1}}>
-              <FilterModal
-                type="connectivity"
-                isVisible={modelShow}
-                toggleFilterMenu={toggleFilterMenu}
-                spotTypeConnectivity={spotTypeConnectivity}
-                handleFilterPress={handleFilterPress}
+      {isConnected ? (
+        Loader ? (
+          <BouncingLoader />
+        ) : (
+          <Animated.View
+            style={[
+              styles.listWrapper,
+              {transform: [{translateY: translateY}]},
+            ]}>
+            {noResults ? (
+              <Text style={styles.noResultsText}>
+                No results found for "{searchQuery}"
+              </Text>
+            ) : (
+              // <View style={{flex: 1}}>
+              <SpotList
+                spotData={filteredSpots}
+                loadRfidList={loadRfidList}
+                refreshing={refreshing}
+                onScroll={handleScroll}
+                contentContainerStyle={styles.listContainer}
               />
-            </View>
-          )}
-        </Animated.View>
+              // </View>
+            )}
+            {modelShow && (
+              <View>
+                <FilterModal
+                  type="connectivity"
+                  isVisible={modelShow}
+                  toggleFilterMenu={toggleFilterMenu}
+                  spotTypeConnectivity={spotTypeConnectivity}
+                  handleFilterPress={handleFilterPress}
+                />
+              </View>
+            )}
+          </Animated.View>
+        )
+      ) : (
+        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+          <Text>No Internet Connection</Text>
+        </View>
       )}
 
       {/* Filter Modal */}

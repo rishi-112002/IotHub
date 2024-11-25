@@ -14,8 +14,8 @@ export const GetSpotEventLogs = createAsyncThunk("getSpotEventLogs", async (para
     }
 })
 export const GetSpotEventLogsForToday = createAsyncThunk("getSpotEventLogsForToday ", async (params: { baseUrl: string|null, time: string }) => {
-    const { baseUrl, time } = params
-    const fullUrl = `${baseUrl}${EventLofsForToday}fromDateTime=${time}`;
+    const { baseUrl } = params
+    const fullUrl = `${baseUrl}${EventLofsForToday}`;
 
     try {
         const { data } = await axios.get(fullUrl);

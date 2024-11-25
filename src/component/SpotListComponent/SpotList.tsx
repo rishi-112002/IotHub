@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react';
 import { StyleSheet, FlatList, Animated, ListRenderItem, View } from 'react-native';
 import SpotItem from './SpotItem';
@@ -39,18 +40,20 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   const keyExtractor = useCallback((item: any) => item.id, []);
 
   const renderSpot: ListRenderItem<any> = useCallback(
-
-    ({ item }) =>
-
-      <CardItemWith_Icon
-        iconName={item.active ? 'location-on' : "location-off"}
-        view={<SpotItem item={item} baseUrl={baseUrl} />} />,
+    ({ item }) => {
+      return (
+        <CardItemWith_Icon
+          iconName={item.active ? 'location-on' : 'location-off'}
+          view={<SpotItem item={item} baseUrl={baseUrl} />}
+        />
+      );
+    },
     [baseUrl]
   );
 
   return (
 
-    <FlatList
+    <AnimatedFlatList
       style={{ flex: 1 }}
       data={spotData}
       renderItem={renderSpot}
@@ -58,16 +61,16 @@ const SpotList: React.FC<SpotListComponentProps> = ({
       onRefresh={loadRfidList}
       refreshing={refreshing}
       removeClippedSubviews={true} // Helps with large lists
-      initialNumToRender={10} // Initially render 10 items for performance
-      maxToRenderPerBatch={15} // Number of items rendered per batch
-      windowSize={25} // How many screens worth of content to render
-      // getItemLayout={(_data, index) => ({
-      //   length: 90,
-      //   offset: 90 * index,
-      //   index,
-      // })}
-      updateCellsBatchingPeriod={10} // Reduce lag in scrolling
-      scrollEventThrottle={10}
+      initialNumToRender={50} // Initially render 10 items for performance
+      maxToRenderPerBatch={30} // Number of items rendered per batch
+      windowSize={250} // How many screens worth of content to render
+      getItemLayout={(_data, index) => ({
+        length: 90,
+        offset: 90 * index,
+        index,
+      })}
+      updateCellsBatchingPeriod={20}
+      scrollEventThrottle={20}
       onScroll={onScroll}
       contentContainerStyle={contentContainerStyle}
     />
