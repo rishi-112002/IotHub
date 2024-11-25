@@ -23,12 +23,14 @@ const colors = {
     greenlight: '#4CD471',
     greenLighter: '#7DDE86',
     greeenLightest: '#ECFCE5',
+    greenSoftneer: "#DFF8E7",
 
     redDarkest: '#D3180C',
     redBase: '#FF5247',
     redlight: '#FF6D6D',
     redLighter: '#FF9898',
     redLightest: '#FFE5E5',
+    redSoftner: "#FDE8E8",
 
     blueDarkest: '#0065D0',
     blueBase: '#48A7F8',

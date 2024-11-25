@@ -10,7 +10,7 @@ import AppNavigationHooks from '../CustomHooks/navigationHook/AppNavigationHook'
 const Stack = createStackNavigator<AppNavigationParams>();
 
 function AppNavigation() {
-  const { loading, userName } = AppNavigationHooks();
+  const { loading } = AppNavigationHooks();
 
   // Display the splash screen while loading
   // console.log('Loading state of login', loading, userName);

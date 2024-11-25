@@ -60,10 +60,11 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
           renderItem={renderEventLog}
           keyExtractor={keyExtractor}
           onScroll={onScroll}
-          initialNumToRender={10} // Number of items rendered initially
-          maxToRenderPerBatch={30} // Number of items rendered per batch
-          windowSize={50}
-
+          initialNumToRender={10} // Initially render 10 items for performance
+          maxToRenderPerBatch={15} // Number of items rendered per batch
+          windowSize={25} // How many screens worth of content to render
+          updateCellsBatchingPeriod={10} // Reduce lag in scrolling
+          scrollEventThrottle={10}
         />
       ) : (
         <View style={styles.emptyContainer}>
