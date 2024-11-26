@@ -1,18 +1,22 @@
-import {useSelector} from 'react-redux';
-import {RootState, store} from '../../reducer/Store';
-import {Animated} from 'react-native';
-import {useContext, useEffect, useState} from 'react';
+import { useSelector } from 'react-redux';
+import { RootState, store } from '../../reducer/Store';
+import { Animated } from 'react-native';
+import { useContext, useEffect, useState } from 'react';
 import {
   GetAllSpotEventLogs,
   GetSpotEventLogsForToday,
 } from '../../reducer/eventLogs/EventLogsAction';
-import {GetSpotData} from '../../reducer/spotData/spotDataAction';
-import {getRfidListAction} from '../../reducer/RFIDList/RFIDListAction';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import { GetSpotData } from '../../reducer/spotData/spotDataAction';
+import { getRfidListAction } from '../../reducer/RFIDList/RFIDListAction';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
 function DashBoardHook() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Show loader for 3 seconds
+
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 60);
   const translateY = diffClamp.interpolate({
@@ -68,12 +72,12 @@ function DashBoardHook() {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set time to start of the day (midnight)
   const formattedDate = today.toISOString();
-  const [topRecentLogs, setTopRecentLogs] = useState();
+  const [topRecentLogs, setTopRecentLogs] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       store.dispatch(
-        GetSpotEventLogsForToday({baseUrl: baseUrl, time: formattedDate}),
+        GetSpotEventLogsForToday({ baseUrl: baseUrl, time: formattedDate }),
       );
     }, 4000); // 5000 milliseconds = 5 seconds
 
@@ -82,20 +86,28 @@ function DashBoardHook() {
   }, [baseUrl, formattedDate]);
 
   useEffect(() => {
-    store.dispatch(GetSpotData({baseUrl: baseUrl}));
-    store.dispatch(GetAllSpotEventLogs({baseUrl: baseUrl}));
-    store.dispatch(getRfidListAction({baseUrl}));
+    store.dispatch(GetSpotData({ baseUrl: baseUrl }));
+    store.dispatch(GetAllSpotEventLogs({ baseUrl: baseUrl }));
+    store.dispatch(getRfidListAction({ baseUrl }));
   }, [baseUrl]);
 
   useEffect(() => {
-    const sortedLogs = [...eventLogsByTime].sort(
-      (a: any, b: any) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    );
+    if (eventLogsByTime) {
 
-    // Get the top N most recent logs, e.g., top 10
-    const topRecentLogs1:any = sortedLogs.slice(0, 10);
-    setTopRecentLogs(topRecentLogs1);
+      const sortedLogs = [...eventLogsByTime].sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
+
+      // Get the top N most recent logs, e.g., top 10
+      const topRecentLogs1: any = sortedLogs.slice(0, 10);
+      setTopRecentLogs(topRecentLogs1);
+    }
+    else {
+      setTopRecentLogs([])
+    }
+
+
   }, [eventLogsByTime]);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -122,19 +134,19 @@ function DashBoardHook() {
 
   const handleGenericConnectedClick = () => {
     setGenericTypeConnectivity('connected');
-    navigation.navigate('Drawer', {screen: 'GenericSpotNavigation'});
+    navigation.navigate('Drawer', { screen: 'GenericSpotNavigation' });
   };
   const handleGenericNotConnectedClick = () => {
     setGenericTypeConnectivity('not-connected');
-    navigation.navigate('Drawer', {screen: 'GenericSpotNavigation'});
+    navigation.navigate('Drawer', { screen: 'GenericSpotNavigation' });
   };
   const handleWeighBridgeConnectedClick = () => {
     setWeighBridgeTypeConnectivity('connected');
-    navigation.navigate('Drawer', {screen: 'WeighBridgeNavigation'});
+    navigation.navigate('Drawer', { screen: 'WeighBridgeNavigation' });
   };
   const handleWeighBridgeNotConnectedClick = () => {
     setWeighBridgeTypeConnectivity('not-connected');
-    navigation.navigate('Drawer', {screen: 'WeighBridgeNavigation'});
+    navigation.navigate('Drawer', { screen: 'WeighBridgeNavigation' });
   };
 
   const handleRfidUsedClick = () => {
@@ -149,8 +161,16 @@ function DashBoardHook() {
     setRfidType('all');
     navigation.navigate('RfidScreenNavigation');
   };
+  useEffect(() => {
+    console.log('Dashboard');
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return {
+    isLoading,
     translateY,
     buCode,
     baseUrl,

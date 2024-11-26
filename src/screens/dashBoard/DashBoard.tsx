@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import colors from '../../assets/color/colors';
 import EventLogsList from '../../component/EventLog/EventLogList';
@@ -9,9 +9,9 @@ import DashBoardHook from '../../CustomHooks/dashBordEffect/DashBoardHooks';
 import DashBoardSubHeader from '../../component/dashBoardCom/DashBoardSubHeader';
 import DashBoardSubView from '../../component/dashBoardCom/DashBoardSubView';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import {useNetwork} from '../../contextApi/NetworkContex';
+import { useNetwork } from '../../contextApi/NetworkContex';
 function DashBoard() {
-  const {isConnected} = useNetwork();
+  const { isConnected } = useNetwork();
 
   const {
     translateY,
@@ -41,20 +41,12 @@ function DashBoard() {
     handleRfidUnUsedClick,
     handleWeighBridgeConnectedClick,
     handleWeighBridgeNotConnectedClick,
+    isLoading
   } = DashBoardHook();
-  const [isLoading, setIsLoading] = useState(true);
 
-  // Show loader for 3 seconds
-  useEffect(() => {
-    console.log('Dashboard');
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: colors.white}}>
+    <View style={{ flex: 1, backgroundColor: colors.white }}>
       <CustomHeader
         buCode={buCode}
         userLogo={'account-circle'}
@@ -71,7 +63,7 @@ function DashBoard() {
         !isLoading ? (
           <View style={styles.container}>
             {/* LiveSpot Section */}
-            <View style={{marginBottom: 15}}>
+            <View style={{ marginBottom: 15 }}>
               <DashBoardSubHeader
                 heading="LiveSpot"
                 subHeading="Total count :-"
@@ -114,7 +106,7 @@ function DashBoard() {
             </View>
 
             {/* RFID Section */}
-            <View style={{flex: 0.4}}>
+            <View style={{ flex: 0.4 }}>
               <DashBoardSubHeader
                 heading="Rf-Id"
                 subHeading="Total rfid :-"
@@ -122,7 +114,7 @@ function DashBoard() {
                 iconPath={require('../../assets/icons/rfid.png')}
                 onPress={handleRfidAllClick}
               />
-              <View style={{marginEnd: 15, flex: 1}}>
+              <View style={{ marginEnd: 15, flex: 1 }}>
                 <DashBoardSubView
                   subHeader=""
                   subHeaderCount=""
@@ -139,33 +131,36 @@ function DashBoard() {
             </View>
 
             {/* Event Logs Section */}
-            <View style={{flex: 1}}>
-            <DashBoardSubHeader
-              heading="Event Logs"
-              subHeading="Total Event :-"
-              count={eventLogsByTime.length || 0}
-              iconPath={require('../../assets/icons/eventLogs.png')}
-              onPress={() =>
-                navigation.navigate('Drawer', {screen: 'AllEventLogsScreen'})
-              }
-            />
-            <View style={{flex: 1, marginBottom: 60}}>
-              <EventLogsList
-                data={topRecentLogs}
-                setModal={setModalVisible}
-                setRequestData={setRequestData}
-                onScroll={undefined}
+            <View style={{ flex: 1 }}>
+              <DashBoardSubHeader
+                heading="Event Logs"
+                subHeading="Total Event :-"
+                count={eventLogsByTime ? eventLogsByTime.length : 0}
+                iconPath={require('../../assets/icons/eventLogs.png')}
+                onPress={() =>
+                  navigation.navigate('Drawer', { screen: 'AllEventLogsScreen' })
+                }
               />
+              <View style={{ flex: 1, marginBottom: 60 }}>
+                {topRecentLogs.length > 0 &&
+
+                  <EventLogsList
+                    data={topRecentLogs}
+                    setModal={setModalVisible}
+                    setRequestData={setRequestData}
+                    onScroll={undefined}
+                  />
+                }
+              </View>
             </View>
           </View>
-          </View>
         ) : (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <SequentialBouncingLoader />
           </View>
         )
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
           <Text>No Internet Connection</Text>
         </View>
       )}

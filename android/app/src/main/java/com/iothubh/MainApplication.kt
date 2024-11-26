@@ -1,6 +1,7 @@
 package com.iothubh
 
 import android.app.Application
+import android.window.SplashScreen
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
