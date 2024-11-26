@@ -291,54 +291,54 @@ function WeighBridgeFunction(props: { id: any }) {
       selectedGenericSpotDirB?: string;
     } = {};
     // Adding validation for each field
-    // if (!selectedEvent?.id) {
-    //   newErrors.event = 'Event is required';
-    // }
-    // if (!name) {
-    //   newErrors.name = 'Name is required';
-    // }
-    // if (!delay) {
-    //   newErrors.delay = 'Delay is required';
-    // }
-    // if (isDriverTagEnabled && !driverTagTimeOut) {
-    //   newErrors.driverTagTimeOut = 'Driver Tag Timeout is required';
-    // }
-    // if (isSecurityTagEnabled && !securityTagTimeOut) {
-    //   newErrors.sequrityDelay = 'Security Delay is required';
-    // }
+    if (!selectedEvent?.id) {
+      newErrors.event = 'Event is required';
+    }
+    if (!name) {
+      newErrors.name = 'Name is required';
+    }
+    if (!delay) {
+      newErrors.delay = 'Delay is required';
+    }
+    if (isDriverTagEnabled && !driverTagTimeOut) {
+      newErrors.driverTagTimeOut = 'Driver Tag Timeout is required';
+    }
+    if (isSecurityTagEnabled && !securityTagTimeOut) {
+      newErrors.sequrityDelay = 'Security Delay is required';
+    }
 
-    // if (!selectedSmartConnector.id) {
-    //   newErrors.selectedSmartConnector = 'Smart Connector is required';
-    // }
-    // if (!selectedWeightParser.id) {
-    //   newErrors.selectedWeightParser = 'Weight Parser is required';
-    // }
-    // if (!platformReadyTicks) {
-    //   newErrors.platformReadyTicks = 'Platform Ready Ticks is required';
-    // }
-    // if (!minVehicleWeight) {
-    //   newErrors.minVehicleWeight = 'Minimum Vehicle Weight is required';
-    // }
-    // if (!platformMaxWeight) {
-    //   newErrors.platformMaxWeight = 'Platform Max Weight is required';
-    // }
-    // if (!platformMinWeight) {
-    //   newErrors.platformMinWeight = 'Platform Min Weight is required';
-    // }
-    // if (!stableWeightTolerance) {
-    //   newErrors.stableWeightTolerance = 'Stable Weight Tolerance is required';
-    // }
-    // if (!stableWeightTicks) {
-    //   newErrors.stableWeightTicks = 'Stable Weight Ticks is required';
-    // }
-    // if (platformMinWeight >= platformMaxWeight) {
-    //   newErrors.platformMinWeight = "Platform min weight is always less than Platform Max weight"
-    // }
-    // if (
-    //   platformMaxWeight >= minVehicleWeight
-    // ) {
-    //   newErrors.minVehicleWeight = "minVehicleWeight is  always more than Platform Max weight"
-    // }
+    if (!selectedSmartConnector.id) {
+      newErrors.selectedSmartConnector = 'Smart Connector is required';
+    }
+    if (!selectedWeightParser.id) {
+      newErrors.selectedWeightParser = 'Weight Parser is required';
+    }
+    if (!platformReadyTicks) {
+      newErrors.platformReadyTicks = 'Platform Ready Ticks is required';
+    }
+    if (!minVehicleWeight) {
+      newErrors.minVehicleWeight = 'Minimum Vehicle Weight is required';
+    }
+    if (!platformMaxWeight) {
+      newErrors.platformMaxWeight = 'Platform Max Weight is required';
+    }
+    if (!platformMinWeight) {
+      newErrors.platformMinWeight = 'Platform Min Weight is required';
+    }
+    if (!stableWeightTolerance) {
+      newErrors.stableWeightTolerance = 'Stable Weight Tolerance is required';
+    }
+    if (!stableWeightTicks) {
+      newErrors.stableWeightTicks = 'Stable Weight Ticks is required';
+    }
+    if (platformMinWeight >= platformMaxWeight) {
+      newErrors.platformMinWeight = "Platform min weight is always less than Platform Max weight"
+    }
+    if (
+      platformMaxWeight >= minVehicleWeight
+    ) {
+      newErrors.minVehicleWeight = "minVehicleWeight is  always more than Platform Max weight"
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);

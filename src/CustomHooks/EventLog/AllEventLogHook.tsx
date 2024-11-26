@@ -141,30 +141,40 @@ const AllEventLogHooks = () => {
 
       const filteredData = eventLogsAll.filter((log: any) => {
         const logDate = new Date(log.createdAt);
-        // const matchesSpot = selectedSpot?.name
-        //   ? log.spot === selectedSpot.name
-        //   : true;
-        // const matchesName = selectedName?.id
-        //   ? log.name === selectedName.id
-        //   : true;
-        // const matchesDirection = selectedDirection?.name
-        //   ? log.direction === selectedDirection.name
-        //   : true;
-        // const matchesFromDate = fromDate ? logDate >= fromDate : true;
-        // const matchesToDate = toDate ? logDate <= toDate : true;
+        const matchesSpot = selectedSpot?.name
+          ? log.spot === selectedSpot.name
+          : true;
+        const matchesName = selectedName?.id
+          ? log.name === selectedName.id
+          : true;
+        const matchesDirection = selectedDirection?.name
+          ? log.direction === selectedDirection.name
+          : true;
+        const matchesFromDate = fromDate ? logDate >= fromDate : true;
+        const matchesToDate = toDate ? logDate <= toDate : true;
         const matchesSearch = searchQuery
           ? Object.values(log).some((value) =>
             String(value).toLowerCase().includes(searchQuery.toLowerCase())
           )
           : true;
         return (
-         matchesSearch
+          matchesSpot &&
+          matchesName &&
+          matchesDirection &&
+          matchesFromDate &&
+          matchesToDate && matchesSearch
         );
       });
 
       setFilteredLogs(filteredData);
     };
   }, [
+    eventLogsAll,
+    selectedSpot,
+    selectedName,
+    selectedDirection,
+    DateFromValue,
+    ToDateValue,
     searchQuery
   ]);
 

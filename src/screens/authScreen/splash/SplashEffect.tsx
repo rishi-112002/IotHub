@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AppNavigationParams } from '../../../navigation/NavigationStackList';
 import { RootState } from '../../../reducer/Store';
+import NetInfo from '@react-native-community/netinfo';
+import { Alert } from 'react-native';
+
 
 function SplashEffect() {
   const userName = useSelector(
@@ -23,6 +26,21 @@ function SplashEffect() {
   const logoOpacity = useSharedValue(0);
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
 
+
+
+  const netinfo = async () => {
+    const netInfo = await NetInfo.fetch();
+    if (!netInfo.isConnected) {
+      Alert.alert(
+        'No Internet Connection',
+        'Please check your internet connection and try again.',
+      );
+      return;
+    }
+  };
+  useEffect(() => {
+    netinfo()
+  }, [netinfo])
   useEffect(() => {
     if (isFirstLaunch) {
       setTimeout(() => {
@@ -51,18 +69,18 @@ function SplashEffect() {
         }
         setIsFirstLaunch(false);
       }, 2000);
-        return () => clearTimeout(splashTimeout);
+      return () => clearTimeout(splashTimeout);
 
-      }
-    }, [
-      baseUrls,
-      userName,
-      navigation,
-      ring1Scale,
-      ring2Scale,
-      logoOpacity,
-      isFirstLaunch,
-    ]);
+    }
+  }, [
+    baseUrls,
+    userName,
+    navigation,
+    ring1Scale,
+    ring2Scale,
+    logoOpacity,
+    isFirstLaunch,
+  ]);
 
   const ring1Style = useAnimatedStyle(() => ({
     transform: [{ scale: ring1Scale.value }],

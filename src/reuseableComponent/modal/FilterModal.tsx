@@ -5,6 +5,7 @@ import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomIcon from '../customIcons/CustomIcon';
 import CustomButton from '../customButton/CustomButton';
+import { Colors2 } from '../../assets/color/Colors2';
 
 type FilterModalProps = {
     filters: any;
@@ -20,8 +21,15 @@ type FilterModalProps = {
     direction: any;
     spot: any;
     handleFilterClick: any;
-    handleReset: any
-    setFilterCount: any
+    handleReset: any;
+    setFilterCount: any;
+    setSelectedSpot: any;
+    setSelectedDirection: any;
+    setSelectedFromDate: any;
+    setSelectedName: any;
+    setSelectedToDate: any;
+    setToDateValue: any;
+    setDateFromValue: any;
 };
 
 const FilterModal: React.FC<FilterModalProps> = ({
@@ -36,8 +44,9 @@ const FilterModal: React.FC<FilterModalProps> = ({
     setGenericmodalVisible,
     handleReset,
     direction, name, spot, handleFilterClick,
-    setFilterCount
-    
+    setFilterCount,
+    setDateFromValue, setSelectedDirection, setSelectedFromDate, setSelectedName, setSelectedSpot, setSelectedToDate, setToDateValue
+
 }) => {
     const [filteredOptions, setFilteredOptions] = useState(filters);
     let count = 0;
@@ -60,19 +69,43 @@ const FilterModal: React.FC<FilterModalProps> = ({
             setCurrentFiled(option.id);
         }
     }, [onOptionSelected, openCalendarModal, setGenericmodalVisible, setCurrentFiled]);
+    const handleClearSelection = useCallback(
+        (id: any) => {
+            if (id === 'FROM_DATE') { setSelectedFromDate(null); setDateFromValue("") };
+            if (id === 'TO_DATE') { setSelectedToDate(""); setToDateValue("") };
+            if (id === 'SPOT_NAME') { setSelectedSpot("") };
+            if (id === 'NAME') { setSelectedName("") };
+            if (id === 'DIRECTION') { setSelectedDirection("") };
+        }, []);
+
     // console.log("date i get in filter modal ", DateFromValue, ToDateValue)
 
     const renderItem = useCallback(({ item }: { item: { name: string; id: string, path: any } }) => (
         <TouchableOpacity style={styles.item} onPress={() => handleSelectFilter(item)}>
-            <Text style={styles.itemText}>
-                {item.name}
-                {item.id === 'FROM_DATE' && DateFromValue ? `: ${DateFromValue}` : ''}
-                {item.id === 'TO_DATE' && ToDateValue ? `: ${ToDateValue}` : ''}
-                {item.id === 'SPOT_NAME' && spot.name ? `: ${spot.name}` : ''}
-                {item.id === 'NAME' && name.name ? `: ${name.name}` : ''}
-                {item.id === 'DIRECTION' && direction.name ? `: ${direction.name}` : ''}
-            </Text>
-            <CustomIcon iconPath={item.path} onPress={undefined} />
+            <View style={styles.itemTextContainer}>
+                <Text style={styles.itemText}>
+                    {item.name}
+                    {item.id === 'FROM_DATE' && DateFromValue ? `: ${DateFromValue}` : ''}
+                    {item.id === 'TO_DATE' && ToDateValue ? `: ${ToDateValue}` : ''}
+                    {item.id === 'SPOT_NAME' && spot.name ? `: ${spot.name}` : ''}
+                    {item.id === 'NAME' && name.name ? `: ${name.name}` : ''}
+                    {item.id === 'DIRECTION' && direction.name ? `: ${direction.name}` : ''}
+                </Text>
+                {((item.id === 'FROM_DATE' && DateFromValue) ||
+                    (item.id === 'TO_DATE' && ToDateValue) ||
+                    (item.id === 'SPOT_NAME' && spot.name) ||
+                    (item.id === 'NAME' && name.name) ||
+                    (item.id === 'DIRECTION' && direction.name)) && (
+                        <TouchableOpacity
+                            style={styles.clearButton}
+                            onPress={() => handleClearSelection(item.id)}
+                        >
+                            <Icon name="close" size={15} color={colors.redDarkest} />
+                        </TouchableOpacity>
+                    )}
+            </View>
+
+            <CustomIcon iconPath={item.path} onPress={() => handleSelectFilter(item)} />
         </TouchableOpacity>
     ), [handleSelectFilter, DateFromValue, ToDateValue, spot.name, name.name, direction.name]);
     const calculateFilterCount = useCallback(() => {
@@ -164,13 +197,26 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between"
     },
+
+    closeButton: {
+
+    },
+    itemTextContainer: {
+        flexDirection: 'row',
+        alignItems: 'center', // Align text and button in the same row
+        justifyContent: 'space-between', // Space out the text and the close button
+    },
+    clearButton: {
+        marginLeft: 10, // Add spacing between the text and the close button
+        backgroundColor: Colors2.DividerColor, // Optional: Add a background color for the button
+        borderRadius: 15, // Optional: Make it circular
+        padding: 2, // Add padding for better touch experience
+    },
     itemText: {
         fontSize: fontSizes.text,
         color: colors.darkblack,
-        fontWeight: '400'
-    },
-    closeButton: {
-
+        fontWeight: '400',
+        flexShrink: 1, // Ensure the text doesn't overflow
     },
 });
 

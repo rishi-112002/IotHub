@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, FlatList, Animated, ListRenderItem, View } from 'react-native';
+import { StyleSheet, FlatList, Animated, ListRenderItem, View, Dimensions } from 'react-native';
 import SpotItem from './SpotItem';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../reducer/Store';
@@ -25,6 +25,7 @@ interface SpotListComponentProps {
   contentContainerStyle: any
 }
 
+const { SCREENHEIGHT } = Dimensions.get('window')
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const SpotList: React.FC<SpotListComponentProps> = ({
@@ -52,7 +53,7 @@ const SpotList: React.FC<SpotListComponentProps> = ({
 
   return (
 
-    <FlatList
+    <AnimatedFlatList
       style={{ flex: 1 }}
       data={spotData}
       renderItem={renderSpot}
@@ -60,9 +61,9 @@ const SpotList: React.FC<SpotListComponentProps> = ({
       onRefresh={loadRfidList}
       refreshing={refreshing}
       removeClippedSubviews={true} // Helps with large lists
-      initialNumToRender={10} // Initially render 10 items for performance
-      maxToRenderPerBatch={15} // Number of items rendered per batch
-      windowSize={25} // How many screens worth of content to render
+      initialNumToRender={15} // Initially render 10 items for performance
+      maxToRenderPerBatch={20} // Number of items rendered per batch
+      windowSize={SCREENHEIGHT} // How many screens worth of content to render
       getItemLayout={(_data, index) => ({
         length: 90,
         offset: 90 * index,
