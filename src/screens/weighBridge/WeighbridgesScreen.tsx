@@ -43,9 +43,7 @@ function Weighbridges() {
     toggleFilterMenu,
   } = WeighBridgeScreenHooks();
 
-  return (
-    <>
-      {isConnected ? (
+  return (   
         <View style={styles.container}>
           <CustomHeader
             buCode={undefined}
@@ -154,12 +152,6 @@ function Weighbridges() {
             </Animated.View>
           )}
         </View>
-      ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
-          <Text>No Internet Connection</Text>
-        </View>
-      )}
-    </>
   );
 }
 
