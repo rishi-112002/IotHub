@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet, Text, TouchableOpacity, ViewStyle, TextSty
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
+import { Colors2 } from '../../assets/color/Colors2';
 
 type CustomTextInputProps = {
   label?: string;
@@ -49,7 +50,7 @@ function CustomTextInput({
   const inputContainerStyle = useMemo(() => {
     return [
       styles.inputContainer,
-      { borderColor: isFocused ? colors.blueLighter : '#ccc' }
+      { borderColor: isFocused ? colors.AppPrimaryColor : '#ccc' }
     ];
   }, [isFocused]);
 
@@ -62,13 +63,14 @@ function CustomTextInput({
         </Text>
       )}
       <TouchableOpacity
-        style={inputContainerStyle}
+
+        style={[{ flexDirection: "row", marginTop: 5 }, inputContainerStyle]}
         onPress={type === 'dropdown' && editable ? onPress : undefined} // Use onPress for dropdown only
         disabled={type === 'input' || editable} // Disable only if it's input or editable
         activeOpacity={type === 'dropdown' ? 0.7 : 1}
       >
         <TextInput
-          style={[styles.input, inputStyle]}
+          style={{ fontSize: 20 }}
           onFocus={editable ? handleFocus : undefined}
           onBlur={editable ? handleBlur : undefined}
           onChangeText={(text) => setTextInput(text)}
@@ -91,7 +93,7 @@ function CustomTextInput({
           <Icon
             name="arrow-drop-down"
             size={30}
-            color={colors.blueDarkest}
+            color={Colors2.SecondaryTextColor}
             style={styles.icon}
             onPress={onPress}
           />
@@ -105,19 +107,20 @@ function CustomTextInput({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 12,
-    width: '100%',
+    marginVertical: 10,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: '#ccc',
     borderRadius: 10,
+    // justifyContent: "center"
   },
   input: {
-    flex: 1,
-    fontSize: fontSizes.vSmallText,
-    color: '#262626',
+    fontSize: fontSizes.smallText,
+    color: 'red',
+    flexGrow: 1,
+    alignItems: 'baseline'
   },
   icon: {
     marginLeft: 8,
@@ -128,30 +131,31 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   underlineFocused: {
+    marginTop: -5,
     height: 2,
-    backgroundColor: colors.blueLighter,
+    backgroundColor: colors.AppPrimaryColor,
   },
   underlineBlurred: {
+    marginTop: -8,
     height: 2,
     backgroundColor: '#ccc',
   },
   label: {
     position: 'absolute',
-    top: 12,
-    fontSize: fontSizes.subheading,
+    fontSize: fontSizes.text,
     color: '#8292B4',
     backgroundColor: '#fff',
-    paddingHorizontal: 5,
+    paddingHorizontal: 3,
   },
   labelFocused: {
     top: -8,
-    fontSize: 12,
+    fontSize: fontSizes.text,
     color: colors.AppPrimaryColor,
     fontWeight: '500',
   },
   labelBlurred: {
     top: 12,
-    fontSize: 16,
+    fontSize: fontSizes.text,
     color: '#8292B4',
   },
 });

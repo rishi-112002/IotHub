@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react';
 import { StyleSheet, FlatList, Animated, ListRenderItem, View, Dimensions } from 'react-native';
 import SpotItem from './SpotItem';
@@ -25,7 +26,6 @@ interface SpotListComponentProps {
   contentContainerStyle: any
 }
 
-const { SCREENHEIGHT } = Dimensions.get('window')
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const SpotList: React.FC<SpotListComponentProps> = ({
@@ -45,6 +45,7 @@ const SpotList: React.FC<SpotListComponentProps> = ({
         <CardItemWith_Icon
           iconName={item.active ? 'location-on' : 'location-off'}
           view={<SpotItem item={item} baseUrl={baseUrl} />}
+          key={item.id}
         />
       );
     },
@@ -54,23 +55,12 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   return (
 
     <AnimatedFlatList
-      style={{ flex: 1 }}
+      style={{ flex: 1, paddingHorizontal: 15 }}
       data={spotData}
       renderItem={renderSpot}
       keyExtractor={keyExtractor}
       onRefresh={loadRfidList}
       refreshing={refreshing}
-      removeClippedSubviews={true} // Helps with large lists
-      initialNumToRender={15} // Initially render 10 items for performance
-      maxToRenderPerBatch={20} // Number of items rendered per batch
-      windowSize={SCREENHEIGHT} // How many screens worth of content to render
-      getItemLayout={(_data, index) => ({
-        length: 90,
-        offset: 90 * index,
-        index,
-      })}
-      updateCellsBatchingPeriod={10} // Reduce lag in scrolling
-      scrollEventThrottle={10}
       onScroll={onScroll}
       contentContainerStyle={contentContainerStyle}
     />

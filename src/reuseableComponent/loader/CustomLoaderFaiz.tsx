@@ -6,15 +6,6 @@ import colors from '../../assets/color/colors';
 // import {NavigationProp, useNavigation} from '@react-navigation/native';
 
 const LoadingModal = ({visible, message}) => {
-  // const error = useSelector((state: RootState) => state.rfidList.error);
-  // console.log('Loader Modle error :- ', error);
-  // const navigation = useNavigation<NavigationProp<any>>();
-
-  // const handleNavigate = () => {
-  //   if (error == null) {
-  //     console.log('Loader Modle error :- ', error);
-  //   }
-  // };
 
   return (
     <Modal

@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 import { Animated, StyleSheet, View } from 'react-native';
 import EventLogsList from '../../component/EventLog/EventLogList';
-import React, { useRef, useState } from 'react';
+import React, {  } from 'react';
 import AllEventLogHooks from '../../CustomHooks/EventLog/AllEventLogHook';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
@@ -19,7 +20,7 @@ function AllEventLogsScreen() {
         = AllEventLogHooks();
 
     if (loader) {
-        <SequentialBouncingLoader />
+        <SequentialBouncingLoader />;
     }
 
 
@@ -32,10 +33,10 @@ function AllEventLogsScreen() {
                 :
                 <View style={{ flex: 1 }}>
                     <CustomSubHeader
-                        spotName={"EventLogs"}
+                        spotName={'EventLogs'}
                         onPress={() => setIsFocused(true)}
-                        filterIconPath={require("../../assets/icons/filterMedium.png")}
-                        searchIconPath={require("../../assets/icons/search.png")}
+                        filterIconPath={require('../../assets/icons/filterMedium.png')}
+                        searchIconPath={require('../../assets/icons/search.png')}
                         onBackPress={() => navigation.goBack()}
                         translateY={translateY}
                         filterCount={filterCount}
@@ -52,6 +53,7 @@ function AllEventLogsScreen() {
                                     searchQuery={searchQuery}
                                     setSearchQuery={setSearchQuery}
                                     clearSearch={() => setSearchQuery("")}
+
                                     placeholder={undefined} />
                             </Animated.View>
                         )}
@@ -59,12 +61,13 @@ function AllEventLogsScreen() {
                             filterBadgeVisible &&
                             <View style={{ flex: 0.05 }}>
                                 <ScrollableBadges badges={[
-                                    { key: 'Spot', value: selectedSpot.name },
-                                    { key: 'Direction', value: selectedDirection.name },
-                                    { key: 'Name', value: selectedName.name },
-                                    { key: 'From Date', value: selectedFromDate },
-                                    { key: 'To Date', value: selectedToDate }
-                                ]}
+
+                                        { key: 'Spot', value: selectedSpot.name },
+                                        { key: 'Direction', value: selectedDirection.name },
+                                        { key: 'Name', value: selectedName.name },
+                                        { key: 'From Date', value: selectedFromDate },
+                                        { key: 'To Date', value: selectedToDate },
+                                    ]}
                                     setFilterCount={setFilterCount}
                                     filterCount={filterCount}
                                     setSelectedSpot={setSelectedSpot}
@@ -83,10 +86,9 @@ function AllEventLogsScreen() {
                                 data={filteredLogs}
                                 setModal={setModalVisible}
                                 setRequestData={setRequestData}
-                                onScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
+                                onScroll={(e: { nativeEvent: { contentOffset: { y: number; }; }; }) => {
                                     scrollY.setValue(e.nativeEvent.contentOffset.y);
-                                }}
-                            />
+                                } } scrollEnabled={true}                            />
                         </View>
                     </Animated.View>
 

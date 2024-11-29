@@ -17,7 +17,6 @@ function DetailsTypeModal(props: {
 }) {
   const {modalVisible, setModalVisible, baseUrls, spotName, modalPosition} =
     props;
-  // console.log("hello", modalPosition)
   // const navigation = useNavigation()
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible}>

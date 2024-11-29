@@ -34,7 +34,6 @@ function FilterModal(props: {
       handleFilterPress("un-used")
     }
   }
-  console.log("hello from modal ", spotTypeConnectivity)
   return (
     <Modal
       animationType="fade"
@@ -63,7 +62,7 @@ function FilterModal(props: {
                 ]}
                 onPress={handleNotConnectedPress}>
                 <MaterialIcons name="link-off" size={24} color="black" />
-                <Text style={styles.filterText}>{type === "connectivity" ? "Not-Connected" : "Un-Used"}</Text>
+                <Text style={styles.filterText}>{type === "connectivity" ? "Not Connected" : "Un-Used"}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity

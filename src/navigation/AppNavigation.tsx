@@ -13,7 +13,6 @@ function AppNavigation() {
   const { loading } = AppNavigationHooks();
 
   // Display the splash screen while loading
-  // console.log('Loading state of login', loading, userName);
   if (loading) {
     return <SplashScreen />;
   }

@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import React, { useCallback } from 'react';
+import { Colors2 } from '../../assets/color/Colors2';
 function GenericAddComponentDropDowns(props: {
   smartController: any;
   display: any;
@@ -103,6 +104,7 @@ function GenericAddComponentDropDowns(props: {
 const style = StyleSheet.create({
   input: {
     flex: 1,
+    color: Colors2.PrimaryTextColor
   },
 });
 export default GenericAddComponentDropDowns;

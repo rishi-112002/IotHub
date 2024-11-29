@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useCallback, useMemo } from 'react';
 import { View, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -29,26 +31,32 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
     <Animated.View style={styles.spotContainer}>
       <TouchableOpacity
         onPress={() => OnHandlePress(item)}>
-        
+
         <View>
-          <View style={{ flexDirection: "row", justifyContent: 'space-between', flex: 1 }}>
-            <View style={{ flex: 0.9 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+            <View style={{ flex: 1, gap: 5 }}>
               <Text style={styles.spotTitle}>
                 {item.name}
               </Text>
-              <Text
-                style={[
-                  styles.statusText,
-                  {
-                    marginTop: 5,
-                    color: item.active ? '#15803D' : '#B91C1C',
-                    width: item.active ? "28%" : "35%",
-                    backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
-                    paddingStart: 10, borderRadius: 20
-                  },
-                ]}>
-                {item.active ? 'Connected' : 'Not-Connected'}
-              </Text>
+              <View style={{
+                backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
+                borderRadius: 20,
+                width: item.active ? "24%" : "31%",
+                paddingStart:5
+              
+              }}>
+                <Text
+                  style={[
+                    styles.statusText,
+                    {
+                      color: item.active ? '#15803D' : '#B91C1C',
+                      // backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
+
+                    },
+                  ]}>
+                  {item.active ? 'Connected' : 'Not Connected'}
+                </Text>
+              </View>
             </View>
             <View style={{ marginTop: 10 }}>
               <CustomMenu baseUrl={baseUrl} spotName={item.name} />
@@ -60,17 +68,17 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
           <View>
             <Text style={styles.label}>Expiry date:</Text>
             <Text style={styles.statusText}>
-              {item.expiryDate ? item.expiryDate : "null"}
+              {item.expiryDate ? item.expiryDate : 'N/A'}
             </Text>
           </View>
           <View
             style={[
-              styles.delayedContainer
+              styles.delayedContainer,
             ]}>
             <Text style={styles.label}>Delay:</Text>
             <Text
               style={[
-                styles.statusText
+                styles.statusText,
               ]}>
               {item.delayed ? 'Delayed' : 'On Time'}
             </Text>
@@ -82,7 +90,7 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
             <Text style={styles.label}>Current State:</Text>
             <Text
               style={[
-                styles.statusText
+                styles.statusText,
               ]}>
               {item.currentState || 'No State Info'}
             </Text>

@@ -37,6 +37,9 @@ const authSlice = createSlice({
     setBaseUrl: (state, action) => {
       state.baseUrl = action.payload;
     },
+    resetStatus: (state) => {
+      state.status = "idle"
+    }
   },
   extraReducers: builder => {
     builder
@@ -72,7 +75,6 @@ const authSlice = createSlice({
         state.buCode = action.payload.buCode;
       })
       .addCase(CheckUserlogin.rejected, (state, action) => {
-        // console.log('CheckUserloginRejected', action.error);
         state.loading = false;
         state.isLogIn = false;
       })
@@ -95,5 +97,5 @@ const authSlice = createSlice({
       });
   },
 });
-export const { setBaseUrl } = authSlice.actions;
+export const { setBaseUrl , resetStatus } = authSlice.actions;
 export { authSlice };

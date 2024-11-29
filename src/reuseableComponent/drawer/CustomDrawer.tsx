@@ -81,7 +81,7 @@ function CustomDrawerContent() {
                         label={() => (
                             <View style={styles.itemContainer}>
                                 <MaterialIcons name="gps-fixed" size={20} color={colors.darkblack} />
-                                <Text style={styles.itemText}>DashBoard</Text>
+                                <Text style={styles.itemText}>Dashboard</Text>
                             </View>
                         )}
                         onPress={() => navigation.navigate("Drawer", { screen: "bottomTabNavigation" })}
@@ -109,14 +109,14 @@ function CustomDrawerContent() {
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="scale" size={18} color={colors.gray} />
-                                <Text style={styles.subMenuText}>Weighbridges</Text>
+                                <Text style={styles.subMenuText}>Weighbridge</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate("Drawer", { screen: 'GenericSpotNavigation' })}
                                 style={styles.subMenuItem}
                             >
                                 <MaterialIcons name="location-on" size={18} color={colors.gray} />
-                                <Text style={styles.subMenuText}>GenericSpots</Text>
+                                <Text style={styles.subMenuText}>Generic</Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -133,18 +133,9 @@ function CustomDrawerContent() {
                     />
 
                     {/* Settings */}
-                    <DrawerItem
-                        label={() => (
-                            <View style={styles.itemContainer}>
-                                <MaterialIcons name="settings" size={20} color={colors.darkblack} />
-                                <Text style={styles.itemText}>Settings</Text>
-                            </View>
-                        )}
-                        onPress={() => console.log('Settings')}
-                    />
-
+               
                     {/* About */}
-                    <DrawerItem
+                    {/* <DrawerItem
                         label={() => (
                             <View style={styles.itemContainer}>
                                 <MaterialIcons name="info" size={20} color={colors.darkblack} />
@@ -152,7 +143,7 @@ function CustomDrawerContent() {
                             </View>
                         )}
                         onPress={() => console.log('About')}
-                    />
+                    /> */}
                     <DrawerItem
                         label={() => (
                             <View style={styles.itemContainer}>

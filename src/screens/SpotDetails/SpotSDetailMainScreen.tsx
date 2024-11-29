@@ -13,26 +13,13 @@ import colors from '../../assets/color/colors';
 import DataTab from '../../reuseableComponent/card/DetailsCard';
 import { Colors2 } from '../../assets/color/Colors2';
 import { RfidListHook } from '../../CustomHooks/RFIDHooks/RFIDListHook';
+import { useNetwork } from '../../contextApi/NetworkContex';
 // import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 
 const Tab = createMaterialTopTabNavigator();
 
 const SpotDetailScreen = () => {
-  // const {
-  //   // ListData,
-  //   // Loader,
-  //   // loadRfidList,
-  //   handleDelete,
-  //   // refreshing,
-  //   // buCode,
-  //   // alertVisible,
-  //   // setAlertVisible,
-  //   // confirmDelete,
-  //   // successAlertVisible,
-  //   // errorAlertVisible,
-  //   // errorMessage,
-  // } = RfidListHook();
-  // console.log('Spot Detail Screen :- ', handleDelete);
+  const { isConnected } = useNetwork();
   const route = useRoute<RouteProp<{ params: { data: any } }, 'params'>>();
   const item = route.params?.data;
   const baseUrls = useSelector(
@@ -46,66 +33,65 @@ const SpotDetailScreen = () => {
       headerRight: () => <CustomMenu baseUrl={baseUrls} spotName={item.name} />,
     });
   }, [baseUrls, item.name, navigation]);
+  
 
   return (
-    <View style={styles.container}>
-      <SpotInfo item={item} />
+    <View style={{ flex: 1 }}>
 
-      <View style={styles.divider} />
+      {isConnected ? (
+        <View style={styles.container}>
+          <SpotInfo item={item} />
 
-      {/* Tab Navigator */}
-      {item.displays && item.spotCommands && item.readers &&
+          <View style={styles.divider} />
 
-        <Tab.Navigator>
-          <Tab.Screen name="Displays">
-            {() => (
-              <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
-                <DataTab
-                  data={item.displays}
-                  dataType="displays"
-                  noDataMessage="No Displays Available"
-                />
-              </ScrollView>
-            )}
-          </Tab.Screen>
-          <Tab.Screen name="Readers">
-            {() => (
-              <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
-                <DataTab
-                  data={item.readers}
-                  dataType="readers"
-                  allow={false}
-                  // handleDelete={handleDelete}
-                  noDataMessage="No Spot Commands Available"
-                />
-              </ScrollView>
-            )}
-          </Tab.Screen>
-          <Tab.Screen name="Spot Commands">
-            {() => (
-              <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
-                <DataTab
-                  data={item.spotCommands}
-                  dataType="spotCommands"
-                  noDataMessage="No Spot Commands Available"
-                />
-              </ScrollView>
-            )}
-          </Tab.Screen>
-        </Tab.Navigator>
-
-      }
-      {/* {alertVisible && (
-        <CustomAlert
-          isVisible={alertVisible}
-          onClose={() => setAlertVisible(false)}
-          onOkPress={confirmDelete}
-          title="Delete RFID"
-          message="Are you sure you want to delete this RFID?"
-          showCancel={true}
-        />
-      )} */}
+          {/* Tab Navigator */}
+          {item.displays && item.spotCommands && item.readers && (
+            <Tab.Navigator>
+              <Tab.Screen name="Displays">
+                {() => (
+                  <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
+                    <DataTab
+                      data={item.displays}
+                      dataType="displays"
+                      noDataMessage="No Displays Available"
+                    />
+                  </ScrollView>
+                )}
+              </Tab.Screen>
+              <Tab.Screen name="Readers">
+                {() => (
+                  <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
+                    <DataTab
+                      data={item.readers}
+                      dataType="readers"
+                      allow={false}
+                      // handleDelete={handleDelete}
+                      noDataMessage="No Spot Commands Available"
+                    />
+                  </ScrollView>
+                )}
+              </Tab.Screen>
+              <Tab.Screen name="Spot Commands">
+                {() => (
+                  <ScrollView style={{ flex: 1, backgroundColor: colors.white }}>
+                    <DataTab
+                      data={item.spotCommands}
+                      dataType="spotCommands"
+                      noDataMessage="No Spot Commands Available"
+                    />
+                  </ScrollView>
+                )}
+              </Tab.Screen>
+            </Tab.Navigator>
+          )}
+        </View>
+      ) : (
+        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
+          <Text>No Internet Connection</Text>
+        </View>
+      )}
     </View>
+
   );
 };
 

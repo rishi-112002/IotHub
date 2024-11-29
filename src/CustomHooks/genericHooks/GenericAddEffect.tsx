@@ -32,7 +32,9 @@ export const useGenericAddEffect = (id: any) => {
     (state: RootState) => state.uploadGeneric.deleteStatus,
   );
   const status = useSelector((state: RootState) => state.uploadGeneric.status);
-  const updateStatus = useSelector((state: RootState) => state.uploadGeneric.updateStatus);
+  const updateStatus = useSelector(
+    (state: RootState) => state.uploadGeneric.updateStatus,
+  );
 
   const baseUrls = useSelector(
     (state: RootState) => state.authentication.baseUrl,
@@ -63,7 +65,7 @@ export const useGenericAddEffect = (id: any) => {
     if (id) {
       store.dispatch(GenericSpotData({ id, baseUrl: baseUrls, buCode, token }));
     }
-  }, [])
+  }, [baseUrls, buCode, id, token]);
   useEffect(() => {
     ApiCallsAddGenericSpot({ baseUrl: baseUrls });
   }, [dispatch, baseUrls]);
@@ -129,11 +131,14 @@ export const useGenericAddEffect = (id: any) => {
     navigation.setOptions({
       headerTitle: () => (
         <View>
-          <Text style={styles.headerTitle}> {id ? "Edit Generic Screen" : "Add Generic Screen"}</Text>
+          <Text style={styles.headerTitle}>
+            {' '}
+            {id ? 'Update Generic Details' : 'Add Generic Details'}
+          </Text>
         </View>
       ),
     });
-  }, [navigation]);
+  }, [id, navigation]);
 
   return {
     loader,
@@ -154,7 +159,7 @@ export const useGenericAddEffect = (id: any) => {
     setLoader,
     dispatch,
     editButtonOpacity,
-    setEditButtonOpacity
+    setEditButtonOpacity,
   };
 };
 const styles = StyleSheet.create({

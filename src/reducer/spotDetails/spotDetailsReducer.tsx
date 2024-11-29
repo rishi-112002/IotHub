@@ -24,11 +24,9 @@ export const spotDetailsSlice = createSlice({
         })
         builder.addCase(GetSpotDetails.rejected, (state) => {
             state.spotDetails = []
-            // console.log("error")
             state.loader = false
         })
         builder.addCase(GetSpotDetails.pending, (state) => {
-            // console.log("pending of GetSpotDetails")
             state.loader = true
         })
     }

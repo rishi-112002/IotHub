@@ -1,5 +1,7 @@
-import React, {useCallback, memo} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Animated} from 'react-native';
+import React, { useCallback, memo } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import fontSizes from '../../assets/fonts/FontSize';
+import { Colors2 } from '../../assets/color/Colors2';
 
 type CustomSwitchProps = {
   value: boolean; // State to determine if the switch is active
@@ -8,7 +10,7 @@ type CustomSwitchProps = {
 };
 
 const SwitchWithLabel: React.FC<CustomSwitchProps> = memo(
-  ({value, label: label, onChangeValue}) => {
+  ({ value, label: label, onChangeValue }) => {
     // Memoize the toggle handler to avoid re-creating it on each render
     const handleToggle = useCallback(() => {
       onChangeValue(!value);
@@ -40,9 +42,8 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   label: {
-    fontSize: 16,
-    color: '#333', // Text color
-    fontWeight: '500',
+    fontSize: fontSizes.subheading,
+    color: Colors2.PrimaryTextColor, // Text color
   },
   switchContainer: {
     width: 50,
@@ -64,11 +65,11 @@ const styles = StyleSheet.create({
   },
   switchInactive: {
     backgroundColor: '#979EC2',
-    transform: [{translateX: 0}],
+    transform: [{ translateX: 0 }],
   },
   switchActive: {
     backgroundColor: '#fff',
-    transform: [{translateX: 24}], // Move to the right when active
+    transform: [{ translateX: 24 }], // Move to the right when active
   },
 });
 

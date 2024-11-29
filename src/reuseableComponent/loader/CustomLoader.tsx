@@ -1,5 +1,6 @@
 import { View, ActivityIndicator, StyleSheet } from "react-native"
 import colors from "../../assets/color/colors"
+import React from "react"
 
 function CustomLoader() {
     return (

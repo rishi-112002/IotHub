@@ -12,7 +12,7 @@ function SearchBar(props: {
   placeholder: any,
 }) {
   const { clearSearch, placeholder = "search...", searchQuery, setSearchQuery } = props
-  console.log("searchQuery value in search Bar" , searchQuery)
+
 
   return (
     <View style={styles.searchWrapper}>

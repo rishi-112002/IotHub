@@ -1,15 +1,16 @@
-import React from "react";
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import fontSizes from "../../assets/fonts/FontSize";
-import colors from "../../assets/color/colors";
-import CustomIcon from "../customIcons/CustomIcon";
-import { Colors2 } from "../../assets/color/Colors2";
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import fontSizes from '../../assets/fonts/FontSize';
+import colors from '../../assets/color/colors';
+import CustomIcon from '../customIcons/CustomIcon';
+import { Colors2 } from '../../assets/color/Colors2';
 
 function CustomSubHeader(props: { searchIconPath: any, onSearchPress: any, spotName: string, translateY: any, onPress: any, filterIconPath: any, onBackPress: any, filterCount: number }) {
   const { searchIconPath, onSearchPress, spotName, onPress, filterIconPath: iconPath, onBackPress, translateY, filterCount } = props;
 
-  console.log("filterCount in header", filterCount)
+  console.log('filterCount in header', filterCount);
   return (
     <Animated.View
       style={{
@@ -33,8 +34,8 @@ function CustomSubHeader(props: { searchIconPath: any, onSearchPress: any, spotN
           <Text style={styles.spotName}>{spotName}</Text>
           <TouchableOpacity style={{ padding: 5 }} onPress={onPress}>
             <View style={{
-              flex: 1, flexDirection: "row", justifyContent: "center",
-              alignItems: 'center', columnGap: 15
+              flex: 1, flexDirection: 'row', justifyContent: 'center',
+              alignItems: 'center', columnGap: 15,
             }}>
               <CustomIcon iconPath={searchIconPath} onPress={onSearchPress}  style={{tintColor:Colors2.SecondaryTextColor}}/>
               <View style={styles.iconWrapper}>
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   iconWrapper: {
-    position: "relative",
+    position: 'relative',
   },
   leftSection: {
     flexDirection: 'row',
@@ -81,28 +82,28 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   spotName: {
     color: colors.darkblack,
     fontSize: fontSizes.heading,
   },
   filterCountBadge: {
-    position: "absolute",
+    position: 'absolute',
     top: -5,
     right: -5,
     backgroundColor: colors.redDarkest,
     borderRadius: 10,
     height: 15,
     width: 15,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: 10,
   },
   filterCountText: {
     color: colors.white,
     fontSize: fontSizes.vSmallText,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
 

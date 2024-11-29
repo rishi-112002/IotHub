@@ -35,7 +35,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
   );
 
   // Optimized keyExtractor
-  const keyExtractor = useCallback((item: { id: string }) => item.id, []);
+  const keyExtractor = useCallback((item: { id:string}) => item.id, []);
 
   return (
     <View style={{ flex: 1 }}>

@@ -10,7 +10,6 @@ function GenericAddScreen() {
 
   const route = useRoute<RouteProp<{ params: genericAdd }, 'params'>>();
   const id = route.params?.id || '';
-  console.log("id", id)
   return (
     <View style={{ flex: 1 }}>
       <GenericAddForm id={id} />

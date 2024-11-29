@@ -93,6 +93,7 @@ const AllEventLogHooks = () => {
   const [currentField, setCurrentField] = useState<string | null>(null);
 
   const handleFilterClick = useMemo(() => {
+    console.log("hello from filter click ")
     return () => {
       const fromDate = DateFromValue ? new Date(DateFromValue) : null;
       const toDate = ToDateValue ? new Date(ToDateValue) : null;
@@ -119,7 +120,7 @@ const AllEventLogHooks = () => {
           matchesToDate
         );
       });
-
+      console.log("filteredData ", filteredData)
       setFilteredLogs(filteredData);
       setIsFocused(false);
       SetIsFilterWork(true);
@@ -134,35 +135,15 @@ const AllEventLogHooks = () => {
   ]);
 
   const handleFilter = useMemo(() => {
-    console.log("searchQuery", searchQuery);
     return () => {
-      const fromDate = DateFromValue ? new Date(DateFromValue) : null;
-      const toDate = ToDateValue ? new Date(ToDateValue) : null;
-
       const filteredData = eventLogsAll.filter((log: any) => {
-        const logDate = new Date(log.createdAt);
-        const matchesSpot = selectedSpot?.name
-          ? log.spot === selectedSpot.name
-          : true;
-        const matchesName = selectedName?.id
-          ? log.name === selectedName.id
-          : true;
-        const matchesDirection = selectedDirection?.name
-          ? log.direction === selectedDirection.name
-          : true;
-        const matchesFromDate = fromDate ? logDate >= fromDate : true;
-        const matchesToDate = toDate ? logDate <= toDate : true;
         const matchesSearch = searchQuery
           ? Object.values(log).some((value) =>
             String(value).toLowerCase().includes(searchQuery.toLowerCase())
           )
           : true;
         return (
-          matchesSpot &&
-          matchesName &&
-          matchesDirection &&
-          matchesFromDate &&
-          matchesToDate && matchesSearch
+          matchesSearch
         );
       });
 
@@ -182,7 +163,7 @@ const AllEventLogHooks = () => {
 
     handleFilter();
 
-  }, [handleFilter, isFilterWork , searchQuery , setSearchQuery]);
+  }, [handleFilter, isFilterWork, searchQuery, setSearchQuery]);
 
   useEffect(() => {
     if (

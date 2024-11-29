@@ -111,7 +111,7 @@ function WeighBridgeEffectHooks(props: { id: any }) {
     navigation.setOptions({
       headerTitle: () => (
         <View>
-          <Text style={styles.headerTitle}> {id ? "Edit Weighbridge" : "Add Weighbridge"}</Text>
+          <Text style={styles.headerTitle}> {id ? "Update Weighbridge Details" : "Add Weighbridge Details"}</Text>
         </View>
       ),
     });
@@ -122,7 +122,6 @@ function WeighBridgeEffectHooks(props: { id: any }) {
       dispatch(resetStatus());
       handleLogout();
     } else if (status === 'failed' && uploadError) {
-      // console.log('Error for log out user', uploadError);
       // CustomToast('error', uploadError);
       dispatch(resetStatus());
     } else if (status === 'succeeded') {

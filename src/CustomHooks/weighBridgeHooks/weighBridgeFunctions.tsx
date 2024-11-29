@@ -1,5 +1,4 @@
-import { Alert } from 'react-native';
-import { RootState, store } from '../../reducer/Store';
+import { store } from '../../reducer/Store';
 import { UpdateWeighBridgeSpot, weighBridgeAdd } from '../../reducer/weighBridge/WeighBridgeAction';
 import WeighBridgeEffectHooks from './WeighBridgeEffectHooks';
 import { useEffect, useState } from 'react';
@@ -191,7 +190,6 @@ function WeighBridgeFunction(props: { id: any }) {
       setModalVisible(!modalVisible);
       setCurrentField(field);
     } else {
-      // console.log('filed', field);
       openCalendarModal();
     }
     if (currentField?.includes('display')) {
@@ -250,7 +248,6 @@ function WeighBridgeFunction(props: { id: any }) {
   };
 
   const handleUploadData = () => {
-    // console.log('firstScreenData to pass');
 
     const newErrors: {
       name?: string;
@@ -290,55 +287,55 @@ function WeighBridgeFunction(props: { id: any }) {
       selectedPrimaryReaderB?: string;
       selectedGenericSpotDirB?: string;
     } = {};
-    // Adding validation for each field
-    if (!selectedEvent?.id) {
-      newErrors.event = 'Event is required';
-    }
-    if (!name) {
-      newErrors.name = 'Name is required';
-    }
-    if (!delay) {
-      newErrors.delay = 'Delay is required';
-    }
-    if (isDriverTagEnabled && !driverTagTimeOut) {
-      newErrors.driverTagTimeOut = 'Driver Tag Timeout is required';
-    }
-    if (isSecurityTagEnabled && !securityTagTimeOut) {
-      newErrors.sequrityDelay = 'Security Delay is required';
-    }
+    // // Adding validation for each field
+    // if (!selectedEvent?.id) {
+    //   newErrors.event = 'Event is required';
+    // }
+    // if (!name) {
+    //   newErrors.name = 'Name is required';
+    // }
+    // if (!delay) {
+    //   newErrors.delay = 'Delay is required';
+    // }
+    // if (isDriverTagEnabled && !driverTagTimeOut) {
+    //   newErrors.driverTagTimeOut = 'Driver Tag Timeout is required';
+    // }
+    // if (isSecurityTagEnabled && !securityTagTimeOut) {
+    //   newErrors.sequrityDelay = 'Security Delay is required';
+    // }
 
-    if (!selectedSmartConnector.id) {
-      newErrors.selectedSmartConnector = 'Smart Connector is required';
-    }
-    if (!selectedWeightParser.id) {
-      newErrors.selectedWeightParser = 'Weight Parser is required';
-    }
-    if (!platformReadyTicks) {
-      newErrors.platformReadyTicks = 'Platform Ready Ticks is required';
-    }
-    if (!minVehicleWeight) {
-      newErrors.minVehicleWeight = 'Minimum Vehicle Weight is required';
-    }
-    if (!platformMaxWeight) {
-      newErrors.platformMaxWeight = 'Platform Max Weight is required';
-    }
-    if (!platformMinWeight) {
-      newErrors.platformMinWeight = 'Platform Min Weight is required';
-    }
-    if (!stableWeightTolerance) {
-      newErrors.stableWeightTolerance = 'Stable Weight Tolerance is required';
-    }
-    if (!stableWeightTicks) {
-      newErrors.stableWeightTicks = 'Stable Weight Ticks is required';
-    }
-    if (platformMinWeight >= platformMaxWeight) {
-      newErrors.platformMinWeight = "Platform min weight is always less than Platform Max weight"
-    }
-    if (
-      platformMaxWeight >= minVehicleWeight
-    ) {
-      newErrors.minVehicleWeight = "minVehicleWeight is  always more than Platform Max weight"
-    }
+    // if (!selectedSmartConnector.id) {
+    //   newErrors.selectedSmartConnector = 'Smart Connector is required';
+    // }
+    // if (!selectedWeightParser.id) {
+    //   newErrors.selectedWeightParser = 'Weight Parser is required';
+    // }
+    // if (!platformReadyTicks) {
+    //   newErrors.platformReadyTicks = 'Platform Ready Ticks is required';
+    // }
+    // if (!minVehicleWeight) {
+    //   newErrors.minVehicleWeight = 'Minimum Vehicle Weight is required';
+    // }
+    // if (!platformMaxWeight) {
+    //   newErrors.platformMaxWeight = 'Platform Max Weight is required';
+    // }
+    // if (!platformMinWeight) {
+    //   newErrors.platformMinWeight = 'Platform Min Weight is required';
+    // }
+    // if (!stableWeightTolerance) {
+    //   newErrors.stableWeightTolerance = 'Stable Weight Tolerance is required';
+    // }
+    // if (!stableWeightTicks) {
+    //   newErrors.stableWeightTicks = 'Stable Weight Ticks is required';
+    // }
+    // if (platformMinWeight >= platformMaxWeight) {
+    //   newErrors.platformMinWeight = "Platform min weight is always less than Platform Max weight"
+    // }
+    // if (
+    //   platformMaxWeight >= minVehicleWeight
+    // ) {
+    //   newErrors.minVehicleWeight = "minVehicleWeight is  always more than Platform Max weight"
+    // }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -417,9 +414,7 @@ function WeighBridgeFunction(props: { id: any }) {
       ...typeSpecificFields,
       ...input,
     };
-    // console.log('firstScreenData to pass i got on Click', dataToUpload);
     try {
-      // console.log("hello from try of handle save ")
       store.dispatch(
         id ?
           UpdateWeighBridgeSpot({
@@ -437,7 +432,6 @@ function WeighBridgeFunction(props: { id: any }) {
 
       );
     } catch (error) {
-      // console.log("can i caught in error ", error);
     }
 
   }
@@ -480,7 +474,6 @@ function WeighBridgeFunction(props: { id: any }) {
   const displayAId = displayA?.id;
   const displayBName = displayB?.name;
   const displayBId = displayB?.id;
-  // console.log("expirydate" , WeighBridgeSpot.expiryDate)
   useEffect(() => {
     if (id) {
       setName(WeighBridgeSpot.name)
@@ -517,7 +510,6 @@ function WeighBridgeFunction(props: { id: any }) {
     }
   }, [id, WeighBridgeSpot])
   useEffect(() => {
-    // console.log("updateStatus", updateStatus)
     switch (updateStatus) {
       case 'failed':
         CustomToast('error', uploadError);

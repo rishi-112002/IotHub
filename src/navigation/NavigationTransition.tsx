@@ -1,39 +1,7 @@
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { Easing } from 'react-native-reanimated';
 
-// <<<<<<< HEAD
-// export const slideFromRight = {
-//     gestureDirection: 'horizontal',
-//     cardStyleInterpolator: ({current, layouts}: any) => {
-//       return {
-//         cardStyle: {
-//           transform: [
-//             {
-//               translateX: current.progress.interpolate({
-//                 inputRange: [0, 1],
-//                 outputRange: [layouts.screen.width, 0], // Starts from the right
-//               }),
-//             },
-//           ],
-//         },
-//       };
-//     },
-//     transitionSpec: {
-//       open: {
-//         animation: 'timing',
-//         config: {
-//           duration: 400,
-//           easing: Easing.ease, // Apply easing to the timing animation
-//         },
-//       },
-//       close: {
-//         animation: 'timing',
-//         config: {
-//           duration: 400,
-//           easing: Easing.ease,
-//         },
-// =======
-export const slideFromRight:StackNavigationOptions = {
+export const slideFromRight: StackNavigationOptions = {
   gestureDirection: 'horizontal',
   cardStyleInterpolator: ({ current, layouts }: any) => {
     return {
@@ -54,8 +22,7 @@ export const slideFromRight:StackNavigationOptions = {
       animation: 'timing',
       config: {
         duration: 300,
-        easing: Easing.ease, // Apply easing to the timing animation
-// >>>>>>> 3b12c3e38f8b6699fe219c4a411b6c28c318353e
+        easing: Easing.ease, 
       },
     },
     close: {

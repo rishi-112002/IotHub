@@ -78,7 +78,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
             if (id === 'DIRECTION') { setSelectedDirection("") };
         }, []);
 
-    // console.log("date i get in filter modal ", DateFromValue, ToDateValue)
+
 
     const renderItem = useCallback(({ item }: { item: { name: string; id: string, path: any } }) => (
         <TouchableOpacity style={styles.item} onPress={() => handleSelectFilter(item)}>
@@ -137,12 +137,15 @@ const FilterModal: React.FC<FilterModalProps> = ({
                                 backgroundColor: colors.white,
                                 paddingHorizontal: 5
                             }} onPress={handleReset}>
-                                <Text style={{ color: colors.blueDarkest, fontSize: fontSizes.text }}>
-                                    reset
+                                <Text style={{
+                                    color: colors.AppPrimaryColor,
+                                    fontSize: fontSizes.text, fontWeight: "500"
+                                }}>
+                                    Reset
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
-                                <Icon name="cancel" size={24} color={colors.blueDarkest} />
+                                <Icon name="cancel" size={24} color={Colors2.SecondaryTextColor} />
                             </TouchableOpacity>
                         </View>
 
@@ -179,9 +182,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     modalTitle: {
-        fontSize: 18,
+        fontSize: fontSizes.heading,
         fontWeight: '500',
-        color: colors.darkblack,
+        color: colors.AppPrimaryColor,
     },
     modalheading: {
         flexDirection: "row",

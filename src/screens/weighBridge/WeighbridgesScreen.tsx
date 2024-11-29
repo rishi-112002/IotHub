@@ -1,5 +1,5 @@
-import { Animated, View, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import {Animated, View, StyleSheet, Text} from 'react-native';
+import React, {useState} from 'react';
 import colors from '../../assets/color/colors';
 import SpotsDataByTypeComponent from '../../component/listComp/SpotsDataByTypeComponent';
 import WeighBridgeScreenHooks from '../../CustomHooks/weighBridgeHooks/WeighBridgeScreenHooks';
@@ -10,9 +10,11 @@ import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
-
+import {useNetwork} from '../../contextApi/NetworkContex';
 
 function Weighbridges() {
+  const {isConnected} = useNetwork();
+
   const {
     Loader,
     confirmDelete,
@@ -36,93 +38,120 @@ function Weighbridges() {
     searchQuery,
     setSearchQuery,
     setWeighBridgeTypeConnectivity,
-    weighBridgeTypeConnectivity, handleSearchPress,
-    toggleFilterMenu
-
+    weighBridgeTypeConnectivity,
+    handleSearchPress,
+    toggleFilterMenu,
   } = WeighBridgeScreenHooks();
 
-  return (
-    <View style={styles.container}>
-      <CustomHeader
-        buCode={undefined}
-        userLogo={'account-circle'}
-        title={'Weighbridges'}
-        translateY={translateY}
-        onSearchPress={handleSearchPress}
-        onFilterPress={toggleFilterMenu}
-        searchIcon={require("../../assets/icons/search.png")}
-        filterIcon={require("../../assets/icons/filterMedium.png")}
-        filterCount={filterCount} />
+  return (   
+        <View style={styles.container}>
+          <CustomHeader
+            buCode={undefined}
+            userLogo={'account-circle'}
+            title={'Weighbridges'}
+            translateY={translateY}
+            onSearchPress={handleSearchPress}
+            onFilterPress={toggleFilterMenu}
+            searchIcon={require('../../assets/icons/search.png')}
+            filterIcon={require('../../assets/icons/filterMedium.png')}
+            filterCount={filterCount}
+          />
+          {isConnected ? (
+            Loader ? (
+              <CustomLoader />
+            ) : (
+              <Animated.View
+                style={[
+                  styles.animatedContainer,
+                  {paddingTop: paddingTopAnimated},
+                ]}>
+                {isSearchVisible && (
+                  <Animated.View
+                    style={[{transform: [{translateY: translateY}]}]}>
+                    <SearchBar
+                      searchQuery={searchQuery}
+                      setSearchQuery={setSearchQuery}
+                      clearSearch={() => setSearchQuery('')}
+                      placeholder={undefined}
+                    />
+                  </Animated.View>
+                )}
+                {filterBadgeVisible &&
+                  weighBridgeTypeConnectivity !== 'all' && (
+                    <View style={{flex: 0.06}}>
+                      <ScrollableBadges
+                        badges={[
+                          {
+                            key: 'Connectivity',
+                            value: weighBridgeTypeConnectivity,
+                          },
+                        ]}
+                        filterCount={filterCount}
+                        setFilterCount={setFilterCount}
+                        setSelectedSpot={undefined}
+                        setSelectedDirection={undefined}
+                        setSelectedFromDate={undefined}
+                        setSelectedName={undefined}
+                        setSelectedToDate={undefined}
+                        setToDateValue={undefined}
+                        setDateFromValue={undefined}
+                        setConnectivity={setWeighBridgeTypeConnectivity}
+                      />
+                    </View>
+                  )}
+                <View style={{flex: 1}}>
+                  <SpotsDataByTypeComponent
+                    data={spotsData}
+                    type={'UNIDIRECTIONAL_WEIGHBRIDGE'}
+                    handleScroll={(e: {
+                      nativeEvent: {contentOffset: {y: number}};
+                    }) => {
+                      scrollY.setValue(e.nativeEvent.contentOffset.y);
+                    }}
+                    handleDelete={handleDelete}
+                  />
+                </View>
+                {modelShow && (
+                  <FilterModal
+                    isVisible={modelShow}
+                    toggleFilterMenu={toggleFilterMenu}
+                    spotTypeConnectivity={weighBridgeTypeConnectivity}
+                    handleFilterPress={handleFilterPress}
+                    type={'connectivity'}
+                  />
+                )}
+                <View>
+                  <FloatingActionCutomButton
+                    onPress={() =>
+                      navigation.navigate('WeighbridgesAddScreen', {
+                        id: undefined,
+                      })
+                    }
+                    translateButtonY={translateButtonY}
+                  />
+                </View>
+              </Animated.View>
+            )
+          ) : (
+            <View
+              style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+              <Text>No Internet Connection</Text>
+            </View>
+          )}
 
-      {Loader ? (
-        <CustomLoader />
-      ) : (
-        <Animated.View
-          style={[styles.animatedContainer, { paddingTop: paddingTopAnimated }]}>
-          {isSearchVisible && (
-            <Animated.View
-              style={[
-                { transform: [{ translateY: translateY }] },
-              ]}>
-              <SearchBar
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                clearSearch={() => setSearchQuery("")}
-                placeholder={undefined} />
+          {/* Animated CustomAlert */}
+          {isVisible && (
+            <Animated.View style={[styles.modalContainer, {opacity: fadeAnim}]}>
+              <CustomAlert
+                isVisible={isVisible}
+                onClose={() => setIsVisible(false)}
+                onOkPress={confirmDelete}
+                title="GENERIC_SPOT"
+                message="Are you sure you want to delete this GENERIC_SPOT?"
+              />
             </Animated.View>
           )}
-          {
-            filterBadgeVisible && weighBridgeTypeConnectivity !== "all" &&
-            < View style={{ flex: 0.06 }}>
-              <ScrollableBadges badges={[
-                { key: 'Connectivity', value: weighBridgeTypeConnectivity },
-              ]} filterCount={filterCount} setFilterCount={setFilterCount} setSelectedSpot={undefined} setSelectedDirection={undefined} setSelectedFromDate={undefined} setSelectedName={undefined} setSelectedToDate={undefined} setToDateValue={undefined} setDateFromValue={undefined}
-                setConnectivity={setWeighBridgeTypeConnectivity} />
-            </View>
-          }
-          <View style={{ flex: 1 }}>
-
-            <SpotsDataByTypeComponent
-              data={spotsData}
-              type={'UNIDIRECTIONAL_WEIGHBRIDGE'}
-              handleScroll={(e: { nativeEvent: { contentOffset: { y: number } } }) => {
-                scrollY.setValue(e.nativeEvent.contentOffset.y);
-              }}
-              handleDelete={handleDelete}
-            />
-          </View>
-          {modelShow && (
-            <FilterModal
-              isVisible={modelShow}
-              toggleFilterMenu={toggleFilterMenu}
-              spotTypeConnectivity={weighBridgeTypeConnectivity}
-              handleFilterPress={handleFilterPress}
-              type={'connectivity'} />
-          )
-          }
-          <View>
-
-            <FloatingActionCutomButton
-              onPress={() => navigation.navigate('WeighbridgesAddScreen', { id: undefined })}
-              translateButtonY={translateButtonY}
-            />
-          </View>
-        </Animated.View>
-      )}
-
-      {/* Animated CustomAlert */}
-      {isVisible && (
-        <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
-          <CustomAlert
-            isVisible={isVisible}
-            onClose={() => setIsVisible(false)}
-            onOkPress={confirmDelete}
-            title="GENERIC_SPOT"
-            message="Are you sure you want to delete this GENERIC_SPOT?"
-          />
-        </Animated.View>
-      )}
-    </View>
+        </View>
   );
 }
 

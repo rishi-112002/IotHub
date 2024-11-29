@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
+import { Colors2 } from '../../assets/color/Colors2';
 
 function GenericAddInputComponent(props: {
   formData: any;
@@ -71,6 +72,7 @@ function GenericAddInputComponent(props: {
 const style = StyleSheet.create({
   input: {
     flex: 1,
+    color:Colors2.PrimaryTextColor
   },
 });
 export default GenericAddInputComponent;

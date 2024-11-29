@@ -1,40 +1,55 @@
-import {useState, useCallback, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {CreateRFIDdata} from '../../reducer/RFIDList/RFIDListAction';
-import {RootState} from '../../reducer/Store';
-import {NavigationProp} from '@react-navigation/native';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import { useState, useCallback, useEffect, useLayoutEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { CreateRFIDdata } from '../../reducer/RFIDList/RFIDListAction';
+import { RootState, store } from '../../reducer/Store';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 import showCustomToast from '../../reuseableComponent/modal/CustomToast';
+import { useLayout } from '@react-native-community/hooks';
+import { Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import colors from '../../assets/color/colors';
+import fontSizes from '../../assets/fonts/FontSize';
 
 const MODEL_LIST = [
-  {name: 'AUR221', value: 'AUR221'},
-  {name: 'AUR145', value: 'AUR145'},
-  {name: 'AHR023', value: 'AHR023'},
-  {name: 'FX9600', value: 'FX9600'},
-  {name: 'AHR023-OLD', value: 'AHR023-OLD'},
+  { name: 'AUR221', value: 'AUR221' },
+  { name: 'AUR145', value: 'AUR145' },
+  { name: 'AHR023', value: 'AHR023' },
+  { name: 'FX9600', value: 'FX9600' },
+  { name: 'AHR023-OLD', value: 'AHR023-OLD' },
 ];
 
-export const useRfidAddForm = (
-  navigation: NavigationProp<AppNavigationParams>,
-) => {
+export function useRfidAddForm() {
+  const navigation = useNavigation<NavigationProp<any>>();
+
   const [name, setName] = useState('');
   const [modal, setModal] = useState<string | null>(null);
   const [IPAddress, setIPAddress] = useState('');
   const [port, setPort] = useState('');
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [dropdownVisible, setDropdownVisible] = useState(false);
-
-  const dispatch = useDispatch();
-  const {buCode, token} = useSelector(
+  const { buCode, token } = useSelector(
     (state: RootState) => state.authentication,
   );
   const Loader = useSelector((state: RootState) => state.rfidList.loader);
   const smartControllerLoader = useSelector(
     (state: RootState) => state.uploadGeneric.loader,
   );
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <View>
+          <Text style={styles.headerTitle}>
+            Add Reader Details
+          </Text>
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   const validateForm = () => {
-    const newErrors: {[key: string]: string} = {};
+    const newErrors: { [key: string]: string } = {};
     if (!name) newErrors.name = 'Name is required';
     if (!modal) newErrors.modal = 'Model number is required';
     if (modal !== 'FX9600') {
@@ -54,19 +69,18 @@ export const useRfidAddForm = (
     const rfidData = {
       name,
       model: modal,
-      ...(modal !== 'FX9600' && {ip: IPAddress, port}),
+      ...(modal !== 'FX9600' && { ip: IPAddress, port }),
     };
 
     try {
-      await dispatch(CreateRFIDdata({rfidData, token, buCode})).unwrap();
+      store.dispatch(CreateRFIDdata({ rfidData, token, buCode })).unwrap();
       showCustomToast('success', 'Data saved successfully!');
 
       // Delay navigation to allow toast time to display
       setTimeout(() => {
         navigation.navigate('RfidReader');
-      }, -200);
+      }, -400);
     } catch (err) {
-      // console.log('ADD ERROR: ', err);
       showCustomToast(
         'fail',
         err || 'Something went wrong! Please try again...',
@@ -75,17 +89,17 @@ export const useRfidAddForm = (
   };
 
   const handleInputFocus = (field: string) => {
-    setErrors(prevErrors => ({...prevErrors, [field]: undefined}));
+    setErrors((prevErrors: any) => ({ ...prevErrors, [field]: undefined }));
     if (field === 'modal') setDropdownVisible(true);
   };
 
-  const handleModalSelect = (selectedModel: {name: string; value: string}) => {
+  const handleModalSelect = (selectedModel: { name: string; value: string }) => {
     setModal(selectedModel.value);
     setDropdownVisible(false);
     if (selectedModel.value === 'FX9600') {
       setIPAddress('');
       setPort('');
-      setErrors(prevErrors => ({
+      setErrors((prevErrors: any) => ({
         ...prevErrors,
         IPAddress: undefined,
         port: undefined,
@@ -113,3 +127,9 @@ export const useRfidAddForm = (
     setDropdownVisible,
   };
 };
+const styles = StyleSheet.create({
+  headerTitle: {
+    color: colors.darkblack,
+    fontSize: fontSizes.heading,
+  },
+});
