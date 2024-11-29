@@ -36,7 +36,6 @@ function CustomBottomTabNavigator ({
         tabBarActiveTintColor: activeTintColor,
         tabBarInactiveTintColor: inactiveTintColor,
         tabBarStyle: {
-          height: 60,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           position: 'absolute',

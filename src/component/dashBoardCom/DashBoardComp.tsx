@@ -68,10 +68,12 @@ function DashboardComp(props: {
     } = props
 
     return (
-        <ScrollView onScroll={handleScroll} onMomentumScrollBegin={onMomentumScrollBegin}
+        <ScrollView 
+        onScroll={handleScroll} onMomentumScrollBegin={onMomentumScrollBegin}
             onMomentumScrollEnd={onMomentumScrollEnd}
             nestedScrollEnabled={true}
-            onScrollEndDrag={onScrollEndDrag} scrollEventThrottle={16} style={{ flexGrow: 1 }}>
+            onScrollEndDrag={onScrollEndDrag} 
+            scrollEventThrottle={16} style={{ flexGrow: 1 }}>
 
             <View style={{ flex: 1, backgroundColor: colors.white }}>
                 {/* Card Section */}
