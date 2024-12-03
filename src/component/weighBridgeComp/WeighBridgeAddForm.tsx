@@ -420,6 +420,7 @@ const styles = StyleSheet.create({
   },
   flexInput: {
     flex: 1,
+    color: 'black',
   },
   modalContainer: {
     backgroundColor: 'pink',

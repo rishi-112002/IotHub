@@ -1,22 +1,34 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {Animated, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useState, useRef, useEffect} from 'react';
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ActivityIndicator,
+  ListRenderItem,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
-import SpotList from '../../component/SpotListComponent/SpotList';
-import SearchBar from '../../reuseableComponent/Filter/SearchFilter'; // Import the SearchBar component
-import FilterModal from '../../reuseableComponent/Filter/FilterModle'; // Import the FilterModal component
+import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
+import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import {useNetwork} from '../../contextApi/NetworkContex';
+import SpotItem from '../../component/SpotListComponent/SpotItem';
+import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
+import {getResponsiveHeight} from '../../component/RFIDComponent/RfidListComponent';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import SpotList from '../../component/SpotListComponent/SpotList';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 function HomeScreen() {
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const {isConnected} = useNetwork();
-
   const {
     Loader,
     modelShow,
@@ -24,7 +36,7 @@ function HomeScreen() {
     noResults,
     handleFilterPress,
     handleScroll,
-    loadRfidList,
+    loadSpotList,
     refreshing,
     toggleFilterMenu,
     buCode,
@@ -38,52 +50,74 @@ function HomeScreen() {
     filterCount,
     filterBadgeVisible,
   } = SpotListHook();
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const {isConnected} = useNetwork();
+  const [isAllDataRendered, setIsAllDataRendered] = useState(false);
+
+  // useEffect(() => {
+  //   setIsAllDataRendered(false);
+  // }, [filteredSpots]);
 
   const handleSearchPress = () => {
     setIsSearchVisible(!isSearchVisible);
   };
 
+  // Handler to stop the loader once all items are rendered
+  // const handleEndReached = useCallback(() => {
+  //   if (filteredSpots.length > 0) {
+  //     console.log('CheckCondition Properly');
+  //     setIsAllDataRendered(true);
+  //   }
+  // }, [filteredSpots.length]);
+
+  // const ListEndLoader = () => {
+  //   // setIsAllDataRendered(false);
+  //   console.log('isAllDataRendered in ListEndLoader :- ', isAllDataRendered);
+  //   return (
+  //     <View style={styles.footerLoaderContainer}>
+  //       <ActivityIndicator size="small" color={colors.AppPrimaryColor} />
+  //       <Text style={styles.footerLoaderText}>Loading more...</Text>
+  //     </View>
+  //   );
+  // };
+
   return (
-    <SafeAreaView style={styles.container1}>
-      {/* Your Header and Search Bar Components */}
-      <Animated.View style={[styles.headerContainer, {paddingTop: translateY}]}>
-        <CustomHeader
-          buCode={buCode}
-          userLogo={'account-circle'} // This should be valid
-          title={'LiveSpot'}
-          translateY={translateY}
-          onSearchPress={handleSearchPress}
-          onFilterPress={toggleFilterMenu}
-          searchIcon={require('../../assets/icons/search.png')} // Ensure this file exists and is correct
-          filterIcon={require('../../assets/icons/filterMedium.png')} // Ensure this file exists and is correct
-          filterCount={undefined}
-        />
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <GestureHandlerRootView>
         <Animated.View
-          style={[
-            styles.searchBarContainer,
-            {transform: [{translateY: translateY}]},
-          ]}>
-          {isSearchVisible && (
-            <SearchBar
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              clearSearch={clearSearch}
-              placeholder={undefined}
-            />
-          )}
-        </Animated.View>
-        <Animated.View
-          style={[
-            // styles.searchBarContainer,
-            {marginTop: -10},
-            {transform: [{translateY: translateY}]},
-          ]}>
-          {filterBadgeVisible && spotTypeConnectivity !== 'all' && (
-            <View>
+          style={[styles.headerContainer, {paddingTop: translateY}]}>
+          <CustomHeader
+            buCode={buCode}
+            userLogo="account-circle"
+            title="LiveSpot"
+            translateY={translateY}
+            onSearchPress={handleSearchPress}
+            onFilterPress={toggleFilterMenu}
+            searchIcon={require('../../assets/icons/search.png')}
+            filterIcon={require('../../assets/icons/filterMedium.png')}
+            filterCount={undefined}
+          />
+          {/* Search */}
+          <Animated.View
+            style={[styles.searchBarContainer, {transform: [{translateY}]}]}>
+            {/* <View style={styles.searchBarContainer}> */}
+            {isSearchVisible && (
+              <SearchBar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                clearSearch={clearSearch}
+                placeholder={undefined}
+              />
+            )}
+            {/* </Animated.View> */}
+            {/* Filter  */}
+            {/* <Animated.View style={[{marginTop: -10}, {transform: [{translateY}]}]}> */}
+            {filterBadgeVisible && spotTypeConnectivity !== 'all' && (
               <ScrollableBadges
                 badges={[{key: 'Connectivity', value: spotTypeConnectivity}]}
                 filterCount={filterCount}
                 setFilterCount={setFilterCount}
+                setConnectivity={setSpotTypeConnectivity}
                 setSelectedSpot={undefined}
                 setSelectedDirection={undefined}
                 setSelectedFromDate={undefined}
@@ -91,80 +125,87 @@ function HomeScreen() {
                 setSelectedToDate={undefined}
                 setToDateValue={undefined}
                 setDateFromValue={undefined}
-                setConnectivity={setSpotTypeConnectivity}
               />
-            </View>
-          )}
-        </Animated.View>
-      </Animated.View>
-
-      {/* Conditionally render Search Bar */}
-
-      {isConnected ? (
-        Loader ? (
-          <BouncingLoader />
-        ) : (
-          <Animated.View
-            style={[
-              styles.listWrapper,
-              {transform: [{translateY: translateY}]},
-            ]}>
-            {noResults ? (
-              <Text style={styles.noResultsText}>
-                No results found for "{searchQuery}"
-              </Text>
-            ) : (
-              // <View style={{flex: 1}}>
-              <SpotList
-                spotData={filteredSpots}
-                loadRfidList={loadRfidList}
-                refreshing={refreshing}
-                onScroll={handleScroll}
-                contentContainerStyle={styles.listContainer}
-              />
-              // </View>
             )}
-            {modelShow && (
-              <View>
-                <FilterModal
-                  type="connectivity"
-                  isVisible={modelShow}
-                  toggleFilterMenu={toggleFilterMenu}
-                  spotTypeConnectivity={spotTypeConnectivity}
-                  handleFilterPress={handleFilterPress}
-                />
-              </View>
-            )}
+            {/* </View> */}
           </Animated.View>
-        )
-      ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
-          <Text>No Internet Connection</Text>
-        </View>
-      )}
+        </Animated.View>
 
-      {/* Filter Modal */}
-    </SafeAreaView>
+        {isConnected ? (
+          <>
+            {Loader ? (
+              <BouncingLoader />
+            ) : (
+              <Animated.View
+                style={[
+                  styles.listWrapper,
+                  {transform: [{translateY: translateY}]},
+                  {
+                    marginBottom:
+                      isSearchVisible && spotTypeConnectivity === 'all'
+                        ? getResponsiveHeight(7)
+                        : spotTypeConnectivity === 'all'
+                        ? getResponsiveHeight(3)
+                        : getResponsiveHeight(10),
+                  },
+                ]}>
+                <View style={styles.listWrapper}>
+                  {noResults ? (
+                    <Text style={styles.noResultsText}>
+                      No results found for "{searchQuery}"
+                    </Text>
+                  ) : (
+                    <>
+                      <View>
+                        <SpotList
+                          spotData={filteredSpots}
+                          refreshing={refreshing}
+                          loadRfidList={loadSpotList}
+                          handleScroll={handleScroll}
+                          onScroll={handleScroll}
+                          contentContainerStyle={undefined}
+                        />
+                      </View>
+                    </>
+                  )}
+                  {modelShow && (
+                    <FilterModal
+                      type="connectivity"
+                      isVisible={modelShow}
+                      toggleFilterMenu={toggleFilterMenu}
+                      spotTypeConnectivity={spotTypeConnectivity}
+                      handleFilterPress={handleFilterPress}
+                    />
+                  )}
+                </View>
+              </Animated.View>
+            )}
+          </>
+        ) : (
+          <View style={styles.noConnection}>
+            <Text>No Internet Connection</Text>
+          </View>
+        )}
+        {/* </Animated.View> */}
+      </GestureHandlerRootView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container1: {
+  container: {
     flex: 1,
     backgroundColor: colors.white,
+    zIndex: 9999,
   },
   headerContainer: {
-    // flex: 0.1
-    // paddingTop: 25,
-    // backgroundColor: "pink"
+    // flex: 1,
+    // zIndex: 9999,
   },
   listWrapper: {
-    flex: 1.9,
-    marginTop: 2,
-    marginBottom: -50,
-  },
-  listContainer: {
-    // flex: 1,
+    zIndex: 9999,
+    paddingHorizontal: 4.5,
+    // marginTop: 2,
   },
   noResultsText: {
     justifyContent: 'center',
@@ -174,10 +215,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   searchBarContainer: {
-    // flex: 1
+    // zIndex: 9999,
     marginTop: 60,
-    marginBottom: 10,
-    // backgroundColor: "red"
+    marginBottom: 5,
+  },
+  footerLoaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    // marginBottom: 100,
+  },
+  footerLoaderText: {
+    marginLeft: 10,
+    fontSize: fontSizes.smallText,
+    color: colors.gray,
+  },
+  noConnection: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

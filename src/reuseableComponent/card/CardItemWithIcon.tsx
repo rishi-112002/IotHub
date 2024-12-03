@@ -12,6 +12,7 @@ interface CardItemWithIconProps {
 }
 const CardItemWith_Icon: React.FC<CardItemWithIconProps> = ({ iconName, view }) => {
   return (
+    
     <View style={combinedStyles.tabItem}>
       <View style={combinedStyles.row}>
         <View style={combinedStyles.iconContainer}>
