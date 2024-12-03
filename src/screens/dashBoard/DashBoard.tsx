@@ -81,6 +81,7 @@ function DashBoard({ route }: { route: any }) {
                 [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                 { useNativeDriver: false }
               )}
+              
               setModalVisible={setModalVisible}
               setRequestData={setRequestData}
               handleRfidUsedClick={handleRfidUsedClick}

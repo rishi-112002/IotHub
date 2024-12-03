@@ -71,7 +71,6 @@ function DashboardComp(props: {
                 <View style={{ backgroundColor: colors.white, flex: 1 }}>
                     {/* Card Section */}
                     {isConnected ? (
-
                         <View style={styles.container}>
                             {/* LiveSpot Section */}
                             <View style={{ elevation: 1, padding: 5, backgroundColor: colors.white, borderRadius: 20, flex: 1 }}>

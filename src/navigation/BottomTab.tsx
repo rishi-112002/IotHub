@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, {  } from 'react';
+=======
+import React from 'react';
+>>>>>>> 19f18b667827c4f5ebbb2460a1410a43c5cf0901
 import HomeNavigation from './HomeNavigation';
 import colors from '../assets/color/colors';
 import CustomBottomTabNavigator from '../reuseableComponent/bottomTab/CustomBottomTab';
@@ -7,7 +11,10 @@ import DashBoard from '../screens/dashBoard/DashBoard';
 
 const BottomTabNavigation = () => {
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 19f18b667827c4f5ebbb2460a1410a43c5cf0901
   const tabs = [
     {
       name: 'DashBoard',
