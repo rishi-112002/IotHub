@@ -1,16 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 
 import React, { } from 'react';
-import { View } from 'react-native';
+import { Animated, View } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import DashBoardHook from '../../CustomHooks/dashBordEffect/DashBoardHooks';
 import { useNetwork } from '../../contextApi/NetworkContex';
 import DashboardComp from '../../component/dashBoardCom/DashBoardComp';
-function DashBoard() {
+import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
+import colors from '../../assets/color/colors';
+function DashBoard({ route }: { route: any }) {
   const { isConnected } = useNetwork();
 
+  const { scrollY, headerTranslate } = route.params;
   const {
-   headerTranslate,
     buCode,
     spotListData,
     eventLogsByTime,
@@ -24,7 +26,6 @@ function DashBoard() {
     rfidUsedCount,
     topRecentLogs,
     isLoading,
-    handleScroll,
     setModalVisible,
     setRequestData,
     handleRfidUsedClick,
@@ -41,8 +42,10 @@ function DashBoard() {
   } = DashBoardHook();
 
 
+
+
   return (
-    <View >
+    <View style={{ flex: 1 }}>
       <CustomHeader
         buCode={buCode}
         userLogo={'account-circle'}
@@ -54,38 +57,50 @@ function DashBoard() {
         filterIcon={undefined}
         filterCount={undefined}
       />
-      <DashboardComp
-        spotListData={spotListData}
-        eventLogsByTime={eventLogsByTime}
-        WeighBridgeDisConnected={WeighBridgeDisConnected}
-        WeighBridgeConnected={WeighBridgeConnected}
-        genericDisConnected={genericDisConnected}
-        genericConnected={genericConnected}
-        rfidCount={rfidCount}
-        rfidUnUsedCount={rfidUnUsedCount}
-        navigation={navigation}
-        rfidUsedCount={rfidUsedCount}
-        topRecentLogs={topRecentLogs}
-        handleScroll={handleScroll}
-        setModalVisible={setModalVisible}
-        setRequestData={setRequestData}
-        handleRfidUsedClick={handleRfidUsedClick}
-        handleAllClick={handleAllClick}
-        handleGenericConnectedClick={handleGenericConnectedClick}
-        handleGenericNotConnectedClick={handleGenericNotConnectedClick}
-        handleRfidAllClick={handleRfidAllClick}
-        handleRfidUnUsedClick={handleRfidUnUsedClick}
-        handleWeighBridgeConnectedClick={handleWeighBridgeConnectedClick}
-        handleWeighBridgeNotConnectedClick={handleWeighBridgeNotConnectedClick}
-        isLoading={isLoading}
-        buCode={buCode} isConnected={isConnected} 
-        onMomentumScrollBegin={onMomnetumScrollBegin} 
-        onMomentumScrollEnd={onMomnetumScrollEnd} 
-        onScrollEndDrag={onScrollEndDrag} />
-      </View>
+      {
+        isLoading ?
+          (
+            <View style={{ flex: 1, backgroundColor: colors.white }}>
+              <SequentialBouncingLoader />
+            </View>
+          ) :
+          <View style={{ flex: 1 }}>
+            <DashboardComp
+              spotListData={spotListData}
+              eventLogsByTime={eventLogsByTime}
+              WeighBridgeDisConnected={WeighBridgeDisConnected}
+              WeighBridgeConnected={WeighBridgeConnected}
+              genericDisConnected={genericDisConnected}
+              genericConnected={genericConnected}
+              rfidCount={rfidCount}
+              rfidUnUsedCount={rfidUnUsedCount}
+              navigation={navigation}
+              rfidUsedCount={rfidUsedCount}
+              topRecentLogs={topRecentLogs}
+              handleScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                { useNativeDriver: false }
+              )}
+              setModalVisible={setModalVisible}
+              setRequestData={setRequestData}
+              handleRfidUsedClick={handleRfidUsedClick}
+              handleAllClick={handleAllClick}
+              handleGenericConnectedClick={handleGenericConnectedClick}
+              handleGenericNotConnectedClick={handleGenericNotConnectedClick}
+              handleRfidAllClick={handleRfidAllClick}
+              handleRfidUnUsedClick={handleRfidUnUsedClick}
+              handleWeighBridgeConnectedClick={handleWeighBridgeConnectedClick}
+              handleWeighBridgeNotConnectedClick={handleWeighBridgeNotConnectedClick}
+              buCode={buCode} isConnected={isConnected}
+              onMomentumScrollBegin={onMomnetumScrollBegin}
+              onMomentumScrollEnd={onMomnetumScrollEnd}
+              onScrollEndDrag={onScrollEndDrag} />
+          </View>
+      }
+
+    </View>
   );
+
 }
 
 export default DashBoard;
-
-//segmented button

@@ -3,7 +3,6 @@ import { Text, TouchableOpacity, View } from "react-native";
 import colors from "../../assets/color/colors";
 import { Colors2 } from "../../assets/color/Colors2";
 import fontSizes from "../../assets/fonts/FontSize";
-import CustomIcon from "../../reuseableComponent/customIcons/CustomIcon";
 import { StyleSheet } from "react-native";
 
 function DashBoardSubView(props: {

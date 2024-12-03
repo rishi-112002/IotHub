@@ -1,21 +1,24 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {Animated, StyleSheet, Text, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React, { useState } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
+import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
 import SpotList from '../../component/SpotListComponent/SpotList';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter'; // Import the SearchBar component
 import FilterModal from '../../reuseableComponent/Filter/FilterModle'; // Import the FilterModal component
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
-import {useNetwork} from '../../contextApi/NetworkContex';
+import { useNetwork } from '../../contextApi/NetworkContex';
 
-function HomeScreen() {
+function HomeScreen({ route }: { route: any }) {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const {isConnected} = useNetwork();
+  const { isConnected } = useNetwork();
+  const { scrollY, headerTranslate } = route.params;
+  console.log("ScrollY and HeaderTranslate", headerTranslate, scrollY)
+
 
   const {
     Loader,
@@ -46,12 +49,12 @@ function HomeScreen() {
   return (
     <SafeAreaView style={styles.container1}>
       {/* Your Header and Search Bar Components */}
-      <Animated.View style={[styles.headerContainer, {paddingTop: translateY}]}>
+      <Animated.View style={[styles.headerContainer, { paddingTop: translateY }]}>
         <CustomHeader
           buCode={buCode}
           userLogo={'account-circle'} // This should be valid
           title={'Spots'}
-          translateY={translateY}
+          translateY={headerTranslate}
           onSearchPress={handleSearchPress}
           onFilterPress={toggleFilterMenu}
           searchIcon={require('../../assets/icons/search.png')} // Ensure this file exists and is correct
@@ -61,7 +64,7 @@ function HomeScreen() {
         <Animated.View
           style={[
             styles.searchBarContainer,
-            {transform: [{translateY: translateY}]},
+            { transform: [{ translateY: headerTranslate }] },
           ]}>
           {isSearchVisible && (
             <SearchBar
@@ -75,13 +78,13 @@ function HomeScreen() {
         <Animated.View
           style={[
             // styles.searchBarContainer,
-            {marginTop: -10},
-            {transform: [{translateY: translateY}]},
+            { marginTop: -10 },
+            { transform: [{ translateY: headerTranslate }] },
           ]}>
           {filterBadgeVisible && spotTypeConnectivity !== 'all' && (
             <View>
               <ScrollableBadges
-                badges={[{key: 'Connectivity', value: spotTypeConnectivity}]}
+                badges={[{ key: 'Connectivity', value: spotTypeConnectivity }]}
                 filterCount={filterCount}
                 setFilterCount={setFilterCount}
                 setSelectedSpot={undefined}
@@ -104,25 +107,25 @@ function HomeScreen() {
         Loader ? (
           <BouncingLoader />
         ) : (
-          <Animated.View
-            style={[
-              styles.listWrapper,
-              {transform: [{translateY: translateY}]},
-            ]}>
+         
+          <View style={{flex:1}}>
+
+
             {noResults ? (
               <Text style={styles.noResultsText}>
                 No results found for "{searchQuery}"
               </Text>
             ) : (
-              // <View style={{flex: 1}}>
               <SpotList
                 spotData={filteredSpots}
                 loadRfidList={loadRfidList}
                 refreshing={refreshing}
-                onScroll={handleScroll}
+                onScroll={Animated.event(
+                  [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                  { useNativeDriver: false }
+                )}
                 contentContainerStyle={styles.listContainer}
               />
-              // </View>
             )}
             {modelShow && (
               <View>
@@ -135,10 +138,10 @@ function HomeScreen() {
                 />
               </View>
             )}
-          </Animated.View>
+          </View>
         )
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
           <Text>No Internet Connection</Text>
         </View>
       )}
@@ -154,9 +157,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   headerContainer: {
-    // flex: 0.1
-    // paddingTop: 25,
-    // backgroundColor: "pink"
   },
   listWrapper: {
     flex: 1.9,

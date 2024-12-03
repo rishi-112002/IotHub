@@ -16,9 +16,7 @@ function UrlScreen() {
     navigation,
     setUrl,
     slideUpAnim,
-    url,
-    urlError
-  } = UrlEffect();
+    url  } = UrlEffect();
   const { styles } = UrlStyles();
   return (
     <View style={styles.mainContainer}>

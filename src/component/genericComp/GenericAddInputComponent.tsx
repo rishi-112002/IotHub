@@ -10,9 +10,11 @@ function GenericAddInputComponent(props: {
   onChangeValue: any;
   handleInputChange: any;
   errors: any;
-  id: any
+  id: any,
+  handleNameChange: any;
+  handleDriverTagChange: any
 }) {
-  const { formData, handleInputChange, isActive, onChangeValue, errors, id } = props;
+  const { formData, handleInputChange, isActive, onChangeValue, errors, id, handleDriverTagChange,handleNameChange } = props;
   return (
     <View>
       <CustomTextInput
@@ -24,7 +26,7 @@ function GenericAddInputComponent(props: {
         errorMessage={errors.name}
         keyboardType="default"
         returnKeyType="next"
-        setTextInput={(value: any) => handleInputChange('name', value)}
+        setTextInput={handleNameChange}
         required={true}
       />
       <SwitchWithLabel
@@ -42,7 +44,7 @@ function GenericAddInputComponent(props: {
         errorMessage={errors.delay}
         keyboardType="numeric"
         returnKeyType="next"
-        setTextInput={(value: any) => handleInputChange('delay', value)}
+        setTextInput={handleDriverTagChange}
         required={true}
       />
       <CustomTextInput
@@ -72,7 +74,7 @@ function GenericAddInputComponent(props: {
 const style = StyleSheet.create({
   input: {
     flex: 1,
-    color:Colors2.PrimaryTextColor
+    color: Colors2.PrimaryTextColor
   },
 });
 export default GenericAddInputComponent;

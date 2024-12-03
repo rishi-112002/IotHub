@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import {
   GetDisplays,
   GetReader,
@@ -11,7 +11,7 @@ type AuthState = {
   smartController: [];
   display: [];
   reader: [];
-  weighBriges: [];
+  weighBriges: any[];
   weightParsers: [];
   readerLoader: boolean;
   displaysLoader: boolean;

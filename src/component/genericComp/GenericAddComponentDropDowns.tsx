@@ -13,6 +13,7 @@ function GenericAddComponentDropDowns(props: {
   setModalVisible: any;
   id: any;
   isActive: any;
+  error: any,
 }) {
   const {
     display,
@@ -24,7 +25,8 @@ function GenericAddComponentDropDowns(props: {
     setModalVisible,
     setCurrentField,
     id,
-    isActive
+    isActive,
+    error
   } = props;
   const handleFocus = useCallback(
     (field: string) => {
@@ -69,9 +71,10 @@ function GenericAddComponentDropDowns(props: {
         type='dropdown'
         editable={!isActive || !id}
         setTextInput={undefined}
-        required={false}
+        required={true}
+        errorMessage={error.event}
       />
-      {eventId !== 'NONE' && (
+      {(eventId === 'TAG_ENTRY' || eventId === 'TAG_ENTRY_AND_EXIT') && (
         <View>
           <CustomTextInput
             value={primaryReader}

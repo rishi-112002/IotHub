@@ -19,13 +19,10 @@ function DashboardCardView(props: {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleValueChange = useCallback((index: number) => {
-        console.log("Selected index:", index);
+  
         setSelectedIndex(index);
         setSelectedValue(index === 0 ? "connected" : "notConnected")
     }, []);
-    useEffect(() => {
-        console.log("selectedIndex in useEffect ", selectedIndex)
-    }, [selectedIndex])
     const options = ["Connected", "Not Connected"]
     const renderSpot = useCallback(
         ({ item }: { item: any }) => (

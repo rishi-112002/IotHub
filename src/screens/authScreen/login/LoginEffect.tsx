@@ -133,7 +133,6 @@ function LoginEffect() {
   }, [loginStatus, navigation]);
 
   useEffect(() => {
-    console.log("hello")
     handleLoginStatus();
   }, [handleLoginStatus]);
 

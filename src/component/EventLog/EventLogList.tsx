@@ -34,8 +34,6 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
   const onToggle = useCallback((id: string) => {
     setSelectedItemId((prevId) => (prevId === id ? "" : id));
   }, []);
-  console.log("selected State" , scrollEnabled)
-
   const renderEventLog = useCallback(
     ({ item }: any) => (
       <CardItemWith_Icon

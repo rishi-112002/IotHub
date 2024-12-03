@@ -5,9 +5,11 @@ import { UpdateGenericSpot, uploadGenericData } from '../../reducer/genericSpot/
 import { useGenericAddEffect } from './GenericAddEffect';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
 import { resetUpadteStatus } from '../../reducer/genericSpot/uploadGenericDataReducer';
+import { weighBridges } from '../../api/EndPointsUrl';
 
 function GenericAddFunction(props: { id: any }) {
   const { id } = props
+
 
   const {
     loader,
@@ -31,6 +33,7 @@ function GenericAddFunction(props: { id: any }) {
     setEditButtonOpacity
 
   } = useGenericAddEffect(id);
+
   const [formData, setFormData] = useState({
     name: '',
     delay: '',
@@ -83,6 +86,12 @@ function GenericAddFunction(props: { id: any }) {
     weighBridge?: string;
     driverTagTimeOut?: string;
   }>({});
+  const handleInputChange = (name: any, value: any) => {
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const [isDriverTagEnabled, setIsDriverTagEnabled] = useState(false);
 
@@ -201,16 +210,43 @@ function GenericAddFunction(props: { id: any }) {
     setCurrentField(field);
     setModalVisible(true);
   }, []);
+  const newErrors: {
+    name?: string;
+    delay?: string;
+    event?: string;
+    sequrityDelay?: string;
+    direction?: string;
+    weighBridge?: string;
+    driverTagTimeOut?: string;
+  } = {};
+  const handleNameChange = (input: string) => {
+    const newValue = input;
+    if (input !== newValue) {
+      setErrors((prev: any) => ({ ...prev, name: "" }));
+    } else {
+      setErrors((prev: any) => ({ ...prev, name: undefined }));
+    }
+    handleInputChange('name', newValue);
+  }
+  const handleDelayChange = (input: string) => {
+    const newValue = input.replace(/\s/g, '');
+    if (input !== newValue) {
+      setErrors((prev: any) => ({ ...prev, delay: 'space is not allowed' }));
+    } else {
+      setErrors((prev: any) => ({ ...prev, delay: undefined }));
+    }
+    handleInputChange('delay', newValue);
+  }
+  const handleEventChange = (input: string) => {
+    const newValue = input.replace(/\s/g, '');
+    if (input !== newValue) {
+      setErrors((prev: any) => ({ ...prev, delay: 'space is not allowed' }));
+    } else {
+      setErrors((prev: any) => ({ ...prev, delay: undefined }));
+    }
+    handleInputChange('delay', newValue);
+  }
   const handleSaveData = useCallback(() => {
-    const newErrors: {
-      name?: string;
-      delay?: string;
-      event?: string;
-      sequrityDelay?: string;
-      direction?: string;
-      weighBridge?: string;
-      driverTagTimeOut?: string;
-    } = {};
 
     if (!selectedEvent.id) {
       newErrors.event = 'Event is required';
@@ -244,8 +280,8 @@ function GenericAddFunction(props: { id: any }) {
     const dataToSave = {
       active: isActiveEnabled,
       buCode: buCode,
-      ...(selectedPrimaryReader.id && { primaryReaderIdDirA: selectedPrimaryReader.id }),
-      ...(selectedSecoundaryReader.id && { secondaryReaderIdDirA: selectedSecoundaryReader.id }),
+      ...((selectedEvent.id === 'TAG_ENTRY' || selectedEvent.id === 'TAG_ENTRY_AND_EXIT') && selectedPrimaryReader.id && { primaryReaderIdDirA: selectedPrimaryReader.id }),
+      ...((selectedEvent.id === 'TAG_ENTRY' || selectedEvent.id === 'TAG_ENTRY_AND_EXIT') && selectedSecoundaryReader.id && { secondaryReaderIdDirA: selectedSecoundaryReader.id }),
       ...(GenericSpot?.id && { id: GenericSpot.id }),
       delayAlertAfter: Number(formData.delay),
       driverTag: isDriverTagEnabled,
@@ -261,20 +297,17 @@ function GenericAddFunction(props: { id: any }) {
       tagCount: formData.minTagCount ? Number(formData.minTagCount) : null,
       type: 'GENERIC_SPOT',
       weighbridgeDirection: isWeightBridgeEntryEnabled
+        && selectedDirection.id
         ? selectedDirection.id
-          ? selectedDirection.id
-          : null
         : null,
       ...(selectedSmartConnector.id && { smartioId: selectedSmartConnector.id, }),
       ...(selectedDisplay.id && { displayIdDirA: selectedDisplay.id, }),
       weighbridgeEntry: isWeightBridgeEntryEnabled,
       weighbridgeId: isWeightBridgeEntryEnabled
+        && selectedWeighBridge.id
         ? selectedWeighBridge.id
-          ? selectedWeighBridge.id
-          : null
-        : null,
+        : null
     };
-
     try {
       store.dispatch(
         id
@@ -332,12 +365,7 @@ function GenericAddFunction(props: { id: any }) {
 
     return [];
   };
-  const handleInputChange = (name: any, value: any) => {
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+
   useEffect(() => {
     if (id) {
       const isFormDataMatching =
@@ -397,7 +425,9 @@ function GenericAddFunction(props: { id: any }) {
     toggleWeightBridgeEntrySwitch,
     handleFocus,
     loader,
-    editButtonOpacity
+    editButtonOpacity,
+    handleNameChange,
+    handleDelayChange,
   };
 }
 export default GenericAddFunction;

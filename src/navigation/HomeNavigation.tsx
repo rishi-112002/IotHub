@@ -1,5 +1,4 @@
 import React from 'react';
-// import {Easing} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import EventLogsScreen from '../screens/HomeScreen/EventLogsScreen';
@@ -8,10 +7,13 @@ import SpotDetailScreen from '../screens/SpotDetails/SpotSDetailMainScreen';
 import { AppNavigationParams } from './NavigationStackList';
 import EditRfidScreen from '../screens/RFID/EditRfidscreen';
 import { slideFromRight } from './NavigationTransition';
+
 const Stack = createStackNavigator<AppNavigationParams>();
 
 
-function HomeNavigation() {
+function HomeNavigation({ route }: { route: any }) {
+  const { scrollY, headerTranslate } = route.params;
+  console.log("scrolly in navigation", scrollY, headerTranslate)
   return (
     <Stack.Navigator
       initialRouteName="HomeScreen"
@@ -22,6 +24,7 @@ function HomeNavigation() {
         name="HomeScreen"
         component={HomeScreen}
         options={{ headerShown: false }}
+        initialParams={{ scrollY, headerTranslate }}
       />
 
       {/* Define the EventLogsScreen with a header shown */}

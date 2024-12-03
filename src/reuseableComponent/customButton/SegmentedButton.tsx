@@ -7,7 +7,6 @@ import { Colors2 } from "../../assets/color/Colors2";
 
 export function SegmentedButton(props: { options: string[], onChange: any, selectedIndex: number }) {
     const { onChange, options, selectedIndex } = props;
-    console.log("selctedIndex", selectedIndex)
     const renderItem = useCallback(
         ({ item, index }: { item: any, index: any }) => (
 

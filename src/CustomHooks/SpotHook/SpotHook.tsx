@@ -141,7 +141,6 @@ export const SpotListHook = () => {
   // Toggle the filter menu modal visibility
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const toggleFilterMenu = () => {
-    console.log('Toggle function run');
     setModelShow(!modelShow);
   };
 

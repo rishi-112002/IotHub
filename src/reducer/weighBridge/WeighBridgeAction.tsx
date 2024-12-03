@@ -9,7 +9,6 @@ export const weighBridgeAdd = createAsyncThunk(
     { rejectWithValue },
   ) => {
     const { weighData, token, buCode } = params;
-    console.log("hello from api", weighData)
     const fullUrl = 'https://13.235.84.67/iv1/spots/create';
 
     try {
