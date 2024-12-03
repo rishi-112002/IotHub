@@ -1,5 +1,14 @@
-import React, { useMemo, useState } from 'react';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle, TextInputProps } from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+  TextStyle,
+  TextInputProps,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -43,37 +52,43 @@ function CustomTextInput({
   const handleBlur = () => setIsFocused(false);
 
   const labelStyle = useMemo(() => {
-    return [styles.label, (isFocused || value) ? styles.labelFocused : styles.labelBlurred];
+    return [
+      styles.label,
+      isFocused || value ? styles.labelFocused : styles.labelBlurred,
+    ];
   }, [isFocused, value]);
 
-  const inputContainerStyle = useMemo(() => {
-    return [
-      styles.inputContainer,
-      { borderColor: isFocused ? colors.blueLighter : '#ccc' }
-    ];
-  }, [isFocused]);
+  // const inputContainerStyle = useMemo(() => {
+  //   return [
+  //     styles.inputContainer,
+  //     {borderColor: isFocused ? colors.redDarkest : 'red'},
+  //   ];
+  // }, [isFocused]);
 
   return (
     <View style={[styles.container, containerStyle]}>
       {label && (
         <Text style={labelStyle}>
           {label}
-          <Text style={{ color: colors.redDarkest }}> {required && '*'}</Text>
+          <Text style={{color: colors.redDarkest}}> {required && '*'}</Text>
         </Text>
       )}
       <TouchableOpacity
-        style={inputContainerStyle}
+        style={[
+          styles.inputContainer,
+          // eslint-disable-next-line react-native/no-inline-styles
+          {borderColor: isFocused ? colors.redDarkest : 'red'},
+        ]}
         onPress={type === 'dropdown' && editable ? onPress : undefined} // Use onPress for dropdown only
         disabled={type === 'input' || editable} // Disable only if it's input or editable
-        activeOpacity={type === 'dropdown' ? 0.7 : 1}
-      >
+        activeOpacity={type === 'dropdown' ? 0.7 : 1}>
         <TextInput
           style={[styles.input, inputStyle]}
           onFocus={editable ? handleFocus : undefined}
           onBlur={editable ? handleBlur : undefined}
-          onChangeText={(text) => setTextInput(text)}
+          onChangeText={text => setTextInput(text)}
           placeholder={placeholder}
-          placeholderTextColor="#8292B4"
+          placeholderTextColor="black"
           value={value}
           editable={type === 'input' && editable} // Allow editing only if type is 'input' and editable
           {...rest}
@@ -82,7 +97,7 @@ function CustomTextInput({
           <Icon
             name={iconName}
             size={24}
-            color={isFocused ? colors.AppPrimaryColor : '#666'}
+            color={isFocused ? colors.AppPrimaryColor : 'black'}
             style={styles.icon}
             onPress={handleVisibility}
           />
@@ -97,7 +112,9 @@ function CustomTextInput({
           />
         )}
       </TouchableOpacity>
-      <View style={isFocused ? styles.underlineFocused : styles.underlineBlurred} />
+      <View
+        style={isFocused ? styles.underlineFocused : styles.underlineBlurred}
+      />
       {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
     </View>
   );
@@ -117,7 +134,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: fontSizes.vSmallText,
-    color: '#262626',
+    color: 'black',
   },
   icon: {
     marginLeft: 8,
@@ -129,7 +146,7 @@ const styles = StyleSheet.create({
   },
   underlineFocused: {
     height: 2,
-    backgroundColor: colors.blueLighter,
+    backgroundColor: colors.AppPrimaryColor,
   },
   underlineBlurred: {
     height: 2,
@@ -139,7 +156,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 12,
     fontSize: fontSizes.subheading,
-    color: '#8292B4',
+    color: 'black',
+    // color: 'blue',
     backgroundColor: '#fff',
     paddingHorizontal: 5,
   },

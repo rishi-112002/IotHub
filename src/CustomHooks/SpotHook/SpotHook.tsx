@@ -96,12 +96,13 @@ export const SpotListHook = () => {
       (spotTypeConnectivity === 'connected' && spot?.active) ||
       (spotTypeConnectivity === 'not-connected' && !spot?.active);
     const matchesSearch = searchQuery
-      ? Object.values(spot).some((value) =>
-        String(value).toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      ? Object.values(spot).some(value =>
+          String(value).toLowerCase().includes(searchQuery.toLowerCase()),
+        )
       : true;
     return matchesFilter && matchesSearch;
   });
+  console.log('Search Filter Length :-', filteredSpots.length);
 
   // Check if no results match both filter and search query
   const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
@@ -174,7 +175,7 @@ export const SpotListHook = () => {
       noResults,
       handleFilterPress,
       handleScroll,
-      loadRfidList: loadSpotList,
+      loadSpotList,
       clearFilter,
       spotTypeConnectivity,
       refreshing,
