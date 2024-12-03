@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import React, { useCallback } from 'react';
+import { Colors2 } from '../../assets/color/Colors2';
 function GenericAddComponentDropDowns(props: {
   smartController: any;
   display: any;
@@ -12,6 +13,7 @@ function GenericAddComponentDropDowns(props: {
   setModalVisible: any;
   id: any;
   isActive: any;
+  error: any,
 }) {
   const {
     display,
@@ -23,7 +25,8 @@ function GenericAddComponentDropDowns(props: {
     setModalVisible,
     setCurrentField,
     id,
-    isActive
+    isActive,
+    error
   } = props;
   const handleFocus = useCallback(
     (field: string) => {
@@ -68,9 +71,10 @@ function GenericAddComponentDropDowns(props: {
         type='dropdown'
         editable={!isActive || !id}
         setTextInput={undefined}
-        required={false}
+        required={true}
+        errorMessage={error.event}
       />
-      {eventId !== 'NONE' && (
+      {(eventId === 'TAG_ENTRY' || eventId === 'TAG_ENTRY_AND_EXIT') && (
         <View>
           <CustomTextInput
             value={primaryReader}
@@ -103,6 +107,7 @@ function GenericAddComponentDropDowns(props: {
 const style = StyleSheet.create({
   input: {
     flex: 1,
+    color: Colors2.PrimaryTextColor
   },
 });
 export default GenericAddComponentDropDowns;

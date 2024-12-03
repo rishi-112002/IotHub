@@ -65,8 +65,11 @@ function CustomHeader(props: {
     <Animated.View
       style={{
         transform: [{ translateY: translateY }],
-        elevation: 5,
-        zIndex: 100000,
+        zIndex: 1,
+        position:"absolute" , 
+        left:0,
+        right:0,
+        height:60
       }}>
       <View style={styles.headerContainer}>
         <View style={styles.leftSection}>

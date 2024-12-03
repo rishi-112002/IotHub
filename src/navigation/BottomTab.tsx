@@ -1,74 +1,44 @@
-/* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import colors from '../assets/color/colors';
-import {AppNavigationParams} from './NavigationStackList';
+import React, {  } from 'react';
 import HomeNavigation from './HomeNavigation';
-import DashBoardNavigation from './DashBoardNavigation';
-import {Colors2} from '../assets/color/Colors2';
-import {Image, View} from 'react-native';
-import fontSizes from '../assets/fonts/FontSize';
-// Create a Bottom Tab Navigator
-const Tab = createBottomTabNavigator<AppNavigationParams>();
+import colors from '../assets/color/colors';
+import CustomBottomTabNavigator from '../reuseableComponent/bottomTab/CustomBottomTab';
+import { Colors2 } from '../assets/color/Colors2';
+import DashBoard from '../screens/dashBoard/DashBoard';
 
-function BottomTabNavigation() {
+const BottomTabNavigation = () => {
+
+  const tabs = [
+    {
+      name: 'DashBoard',
+      component: DashBoard,
+      icon: require('../assets/icons/dashBoard.png'),
+      focusedIcon: require('../assets/icons/dashBoard.png'),
+      label: 'Dashboard',
+    },
+    {
+      name: 'LiveSpots',
+      component: HomeNavigation,
+      icon: require('../assets/icons/LiveSpots.png'),
+      focusedIcon: require('../assets/icons/LiveSpots.png'),
+      label: 'Live Spots',
+    },
+  ];
+
   return (
-    <Tab.Navigator
-      initialRouteName="DashBoard"
-      screenOptions={({route}) => ({
-        headerShown: false,
-        tabBarActiveTintColor: colors.AppPrimaryColor,
-        tabBarInactiveTintColor: colors.inactiveTint,
-        tabBarStyle: {
-          elevation: 4,
-          shadowColor: colors.blueDarkest,
-          backgroundColor: colors.white,
-          height: 60,
-          borderWidth: 0.5,
-          borderTopColor: Colors2.DividerColor,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          position: 'absolute',
-          overflow: 'hidden', // Ensures rounded corners are visible
-        },
-        tabBarIcon: ({focused}: any) => {
-          let iconPath;
+    <CustomBottomTabNavigator
 
-          if (route.name === 'LiveSpots') {
-            iconPath = focused
-              ? require('../assets/icons/LiveSpots.png')
-              : require('../assets/icons/LiveSpots.png');
-          } else if (route.name === 'DashBoard') {
-            iconPath = focused
-              ? require('../assets/icons/dashBoard.png')
-              : require('../assets/icons/dashBoard.png');
-          }
-          return (
-            <View>
-              <Image
-                source={iconPath}
-                style={{
-                  tintColor: focused
-                    ? colors.AppPrimaryColor
-                    : colors.inactiveTint,
-                }}
-              />
-            </View>
-          );
-        },
-      })}>
-      <Tab.Screen
-        name="DashBoard"
-        component={DashBoardNavigation}
-        options={{
-          tabBarLabelStyle: {
-            fontSize: fontSizes.text,
-          },
-        }}
-      />
-      <Tab.Screen name="LiveSpots" component={HomeNavigation} />
-    </Tab.Navigator>
+      initialRouteName="DashBoard"
+      tabs={tabs}
+      activeTintColor={colors.AppPrimaryColor}
+      inactiveTintColor={colors.inactiveTint}
+      tabBarStyle={{
+        backgroundColor: colors.white,
+        borderWidth: 0.5,
+        borderTopColor: Colors2.DividerColor,
+        elevation: 4,
+      }}
+    />
   );
-}
+};
 
 export default BottomTabNavigation;

@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState, store } from '../../reducer/Store';
-import { Animated } from 'react-native';
-import { useContext, useEffect, useState } from 'react';
+import { Animated, Text, View } from 'react-native';
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   GetAllSpotEventLogs,
   GetSpotEventLogsForToday,
@@ -17,17 +17,70 @@ function DashBoardHook() {
 
   // Show loader for 3 seconds
 
-  const scrollY = new Animated.Value(0);
-  const diffClamp = Animated.diffClamp(scrollY, 0, 60);
-  const translateY = diffClamp.interpolate({
-    inputRange: [0, 60],
-    outputRange: [0, -60],
-  });
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const offSetAnimation = useRef(new Animated.Value(0)).current;
+
+  const CONTAINERHEiGHT = 60;
+  let _clampedScrollValue = 0;
+  let _offsetValue = 0;
+  let _scrollValue = 0;
+
+  const clampedScroll = Animated.diffClamp(
+    Animated.add(
+      scrollY.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 1],
+        extrapolateLeft: "clamp",
+      }),
+      offSetAnimation,
+    ),
+    0,
+    CONTAINERHEiGHT
+  )
+  let scrollEndTimer: any = null;
+  const onMomnetumScrollBegin = () => {
+    clearTimeout(scrollEndTimer)
+
+  }
+  const onMomnetumScrollEnd = () => {
+    const toValue = _scrollValue > CONTAINERHEiGHT && _clampedScrollValue > CONTAINERHEiGHT / 2 ?
+      _offsetValue + CONTAINERHEiGHT : _offsetValue - CONTAINERHEiGHT;
+    Animated.timing(offSetAnimation, {
+      toValue, duration: 500, useNativeDriver: true
+    }).start();
+  }
+  const onScrollEndDrag = () => {
+    scrollEndTimer = setTimeout(onMomnetumScrollEnd, 250)
+  }
+  useEffect(() => {
+    scrollY.addListener(({ value }) => {
+      const diff = value - _scrollValue;
+      _scrollValue = value;
+      _clampedScrollValue = Math.min(
+        Math.max(_clampedScrollValue * diff, 0),
+        CONTAINERHEiGHT,
+      )
+    });
+    offSetAnimation.addListener(({ value }) => {
+      _offsetValue = value
+    })
+  }, [])
+  const headerTranslate = clampedScroll.interpolate({
+    inputRange: [0, CONTAINERHEiGHT],
+    outputRange: [0, -CONTAINERHEiGHT],
+    extrapolate: "clamp"
+  })
+
+
   const rfidList = useSelector(
     (state: RootState) => state.rfidList.RfidListData,
   );
   const rfidCount = useSelector(
     (state: RootState) => state.rfidList.RfidListData.length,
+  );
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: false } // or true if you don't need manual interpolation
   );
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const buCode = useSelector((State: RootState) => State.authentication.buCode);
@@ -162,16 +215,15 @@ function DashBoardHook() {
     navigation.navigate('RfidScreenNavigation');
   };
   useEffect(() => {
-    console.log('Dashboard');
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
   return {
     isLoading,
-    translateY,
+    headerTranslate,
     buCode,
     baseUrl,
     spotListData,
@@ -186,6 +238,7 @@ function DashBoardHook() {
     genericConnected,
     rfidCount,
     rfidList,
+    handleScroll,
     rfidUnUsedCount,
     rfidUsedCount,
     navigation,
@@ -202,6 +255,9 @@ function DashBoardHook() {
     handleRfidUnUsedClick,
     handleWeighBridgeConnectedClick,
     handleWeighBridgeNotConnectedClick,
+    onMomnetumScrollBegin,
+    onMomnetumScrollEnd,
+    onScrollEndDrag
   };
 }
 export default DashBoardHook;

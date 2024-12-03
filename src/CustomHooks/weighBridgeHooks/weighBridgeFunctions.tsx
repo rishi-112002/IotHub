@@ -1,5 +1,4 @@
-import { Alert } from 'react-native';
-import { RootState, store } from '../../reducer/Store';
+import { store } from '../../reducer/Store';
 import { UpdateWeighBridgeSpot, weighBridgeAdd } from '../../reducer/weighBridge/WeighBridgeAction';
 import WeighBridgeEffectHooks from './WeighBridgeEffectHooks';
 import { useEffect, useState } from 'react';
@@ -288,7 +287,7 @@ function WeighBridgeFunction(props: { id: any }) {
       selectedPrimaryReaderB?: string;
       selectedGenericSpotDirB?: string;
     } = {};
-    // Adding validation for each field
+    // // Adding validation for each field
     // if (!selectedEvent?.id) {
     //   newErrors.event = 'Event is required';
     // }

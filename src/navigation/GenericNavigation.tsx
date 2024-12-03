@@ -25,25 +25,45 @@ function GenericNavigation() {
       <Stack.Screen
         name="EventLogScreen"
         component={EventLogsScreen}
-        options={{headerShown: true}}
+        options={{
+          headerStyle: {
+            elevation: 0, // Removes shadow for Android
+            shadowOpacity: 0, // Removes shadow for iOS
+          },
+        }}
       />
       {/* Screen for displaying the list of spots; header is shown */}
       <Stack.Screen
         name="SpotDetailsScreen"
         component={SpotListScreen}
-        options={{headerShown: true}}
+        options={{
+          headerStyle: {
+            elevation: 0, // Removes shadow for Android
+            shadowOpacity: 0, // Removes shadow for iOS
+          },
+        }}
       />
       {/* Screen for displaying details of a specific spot; header is shown */}
       <Stack.Screen
         name="SpotDetailScreen"
         component={SpotDetailScreen}
-        options={{headerShown: true}}
+        options={{
+          headerStyle: {
+            elevation: 0, // Removes shadow for Android
+            shadowOpacity: 0, // Removes shadow for iOS
+          },
+        }}
       />
       {/* Screen for adding a new generic spot; header is shown */}
       <Stack.Screen
         name="GenericSpotAddScreen"
         component={GenericSpotAddScreen}
-        options={{headerShown: true}}
+        options={{
+          headerStyle: {
+            elevation: 0, // Removes shadow for Android
+            shadowOpacity: 0, // Removes shadow for iOS
+          },
+        }}
       />
     </Stack.Navigator>
   );

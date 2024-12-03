@@ -88,17 +88,6 @@ const GenericScreenHooks = () => {
       }).start();
     }
   }, [isVisible, fadeAnim]);
-
-  // <<<<<<< HEAD
-  //   const spotsData =
-  //     genericTypeConnectivity === 'all'
-  //       ? GenericSpots
-  //       : genericTypeConnectivity === 'connected'
-  //         ? GenericConnectedSpot
-  //         : GenericNotConnectedSpot;
-
-  // =======
-  // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
   const getGenericData = useCallback(async () => {
     store.dispatch(
       GenericSpotsData({

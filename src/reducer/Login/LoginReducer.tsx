@@ -37,6 +37,9 @@ const authSlice = createSlice({
     setBaseUrl: (state, action) => {
       state.baseUrl = action.payload;
     },
+    resetStatus: (state) => {
+      state.status = "idle"
+    }
   },
   extraReducers: builder => {
     builder
@@ -94,5 +97,5 @@ const authSlice = createSlice({
       });
   },
 });
-export const { setBaseUrl } = authSlice.actions;
+export const { setBaseUrl , resetStatus } = authSlice.actions;
 export { authSlice };

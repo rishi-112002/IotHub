@@ -17,7 +17,7 @@ function EventLogsScreen() {
             setModal={setModalVisible}
             setRequestData={setRequestData}
             onScroll={undefined}
-          />
+             scrollEnabled={true}          />
         </View>
       ) : (
         <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>

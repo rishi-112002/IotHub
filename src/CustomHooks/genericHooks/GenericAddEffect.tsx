@@ -1,21 +1,21 @@
-import {useEffect, useLayoutEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {Text, View} from 'react-native';
-import {RootState, store} from '../../reducer/Store';
-import {ApiCallsAddGenericSpot} from '../../api/ApiCallsByReducer';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { Text, View } from 'react-native';
+import { RootState, store } from '../../reducer/Store';
+import { ApiCallsAddGenericSpot } from '../../api/ApiCallsByReducer';
 import {
   resetDeleteStatus,
   resetStatus,
   resetUpadteStatus,
 } from '../../reducer/genericSpot/uploadGenericDataReducer';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
 import React from 'react';
-import {GenericSpotData} from '../../reducer/genericSpot/uploadGenericDataAction';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import { GenericSpotData } from '../../reducer/genericSpot/uploadGenericDataAction';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
 
 export const useGenericAddEffect = (id: any) => {
   const [loader, setLoader] = useState(false);
@@ -63,11 +63,11 @@ export const useGenericAddEffect = (id: any) => {
 
   useEffect(() => {
     if (id) {
-      store.dispatch(GenericSpotData({id, baseUrl: baseUrls, buCode, token}));
+      store.dispatch(GenericSpotData({ id, baseUrl: baseUrls, buCode, token }));
     }
   }, [baseUrls, buCode, id, token]);
   useEffect(() => {
-    ApiCallsAddGenericSpot({baseUrl: baseUrls});
+    ApiCallsAddGenericSpot({ baseUrl: baseUrls });
   }, [dispatch, baseUrls]);
   useEffect(() => {
     switch (status) {
@@ -107,11 +107,7 @@ export const useGenericAddEffect = (id: any) => {
   useEffect(() => {
     switch (deleteStatus) {
       case 'failed':
-        // <<<<<<< HEAD
-        //       CustomToast('error', uploadError);
-        // =======
         CustomToast('error', uploadError);
-        // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
 
         dispatch(resetDeleteStatus());
         setLoader(false); // Reset loader after failure
@@ -137,7 +133,7 @@ export const useGenericAddEffect = (id: any) => {
         <View>
           <Text style={styles.headerTitle}>
             {' '}
-            {id ? 'Edit Generic Screen' : 'Add Generic Screen'}
+            {id ? 'Update Generic Details' : 'Add Generic Details'}
           </Text>
         </View>
       ),

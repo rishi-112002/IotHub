@@ -1,12 +1,13 @@
-import {useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import showCustomToast from '../../../reuseableComponent/modal/CustomToast';
-import {Animated, Easing} from 'react-native';
-import {RootState, store} from '../../../reducer/Store';
-import {loginUser} from '../../../reducer/Login/LoginAction';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {AppNavigationParams} from '../../../navigation/NavigationStackList';
+import { Animated, Easing } from 'react-native';
+import { RootState, store } from '../../../reducer/Store';
+import { loginUser } from '../../../reducer/Login/LoginAction';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { AppNavigationParams } from '../../../navigation/NavigationStackList';
 import NetInfo from '@react-native-community/netinfo';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
+import { resetStatus } from '../../../reducer/Login/LoginReducer';
 
 function LoginEffect() {
   const [userName, setUserName] = useState<string>('');
@@ -15,7 +16,7 @@ function LoginEffect() {
     name: '',
     code: '',
   });
-  const {buinessunits} = useSelector((State: RootState) => State.buinessUnits);
+  const { buinessunits } = useSelector((State: RootState) => State.buinessUnits);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [loader, setLoader] = useState(false); // Loader state
@@ -34,12 +35,12 @@ function LoginEffect() {
   };
 
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-  const [errors, setErrors] = useState<{userName?: string; password?: string}>(
+  const [errors, setErrors] = useState<{ userName?: string; password?: string }>(
     {},
   );
 
   const validateForm = () => {
-    const newErrors: {userName?: string; password?: string} = {};
+    const newErrors: { userName?: string; password?: string } = {};
 
     if (!userName) {
       newErrors.userName = 'Username is required';
@@ -65,13 +66,14 @@ function LoginEffect() {
         userName: 'Username cannot contain spaces',
       }));
     } else {
-      setErrors(prev => ({...prev, userName: undefined}));
+      setErrors(prev => ({ ...prev, userName: undefined }));
     }
     setUserName(newValue);
   };
 
   const handleLogin = async () => {
     const netInfo = await NetInfo.fetch();
+    setLoader(true)
     if (!netInfo.isConnected) {
       showCustomToast(
         'fail',
@@ -88,7 +90,7 @@ function LoginEffect() {
       };
 
       try {
-        await store.dispatch(loginUser({loginData, baseUrls}));
+        store.dispatch(loginUser({ loginData, baseUrls }));
       } catch (e) {
         showCustomToast('error', e);
       }
@@ -116,18 +118,19 @@ function LoginEffect() {
   }, [slideUpAnim]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleLoginStatus = () => {
+  const handleLoginStatus = useCallback(() => {
     if (loginStatus === 'succeeded') {
       setLoader(false);
-      navigation.navigate('Drawer', {screen: 'bottomTabNavigation'});
+      store.dispatch(resetStatus());
+      navigation.navigate('Drawer', { screen: 'bottomTabNavigation' });
     } else if (loginStatus === 'failed') {
       showCustomToast(
         'error',
-        ' Your authentication information is incorrect. Please try again.',
+        'Your authentication information is incorrect. Please try again.',
       );
       setLoader(false);
     }
-  };
+  }, [loginStatus, navigation]);
 
   useEffect(() => {
     handleLoginStatus();

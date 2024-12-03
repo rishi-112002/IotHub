@@ -105,7 +105,7 @@ const SpotDetailsComponent = (props: { spotData: any }) => {
 
             {/* Readers Section */}
             {readers && readers.length > 0 && (
-                <Card>
+                <Card style={{padding:10 , backgroundColor:colors.white}}>
                     <Text style={styles.sectionTitle}>Readers</Text>
                     {/* Iterate through the readers array and display the health status of each device */}
                     {readers.map((reader: any, index: number) => (

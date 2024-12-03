@@ -3,7 +3,6 @@ import { Text, TouchableOpacity, View } from "react-native";
 import colors from "../../assets/color/colors";
 import { Colors2 } from "../../assets/color/Colors2";
 import fontSizes from "../../assets/fonts/FontSize";
-import CustomIcon from "../../reuseableComponent/customIcons/CustomIcon";
 import { StyleSheet } from "react-native";
 
 function DashBoardSubView(props: {
@@ -22,7 +21,7 @@ function DashBoardSubView(props: {
             <View style={subHeader ? {
                 flexDirection: 'column', justifyContent: 'space-between', backgroundColor: backGroundColor,
                 borderRadius: 20, padding: 10
-            } : { marginTop: -15 }}>
+            } : { marginTop: 0 }}>
                 {subHeader && <TouchableOpacity style={{
 
                     borderRadius: 15,
@@ -50,14 +49,14 @@ function DashBoardSubView(props: {
                     <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
 
 
-                        <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
+                        {/* <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
                             <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={onPress} />
-                        </View>
+                        </View> */}
 
                     </View>
                 </TouchableOpacity>}
 
-                <View style={{ flexDirection: 'row', gap: 10, paddingEnd: 30, paddingVertical: 15 }}>
+                <View style={{ flexDirection: 'row', gap: 10, paddingEnd: 20, paddingVertical: 10 }}>
 
                     <TouchableOpacity style={{
                         backgroundColor: "#f1f4f8",
@@ -71,15 +70,16 @@ function DashBoardSubView(props: {
 
                     }} onPress={onPressLeft}>
 
-                        <Text style={{
-                            fontSize: fontSizes.smallText,
-                            color: Colors2.SecondaryTextColor
-
-                        }}>{subHeadingLeft}</Text>
-
-
-                        <View style={{ flexDirection: 'row', justifyContent: "space-between" }}>
-
+                        <View style={{ flexDirection: 'row', columnGap: 10,}}>
+                            <Text style={{
+                                fontSize: fontSizes.smallText,
+                                color: Colors2.SecondaryTextColor,
+                                // justifyContent: "center",
+                                // alignContent: 'center',
+                                // alignItems: "center",
+                                textAlign: "center"
+                                // backgroundColor:"pink"
+                            }}>{subHeadingLeft}</Text>
                             <Text style={{
                                 fontSize: fontSizes.header,
                                 fontWeight: 'bold',
@@ -87,9 +87,9 @@ function DashBoardSubView(props: {
 
                             }}>{subHeadingLeftCount}
                             </Text>
-                            <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
+                            {/* <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
                                 <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={onPressLeft} />
-                            </View>
+                            </View> */}
 
                         </View>
                     </TouchableOpacity>
@@ -119,9 +119,9 @@ function DashBoardSubView(props: {
                                 color: Colors2.SecondaryTextColor
 
                             }}>{subHeadingRightCount}</Text>
-                            <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
+                            {/* <View style={{ margin: 5, backgroundColor: colors.white, borderRadius: 10, padding: 2, elevation: 2 }}>
                                 <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")} onPress={onPressRight} />
-                            </View>
+                            </View> */}
 
                         </View>
                     </TouchableOpacity>

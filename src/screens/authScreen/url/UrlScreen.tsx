@@ -1,4 +1,4 @@
-import {Animated, Text, TouchableOpacity, View} from 'react-native';
+import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../../../reuseableComponent/customButton/CustomButton';
 import CustomTextInput from '../../../reuseableComponent/customTextInput/CustomTextInput';
@@ -16,10 +16,8 @@ function UrlScreen() {
     navigation,
     setUrl,
     slideUpAnim,
-    url,
-    urlError
-  } = UrlEffect();
-  const {styles} = UrlStyles();
+    url  } = UrlEffect();
+  const { styles } = UrlStyles();
   return (
     <View style={styles.mainContainer}>
       <View style={styles.row}>
@@ -33,23 +31,23 @@ function UrlScreen() {
             />
           </TouchableOpacity>
         )}
-        <Text style={styles.headerTitle}>BaseUrl</Text>
+        <Text style={styles.headerTitle}>Base url</Text>
       </View>
       <Animated.View
         style={[
           styles.container,
           {
-            transform: [{translateY: slideUpAnim}],
+            transform: [{ translateY: slideUpAnim }],
           },
         ]}>
         {loading && <CustomLoader />}
         {!url && <Text style={styles.heading}>Welcome</Text>}
         <Text style={styles.sub_heading}>
-          Please Enter Base Url To Continue
+          Enter your base url to continue
         </Text>
         <View style={styles.inputContainer}>
           <CustomTextInput
-            label="BaseUrl"
+            label="Base url"
             value={url}
             onChangeText={handleUrlChange}
             errorMessage={errors.url}

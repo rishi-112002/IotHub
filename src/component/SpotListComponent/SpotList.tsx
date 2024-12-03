@@ -13,7 +13,7 @@ import SpotItem from './SpotItem';
 import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-import {getResponsiveHeight} from '../RFIDComponent/RfidListComponent';
+import { getResponsiveHeight } from '../RFIDComponent/RfidListComponent';
 
 interface SpotData {
   id: string;
@@ -51,21 +51,19 @@ const SpotList: React.FC<SpotListComponentProps> = ({
       setVisibleData(spotData.slice(0, itemsPerPage));
     }
   }, [spotData]);
-
-  // Load more data as the user scrolls
   const loadMoreData = useCallback(() => {
     if (visibleData.length < spotData.length && !isLoadingMore) {
       setIsLoadingMore(true);
       setTimeout(() => {
-        setVisibleData(prev => spotData.slice(0, prev.length + itemsPerPage));
+        setVisibleData((prev: any) => spotData.slice(0, prev.length + itemsPerPage));
         setIsLoadingMore(false);
       }, 800); // Simulate network delay
     }
   }, [spotData, visibleData, isLoadingMore]);
 
   // Render each item
-  const renderSpot: React.FC<{item: SpotData}> = useCallback(
-    ({item}) => (
+  const renderSpot: React.FC<{ item: SpotData }> = useCallback(
+    ({ item }) => (
       <CardItemWith_Icon
         iconName={item.active ? 'location-on' : 'location-off'}
         view={<SpotItem item={item} baseUrl={null} />}

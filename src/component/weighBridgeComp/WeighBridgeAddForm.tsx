@@ -1,6 +1,6 @@
 import React from 'react';
 import CustomDateTimePicker from '../../reuseableComponent/modal/CalendarWithTime';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
@@ -10,11 +10,12 @@ import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBounci
 import WeighBridgeFunction from '../../CustomHooks/weighBridgeHooks/weighBridgeFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 import WeighBridgeComponent from './WeighBridgeAddComponent';
-import {useNetwork} from '../../contextApi/NetworkContex';
+import { useNetwork } from '../../contextApi/NetworkContex';
+import { Colors2 } from '../../assets/color/Colors2';
 
-function WeighBridgeAddForm(props: {id: any}) {
-  const {id} = props;
-  const {isConnected} = useNetwork();
+function WeighBridgeAddForm(props: { id: any }) {
+  const { id } = props;
+  const { isConnected } = useNetwork();
 
   const {
     name,
@@ -71,17 +72,17 @@ function WeighBridgeAddForm(props: {id: any}) {
     selectedPrimaryReaderB,
     selectedGenericSpotDirB,
     errors,
-  } = WeighBridgeFunction({id: id});
+  } = WeighBridgeFunction({ id: id });
 
   if (loader) {
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <SequentialBouncingLoader />;
     </View>;
   }
   return (
-    <>
+    <View style={{ flex: 1 }}>
       {isConnected ? (
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             {!smartControllerLoader ? (
               <View style={styles.container}>
@@ -251,11 +252,13 @@ function WeighBridgeAddForm(props: {id: any}) {
                         type="dropdown"
                         setTextInput={errors.selectedDisplayA}
                         required={false}
+                        style={styles.flexInput}
+
                       />
                       {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
-                      selectedEvent.id ===
+                        selectedEvent.id ===
                         'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
-                      selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
+                        selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
                         <View>
                           <CustomTextInput
                             value={selectedPrimaryReaderA.name}
@@ -266,6 +269,8 @@ function WeighBridgeAddForm(props: {id: any}) {
                             type="dropdown"
                             setTextInput={undefined}
                             required={true}
+                            style={styles.flexInput}
+
                           />
 
                           <CustomTextInput
@@ -276,6 +281,8 @@ function WeighBridgeAddForm(props: {id: any}) {
                             type="dropdown"
                             setTextInput={undefined}
                             required={false}
+                            style={styles.flexInput}
+
                           />
                         </View>
                       ) : (
@@ -289,6 +296,8 @@ function WeighBridgeAddForm(props: {id: any}) {
                             editable={false}
                             setTextInput={undefined}
                             required={true}
+                            style={styles.flexInput}
+
                           />
                         </View>
                       )}
@@ -299,6 +308,8 @@ function WeighBridgeAddForm(props: {id: any}) {
                         editable={true}
                         type="input"
                         setTextInput={setValidIdA}
+                        style={styles.flexInput}
+
                         required={false}
                       />
                     </View>
@@ -306,71 +317,78 @@ function WeighBridgeAddForm(props: {id: any}) {
                     {/* Direction B Inputs */}
                     {(selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ||
                       selectedEvent.id ===
-                        'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER') && (
-                      <View>
-                        <Text style={styles.directionText}>Direction B</Text>
+                      'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER') && (
+                        <View>
+                          <Text style={styles.directionText}>Direction B</Text>
 
-                        <CustomTextInput
-                          value={selectedDisplayB.name}
-                          onPress={() => handleFocus('displayB')}
-                          label="Display"
-                          editable={false}
-                          required={false}
-                          type="dropdown"
-                          setTextInput={undefined}
-                        />
+                          <CustomTextInput
+                            value={selectedDisplayB.name}
+                            onPress={() => handleFocus('displayB')}
+                            label="Display"
+                            editable={false}
+                            required={false}
+                            type="dropdown"
+                            style={styles.flexInput}
+                            setTextInput={undefined}
+                          />
 
-                        {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
-                        selectedEvent.id ===
-                          'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
-                        selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
-                          <View>
-                            <CustomTextInput
-                              value={selectedPrimaryReaderB.name}
-                              onPress={() => handleFocus('primaryReaderB')}
-                              label="Primary Reader"
-                              editable={false}
-                              required={true}
-                              type="dropdown"
-                              setTextInput={undefined}
-                              errorMessage={errors.selectedPrimaryReaderB}
-                            />
+                          {selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
+                            selectedEvent.id ===
+                            'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
+                            selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE' ? (
+                            <View>
+                              <CustomTextInput
+                                value={selectedPrimaryReaderB.name}
+                                onPress={() => handleFocus('primaryReaderB')}
+                                label="Primary Reader"
+                                editable={false}
+                                required={true}
+                                type="dropdown"
+                                setTextInput={undefined}
+                                style={styles.flexInput}
 
-                            <CustomTextInput
-                              value={selectedSecondaryReaderB.name}
-                              onPress={() => handleFocus('secondaryReaderB')}
-                              label="Secondary Reader"
-                              editable={false}
-                              type="dropdown"
-                              required={false}
-                              setTextInput={undefined}
-                            />
-                          </View>
-                        ) : (
-                          <View>
-                            <CustomTextInput
-                              value={selectedGenericSpotDirB.name}
-                              onPress={() => handleFocus('genericSpotB')}
-                              label="Generic Spot"
-                              editable={false}
-                              type="dropdown"
-                              required={true}
-                              setTextInput={undefined}
-                              errorMessage={errors.selectedGenericSpotDirB}
-                            />
-                          </View>
-                        )}
+                                errorMessage={errors.selectedPrimaryReaderB}
+                              />
 
-                        <CustomTextInput
-                          label="Valid Id state"
-                          value={validIdB}
-                          type="input"
-                          editable={true}
-                          setTextInput={setValidIdB}
-                          required={false}
-                        />
-                      </View>
-                    )}
+                              <CustomTextInput
+                                value={selectedSecondaryReaderB.name}
+                                onPress={() => handleFocus('secondaryReaderB')}
+                                label="Secondary Reader"
+                                editable={false}
+                                type="dropdown"
+                                required={false}
+                                style={styles.flexInput}
+                                setTextInput={undefined}
+                              />
+                            </View>
+                          ) : (
+                            <View>
+                              <CustomTextInput
+                                value={selectedGenericSpotDirB.name}
+                                onPress={() => handleFocus('genericSpotB')}
+                                label="Generic Spot"
+                                editable={false}
+                                type="dropdown"
+                                required={true}
+                                setTextInput={undefined}
+                                style={styles.flexInput}
+
+                                errorMessage={errors.selectedGenericSpotDirB}
+                              />
+                            </View>
+                          )}
+
+                          <CustomTextInput
+                            label="Valid Id state"
+                            value={validIdB}
+                            type="input"
+                            editable={true}
+                            setTextInput={setValidIdB}
+                            required={false}
+                            style={styles.flexInput}
+                          />
+                        </View>
+                      )}
                   </View>
                 )}
 
@@ -395,11 +413,11 @@ function WeighBridgeAddForm(props: {id: any}) {
           </ScrollView>
         </View>
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
           <Text>No Internet Connection</Text>
         </View>
       )}
-    </>
+    </View>
   );
 }
 
@@ -408,7 +426,7 @@ const styles = StyleSheet.create({
     color: colors.darkblack,
     fontSize: fontSizes.heading,
   },
-  directionText: {color: colors.darkblack, paddingVertical: 10},
+  directionText: { color: colors.darkblack, paddingVertical: 10 },
   scrollContainer: {
     backgroundColor: colors.white,
     flexGrow: 1,
@@ -420,7 +438,7 @@ const styles = StyleSheet.create({
   },
   flexInput: {
     flex: 1,
-    color: 'black',
+    color: Colors2.PrimaryTextColor
   },
   modalContainer: {
     backgroundColor: 'pink',

@@ -1,10 +1,15 @@
-import {useState, useEffect, useCallback} from 'react';
+import {useState, useEffect, useCallback, useLayoutEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {EditRFIDdata} from '../../reducer/RFIDList/RFIDListAction';
 import {RootState, store} from '../../reducer/Store';
 import showCustomToast from '../../reuseableComponent/modal/CustomToast'; // Import the toast function
 import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import React from 'react';
+import { View, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import colors from '../../assets/color/colors';
+import fontSizes from '../../assets/fonts/FontSize';
 
 interface RFIDItem {
   id: string;
@@ -35,7 +40,7 @@ export const useEditRfid = (item: RFIDItem) => {
 
   const handleInputFocus = useCallback(
     (field: keyof typeof errors) => {
-      setErrors(prevErrors => ({...prevErrors, [field]: undefined}));
+      setErrors((prevErrors:any) => ({...prevErrors, [field]: undefined}));
     },
     [errors],
   );
@@ -47,7 +52,17 @@ export const useEditRfid = (item: RFIDItem) => {
     if (!port && showIpAndPortFields) newErrors.port = 'Port number is required';
     return newErrors;
   }, [name, IPAddress, port, showIpAndPortFields]);
-
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <View>
+          <Text style={styles.headerTitle}>
+           Update Reader Details
+          </Text>
+        </View>
+      ),
+    });
+  }, [navigation]);
   const handleSaveData = useCallback(async () => {
     const newErrors = validateInputs();
     if (Object.keys(newErrors).length > 0) {
@@ -63,7 +78,7 @@ export const useEditRfid = (item: RFIDItem) => {
         ...(model !== 'FX9600' && {ip: IPAddress, port}),
       };
 
-      await dispatch(
+      store.dispatch(
         EditRFIDdata({
           rfidData,
           token,
@@ -82,7 +97,7 @@ export const useEditRfid = (item: RFIDItem) => {
     }
   }, [dispatch, name, model, IPAddress, port, item.id, token, buCode, navigation, validateInputs]);
 
-  const handleModalSelect = (selectedModel: string) => {
+  const handleModalSelect = (selectedModel: {name:string}) => {
     setModel(selectedModel.name);
 
     if (selectedModel.name === 'FX9600') {
@@ -120,3 +135,9 @@ export const useEditRfid = (item: RFIDItem) => {
     handleModalSelect,
   };
 };
+const styles = StyleSheet.create({
+  headerTitle: {
+    color: colors.darkblack,
+    fontSize: fontSizes.heading,
+  },
+});

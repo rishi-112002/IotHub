@@ -1,12 +1,10 @@
-import {useState, useCallback, useEffect, useLayoutEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useState} from 'react';
+import {useSelector} from 'react-redux';
 import {CreateRFIDdata} from '../../reducer/RFIDList/RFIDListAction';
 import {RootState, store} from '../../reducer/Store';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
 import showCustomToast from '../../reuseableComponent/modal/CustomToast';
-import {resetUploadStatus} from '../../reducer/RFIDList/RFIDListReducer';
-
+ 
 const MODEL_LIST = [
   {name: 'AUR221', value: 'AUR221'},
   {name: 'AUR145', value: 'AUR145'},
@@ -14,7 +12,7 @@ const MODEL_LIST = [
   {name: 'FX9600', value: 'FX9600'},
   {name: 'AHR023-OLD', value: 'AHR023-OLD'},
 ];
-
+ 
 export const useRfidAddForm = () =>
   // navigation: NavigationProp<AppNavigationParams>,
   {
@@ -25,7 +23,7 @@ export const useRfidAddForm = () =>
     const [port, setPort] = useState('');
     const [errors, setErrors] = useState<{[key: string]: string}>({});
     const [dropdownVisible, setDropdownVisible] = useState(false);
-
+ 
     // const dispatch = useDispatch();
     const {buCode, token} = useSelector(
       (state: RootState) => state.authentication,
@@ -40,7 +38,7 @@ export const useRfidAddForm = () =>
     // const smartControllerLoader = useSelector(
     //   (state: RootState) => state.uploadGeneric.loader,
     // );
-
+ 
     const validateForm = () => {
       const newErrors: {[key: string]: string} = {};
       if (!name) {
@@ -59,11 +57,11 @@ export const useRfidAddForm = () =>
       }
       return newErrors;
     };
-
+ 
     // useLayoutEffect(() => {
    
     // }, [AddError, Status, navigation]);
-
+ 
     const handleSaveData = async () => {
       // Validate the form and set errors if any
       const validationErrors = validateForm();
@@ -71,14 +69,14 @@ export const useRfidAddForm = () =>
         setErrors(validationErrors);
         return;
       }
-
+ 
       // Prepare RFID data payload
       const rfidData = {
         name,
         model: modal,
         ...(modal !== 'FX9600' && {ip: IPAddress, port}),
       };
-
+ 
       try {
         // Dispatch the action to save RFID data
         store.dispatch(CreateRFIDdata({rfidData, token, buCode}));
@@ -91,7 +89,7 @@ export const useRfidAddForm = () =>
         //   store.dispatch(resetUploadStatus());
         // }
         // store.dispatch(resetUploadStatus());
-
+ 
         // setTimeout(() => {
         //   navigation.navigate('RfidReader');
         // }, 300);
@@ -101,14 +99,14 @@ export const useRfidAddForm = () =>
         showCustomToast('fail', errorMessage);
       }
     };
-
+ 
     const handleInputFocus = (field: string) => {
       setErrors((prevErrors): any => ({...prevErrors, [field]: undefined}));
       if (field === 'modal') {
         setDropdownVisible(true);
       }
     };
-
+ 
     const handleModalSelect = (selectedModel: {
       name: string;
       value: string;
@@ -125,7 +123,7 @@ export const useRfidAddForm = () =>
         }));
       }
     };
-
+ 
     return {
       name,
       modal,

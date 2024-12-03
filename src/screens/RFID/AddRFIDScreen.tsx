@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, ScrollView, Text, ActivityIndicator} from 'react-native';
+import {View, ScrollView, Text} from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
-import LoadingModal from '../../reuseableComponent/loader/CustomLoaderFaiz';
 import {useRfidAddForm} from '../../CustomHooks/RFIDHooks/RFIDAddHook';
 import {useNetwork} from '../../contextApi/NetworkContex';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
@@ -22,7 +21,6 @@ const RfidAddScreen = () => {
     errors,
     dropdownVisible,
     Loader,
-    // smartControllerLoader,
     MODEL_LIST,
     setName,
     setIPAddress,

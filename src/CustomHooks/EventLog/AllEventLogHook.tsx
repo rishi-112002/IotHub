@@ -93,7 +93,7 @@ const AllEventLogHooks = () => {
   const [currentField, setCurrentField] = useState<string | null>(null);
 
   const handleFilterClick = useMemo(() => {
-    console.log("hello from filter click ")
+
     return () => {
       const fromDate = DateFromValue ? new Date(DateFromValue) : null;
       const toDate = ToDateValue ? new Date(ToDateValue) : null;
@@ -120,7 +120,7 @@ const AllEventLogHooks = () => {
           matchesToDate
         );
       });
-      console.log("filteredData ", filteredData)
+  
       setFilteredLogs(filteredData);
       setIsFocused(false);
       SetIsFilterWork(true);
@@ -150,6 +150,12 @@ const AllEventLogHooks = () => {
       setFilteredLogs(filteredData);
     };
   }, [
+    eventLogsAll,
+    selectedSpot,
+    selectedName,
+    selectedDirection,
+    DateFromValue,
+    ToDateValue,
     searchQuery
   ]);
 

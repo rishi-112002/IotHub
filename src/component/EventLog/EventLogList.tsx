@@ -20,19 +20,20 @@ type EventLogsListProps = {
   data: EventLogItemType[];
   setModal: (value: boolean) => void;
   setRequestData: (request: any) => void;
-  onScroll: any
+  onScroll: any,
+  scrollEnabled: boolean
 };
 const EventLogsList: React.FC<EventLogsListProps> = ({
   data,
   setModal,
   setRequestData,
   onScroll,
+  scrollEnabled
 }) => {
   const [selectedItemId, setSelectedItemId] = useState("");
   const onToggle = useCallback((id: string) => {
     setSelectedItemId((prevId) => (prevId === id ? "" : id));
   }, []);
-
   const renderEventLog = useCallback(
     ({ item }: any) => (
       <CardItemWith_Icon
@@ -44,6 +45,7 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
             onToggle={() => onToggle(item.id)}
           />
         }
+        key={item.id}
       />
     ),
     [selectedItemId]
@@ -54,17 +56,13 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
   return (
     <View style={styles.listContainer}>
       {data.length > 0 ? (
-        <FlatList
+        <Animated.FlatList
           data={data}
           removeClippedSubviews={true}
           renderItem={renderEventLog}
           keyExtractor={keyExtractor}
           onScroll={onScroll}
-          initialNumToRender={10} // Initially render 10 items for performance
-          maxToRenderPerBatch={15} // Number of items rendered per batch
-          windowSize={25} // How many screens worth of content to render
-          updateCellsBatchingPeriod={10} // Reduce lag in scrolling
-          scrollEventThrottle={10}
+          scrollEnabled={scrollEnabled}
         />
       ) : (
         <View style={styles.emptyContainer}>

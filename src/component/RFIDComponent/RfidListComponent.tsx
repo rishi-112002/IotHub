@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback} from 'react';
-import {View, Animated, FlatList, StyleSheet, Dimensions} from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Animated, FlatList, StyleSheet, Dimensions } from 'react-native';
 import RFIDItemComponent from './RFIDItemComponent';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 export const getResponsiveWidth = (percentage: number) =>
   (SCREEN_WIDTH * percentage) / 100;
 export const getResponsiveHeight = (percentage: number) =>
@@ -33,13 +33,14 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
   handleScroll,
 }) => {
   const renderItem = useCallback(
-    ({item}: any) => (
+    ({ item }: any) => (
       <RFIDItemComponent handleDelete={handleDelete} reader={item} />
     ),
     [handleDelete],
   );
 
-  const keyExtractor = useCallback((item: {id: string}) => item.id, []);
+  const keyExtractor = useCallback((item: { id: string }) => item.id, []);
+
 
   return (
     <View style={styles.container}>
@@ -50,7 +51,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
           data={ListData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          contentContainerStyle={{padding: buttonVisible ? 8 : 5}}
+          contentContainerStyle={{ padding: buttonVisible ? 8 : 5 }}
           onScroll={handleScroll}
           onRefresh={loadRfidList}
           refreshing={refreshing}

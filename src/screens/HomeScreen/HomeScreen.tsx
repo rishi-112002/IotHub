@@ -1,16 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Animated,
   StyleSheet,
   Text,
   View,
   FlatList,
-  ActivityIndicator,
-  ListRenderItem,
   KeyboardAvoidingView,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
@@ -20,14 +17,10 @@ import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import {useNetwork} from '../../contextApi/NetworkContex';
-import SpotItem from '../../component/SpotListComponent/SpotItem';
-import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
 import {getResponsiveHeight} from '../../component/RFIDComponent/RfidListComponent';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import SpotList from '../../component/SpotListComponent/SpotList';
-
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-
 function HomeScreen() {
   const {
     Loader,
@@ -53,34 +46,9 @@ function HomeScreen() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const {isConnected} = useNetwork();
   const [isAllDataRendered, setIsAllDataRendered] = useState(false);
-
-  // useEffect(() => {
-  //   setIsAllDataRendered(false);
-  // }, [filteredSpots]);
-
   const handleSearchPress = () => {
     setIsSearchVisible(!isSearchVisible);
   };
-
-  // Handler to stop the loader once all items are rendered
-  // const handleEndReached = useCallback(() => {
-  //   if (filteredSpots.length > 0) {
-  //     console.log('CheckCondition Properly');
-  //     setIsAllDataRendered(true);
-  //   }
-  // }, [filteredSpots.length]);
-
-  // const ListEndLoader = () => {
-  //   // setIsAllDataRendered(false);
-  //   console.log('isAllDataRendered in ListEndLoader :- ', isAllDataRendered);
-  //   return (
-  //     <View style={styles.footerLoaderContainer}>
-  //       <ActivityIndicator size="small" color={colors.AppPrimaryColor} />
-  //       <Text style={styles.footerLoaderText}>Loading more...</Text>
-  //     </View>
-  //   );
-  // };
-
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <GestureHandlerRootView>
@@ -130,7 +98,6 @@ function HomeScreen() {
             {/* </View> */}
           </Animated.View>
         </Animated.View>
-
         {isConnected ? (
           <>
             {Loader ? (
@@ -191,7 +158,6 @@ function HomeScreen() {
     </KeyboardAvoidingView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -237,5 +203,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
 export default HomeScreen;

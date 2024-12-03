@@ -8,12 +8,10 @@ import {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 
-import {Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AppNavigationParams} from '../../../navigation/NavigationStackList';
 import {RootState} from '../../../reducer/Store';
-import NetInfo from '@react-native-community/netinfo';
 import {useNetwork} from '../../../contextApi/NetworkContex';
 
 function SplashEffect() {
@@ -30,21 +28,6 @@ function SplashEffect() {
   const ring2Scale = useSharedValue(0);
   const logoOpacity = useSharedValue(0);
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-
-  // const netinfo = async () => {
-  //   const netInfo = await NetInfo.fetch();
-  //   if (!netInfo.isConnected) {
-  //     Alert.alert(
-  //       'No Internet Connection',
-  //       'Please check your internet connection and try again.',
-  //     );
-  //     return;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   netinfo();
-  // }, [netinfo]);
 
   useEffect(() => {
     if (isFirstLaunch) {
@@ -80,6 +63,7 @@ function SplashEffect() {
         }
         setIsFirstLaunch(false);
       }, 2000);
+
 
       // Cleanup timeout on unmount
       return () => clearTimeout(splashTimeout);

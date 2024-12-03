@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,11 +13,13 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import CustomSearchBar from '../customSearchBar/CustomSearchBar';
+import { Colors2 } from '../../assets/color/Colors2';
+import fontSizes from '../../assets/fonts/FontSize';
 
 function GenericModal(props: {
   options: any[];
   nameKey: string;
-  valueKey: string;
+  valueKey: any;
   isVisible: boolean;
   handleCloseModal: () => void;
   onOptionSelected: (selected: any) => void;
@@ -47,7 +49,7 @@ function GenericModal(props: {
     );
   };
 
-  const renderItem = ({item}: any) => (
+  const renderItem = ({ item }: any) => (
     <TouchableOpacity
       style={styles.item}
       onPress={() => handleSelectOption(item)}>
@@ -76,12 +78,12 @@ function GenericModal(props: {
                   <TouchableOpacity
                     style={styles.closeButton}
                     onPress={handleSearchClick}>
-                    <Icon name="search" size={24} color={colors.blueDarkest} />
+                    <Icon name="search" size={24} color={Colors2.SecondaryTextColor} />
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.closeButton}
                     onPress={() => handleCloseModal()}>
-                    <Icon name="cancel" size={24} color={colors.blueDarkest} />
+                    <Icon name="cancel" size={24} color={Colors2.SecondaryTextColor} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -131,6 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: colors.AppPrimaryColor
   },
   modalheadingicon: {
     flexDirection: 'row',
@@ -146,7 +149,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddd',
   },
   itemText: {
-    fontSize: 16,
+    fontSize: fontSizes.text,
+    color: Colors2.PrimaryTextColor
   },
   closeButton: {
     alignItems: 'center',

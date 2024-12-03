@@ -10,6 +10,7 @@ import {useEditRfid} from '../../CustomHooks/RFIDHooks/RFIDEditHook';
 import {MODEL_LIST} from '../../assets/constants/Constant';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {useNetwork} from '../../contextApi/NetworkContex';
+import { Colors2 } from '../../assets/color/Colors2';
 
 // Define MODEL_LIST here
 
@@ -66,6 +67,8 @@ function EditRfidScreen() {
                 keyboardType="default"
                 returnKeyType="next"
                 setTextInput={setName}
+                style={{ flex: 1, color: Colors2.SecondaryTextColor }}
+
                 onFocus={() => handleInputFocus('name')}
                 required={false}
               />
@@ -76,6 +79,8 @@ function EditRfidScreen() {
                 errorMessage={errors.model}
                 onPress={() => setDropdownVisible(true)}
                 setTextInput={undefined}
+                style={{ flex: 1, color: Colors2.SecondaryTextColor }}
+
                 required={false}
                 type={'dropdown'}
               />
@@ -100,6 +105,8 @@ function EditRfidScreen() {
                     errorMessage={errors.IPAddress}
                     keyboardType="default"
                     returnKeyType="next"
+                    style={{ flex: 1, color: Colors2.SecondaryTextColor }}
+
                     setTextInput={setIPAddress}
                     onFocus={() => handleInputFocus('IPAddress')}
                     required={false}
@@ -110,6 +117,7 @@ function EditRfidScreen() {
                     value={port?.toString()}
                     errorMessage={errors.port}
                     keyboardType="numeric"
+                    style={{ flex: 1, color: Colors2.SecondaryTextColor }}
                     setTextInput={setPort}
                     onFocus={() => handleInputFocus('port')}
                     required={false}

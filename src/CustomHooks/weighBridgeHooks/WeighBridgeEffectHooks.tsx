@@ -111,7 +111,7 @@ function WeighBridgeEffectHooks(props: { id: any }) {
     navigation.setOptions({
       headerTitle: () => (
         <View>
-          <Text style={styles.headerTitle}> {id ? "Edit Weighbridge" : "Add Weighbridge"}</Text>
+          <Text style={styles.headerTitle}> {id ? "Update Weighbridge Details" : "Add Weighbridge Details"}</Text>
         </View>
       ),
     });

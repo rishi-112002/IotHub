@@ -34,23 +34,29 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
 
         <View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
-            <View style={{ flex: 0.9 }}>
+            <View style={{ flex: 1, gap: 5 }}>
               <Text style={styles.spotTitle}>
                 {item.name}
               </Text>
-              <Text
-                style={[
-                  styles.statusText,
-                  {
-                    marginTop: 5,
-                    color: item.active ? '#15803D' : '#B91C1C',
-                    width: item.active ? '28%' : '35%',
-                    backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
-                    paddingStart: 10, borderRadius: 20,
-                  },
-                ]}>
-                {item.active ? 'Connected' : 'Not-Connected'}
-              </Text>
+              <View style={{
+                backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
+                borderRadius: 20,
+                width: item.active ? "24%" : "31%",
+                paddingStart:5
+              
+              }}>
+                <Text
+                  style={[
+                    styles.statusText,
+                    {
+                      color: item.active ? '#15803D' : '#B91C1C',
+                      // backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
+
+                    },
+                  ]}>
+                  {item.active ? 'Connected' : 'Not Connected'}
+                </Text>
+              </View>
             </View>
             <View style={{ marginTop: 10 }}>
               <CustomMenu baseUrl={baseUrl} spotName={item.name} />
@@ -62,7 +68,7 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
           <View>
             <Text style={styles.label}>Expiry date:</Text>
             <Text style={styles.statusText}>
-              {item.expiryDate ? item.expiryDate : 'null'}
+              {item.expiryDate ? item.expiryDate : 'N/A'}
             </Text>
           </View>
           <View

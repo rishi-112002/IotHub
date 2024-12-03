@@ -13,29 +13,50 @@ function WeighBridgeNavigation() {
     <Stack.Navigator
       screenOptions={{
         ...slideFromRight,
-        headerShown: false,
+        headerShown: true,
       }}
       initialRouteName="WeighbridgesScreen">
       <Stack.Screen
         name="EventLogScreen"
         component={EventLogsScreen}
-        options={{ headerShown: true }}
+        options={{
+          headerStyle: {
+            elevation: 0, // Removes shadow for Android
+            shadowOpacity: 0, // Removes shadow for iOS
+          },
+        }}
       />
       <Stack.Screen
         name="SpotDetailsScreen"
         component={SpotListScreen}
-        options={{ headerShown: true }}
+        options={{
+          headerStyle: {
+            elevation: 0, // Removes shadow for Android
+            shadowOpacity: 0, // Removes shadow for iOS
+          },
+        }}
       />
       <Stack.Screen
         name="SpotDetailScreen"
         component={SpotDetailScreen}
-        options={{ headerShown: true }}
+        options={{
+          headerStyle: {
+            elevation: 0, // Removes shadow for Android
+            shadowOpacity: 0, // Removes shadow for iOS
+          },
+        }}
       />
-      <Stack.Screen name="WeighbridgesScreen" component={Weighbridges} />
+      <Stack.Screen name="WeighbridgesScreen" component={Weighbridges} 
+      options={{ headerShown: false}}/>
       <Stack.Screen
         name="WeighbridgesAddScreen"
         component={WeighbridgesAddScreen}
-        options={{ headerShown: true }}
+        options={{
+          headerStyle: {
+            elevation: 0, // Removes shadow for Android
+            shadowOpacity: 0, // Removes shadow for iOS
+          },
+        }}
       />
     </Stack.Navigator>
   );

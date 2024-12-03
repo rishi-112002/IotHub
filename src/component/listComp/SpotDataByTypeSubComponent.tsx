@@ -8,14 +8,36 @@ import { Colors2 } from "../../assets/color/Colors2";
 function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, item: any, navigate: any, navigation: any }) {
     const { item, handleDelete, height, navigate, navigation } = props
     return (
-        <View style={{ flex: 1  , height:height}}>
+        <View style={{ flex: 1, height: height }}>
             <View style={styles.spotContainer}>
                 <TouchableOpacity
                     onPress={() =>
                         navigation.navigate('SpotDetailScreen', { data: item })
                     }>
                     <View style={styles.row}>
-                        <Text style={styles.spotTitle}>{item.name}</Text>
+                        <View style={{ flex: 1, gap: 5 }}>
+
+                            <Text style={styles.spotTitle}>{item.name}</Text>
+                            <View style={{
+                                backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
+                                borderRadius: 20,
+                                width: item.active ? "28%" : "38%",
+                                paddingHorizontal:5
+                            }}>
+                                <Text
+                                    style={[
+                                        styles.statusText,
+                                        {
+                                            color: item.active ? '#15803D' : '#B91C1C',
+                                            // backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
+
+                                        },
+                                    ]}>
+                                    {item.active ? 'Connected' : 'Not Connected'}
+                                </Text>
+                            </View>
+                        </View>
+
                         <View style={styles.statusContainer}>
 
                             <View style={styles.iconContainer}>
@@ -31,13 +53,6 @@ function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, ite
                         </View>
                     </View>
 
-                    <Text
-                        style={
-                            [item.active ? styles.activeText : styles.inactiveText,
-                            { borderRadius: 20, paddingStart: 5 }]
-                        }>
-                        {item.active ? 'Active' : 'In-active'}
-                    </Text>
                     <View style={{ flexDirection: 'row', columnGap: 50, marginTop: 5 }}>
                         <View>
                             <Text style={styles.infoText}>ValidId </Text>
@@ -82,6 +97,10 @@ const styles = StyleSheet.create({
     },
     inactiveStatus: {
         backgroundColor: '#FEF2F2',
+    },
+    statusText: {
+        fontSize: fontSizes.smallText,
+        color: Colors2.SecondaryTextColor,
     },
     value: {
         fontSize: fontSizes.smallText,

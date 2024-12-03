@@ -1,4 +1,4 @@
-import {View, ScrollView, StyleSheet, Text} from 'react-native';
+import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import React from 'react';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
@@ -9,15 +9,12 @@ import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import GenericAddInputComponent from './GenericAddInputComponent';
 import GenericAddFunction from '../../CustomHooks/genericHooks/GenericAddFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
-import {useNetwork} from '../../contextApi/NetworkContex';
+import { useNetwork } from '../../contextApi/NetworkContex';
+import { Colors2 } from '../../assets/color/Colors2';
 
-// <<<<<<< HEAD
-// function GenericAddForm(props: {id: any}) {
-//   const {id} = props;
-// =======
-function GenericAddForm(props: {id: any}) {
-  const {id} = props;
-  const {isConnected} = useNetwork();
+function GenericAddForm(props: { id: any }) {
+  const { id } = props;
+  const { isConnected } = useNetwork();
   const {
     loader,
     smartControllerLoader,
@@ -49,7 +46,9 @@ function GenericAddForm(props: {id: any}) {
     toggleWeightBridgeEntrySwitch,
     handleFocus,
     editButtonOpacity,
-  } = GenericAddFunction({id});
+    handleNameChange,
+    handleDelayChange
+  } = GenericAddFunction({ id });
   if (smartControllerLoader || displayLoader || readerLoader || loader) {
     return (
       <View style={styles.loaderContainer}>
@@ -72,6 +71,8 @@ function GenericAddForm(props: {id: any}) {
                 handleInputChange={handleInputChange}
                 errors={errors}
                 id={id}
+                handleNameChange={handleNameChange}
+                handleDriverTagChange={handleDelayChange}
               />
               <View>
                 <GenericAddComponentDropDowns
@@ -85,6 +86,8 @@ function GenericAddForm(props: {id: any}) {
                   setModalVisible={setModalVisible}
                   id={id}
                   isActive={isActiveEnabled}
+                  error={errors}
+
                 />
               </View>
               <SwitchWithLabel
@@ -102,7 +105,7 @@ function GenericAddForm(props: {id: any}) {
                   errorMessage={errors.driverTagTimeOut}
                   keyboardType="numeric"
                   setTextInput={(value: any) =>
-                    handleInputChange('drivertagTimeOut', value)
+                    handleInputChange('driverTagTimeOut', value)
                   }
                   required={true}
                 />
@@ -122,7 +125,7 @@ function GenericAddForm(props: {id: any}) {
                   errorMessage={errors.sequrityDelay}
                   keyboardType="numeric"
                   setTextInput={(value: any) =>
-                    handleInputChange('sequirtyTagTimeOut', value)
+                    handleInputChange('sequrityTagTimeOut', value)
                   }
                   required={true}
                 />
@@ -147,13 +150,14 @@ function GenericAddForm(props: {id: any}) {
                   />
                   <CustomTextInput
                     style={styles.flexContainer}
-                    value={selectedDirection.name}
+                    value={selectedDirection.id}
                     onPress={() => handleFocus('direction')}
                     errorMessage={errors.direction}
                     label="WeighBridge Direction"
                     disable={false}
                     setTextInput={undefined}
                     required={true}
+                    type='dropdown'
                     editable={!isActiveEnabled || !id}
                   />
                 </View>
@@ -181,7 +185,7 @@ function GenericAddForm(props: {id: any}) {
           )}
         </ScrollView>
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
           <Text>No Internet Connection</Text>
         </View>
       )}
@@ -198,6 +202,7 @@ const styles = StyleSheet.create({
   },
   flexContainer: {
     flex: 1,
+    color: Colors2.PrimaryTextColor
   },
   contentContainer: {
     padding: 20,

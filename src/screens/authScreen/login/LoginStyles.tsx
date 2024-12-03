@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../../../assets/color/colors';
 function LoginStyles() {
   const styles = StyleSheet.create({
@@ -59,13 +59,11 @@ function LoginStyles() {
       paddingHorizontal: 17,
     },
     textContainer: {
-      alignItems: 'flex-end',
-      paddingHorizontal: 10,
-      paddingVertical: 10,
+      alignItems: 'center',
     },
     subText: {
       fontSize: 15,
-      color: colors.blueDarkest,
+      color: colors.AppPrimaryColor,
       fontWeight: '600',
     },
     signInStyle: {
@@ -76,8 +74,25 @@ function LoginStyles() {
       paddingBottom: '5%',
       paddingStart: 20,
     },
-    mainContainer: {flex: 1, backgroundColor: colors.AppPrimaryColor},
+    mainContainer: { flex: 1, backgroundColor: colors.AppPrimaryColor },
+
+
+    dividerContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: 20, // Adjust as needed
+    },
+    line: {
+      flex: 1,
+      height: 1,
+      backgroundColor: '#ccc', // Adjust color as needed
+    },
+    orText: {
+      marginHorizontal: 10, // Adjust spacing as needed
+      fontSize: 16,
+      color: '#666', // Adjust color as needed
+    },
   });
-  return {styles};
+  return { styles };
 }
 export default LoginStyles;

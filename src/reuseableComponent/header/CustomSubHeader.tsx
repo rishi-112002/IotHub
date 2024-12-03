@@ -10,7 +10,6 @@ import { Colors2 } from '../../assets/color/Colors2';
 function CustomSubHeader(props: { searchIconPath: any, onSearchPress: any, spotName: string, translateY: any, onPress: any, filterIconPath: any, onBackPress: any, filterCount: number }) {
   const { searchIconPath, onSearchPress, spotName, onPress, filterIconPath: iconPath, onBackPress, translateY, filterCount } = props;
 
-  console.log('filterCount in header', filterCount);
   return (
     <Animated.View
       style={{

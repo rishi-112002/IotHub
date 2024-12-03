@@ -45,7 +45,7 @@ function GenericSpot() {
       <CustomHeader
         buCode={undefined}
         userLogo={'account-circle'}
-        title={'GenericSpot'}
+        title={'Generic Spot'}
         translateY={translateY}
         onSearchPress={handleSearchPress}
         onFilterPress={toggleFilterMenu}

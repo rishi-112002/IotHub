@@ -8,7 +8,7 @@ export type AppNavigationParams = {
   Drawer: { screen: string };
 
   // Home Navigation
-  HomeScreen: { types: string };
+  HomeScreen: { scrollY: any, headerTranslate: any };
   EventLogScreen: { baseUrls: string | null; spotName: string, data: any };
   SpotDetailsScreen: { baseUrls: string | null; spotName: string };
   SpotDetailScreen: { data: any };

@@ -17,7 +17,7 @@ function CustomMenu(props: { baseUrl: any, spotName: any }) {
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
 
     return (
-        <Menu style={{borderRadius:20}}>
+        <Menu style={{ borderRadius: 20 }}>
             <MenuTrigger style={styles.triggerWrapper}>
                 <Icon name="more-vert" size={24} color={colors.gray} />
             </MenuTrigger>

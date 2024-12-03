@@ -9,7 +9,7 @@ export const weighBridgeAdd = createAsyncThunk(
     { rejectWithValue },
   ) => {
     const { weighData, token, buCode } = params;
-    const fullUrl = ' https://13.235.84.67/iv1/spots/create';
+    const fullUrl = 'https://13.235.84.67/iv1/spots/create';
 
     try {
       const { data } = await axios.post(fullUrl, weighData, {
@@ -121,46 +121,46 @@ export const WeighBridegeSpotDataEdit = createAsyncThunk('weighBridegeSpotData',
 export const UpdateWeighBridgeSpot = createAsyncThunk(
   'spot/updateWeighBridgeSpot',
   async (params: { weighData: any; baseUrls: string | null; token: any, buCode: any }, { rejectWithValue }) => {
-      const { weighData, baseUrls, token, buCode } = params;
-      try {
-          const { data } = await axios.post('https://13.235.84.67/iv1/spots/update', weighData, {
-              headers: {
-                  'Content-Type': 'application/json',
-                  'current-bu': buCode,
-                  'authorization': `Bearer ${token}`,
-                  'client-name': 'iothub',
-              },
-          });
+    const { weighData, baseUrls, token, buCode } = params;
+    try {
+      const { data } = await axios.post('https://13.235.84.67/iv1/spots/update', weighData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'current-bu': buCode,
+          'authorization': `Bearer ${token}`,
+          'client-name': 'iothub',
+        },
+      });
 
 
-          if (!data) {
-              return rejectWithValue('update failed: Invalid data or server error.');
-          }
-          return data;
-      } catch (err: any) {
-
-          // Check if the error response is available
-          if (err.response) {
-              // Server returned a response (4xx or 5xx)
-              const status = err.response.status;
-              const message = err.response.data?.message || 'An error occurred during the upload.';
-
-              // Log the exact error response
-              // console.error(`update failed with status ${status}: ${message}`);
-
-              // Return the specific error message from the server
-              return rejectWithValue(`update error: ${message}`);
-
-          } else if (err.request) {
-              // The request was made but no response was received (e.g., network issues)
-              // console.error('No response received from the server:', err.request);
-              return rejectWithValue('No response from the server. Please check your network connection.');
-
-          } else {
-              // Something happened in setting up the request that triggered an Error
-              // console.error('Error in request setup:', err.message);
-              return rejectWithValue(`update error: ${err.message}`);
-          }
+      if (!data) {
+        return rejectWithValue('update failed: Invalid data or server error.');
       }
+      return data;
+    } catch (err: any) {
+
+      // Check if the error response is available
+      if (err.response) {
+        // Server returned a response (4xx or 5xx)
+        const status = err.response.status;
+        const message = err.response.data?.message || 'An error occurred during the upload.';
+
+        // Log the exact error response
+        // console.error(`update failed with status ${status}: ${message}`);
+
+        // Return the specific error message from the server
+        return rejectWithValue(`update error: ${message}`);
+
+      } else if (err.request) {
+        // The request was made but no response was received (e.g., network issues)
+        // console.error('No response received from the server:', err.request);
+        return rejectWithValue('No response from the server. Please check your network connection.');
+
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        // console.error('Error in request setup:', err.message);
+        return rejectWithValue(`update error: ${err.message}`);
+      }
+    }
   }
 );
