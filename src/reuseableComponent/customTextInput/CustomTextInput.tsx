@@ -1,5 +1,14 @@
-import React, { useMemo, useState } from 'react';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity, ViewStyle, TextStyle, TextInputProps } from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+  TextStyle,
+  TextInputProps,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
@@ -44,7 +53,10 @@ function CustomTextInput({
   const handleBlur = () => setIsFocused(false);
 
   const labelStyle = useMemo(() => {
-    return [styles.label, (isFocused || value) ? styles.labelFocused : styles.labelBlurred];
+    return [
+      styles.label,
+      isFocused || value ? styles.labelFocused : styles.labelBlurred,
+    ];
   }, [isFocused, value]);
 
   const inputContainerStyle = useMemo(() => {
@@ -54,28 +66,28 @@ function CustomTextInput({
     ];
   }, [isFocused]);
 
+
   return (
     <View style={[styles.container, containerStyle]}>
       {label && (
         <Text style={labelStyle}>
           {label}
-          <Text style={{ color: colors.redDarkest }}> {required && '*'}</Text>
+          <Text style={{color: colors.redDarkest}}> {required && '*'}</Text>
         </Text>
       )}
       <TouchableOpacity
-
         style={[{ flexDirection: "row", marginTop: 5 }, inputContainerStyle]}
+
         onPress={type === 'dropdown' && editable ? onPress : undefined} // Use onPress for dropdown only
         disabled={type === 'input' || editable} // Disable only if it's input or editable
-        activeOpacity={type === 'dropdown' ? 0.7 : 1}
-      >
+        activeOpacity={type === 'dropdown' ? 0.7 : 1}>
         <TextInput
           style={{ fontSize: 20 }}
           onFocus={editable ? handleFocus : undefined}
           onBlur={editable ? handleBlur : undefined}
-          onChangeText={(text) => setTextInput(text)}
+          onChangeText={text => setTextInput(text)}
           placeholder={placeholder}
-          placeholderTextColor="#8292B4"
+          placeholderTextColor="black"
           value={value}
           editable={type === 'input' && editable} // Allow editing only if type is 'input' and editable
           {...rest}
@@ -84,7 +96,7 @@ function CustomTextInput({
           <Icon
             name={iconName}
             size={24}
-            color={isFocused ? colors.AppPrimaryColor : '#666'}
+            color={isFocused ? colors.AppPrimaryColor : 'black'}
             style={styles.icon}
             onPress={handleVisibility}
           />
@@ -99,7 +111,9 @@ function CustomTextInput({
           />
         )}
       </TouchableOpacity>
-      <View style={isFocused ? styles.underlineFocused : styles.underlineBlurred} />
+      <View
+        style={isFocused ? styles.underlineFocused : styles.underlineBlurred}
+      />
       {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
     </View>
   );

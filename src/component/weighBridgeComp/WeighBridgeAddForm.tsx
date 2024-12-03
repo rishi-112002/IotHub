@@ -80,7 +80,7 @@ function WeighBridgeAddForm(props: { id: any }) {
     </View>;
   }
   return (
-    <View style={{flex:1}}>
+    <View style={{ flex: 1 }}>
       {isConnected ? (
         <View style={{ flex: 1 }}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -213,7 +213,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                     style={styles.flexInput}
                     editable={true}
                     errorMessage={errors.driverTagTimeOut}
-                    keyboardType="numeric"                    
+                    keyboardType="numeric"
                     setTextInput={setDriverTagTimeOut}
                     required={true}
                     type="input"
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
   },
   flexInput: {
     flex: 1,
-    color:Colors2.PrimaryTextColor
+    color: Colors2.PrimaryTextColor
   },
   modalContainer: {
     backgroundColor: 'pink',

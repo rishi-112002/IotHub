@@ -1,9 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
-/* RfidListComponent.tsx */
 import React, { useCallback } from 'react';
-import { View, Animated, FlatList } from 'react-native';
+import { View, Animated, FlatList, StyleSheet, Dimensions } from 'react-native';
 import RFIDItemComponent from './RFIDItemComponent';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+export const getResponsiveWidth = (percentage: number) =>
+  (SCREEN_WIDTH * percentage) / 100;
+export const getResponsiveHeight = (percentage: number) =>
+  (SCREEN_HEIGHT * percentage) / 100;
 
 interface RfidListComponentProps {
   ListData: any[];
@@ -28,43 +32,50 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
   buttonVisible,
   handleScroll,
 }) => {
-  // Memoized renderSpot for better performance
-  const renderSpot = useCallback(
-    ({ item }:any) => <RFIDItemComponent handleDelete={handleDelete} reader={item} />,
-    [handleDelete]
+  const renderItem = useCallback(
+    ({ item }: any) => (
+      <RFIDItemComponent handleDelete={handleDelete} reader={item} />
+    ),
+    [handleDelete],
   );
 
-  // Optimized keyExtractor
-  const keyExtractor = useCallback((item: { id:string}) => item.id, []);
+  const keyExtractor = useCallback((item: { id: string }) => item.id, []);
+
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       {Loader ? (
         <SequentialBouncingLoader />
       ) : (
         <AnimatedFlatList
           data={ListData}
           keyExtractor={keyExtractor}
-          renderItem={renderSpot}
+          renderItem={renderItem}
           contentContainerStyle={{ padding: buttonVisible ? 8 : 5 }}
           onScroll={handleScroll}
           onRefresh={loadRfidList}
           refreshing={refreshing}
           removeClippedSubviews={true}
-          initialNumToRender={20} // Increase the number of items initially rendered
-          maxToRenderPerBatch={10} // Number of items rendered per batch
-          windowSize={15} // Increase window size to keep more items in memory
-          getItemLayout={(data, index) => ({
-            length: 90,
-            offset: 90 * index,
-            index,
-          })}
-          updateCellsBatchingPeriod={30} // Reduce lag in scrolling
-          scrollEventThrottle={16} // For smoother scroll handling
+          windowSize={getResponsiveHeight(100)}
+          // initialNumToRender={100}
+          // maxToRenderPerBatch={100}
+          // getItemLayout={(data, index) => ({
+          //   length: 100,
+          //   offset: 100 * index,
+          //   index,
+          // })}
+          updateCellsBatchingPeriod={30}
+          scrollEventThrottle={16}
         />
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default React.memo(RfidListComponent);
