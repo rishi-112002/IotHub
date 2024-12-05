@@ -21,7 +21,8 @@ import {getResponsiveHeight} from '../../component/RFIDComponent/RfidListCompone
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import SpotList from '../../component/SpotListComponent/SpotList';
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-function HomeScreen() {
+function HomeScreen({route}: {route: any}) {
+  const {scrollY, headerTranslate} = route.params;
   const {
     Loader,
     modelShow,
@@ -110,10 +111,10 @@ function HomeScreen() {
                   {
                     marginBottom:
                       isSearchVisible && spotTypeConnectivity === 'all'
-                        ? getResponsiveHeight(7)
+                        ? getResponsiveHeight(10)
                         : spotTypeConnectivity === 'all'
                         ? getResponsiveHeight(3)
-                        : getResponsiveHeight(10),
+                        : getResponsiveHeight(9),
                   },
                 ]}>
                 <View style={styles.listWrapper}>
@@ -123,13 +124,13 @@ function HomeScreen() {
                     </Text>
                   ) : (
                     <>
-                      <View>
+                      <View style={{marginBottom: getResponsiveHeight(12)}}>
                         <SpotList
                           spotData={filteredSpots}
                           refreshing={refreshing}
                           loadRfidList={loadSpotList}
                           handleScroll={handleScroll}
-                          onScroll={handleScroll}
+                          // onScroll={handleScroll}
                           contentContainerStyle={undefined}
                         />
                       </View>
