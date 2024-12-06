@@ -22,9 +22,10 @@ type EventLogItemProps = {
 
 };
 
-const EventLogItem = memo(({ item, isSelected, onToggle }: EventLogItemProps) => {
+const EventLogItem = React.memo(({ item, isSelected, onToggle }: EventLogItemProps) => {
 
-  const formattedDetails = useMemo(() => JSON.stringify(item.details, null, 2), [item.details]);
+  const formattedDetails = JSON.stringify(item.details, null, 2);
+  // console.log("Rendered EventLogItem for: ", item.id);
   return (
     <View style={{ flex: 1, }}>
       {/* Card Container */}

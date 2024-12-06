@@ -5,7 +5,6 @@ import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
-// import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
 
 type EventLogItemType = {
   id: string;
@@ -15,7 +14,6 @@ type EventLogItemType = {
   details: any;
 
 };
-const ITEM_HEIGHT = 90;
 type EventLogsListProps = {
   data: EventLogItemType[];
   setModal: (value: boolean) => void;
@@ -25,8 +23,6 @@ type EventLogsListProps = {
 };
 const EventLogsList: React.FC<EventLogsListProps> = ({
   data,
-  setModal,
-  setRequestData,
   onScroll,
   scrollEnabled
 }) => {
@@ -63,6 +59,9 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
           keyExtractor={keyExtractor}
           onScroll={onScroll}
           scrollEnabled={scrollEnabled}
+          initialNumToRender={10}
+          maxToRenderPerBatch={5}
+          windowSize={5}
         />
       ) : (
         <View style={styles.emptyContainer}>

@@ -132,23 +132,11 @@ function CustomDrawerContent() {
                         onPress={() => navigation.navigate("Drawer", { screen: 'RfidScreenNavigation' })}
                     />
 
-                    {/* Settings */}
-               
-                    {/* About */}
-                    {/* <DrawerItem
-                        label={() => (
-                            <View style={styles.itemContainer}>
-                                <MaterialIcons name="info" size={20} color={colors.darkblack} />
-                                <Text style={styles.itemText}>About</Text>
-                            </View>
-                        )}
-                        onPress={() => console.log('About')}
-                    /> */}
                     <DrawerItem
                         label={() => (
                             <View style={styles.itemContainer}>
                                 <MaterialIcons name="logout" size={20} color={colors.redBase} />
-                                <Text style={[styles.itemText, { color: colors.redBase }]}>LogOut</Text>
+                                <Text style={[styles.itemText, { color: colors.redBase }]}>Log Out</Text>
                             </View>
                         )}
                         onPress={handleLogout}

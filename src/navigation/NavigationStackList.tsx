@@ -1,4 +1,3 @@
-type FilterOption = 'connected' | 'not-connected' | 'all';
 export type AppNavigationParams = {
 
   // Root Stack Screens

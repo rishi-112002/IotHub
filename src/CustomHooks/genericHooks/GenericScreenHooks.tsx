@@ -6,18 +6,19 @@ import {
   useContext,
   useRef,
 } from 'react';
-import {useSelector} from 'react-redux';
-import {useBackHandler} from '@react-native-community/hooks';
-import {RootState, store} from '../../reducer/Store';
+import { useSelector } from 'react-redux';
+import { useBackHandler } from '@react-native-community/hooks';
+import { RootState, store } from '../../reducer/Store';
 import {
   DeleteGenericSpot,
   GenericSpotsData,
 } from '../../reducer/genericSpot/uploadGenericDataAction';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
-import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
-import {Animated} from 'react-native';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { Animated } from 'react-native';
+import { resetDeleteStatus } from '../../reducer/genericSpot/uploadGenericDataReducer';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 const GenericScreenHooks = () => {
@@ -37,12 +38,15 @@ const GenericScreenHooks = () => {
   const GenericSpots = useSelector(
     (state: RootState) => state.uploadGeneric.GenericSpots,
   );
+  const deleteStatus = useSelector((state: RootState) => state.uploadGeneric.deleteStatus);
+
+
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onHandlePress = () => {
-    navigation.navigate('GenericSpotAddScreen', {id: undefined});
+    navigation.navigate('GenericSpotAddScreen', { id: undefined });
   };
-  const {genericTypeConnectivity, setGenericTypeConnectivity} = useContext(
+  const { genericTypeConnectivity, setGenericTypeConnectivity } = useContext(
     DataByConnectivityContext,
   );
   const GenericConnectedSpot = GenericSpots.filter(
@@ -52,6 +56,7 @@ const GenericScreenHooks = () => {
     (item: any) => item.active === false,
   );
   const Loader = useSelector((state: RootState) => state.uploadGeneric.loader);
+  const deleteError = useSelector((state: RootState) => state.uploadGeneric.deleteError);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const scrollY = new Animated.Value(0);
@@ -106,13 +111,12 @@ const GenericScreenHooks = () => {
     setIsVisible(true);
   }, []);
 
+
   const confirmDelete = useCallback(async () => {
     if (!deleteId) {
       return;
     }
     setIsVisible(false);
-
-    try {
       store.dispatch(
         DeleteGenericSpot({
           baseUrl: baseUrls,
@@ -121,15 +125,6 @@ const GenericScreenHooks = () => {
           token: token,
         }),
       );
-      //   getGenericData(); // Re-fetch data after delete action
-      if (!Loader) {
-        CustomToast('success', 'Deleted successfully');
-      }
-    } catch (error) {
-      CustomToast('error', 'Failed to delete the spot. Please try again.');
-    } finally {
-      setDeleteId(null);
-    }
   }, [deleteId, baseUrls, buCode, token, Loader]);
 
   const spotsData = GenericSpots.filter((spot: any) => {
@@ -139,8 +134,8 @@ const GenericScreenHooks = () => {
       (genericTypeConnectivity === 'not-connected' && !spot?.active);
     const matchesSearch = searchQuery
       ? Object.values(spot).some(value =>
-          String(value).toLowerCase().includes(searchQuery.toLowerCase()),
-        )
+        String(value).toLowerCase().includes(searchQuery.toLowerCase()),
+      )
       : true;
     return matchesFilter && matchesSearch;
   });
@@ -160,6 +155,18 @@ const GenericScreenHooks = () => {
     setFilterCount(1);
     setModelShow(false);
   };
+  useEffect(() => {
+    if (deleteStatus !== "idle") {
+      if (deleteStatus === "succeeded") {
+        store.dispatch(resetDeleteStatus())
+        CustomToast('success', 'Deleted successfully');
+      } else if (deleteStatus === "failed") {
+        store.dispatch(resetDeleteStatus())
+        CustomToast('error', `Failed to delete: ${deleteError}`);
+      }
+    }
+  }, [Loader, deleteError, deleteId]);
+
   useEffect(() => {
     if (genericTypeConnectivity !== 'all') {
       setFilterBadgeVisible(true);
