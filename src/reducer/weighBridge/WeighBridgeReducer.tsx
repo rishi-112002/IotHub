@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DeleteWeighBridgeSpot, UpdateWeighBridgeSpot, WeighBridegeSpotDataEdit, weighBridgeAdd, WeighBridgeSpotData } from './WeighBridgeAction';
+import { act } from 'react';
 
 interface weighBridgeSpot {
     id: number;
@@ -92,6 +93,7 @@ interface UploadState {
     deleteStatus: 'idle' | 'loading' | 'succeeded' | 'failed',
     weighBridgeSpot: weighBridgeSpot
     updateStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+    deleteError: any
 
 }
 
@@ -105,7 +107,8 @@ const initialState: UploadState = {
     response: null,
     deleteStatus: 'idle',
     weighBridgeSpot: initialweighBridgeSpot,
-    updateStatus: 'idle'
+    updateStatus: 'idle',
+    deleteError: null
 };
 
 export const WeighBridgeSlice = createSlice({
@@ -116,7 +119,7 @@ export const WeighBridgeSlice = createSlice({
             state.status = 'idle';  // Reset the status to 'idle'
         },
         resetDeleteStatus: (State) => {
-            State.status = 'idle';
+            State.deleteStatus = 'idle';
         },
         resetUpadteStatus: state => {
             state.updateStatus = 'idle'; // Reset the status to 'idle'
@@ -166,21 +169,24 @@ export const WeighBridgeSlice = createSlice({
                 state.genericData = [];
 
             })
-            .addCase(DeleteWeighBridgeSpot.fulfilled, (state, action) => {
+            .addCase(DeleteWeighBridgeSpot.fulfilled, (state, action: any) => {
                 state.response = action.payload;
                 state.loader = false;
+                state.deleteError = null
                 const deletedSpotId = action.payload?.id; // Modify this according to your payload structure
                 state.deleteStatus = 'succeeded';
                 // Filter out the deleted spot from WeighBridgeSpots
                 state.WeighBridgeSpots = state.WeighBridgeSpots.filter(spot => spot.id !== deletedSpotId);
             })
-            .addCase(DeleteWeighBridgeSpot.rejected, (state) => {
+            .addCase(DeleteWeighBridgeSpot.rejected, (state, action: any) => {
                 state.response = [];
+                state.deleteError = action.payload.message
                 state.deleteStatus = 'failed';
                 state.loader = false;
             })
             .addCase(DeleteWeighBridgeSpot.pending, (state) => {
                 state.deleteStatus = 'loading';
+                state.deleteError = null
                 state.loader = true;
 
             })
@@ -224,5 +230,5 @@ export const WeighBridgeSlice = createSlice({
             })
     },
 });
-export const { resetStatus, resetDeleteStatus , resetUpadteStatus } = WeighBridgeSlice.actions;
+export const { resetStatus, resetDeleteStatus, resetUpadteStatus } = WeighBridgeSlice.actions;
 

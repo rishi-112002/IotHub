@@ -12,8 +12,11 @@ import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
+// <<<<<<< HEAD
 import {getResponsiveHeight} from '../RFIDComponent/RfidListComponent';
 // import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
+// =======
+// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
 
 type EventLogItemType = {
   id: string;
@@ -22,7 +25,6 @@ type EventLogItemType = {
   createdAt: string;
   details: any;
 };
-const ITEM_HEIGHT = 90;
 type EventLogsListProps = {
   data: EventLogItemType[];
   setModal: (value: boolean) => void;
@@ -32,8 +34,6 @@ type EventLogsListProps = {
 };
 const EventLogsList: React.FC<EventLogsListProps> = ({
   data,
-  setModal,
-  setRequestData,
   onScroll,
   scrollEnabled,
 }) => {

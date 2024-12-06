@@ -1,17 +1,17 @@
-import {useEffect, useState, useCallback, useMemo, useContext} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import { useEffect, useState, useCallback, useMemo, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Alert,
   Animated,
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
-import {RootState, store} from '../../reducer/Store';
-import {GetSpotData} from '../../reducer/spotData/spotDataAction';
-import {useBackHandler} from '@react-native-community/hooks';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
-import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
+import { RootState, store } from '../../reducer/Store';
+import { GetSpotData } from '../../reducer/spotData/spotDataAction';
+import { useBackHandler } from '@react-native-community/hooks';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 export const SpotListHook = () => {
@@ -20,7 +20,7 @@ export const SpotListHook = () => {
   const baseUrl = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
-  const {spotTypeConnectivity, setSpotTypeConnectivity} = useContext(
+  const { spotTypeConnectivity, setSpotTypeConnectivity } = useContext(
     DataByConnectivityContext,
   );
   const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
@@ -38,7 +38,7 @@ export const SpotListHook = () => {
   // Load RFID list
   const loadSpotList = useCallback(async () => {
     setRefreshing(true);
-    store.dispatch(GetSpotData({baseUrl: baseUrl}));
+    store.dispatch(GetSpotData({ baseUrl: baseUrl }));
     setRefreshing(false);
   }, [baseUrl]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -50,7 +50,7 @@ export const SpotListHook = () => {
 
   useEffect(() => {
     if (LError) {
-      Alert.alert('Error', LError, [{text: 'OK'}], {cancelable: false});
+      Alert.alert('Error', LError, [{ text: 'OK' }], { cancelable: false });
       // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
     }
   }, [LError]);
@@ -97,8 +97,8 @@ export const SpotListHook = () => {
       (spotTypeConnectivity === 'not-connected' && !spot?.active);
     const matchesSearch = searchQuery
       ? Object.values(spot).some(value =>
-          String(value).toLowerCase().includes(searchQuery.toLowerCase()),
-        )
+        String(value).toLowerCase().includes(searchQuery.toLowerCase()),
+      )
       : true;
     return matchesFilter && matchesSearch;
   });
@@ -111,8 +111,8 @@ export const SpotListHook = () => {
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 110);
   const translateY = diffClamp.interpolate({
-    inputRange: [0, 110],
-    outputRange: [0, -110],
+    inputRange: [0, 200],
+    outputRange: [0, -200],
   });
   const paddingTopAnimated = scrollY.interpolate({
     inputRange: [0, 110],

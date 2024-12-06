@@ -48,7 +48,7 @@ export const uploadGenericData = createAsyncThunk(
         }
     }
 );
-export const GenericSpotsData = createAsyncThunk('genericSpotsData', async (params: { baseUrl: string | null, buCode: string | null, token: string | null }) => {
+export const GenericSpotsData = createAsyncThunk('genericSpotsData', async (params: { baseUrl: string | null, buCode: string | null, token: string | null },) => {
     const { baseUrl, buCode, token } = params;
     const fullUrl = `${baseUrl}${SpotDataByType}`;
 
@@ -62,24 +62,42 @@ export const GenericSpotsData = createAsyncThunk('genericSpotsData', async (para
     } catch (err) {
     }
 })
-export const DeleteGenericSpot = createAsyncThunk('deleteSpot', async (params: { baseUrl: any, id: string, bucode: string | null, token: string | null }) => {
-    const { id, bucode, token } = params
-    const fullUrl = `https://13.235.84.67${deleteSpots}${id}`
-    try {
+export const DeleteGenericSpot = createAsyncThunk(
+    'deleteSpot',
+    async (params: { baseUrl: any; id: string; bucode: string | null; token: string | null }, { rejectWithValue }) => {
+        const { id, bucode, token } = params;
+        const fullUrl = `https://13.235.84.67${deleteSpots}${id}`;
+        console.log("id in action", id , fullUrl)
 
-        const { data } = await axios.delete(fullUrl, {
-            headers: {
-                'Content-Type': 'application/json',
-                'current-bu': bucode,
-                'authorization': `Bearer ${token}`,
-                'client-name': 'iothub',
+        try {
+            const { data } = await axios.delete(fullUrl, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'current-bu': bucode,
+                    'authorization': `Bearer ${token}`,
+                    'client-name': 'iothub',
+                },
+            });
+            
+            return { data, id }; // Success: Return data and ID
+        } catch (err: any) {
+            if (err.response) {
+                // Server returned an error response
+                return rejectWithValue({
+                    message: err.response.data?.message || "Unknown error occurred",
+                    status: err.response.status,
+                });
+            } else if (err.request) {
+                // No response received
+                return rejectWithValue({ message: "No response from server", status: null });
+            } else {
+                // Error during request setup
+                return rejectWithValue({ message: err.message, status: null });
             }
-        },);
-        return { data, id };
-    } catch (err) {
-
+        }
     }
-})
+);
+
 
 
 export const GenericSpotData = createAsyncThunk('genericSpotData', async (params: { baseUrl: string | null, buCode: string | null, token: string | null, id: any }) => {

@@ -1,41 +1,42 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Animated,
   StyleSheet,
   Text,
   View,
-  FlatList,
   KeyboardAvoidingView,
 } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
-import {SpotListHook} from '../../CustomHooks/SpotHook/SpotHook';
+import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
-import {useNetwork} from '../../contextApi/NetworkContex';
-import {getResponsiveHeight} from '../../component/RFIDComponent/RfidListComponent';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { useNetwork } from '../../contextApi/NetworkContex';
+import { getResponsiveHeight } from '../../component/RFIDComponent/RfidListComponent';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SpotList from '../../component/SpotListComponent/SpotList';
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-function HomeScreen({route}: {route: any}) {
-  const {scrollY, headerTranslate} = route.params;
+// <<<<<<< HEAD
+// const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+// function HomeScreen({route}: {route: any}) {
+//   const {scrollY, headerTranslate} = route.params;
+// =======
+function HomeScreen({ route }: { route: any }) {
+// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
   const {
     Loader,
     modelShow,
     filteredSpots,
     noResults,
     handleFilterPress,
-    handleScroll,
     loadSpotList,
     refreshing,
     toggleFilterMenu,
     buCode,
     clearSearch,
-    translateY,
     searchQuery,
     setSearchQuery,
     spotTypeConnectivity,
@@ -45,8 +46,8 @@ function HomeScreen({route}: {route: any}) {
     filterBadgeVisible,
   } = SpotListHook();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const {isConnected} = useNetwork();
-  const [isAllDataRendered, setIsAllDataRendered] = useState(false);
+  const { isConnected } = useNetwork();
+  const { scrollY, headerTranslate, searBarTranslate } = route.params;
   const handleSearchPress = () => {
     setIsSearchVisible(!isSearchVisible);
   };
@@ -54,12 +55,12 @@ function HomeScreen({route}: {route: any}) {
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <GestureHandlerRootView>
         <Animated.View
-          style={[styles.headerContainer, {paddingTop: translateY}]}>
+          style={[styles.headerContainer, { paddingTop: headerTranslate }]}>
           <CustomHeader
             buCode={buCode}
             userLogo="account-circle"
-            title="LiveSpot"
-            translateY={translateY}
+            title="Spots"
+            translateY={headerTranslate}
             onSearchPress={handleSearchPress}
             onFilterPress={toggleFilterMenu}
             searchIcon={require('../../assets/icons/search.png')}
@@ -68,7 +69,7 @@ function HomeScreen({route}: {route: any}) {
           />
           {/* Search */}
           <Animated.View
-            style={[styles.searchBarContainer, {transform: [{translateY}]}]}>
+            style={[styles.searchBarContainer, { paddingTop: searBarTranslate, zIndex: 1000 }]}>
             {/* <View style={styles.searchBarContainer}> */}
             {isSearchVisible && (
               <SearchBar
@@ -78,12 +79,9 @@ function HomeScreen({route}: {route: any}) {
                 placeholder={undefined}
               />
             )}
-            {/* </Animated.View> */}
-            {/* Filter  */}
-            {/* <Animated.View style={[{marginTop: -10}, {transform: [{translateY}]}]}> */}
             {filterBadgeVisible && spotTypeConnectivity !== 'all' && (
               <ScrollableBadges
-                badges={[{key: 'Connectivity', value: spotTypeConnectivity}]}
+                badges={[{ key: 'Connectivity', value: spotTypeConnectivity }]}
                 filterCount={filterCount}
                 setFilterCount={setFilterCount}
                 setConnectivity={setSpotTypeConnectivity}
@@ -107,14 +105,19 @@ function HomeScreen({route}: {route: any}) {
               <Animated.View
                 style={[
                   styles.listWrapper,
-                  {transform: [{translateY: translateY}]},
+                  { transform: [{ translateY: headerTranslate }] },
                   {
                     marginBottom:
                       isSearchVisible && spotTypeConnectivity === 'all'
                         ? getResponsiveHeight(10)
                         : spotTypeConnectivity === 'all'
+// <<<<<<< HEAD
                         ? getResponsiveHeight(3)
                         : getResponsiveHeight(9),
+// =======
+//                           ? getResponsiveHeight(3)
+//                           : getResponsiveHeight(10),
+// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
                   },
                 ]}>
                 <View style={styles.listWrapper}>
@@ -129,7 +132,10 @@ function HomeScreen({route}: {route: any}) {
                           spotData={filteredSpots}
                           refreshing={refreshing}
                           loadRfidList={loadSpotList}
-                          handleScroll={handleScroll}
+                          handleScroll={Animated.event(
+                            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                            { useNativeDriver: false }
+                          )}
                           // onScroll={handleScroll}
                           contentContainerStyle={undefined}
                         />

@@ -11,11 +11,10 @@ import { AppNavigationParams } from '../../navigation/NavigationStackList';
 import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Animated } from 'react-native';
+import { resetDeleteStatus } from '../../reducer/weighBridge/WeighBridgeReducer';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 function WeighBridgeScreenHooks() {
-  // const [errorAlertVisible, setErrorAlertVisible] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState('');
   const [filterBadgeVisible, setFilterBadgeVisible] = useState(false);
   const [filterCount, setFilterCount] = useState(0);
 
@@ -33,6 +32,8 @@ function WeighBridgeScreenHooks() {
     (state: RootState) => state.weighBridge.WeighBridgeSpots,
   );
   const Loader = useSelector((state: RootState) => state.weighBridge.loader);
+  const deleteStatus = useSelector((state: RootState) => state.weighBridge.deleteStatus);
+  const deleteError = useSelector((state: RootState) => state.weighBridge.deleteError);
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const buCode = useSelector((state: RootState) => state.authentication.buCode);
   const token = useSelector((state: RootState) => state.authentication.token);
@@ -43,9 +44,6 @@ function WeighBridgeScreenHooks() {
   const [isVisible, setIsVisible] = useState(false);
 
   const getWeighBridgeData = useCallback(() => {
-    // setSuccessAlertVisible(false); // Reset success alert before fetching data
-    // setErrorAlertVisible(false); // Reset error alert before fetching data
-    // setErrorMessage('');
     store.dispatch(
       WeighBridgeSpotData({
         baseUrl: baseUrls,
@@ -70,22 +68,15 @@ function WeighBridgeScreenHooks() {
       return;
     }
     setIsVisible(false);
-    try {
-      store.dispatch(
-        DeleteWeighBridgeSpot({
-          baseUrl: baseUrls,
-          id: deleteId,
-          buCode: buCode,
-          token: token,
-        }),
-      );
-      // genericData(); // Re-fetch data after delete action
-      CustomToast('success', 'Deleted successfully');
-    } catch (error) {
-      CustomToast('error', 'Failed to delete the spot. Please try again.');
-    } finally {
-      setDeleteId(null);
-    }
+
+    store.dispatch(
+      DeleteWeighBridgeSpot({
+        baseUrl: baseUrls,
+        id: deleteId,
+        buCode: buCode,
+        token: token,
+      }),
+    );
   }, [deleteId, baseUrls, buCode, token]);
 
 
@@ -108,6 +99,19 @@ function WeighBridgeScreenHooks() {
   // Animation for CustomAlert modal
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
+
+  useEffect(() => {
+    if (deleteStatus !== "idle") {
+      if (deleteStatus === "succeeded") {
+        CustomToast('success', 'Deleted successfully');
+        store.dispatch(resetDeleteStatus())
+      } else if (deleteStatus === "failed") {
+        CustomToast('error', `Failed to delete: ${deleteError}`);
+        store.dispatch(resetDeleteStatus())
+      }
+    }
+  }, [Loader,
+    deleteError, deleteId]);
   // Trigger the fade-in effect when `isVisible` changes to true
   useEffect(() => {
     if (isVisible) {
@@ -157,7 +161,6 @@ function WeighBridgeScreenHooks() {
   const handleFilterPress = (selectedFilter: FilterOption) => {
     setWeighBridgeTypeConnectivity(selectedFilter);
     setFilterCount(1)
-    // setSearchQuery('');
     setModelShow(false);
   };
 
@@ -192,7 +195,7 @@ function WeighBridgeScreenHooks() {
     handleFilterPress,
     weighBridgeTypeConnectivity,
     filterBadgeVisible,
-    setFilterCount, 
+    setFilterCount,
     filterCount,
     setWeighBridgeTypeConnectivity
 

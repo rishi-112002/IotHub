@@ -27,6 +27,7 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
   const OnHandlePress = useCallback((item: any) => {
     navigation.navigate('SpotDetailScreen', { data: item });
   }, [navigation]);
+  console.log("item  inspot item" , item.name)
   return (
     <Animated.View style={styles.spotContainer}>
       <TouchableOpacity

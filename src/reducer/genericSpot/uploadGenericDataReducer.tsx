@@ -89,7 +89,8 @@ const initialGenericSpot: GenericSpot = {
 interface UploadState {
   genericData: any;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
+  error: any;
+  deleteError: any
   GenericSpots: any[];
   loader: boolean;
   GenericSpot: GenericSpot,
@@ -106,6 +107,7 @@ const initialState: UploadState = {
   GenericSpots: [],
   loader: false,
   deleteStatus: 'idle',
+  deleteError: null,
   GenericSpot: initialGenericSpot,
   updateStatus: 'idle'
 };
@@ -163,23 +165,27 @@ export const UploadGenericSlice = createSlice({
       });
     builder.addCase(DeleteGenericSpot.fulfilled, (state, action) => {
       state.response = action.payload;
-      state.loader = false;
-      const deletedSpotId = action.payload?.id; // Modify this according to your payload structure
+      console.log("fulfiled of delete")
 
+      state.loader = false;
+      state.deleteError = null;
+      state.deleteStatus = 'succeeded';
+      const deletedSpotId = action.payload?.id; // Modify this according to your payload structure
       // Filter out the deleted spot from WeighBridgeSpots
       state.GenericSpots = state.GenericSpots.filter(
         spot => spot.id !== deletedSpotId,
       );
-
-      state.deleteStatus = 'succeeded';
     });
-    builder.addCase(DeleteGenericSpot.rejected, state => {
+    builder.addCase(DeleteGenericSpot.rejected, (state, action: any) => {
+      console.log("rejected of delete", action.payload.message)
       state.response = [];
       state.deleteStatus = 'failed';
+      state.deleteError = action.payload.message;
       state.loader = false;
     });
-    builder.addCase(DeleteGenericSpot.pending, state => {
+    builder.addCase(DeleteGenericSpot.pending, (state, action) => {
       state.deleteStatus = 'loading';
+      state.deleteError = null;
       state.loader = true;
     })
       .addCase(GenericSpotData.pending, state => {

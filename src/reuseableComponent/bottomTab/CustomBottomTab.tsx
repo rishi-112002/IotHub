@@ -42,6 +42,11 @@ function CustomBottomTabNavigator({
     outputRange: [0, -140], // Hide on scroll down
     extrapolate: "clamp",
   });
+  const searBarTranslate = diffClamp.interpolate({
+    inputRange: [0, 200],
+    outputRange: [0, -200], // Hide on scroll down
+    extrapolate: "clamp",
+  });
 
   return (
     <Tab.Navigator
@@ -89,7 +94,7 @@ function CustomBottomTabNavigator({
           key={tab.name}
           name={tab.name}
           component={tab.component}
-          initialParams={{ scrollY, headerTranslate }}
+          initialParams={{ scrollY, headerTranslate, searBarTranslate }}
         />
       ))}
     </Tab.Navigator>
