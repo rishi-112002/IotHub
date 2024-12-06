@@ -13,7 +13,7 @@ const SpotDetailsComponent = (props: { spotData: any }) => {
         weight,
         weightStable,
         weightError,
-        di,
+        // di,
         currentState,
         delayed,
         weighmentProcess,

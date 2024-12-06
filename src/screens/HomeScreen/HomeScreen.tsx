@@ -19,7 +19,13 @@ import { useNetwork } from '../../contextApi/NetworkContex';
 import { getResponsiveHeight } from '../../component/RFIDComponent/RfidListComponent';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SpotList from '../../component/SpotListComponent/SpotList';
+// <<<<<<< HEAD
+// const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+// function HomeScreen({route}: {route: any}) {
+//   const {scrollY, headerTranslate} = route.params;
+// =======
 function HomeScreen({ route }: { route: any }) {
+// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
   const {
     Loader,
     modelShow,
@@ -103,10 +109,15 @@ function HomeScreen({ route }: { route: any }) {
                   {
                     marginBottom:
                       isSearchVisible && spotTypeConnectivity === 'all'
-                        ? getResponsiveHeight(7)
+                        ? getResponsiveHeight(10)
                         : spotTypeConnectivity === 'all'
-                          ? getResponsiveHeight(3)
-                          : getResponsiveHeight(10),
+// <<<<<<< HEAD
+                        ? getResponsiveHeight(3)
+                        : getResponsiveHeight(9),
+// =======
+//                           ? getResponsiveHeight(3)
+//                           : getResponsiveHeight(10),
+// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
                   },
                 ]}>
                 <View style={styles.listWrapper}>
@@ -116,7 +127,7 @@ function HomeScreen({ route }: { route: any }) {
                     </Text>
                   ) : (
                     <>
-                      <View>
+                      <View style={{marginBottom: getResponsiveHeight(12)}}>
                         <SpotList
                           spotData={filteredSpots}
                           refreshing={refreshing}
@@ -125,7 +136,6 @@ function HomeScreen({ route }: { route: any }) {
                             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                             { useNativeDriver: false }
                           )}
-
                           // onScroll={handleScroll}
                           contentContainerStyle={undefined}
                         />

@@ -1,10 +1,22 @@
 // EventLogList.tsx
-import React, { useCallback, useState } from 'react';
-import { View, FlatList, Text, StyleSheet, Animated } from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  View,
+  FlatList,
+  Text,
+  StyleSheet,
+  Animated,
+  ActivityIndicator,
+} from 'react-native';
 import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
+// <<<<<<< HEAD
+import {getResponsiveHeight} from '../RFIDComponent/RfidListComponent';
+// import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
+// =======
+// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
 
 type EventLogItemType = {
   id: string;
@@ -12,26 +24,39 @@ type EventLogItemType = {
   type: string;
   createdAt: string;
   details: any;
-
 };
 type EventLogsListProps = {
   data: EventLogItemType[];
   setModal: (value: boolean) => void;
   setRequestData: (request: any) => void;
-  onScroll: any,
-  scrollEnabled: boolean
+  onScroll: any;
+  scrollEnabled: boolean;
 };
 const EventLogsList: React.FC<EventLogsListProps> = ({
   data,
   onScroll,
-  scrollEnabled
+  scrollEnabled,
 }) => {
-  const [selectedItemId, setSelectedItemId] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState('');
+  const [isLoadingMore, setIsLoadingMore] = useState(true);
+
+  // Load more data as the user scrolls
+  const loadMoreData = useCallback(() => {
+    if (data?.length > 0) {
+      const totalItems = data.length;
+      const isAllDataFetched = data.length === totalItems;
+      if (isAllDataFetched) {
+        console.log('All data has been fetched');
+        setIsLoadingMore(false);
+      }
+    }
+  }, [data]);
+
   const onToggle = useCallback((id: string) => {
-    setSelectedItemId((prevId) => (prevId === id ? "" : id));
+    setSelectedItemId(prevId => (prevId === id ? '' : id));
   }, []);
   const renderEventLog = useCallback(
-    ({ item }: any) => (
+    ({item}: any) => (
       <CardItemWith_Icon
         iconName="event-note"
         view={
@@ -44,9 +69,8 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
         key={item.id}
       />
     ),
-    [selectedItemId]
+    [onToggle, selectedItemId],
   );
-
 
   const keyExtractor = useCallback((item: any) => item.id, []);
   return (
@@ -59,9 +83,23 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
           keyExtractor={keyExtractor}
           onScroll={onScroll}
           scrollEnabled={scrollEnabled}
+          windowSize={getResponsiveHeight(121)}
+          maxToRenderPerBatch={50}
           initialNumToRender={10}
-          maxToRenderPerBatch={5}
-          windowSize={5}
+          updateCellsBatchingPeriod={50}
+          scrollEventThrottle={16}
+          onEndReached={loadMoreData}
+          ListFooterComponent={
+            isLoadingMore === true ? (
+              <View style={styles.footer}>
+                <ActivityIndicator
+                  size="small"
+                  color={colors.AppPrimaryColor}
+                />
+                <Text style={styles.footerText}>Loading...</Text>
+              </View>
+            ) : null
+          }
         />
       ) : (
         <View style={styles.emptyContainer}>
@@ -76,11 +114,22 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     padding: 10,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
-  flatListContent: { flexGrow: 1 },
-  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  emptyText: { fontSize: fontSizes.subheading, color: 'gray' },
+  flatListContent: {flexGrow: 1},
+  emptyContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  emptyText: {fontSize: fontSizes.subheading, color: 'gray'},
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+  },
+  footerText: {
+    marginLeft: 10,
+    fontSize: fontSizes.text,
+    color: colors.gray,
+  },
 });
 
 export default EventLogsList;

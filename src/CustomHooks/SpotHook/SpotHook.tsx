@@ -135,8 +135,10 @@ export const SpotListHook = () => {
 
   // Scroll event handler
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    scrollY.setValue(e.nativeEvent.contentOffset.y);
+  const handleScroll = () => {
+    Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+      useNativeDriver: false,
+    });
   };
 
   // Toggle the filter menu modal visibility

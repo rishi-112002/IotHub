@@ -38,12 +38,8 @@ function DashBoard({ route }: { route: any }) {
     handleWeighBridgeNotConnectedClick,
     onMomnetumScrollBegin,
     onScrollEndDrag,
-    onMomnetumScrollEnd
+    onMomnetumScrollEnd,
   } = DashBoardHook();
-
-
-
-
   return (
     <View style={{ flex: 1 }}>
       <CustomHeader
@@ -81,7 +77,7 @@ function DashBoard({ route }: { route: any }) {
                 [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                 { useNativeDriver: false }
               )}
-              
+
               setModalVisible={setModalVisible}
               setRequestData={setRequestData}
               handleRfidUsedClick={handleRfidUsedClick}

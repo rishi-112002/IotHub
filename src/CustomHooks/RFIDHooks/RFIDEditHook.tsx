@@ -6,8 +6,8 @@ import {RootState, store} from '../../reducer/Store';
 import showCustomToast from '../../reuseableComponent/modal/CustomToast'; // Import the toast function
 import {AppNavigationParams} from '../../navigation/NavigationStackList';
 import React from 'react';
-import { View, Text } from 'react-native';
-import { StyleSheet } from 'react-native';
+import {View, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 
@@ -27,7 +27,9 @@ export const useEditRfid = (item: RFIDItem) => {
   const [storedIp, setStoredIp] = useState<string>(item.ip);
   const [storedPort, setStoredPort] = useState<number>(item.port);
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
-  const [showIpAndPortFields, setShowIpAndPortFields] = useState<boolean>(model !== 'FX9600');
+  const [showIpAndPortFields, setShowIpAndPortFields] = useState<boolean>(
+    model !== 'FX9600',
+  );
   const [errors, setErrors] = useState<{[key: string]: string}>({});
 
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
@@ -36,11 +38,13 @@ export const useEditRfid = (item: RFIDItem) => {
   const Loader = useSelector((state: RootState) => state.rfidList.loader);
   const buCode = useSelector((state: RootState) => state.authentication.buCode);
   const token = useSelector((state: RootState) => state.authentication.token);
-  const smartControllerLoader = useSelector((state: RootState) => state.uploadGeneric.loader);
+  const smartControllerLoader = useSelector(
+    (state: RootState) => state.uploadGeneric.loader,
+  );
 
   const handleInputFocus = useCallback(
     (field: keyof typeof errors) => {
-      setErrors((prevErrors:any) => ({...prevErrors, [field]: undefined}));
+      setErrors((prevErrors: any) => ({...prevErrors, [field]: undefined}));
     },
     [errors],
   );
@@ -48,21 +52,22 @@ export const useEditRfid = (item: RFIDItem) => {
   const validateInputs = useCallback(() => {
     const newErrors: {name?: string; IPAddress?: string; port?: string} = {};
     if (!name) newErrors.name = 'Name is required';
-    if (!IPAddress && showIpAndPortFields) newErrors.IPAddress = 'IP address is required';
-    if (!port && showIpAndPortFields) newErrors.port = 'Port number is required';
+    if (!IPAddress && showIpAndPortFields)
+      newErrors.IPAddress = 'IP address is required';
+    if (!port && showIpAndPortFields)
+      newErrors.port = 'Port number is required';
     return newErrors;
   }, [name, IPAddress, port, showIpAndPortFields]);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
         <View>
-          <Text style={styles.headerTitle}>
-           Update Reader Details
-          </Text>
+          <Text style={styles.headerTitle}>Update Reader Details</Text>
         </View>
       ),
     });
   }, [navigation]);
+
   const handleSaveData = useCallback(async () => {
     const newErrors = validateInputs();
     if (Object.keys(newErrors).length > 0) {
@@ -70,34 +75,46 @@ export const useEditRfid = (item: RFIDItem) => {
       return;
     }
 
+    const rfidData = {
+      name,
+      model,
+      id: item.id,
+      ...(model !== 'FX9600' && {ip: IPAddress, port}),
+    };
     try {
-      const rfidData = {
-        name,
-        model,
-        id: item.id,
-        ...(model !== 'FX9600' && {ip: IPAddress, port}),
-      };
-
-      store.dispatch(
-        EditRFIDdata({
-          rfidData,
-          token,
-          buCode,
-        }),
-      ).unwrap();
+      store
+        .dispatch(
+          EditRFIDdata({
+            rfidData,
+            token,
+            buCode,
+          }),
+        )
+        .unwrap();
 
       showCustomToast('success', 'Data Update successfully!');
-
-      // Delay navigation to allow toast time to display
-      setTimeout(() => {
-        navigation.navigate('RfidReader');
-      }, -200);
+      // navigation.navigate('RfidReader');
+      // setTimeout(() => {
     } catch (err) {
-      showCustomToast('fail', err || 'Something went wrong! Please try again...');
+      showCustomToast(
+        'fail',
+        err || 'Something went wrong! Please try again...',
+      );
     }
-  }, [dispatch, name, model, IPAddress, port, item.id, token, buCode, navigation, validateInputs]);
+  }, [
+    dispatch,
+    name,
+    model,
+    IPAddress,
+    port,
+    item.id,
+    token,
+    buCode,
+    navigation,
+    validateInputs,
+  ]);
 
-  const handleModalSelect = (selectedModel: {name:string}) => {
+  const handleModalSelect = (selectedModel: {name: string}) => {
     setModel(selectedModel.name);
 
     if (selectedModel.name === 'FX9600') {
