@@ -42,26 +42,17 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   handleScroll,
   contentContainerStyle,
 }) => {
-  const [visibleData, setVisibleData] = useState<SpotData[]>([]);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const itemsPerPage = 30;
-
-  useEffect(() => {
-    if (spotData?.length) {
-      setVisibleData(spotData.slice(0, itemsPerPage));
+  const [isLoadingMore, setIsLoadingMore] = useState(true);
+  const loadMoreData = useCallback(() => {
+    if (spotData?.length > 0) {
+      const totalItems = spotData.length;
+      const isAllDataFetched = spotData.length === totalItems;
+      if (isAllDataFetched) {
+        console.log('All data has been fetched');
+        setIsLoadingMore(false);
+      }
     }
   }, [spotData]);
-
-  // Load more data as the user scrolls
-  const loadMoreData = useCallback(() => {
-    if (visibleData.length < spotData.length && !isLoadingMore) {
-      setIsLoadingMore(true);
-      setTimeout(() => {
-        setVisibleData(prev => spotData.slice(0, prev.length + itemsPerPage));
-        setIsLoadingMore(false);
-      }, 800); // Simulate network delay
-    }
-  }, [spotData, visibleData, isLoadingMore]);
 
   // Render each item
   const renderSpot: React.FC<{item: SpotData}> = useCallback(
@@ -79,7 +70,7 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   return (
     <View>
       <FlatList
-        data={visibleData}
+        data={spotData}
         renderItem={renderSpot}
         keyExtractor={(item: SpotData) => String(item.id)}
         onRefresh={loadRfidList}

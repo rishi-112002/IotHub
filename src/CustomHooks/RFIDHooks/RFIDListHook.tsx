@@ -150,15 +150,7 @@ export const RfidListHook = () => {
         .dispatch(deleteRfidListAction({id: rfidToDelete, buCode, token}))
         .unwrap();
       showCustomToast('success', 'RFID deleted successfully!');
-      await loadRfidList(); // Refresh the list after successful deletion
-
-      // if (deleteRfidListAction.fulfilled.match(resultAction)) {
-      //   // setSuccessAlertVisible(true); // Show success alert
-      // } else {
-      //   // Handle potential error from deletion action
-      //   // setErrorMessage(DError);
-      //   // setErrorAlertVisible(true);
-      // }
+      await loadRfidList();
     } catch (error) {
       showCustomToast(
         'error',
