@@ -1,9 +1,9 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import colors from '../../../assets/color/colors';
 
 function UrlStyles() {
   const styles = StyleSheet.create({
-    mainContainer: {flex: 1, backgroundColor: colors.AppPrimaryColor},
+    mainContainer: { flex: 1, backgroundColor: colors.AppPrimaryColor },
     container: {
       padding: 20,
       flex: 1,
@@ -29,14 +29,12 @@ function UrlStyles() {
     },
     sub_heading: {
       fontSize: 18,
-      paddingTop: 10,
       fontWeight: '600',
       color: colors.darkblack,
-      paddingHorizontal: 10,
-      paddingBottom: 15,
+
     },
     customButtonContainer: {
-      paddingTop: '70%',
+      paddingTop: '40%',
     },
     backIcon: {
       marginRight: 15,

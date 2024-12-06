@@ -85,11 +85,11 @@ const AllEventLogHooks = () => {
     store.dispatch(GetSpotName({ baseUrl: baseUrl }));
   }, [baseUrl]);
 
+  const [filteredLogs, setFilteredLogs] = useState([]);
   useEffect(() => {
 
     setFilteredLogs(eventLogsAll);
   }, [eventLogsAll]);
-  const [filteredLogs, setFilteredLogs] = useState([]);
   const [currentField, setCurrentField] = useState<string | null>(null);
 
   const handleFilterClick = useMemo(() => {

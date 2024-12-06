@@ -6,6 +6,7 @@ import CustomLoader from '../../../reuseableComponent/loader/CustomLoader';
 import UrlEffect from './UrlEffect';
 import UrlStyles from './UrlStyles';
 import React from 'react';
+import fontSizes from '../../../assets/fonts/FontSize';
 
 function UrlScreen() {
   const {
@@ -16,7 +17,7 @@ function UrlScreen() {
     navigation,
     setUrl,
     slideUpAnim,
-    url  } = UrlEffect();
+    url } = UrlEffect();
   const { styles } = UrlStyles();
   return (
     <View style={styles.mainContainer}>
@@ -31,7 +32,7 @@ function UrlScreen() {
             />
           </TouchableOpacity>
         )}
-        <Text style={styles.headerTitle}>Base url</Text>
+        <Text style={styles.headerTitle}>Server Configuration</Text>
       </View>
       <Animated.View
         style={[
@@ -42,24 +43,28 @@ function UrlScreen() {
         ]}>
         {loading && <CustomLoader />}
         {!url && <Text style={styles.heading}>Welcome</Text>}
-        <Text style={styles.sub_heading}>
-          Enter your base url to continue
-        </Text>
+        <View style={{ marginTop: 10, gap: 5 }}>
+          <Text style={styles.sub_heading}>
+            Setup  Server
+          </Text>
+          <Text style={{ fontSize: fontSizes.smallText }}>
+            Enter the server base url to setup and configure the app 
+            according to your organisation .
+
+          </Text>
+        </View>
         <View style={styles.inputContainer}>
           <CustomTextInput
-            label="Base url"
+            label="Base Url"
             value={url}
             onChangeText={handleUrlChange}
             errorMessage={errors.url}
             setTextInput={setUrl}
             required={true}
+            style={{ flex: 1 }}
           />
         </View>
-        <Text>
-          You will be able to view and manage data once you enter a valid base
-          URL.
-        </Text>
-        <View style={styles.customButtonContainer}>
+        <View style={{ marginTop: 40 }}>
           <CustomButton
             label={'Save'}
             onPress={handleClick}

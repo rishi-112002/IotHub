@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, { } from 'react';
 import HomeNavigation from './HomeNavigation';
 import colors from '../assets/color/colors';
 import CustomBottomTabNavigator from '../reuseableComponent/bottomTab/CustomBottomTab';
@@ -20,7 +20,7 @@ const BottomTabNavigation = () => {
       component: HomeNavigation,
       icon: require('../assets/icons/LiveSpots.png'),
       focusedIcon: require('../assets/icons/LiveSpots.png'),
-      label: 'Live Spots',
+      label: 'Spots',
     },
   ];
 

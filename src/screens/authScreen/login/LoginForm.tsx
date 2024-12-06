@@ -108,7 +108,7 @@ function LoginForm() {
         <View style={{ marginTop: "10%" }}>
 
           <CustomButton
-            label="Login"
+            label="Log In"
             onPress={handleLogin}
             disabled={isButtonDisabled}
           />
@@ -122,7 +122,7 @@ function LoginForm() {
               onPress={() => {
                 navigation.navigate('UrlScreen', { baseUrls });
               }}>
-              <Text style={styles.subText}>Update/Change base URL</Text>
+              <Text style={styles.subText}>Update/Change Server</Text>
             </TouchableOpacity>
           </View>
         </View>

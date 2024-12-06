@@ -30,10 +30,10 @@ export const weighBridgeAdd = createAsyncThunk(
         const status = err.response.status;
         const message =
           err.response.data?.message || 'An error occurred during the upload.';
-        // console.error(`Upload failed with status ${status}: ${message}`);
+        console.log(`Upload failed with status ${status}: ${message}`);
         return rejectWithValue(`Upload error: ${message}`);
       } else if (err.request) {
-        // console.error('No response received from the server:', err.request);
+        console.log('No response received from the server:', err.request);
         return rejectWithValue(
           'No response from the server. Please check your network connection.',
         );
@@ -89,7 +89,7 @@ export const DeleteWeighBridgeSpot = createAsyncThunk(
     { rejectWithValue },
   ) => {
     const { baseUrl, id, buCode, token } = params;
-    const fullUrl = `${baseUrl}${deleteSpots}${id}`;
+    const fullUrl = `https://13.235.84.67/${deleteSpots}${id}`;
     try {
       const { data } = await axios.delete(fullUrl, {
         headers: {
@@ -101,7 +101,19 @@ export const DeleteWeighBridgeSpot = createAsyncThunk(
       });
       return { data, id };
     } catch (err: any) {
-      return rejectWithValue('Failed to delete weigh bridge spot.');
+      if (err.response) {
+        // Server returned an error response
+        return rejectWithValue({
+          message: err.response.message || "Unknown error occurred",
+          status: err.response.status,
+        });
+      } else if (err.request) {
+        // No response received
+        return rejectWithValue({ message: "No response from server", status: null });
+      } else {
+        // Error during request setup
+        return rejectWithValue({ message: err.message, status: null });
+      }
     }
   },
 );
