@@ -27,6 +27,7 @@ export const useRfidAddForm = () =>
   const { buCode, token } = useSelector(
     (state: RootState) => state.authentication,
   );
+  
   const Loader = useSelector((state: RootState) => state.rfidList.loader);
 
   const validateForm = () => {
@@ -70,8 +71,8 @@ export const useRfidAddForm = () =>
     try {
       // Dispatch the action to save RFID data
       store.dispatch(CreateRFIDdata({ rfidData, token, buCode }));
-      showCustomToast('success', 'Data saved successfully!');
-      navigation.navigate('RfidReader');
+      // showCustomToast('success', 'Data saved successfully!');
+      // navigation.navigate('RfidReader');
       // if (Status === 'success') {
       //   store.dispatch(resetUploadStatus());
       // } else if (Status === 'failure') {

@@ -1,6 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useState} from 'react';
-import {View, Animated, FlatList, StyleSheet, Dimensions, ActivityIndicator, Text} from 'react-native';
+import {
+  View,
+  Animated,
+  FlatList,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator,
+  Text,
+} from 'react-native';
 import RFIDItemComponent from './RFIDItemComponent';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
@@ -13,7 +21,7 @@ export const getResponsiveHeight = (percentage: number) =>
 
 interface RfidListComponentProps {
   ListData: any[];
-  Loader: boolean;
+  loader: boolean;
   scrollY: Animated.Value;
   handleDelete: (id: string) => void;
   loadRfidList: () => void;
@@ -33,6 +41,8 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
   refreshing,
   buttonVisible,
   handleScroll,
+  onViewableItemsChanged,
+  viewabilityConfig,
 }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(true);
 
@@ -47,7 +57,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
       }
     }
   }, [ListData]);
-  
+
   const renderItem = useCallback(
     ({item}: any) => (
       <RFIDItemComponent handleDelete={handleDelete} reader={item} />
@@ -56,6 +66,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
   );
 
   const keyExtractor = useCallback((item: {id: string}) => item.id, []);
+
 
   return (
     <View style={styles.container}>
@@ -77,6 +88,8 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
           updateCellsBatchingPeriod={50}
           scrollEventThrottle={16}
           onEndReached={loadMoreData}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
           ListFooterComponent={
             isLoadingMore === true ? (
               <View style={styles.footer}>
@@ -112,5 +125,3 @@ const styles = StyleSheet.create({
 });
 
 export default React.memo(RfidListComponent);
-
-

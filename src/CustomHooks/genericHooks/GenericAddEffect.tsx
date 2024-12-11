@@ -66,9 +66,11 @@ export const useGenericAddEffect = (id: any) => {
       store.dispatch(GenericSpotData({ id, baseUrl: baseUrls, buCode, token }));
     }
   }, [baseUrls, buCode, id, token]);
+  
   useEffect(() => {
     ApiCallsAddGenericSpot({ baseUrl: baseUrls });
   }, [dispatch, baseUrls]);
+  
   useEffect(() => {
     switch (status) {
       case 'failed':

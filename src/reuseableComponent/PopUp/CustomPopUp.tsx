@@ -26,14 +26,15 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
     <Modal
       isVisible={isVisible}
       onBackdropPress={onClose}
-      backdropColor="transparent"
-      backdropOpacity={0}
+      backdropColor='black'
+      backdropOpacity={0.3}
       animationIn="fadeIn"
       animationOut="fadeOut">
       <View style={styles.alertContainer}>
         <Text style={styles.alertTitle}>{title}</Text>
         <Text style={styles.alertMessage}>{message}</Text>
         <View
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{backgroundColor: '#edebeb', height: 1}}
         />
         <View style={styles.buttonContainer}>

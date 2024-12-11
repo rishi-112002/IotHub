@@ -131,8 +131,7 @@ export const UploadGenericSlice = createSlice({
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(
-        uploadGenericData.fulfilled,
+      .addCase(uploadGenericData.fulfilled,
         (state, action: PayloadAction<any>) => {
           const newData = action.payload;
           state.status = 'succeeded';
@@ -163,6 +162,7 @@ export const UploadGenericSlice = createSlice({
         state.loader = false;
         state.GenericSpots = []; // Optionally reset both on error, or just one
       });
+
     builder.addCase(DeleteGenericSpot.fulfilled, (state, action) => {
       state.response = action.payload;
       console.log("fulfiled of delete")
@@ -201,8 +201,7 @@ export const UploadGenericSlice = createSlice({
         state.loader = false;
         state.GenericSpot = initialGenericSpot; // Optionally reset both on error, or just one
       })
-      .addCase(
-        UpdateGenericSpot.fulfilled,
+      .addCase(UpdateGenericSpot.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.updateStatus = 'succeeded';
           state.error = null;
