@@ -1,21 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
-import { View, Animated, StyleSheet, Text } from 'react-native';
+import React, {useState} from 'react';
+import {View, Animated, StyleSheet, Text} from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import FloatingActionCustomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
-import { RfidListHook } from '../../CustomHooks/RFIDHooks/RFIDListHook';
+import {RfidListHook} from '../../CustomHooks/RFIDHooks/RFIDListHook';
 import RfidListComponent from '../../component/RFIDComponent/RfidListComponent';
 import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter'; // Import your custom search component
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
-import { useNetwork } from '../../contextApi/NetworkContex';
-import { errorStrings, IconName, ImagePath, Strings } from '../../assets/constants/Lable';
-import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import {useNetwork} from '../../contextApi/NetworkContex';
+import fontSizes from '../../assets/fonts/FontSize';
 
-const RfidReader = ({ navigation }: any) => {
+const RfidReader = ({navigation}: any) => {
   const {
+    noResults,
     Loader,
     loadRfidList,
     handleDelete,
@@ -37,8 +37,10 @@ const RfidReader = ({ navigation }: any) => {
     setFilterCount,
     rfidType,
     setRfidType,
+    onViewableItemsChanged,
+    viewabilityConfig,
   } = RfidListHook();
-  const { isConnected } = useNetwork();
+  const {isConnected} = useNetwork();
   const scrollY = new Animated.Value(0);
   const diffClamp = Animated.diffClamp(scrollY, 0, 100);
   const translateY = diffClamp.interpolate({
@@ -58,24 +60,24 @@ const RfidReader = ({ navigation }: any) => {
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.white }}>
+    <View style={{flex: 1, backgroundColor: colors.white}}>
       <CustomHeader
-        title={Strings.RFID_READERS}
+        title="RFID Readers"
         buCode={buCode}
-        userLogo={IconName.ACCOUNT_CIRCLE}
+        userLogo={'account-circle'}
         translateY={translateY}
         onSearchPress={handleSearchPress} // Set search press handler
         onFilterPress={toggleFilterMenu}
-        filterIcon={ImagePath.FILTER_ICON}
-        searchIcon={ImagePath.SEARCH_ICON}
+        searchIcon={require('../../assets/icons/search.png')}
+        filterIcon={require('../../assets/icons/filterMedium.png')}
         filterCount={filterCount}
       />
 
       {/* Conditionally render search bar */}
       {isConnected ? (
-        <Animated.View style={{ flex: 1, paddingTop: paddingTopAnimated }}>
+        <Animated.View style={{flex: 1, paddingTop: paddingTopAnimated}}>
           {isSearchVisible && (
-            <Animated.View style={[{ transform: [{ translateY: translateY }] }]}>
+            <Animated.View style={[{transform: [{translateY: translateY}]}]}>
               <SearchBar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
@@ -85,9 +87,9 @@ const RfidReader = ({ navigation }: any) => {
             </Animated.View>
           )}
           {filterBadgeVisible && rfidType !== 'all' && (
-            <View style={{ flex: 0.06, marginTop: 10 }}>
+            <View style={{flex: 0.06, marginTop: 10}}>
               <ScrollableBadges
-                badges={[{ key: Strings.CONNECTIVITY, value: rfidType }]}
+                badges={[{key: 'Connectivity', value: rfidType}]}
                 filterCount={filterCount}
                 setFilterCount={setFilterCount}
                 setSelectedSpot={undefined}
@@ -101,19 +103,26 @@ const RfidReader = ({ navigation }: any) => {
               />
             </View>
           )}
-
-          <RfidListComponent
-            ListData={filteredRfid} // Use filtered data here
-            Loader={Loader}
-            scrollY={scrollY}
-            handleDelete={handleDelete}
-            loadRfidList={loadRfidList}
-            refreshing={refreshing}
-            handleScroll={e => {
-              scrollY.setValue(e.nativeEvent.contentOffset.y);
-            }}
-            buttonVisible={false}
-          />
+          {noResults ? (
+            <Text style={styles.noResultsText}>
+              No results found for "{searchQuery}"
+            </Text>
+          ) : (
+            <RfidListComponent
+              ListData={filteredRfid} // Use filtered data here
+              loader={Loader}
+              scrollY={scrollY}
+              handleDelete={handleDelete}
+              loadRfidList={loadRfidList}
+              refreshing={refreshing}
+              handleScroll={e => {
+                scrollY.setValue(e.nativeEvent.contentOffset.y);
+              }}
+              buttonVisible={false}
+              onViewableItemsChanged={onViewableItemsChanged}
+              viewabilityConfig={viewabilityConfig}
+            />
+          )}
           {modelShow && (
             <FilterModal
               isVisible={modelShow}
@@ -129,8 +138,8 @@ const RfidReader = ({ navigation }: any) => {
               isVisible={alertVisible}
               onClose={() => setAlertVisible(false)}
               onOkPress={confirmDelete}
-              title={Strings.DELETE_RFID}
-              message={Strings.CONFIRM_RFID_DELETE}
+              title="Delete RFID"
+              message="Are you sure you want to delete this RFID?"
               showCancel={true}
             />
           )}
@@ -141,9 +150,26 @@ const RfidReader = ({ navigation }: any) => {
           />
         </Animated.View>
       ) : (
-        <NoInternetScreen />
+        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+          <Text>No Internet Connection</Text>
+        </View>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  searchBarContainer: {
+    // marginTop: 60,
+    // marginBottom: -42,
+  },
+  noResultsText: {
+    justifyContent: 'center',
+    fontSize: fontSizes.text,
+    color: colors.gray,
+    paddingVertical: 100,
+    textAlign: 'center',
+  },
+});
+
 export default React.memo(RfidReader);

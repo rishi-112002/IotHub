@@ -4,7 +4,7 @@ import axios from 'axios';
 import { errorStrings, Strings } from '../../assets/constants/Lable';
 
 export const uploadGenericData = createAsyncThunk(
-   Strings.UPLOAD_GENERIC_SPOT,
+    Strings.UPLOAD_GENERIC_SPOT,
     async (params: { genericData: any; baseUrls: string | null; token: any, buCode: any }, { rejectWithValue }) => {
         const { genericData, baseUrls, token, buCode } = params;
         try {
@@ -16,8 +16,6 @@ export const uploadGenericData = createAsyncThunk(
                     'client-name': 'iothub',
                 },
             });
-
-
             if (!data) {
                 return rejectWithValue(errorStrings.UPLOAD_FAILED_ERROR);
             }
@@ -31,18 +29,18 @@ export const uploadGenericData = createAsyncThunk(
                 const message = err.response.data?.message || errorStrings.ERROR_DURING_UPLOAD;
 
                 // Log the exact error response
-        
+
 
                 // Return the specific error message from the server
                 return rejectWithValue(`${errorStrings.UPLOAD_ERROR}: ${message}`);
 
             } else if (err.request) {
                 // The request was made but no response was received (e.g., network issues)
-    
+
                 return rejectWithValue(`${errorStrings.NO_RESPONSE_FROM_SERVER} ${errorStrings.INTERNET_ERROR}`);
             } else {
                 // Something happened in setting up the request that triggered an Error
-        
+
                 return rejectWithValue(`${errorStrings.UPLOAD_ERROR}: ${err.message}`);
             }
         }
@@ -95,10 +93,8 @@ export const DeleteGenericSpot = createAsyncThunk(
         }
     }
 );
-
-
-
 export const GenericSpotData = createAsyncThunk(Strings.GENERIC_SPOT_DATA, async (params: { baseUrl: string | null, buCode: string | null, token: string | null, id: any }) => {
+
     const { baseUrl, buCode, token, id } = params;
     const fullUrl = `${baseUrl}${EditSpot}${id}`;
 
@@ -108,7 +104,6 @@ export const GenericSpotData = createAsyncThunk(Strings.GENERIC_SPOT_DATA, async
     } catch (err) {
     }
 })
-
 export const UpdateGenericSpot = createAsyncThunk(
     Strings.UPDATE_GENERIC_SPOT,
     async (params: { genericData: any; baseUrls: string | null; token: any, buCode: any }, { rejectWithValue }) => {

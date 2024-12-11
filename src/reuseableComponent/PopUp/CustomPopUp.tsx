@@ -27,8 +27,8 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
     <Modal
       isVisible={isVisible}
       onBackdropPress={onClose}
-      backdropColor="transparent"
-      backdropOpacity={0}
+      backdropColor='black'
+      backdropOpacity={0.3}
       animationIn="fadeIn"
       animationOut="fadeOut">
       <View style={styles.alertContainer}>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   buttonContainer: {
-    padding:15,
+    padding: 15,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignSelf: 'flex-end',

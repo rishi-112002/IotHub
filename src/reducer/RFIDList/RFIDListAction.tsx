@@ -1,7 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { HttpStatusCode } from 'axios';
-import { BaseUrlHTTPS, CreateRFIDListEndPoint, DeleteRfid, EditRFIDListEndPoint, RFIDListEndPoint } from '../../api/EndPointsUrl';
-import { errorStrings, Strings } from '../../assets/constants/Lable';
+import axios from 'axios';
+import {
+  CreateRFIDListEndPoint,
+  EditRFIDListEndPoint,
+  RFIDListEndPoint,
+} from '../../api/EndPointsUrl';
+
+const BASE_URL = 'https://13.235.84.67';
 
 const axiosConfig = (token: string, buCode: string) => ({
   headers: {
@@ -14,9 +19,9 @@ const axiosConfig = (token: string, buCode: string) => ({
 
 const handleError = (error: unknown) => {
   if (axios.isAxiosError(error)) {
-    return error.response?.data?.message || errorStrings.ERROR_DURING_UPLOAD;
+    return error.response?.data?.message || 'An error occurred.';
   }
-  return `${Strings.ERROR_s}: ${error instanceof Error ? error.message : errorStrings.UNKNOW_ERROR}`;
+  return `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
 };
 
 const postRequest = async (url: string, data: any, config: any) => {
@@ -25,43 +30,52 @@ const postRequest = async (url: string, data: any, config: any) => {
 };
 
 export const CreateRFIDdata = createAsyncThunk(
-  Strings.CREATE_RFID,
+  'CreateRFIDdata',
   async ({ rfidData, token, buCode }: any, { rejectWithValue }) => {
-    const fullUrl = `${BaseUrlHTTPS}${CreateRFIDListEndPoint}`;
+    const fullUrl = `${BASE_URL}${CreateRFIDListEndPoint}`;
     try {
-      const data = await postRequest(fullUrl, rfidData, axiosConfig(token, buCode));
+      const data = await postRequest(
+        fullUrl,
+        rfidData,
+        axiosConfig(token, buCode),
+      );
       if (!data) {
-        return rejectWithValue(errorStrings.UPLOAD_FAILED_ERROR);
+        return rejectWithValue('Upload failed: Invalid data or server error.');
       }
       return data;
     } catch (error) {
       const message = handleError(error);
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const EditRFIDdata = createAsyncThunk(
-  Strings.EDIT_RFID_,
+  'EditRFIDdata',
   async ({ rfidData, token, buCode }: any, { rejectWithValue }) => {
-    const fullUrl = `${BaseUrlHTTPS}${EditRFIDListEndPoint}`;
+    const fullUrl = `${BASE_URL}${EditRFIDListEndPoint}`;
     try {
-      const data = await postRequest(fullUrl, rfidData, axiosConfig(token, buCode));
+      const data = await postRequest(
+        fullUrl,
+        rfidData,
+        axiosConfig(token, buCode),
+      );
       if (!data) {
-        return rejectWithValue(errorStrings.UPDATE_FAILED_ERROR);
+        console.log('not Data in Edit');
+        return rejectWithValue('Upload failed: Invalid data or server error.');
       }
       return data;
     } catch (error) {
+      console.log('Error in Edit', handleError(error));
       const message = handleError(error);
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const getRfidListAction = createAsyncThunk(
-  Strings.GET_RFID_LIST_ACTION,
+  'getRfidListAction',
   async ({ baseUrl }: any, { rejectWithValue }) => {
-
     const fullUrl = `${baseUrl}${RFIDListEndPoint}`;
     try {
       const { data } = await axios.get(fullUrl);
@@ -70,24 +84,22 @@ export const getRfidListAction = createAsyncThunk(
       const message = handleError(error);
       return rejectWithValue(message);
     }
-  }
+  },
 );
 
 export const deleteRfidListAction = createAsyncThunk(
-  Strings.DELETE_RFID_READER,
+  'deleteRfidListAction',
   async ({ id, buCode, token }: any, { rejectWithValue }) => {
-    const fullUrl = `${BaseUrlHTTPS}${DeleteRfid}${id}`;
+    const fullUrl = `${BASE_URL}/iv1/readers/remove/${id}`;
     try {
       const data = await axios.delete(fullUrl, axiosConfig(token, buCode));
       if (!data) {
-        return rejectWithValue(errorStrings.NO_RESPONSE_FROM_SERVER);
+        return rejectWithValue('Error: Invalid credentials or server error.');
       }
       return data;
     } catch (error) {
       const message = handleError(error);
       return rejectWithValue(message);
     }
-  }
+  },
 );
-
-
