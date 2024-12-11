@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { errorStrings, Strings } from '../../assets/constants/Lable';
 
 export const GetUrls = createAsyncThunk(
-    'getUrls',
+    Strings.GET_URLS,
     async (params: { baseUrl: string }, { rejectWithValue }) => {
         const { baseUrl } = params;
 
@@ -10,13 +11,10 @@ export const GetUrls = createAsyncThunk(
             const { data } = await axios.get(baseUrl);
             return data;
         } catch (err: any) {
-            // Safely extract error message
             const errorMessage =
                 err?.response?.data?.message || // API response message
                 err?.message ||                // Axios error message
-                'An unknown error occurred';   // Fallback message
-
-
+                errorStrings.NO_RESPONSE_FROM_SERVER;   // Fallback message
             // Pass the error message to rejectWithValue
             return rejectWithValue(errorMessage);
         }

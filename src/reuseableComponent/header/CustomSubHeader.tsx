@@ -5,7 +5,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
 import CustomIcon from '../customIcons/CustomIcon';
-import { Colors2 } from '../../assets/color/Colors2';
+import { IconName } from '../../assets/constants/Lable';
+
 
 function CustomSubHeader(props: { searchIconPath: any, onSearchPress: any, spotName: string, translateY: any, onPress: any, filterIconPath: any, onBackPress: any, filterCount: number }) {
   const { searchIconPath, onSearchPress, spotName, onPress, filterIconPath: iconPath, onBackPress, translateY, filterCount } = props;
@@ -22,7 +23,7 @@ function CustomSubHeader(props: { searchIconPath: any, onSearchPress: any, spotN
 
           <TouchableOpacity onPress={onBackPress}>
             <MaterialIcons
-              name="arrow-back"
+              name={IconName.ARROW_BACK}
               size={24}
               color={colors.darkblack}
               style={styles.backIcon}
@@ -36,14 +37,14 @@ function CustomSubHeader(props: { searchIconPath: any, onSearchPress: any, spotN
               flex: 1, flexDirection: 'row', justifyContent: 'center',
               alignItems: 'center', columnGap: 15,
             }}>
-              <CustomIcon iconPath={searchIconPath} onPress={onSearchPress}  style={{tintColor:Colors2.SecondaryTextColor}}/>
+              <CustomIcon iconPath={searchIconPath} onPress={onSearchPress}  style={{tintColor:colors.SecondaryTextColor}}/>
               <View style={styles.iconWrapper}>
                 {filterCount > 0 &&
                   <View style={styles.filterCountBadge}>
                     <Text style={styles.filterCountText}>{filterCount}</Text>
                   </View>}
 
-                <CustomIcon iconPath={iconPath} onPress={onPress} style={{tintColor:Colors2.SecondaryTextColor}}/>
+                <CustomIcon iconPath={iconPath} onPress={onPress} style={{tintColor:colors.SecondaryTextColor}}/>
               </View>
             </View>
           </TouchableOpacity>

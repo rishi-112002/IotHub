@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
-import  CardItemWith_Icon  from './CardItemWithIcon';
+import CardItemWith_Icon from './CardItemWithIcon';
 import { ReaderCardContent } from './ReaderCardContent';
 import { DisplayCardContent } from './DisplayCardContent';
 import { SpotCommandCardContent } from './SpotCommandContent';
+import { errorStrings, IconName } from '../../assets/constants/Lable';
 
 // Define possible data types and structures
 export interface Reader {
@@ -56,27 +57,27 @@ const DataTab: React.FC<DataTabProps> = ({
         return data.map((item: Reader, index: number) => (
           <CardItemWith_Icon
             key={item.id || index}
-            iconName="wifi-tethering"
+            iconName={IconName.WIFI_THETHERING}
             view={ReaderCardContent(item, allow, () => console.log("hey"))}
           />
         ));
       case 'displays':
         return data.map((item: Display) => (
           <CardItemWith_Icon
-            iconName={'monitor'}
+            iconName={IconName.MONITOR}
             view={DisplayCardContent(item)}
           />
         ));
       case 'spotCommands':
         return data.map((item: SpotCommand) => (
           <CardItemWith_Icon
-            iconName={'monitor'}
+          iconName={IconName.MONITOR}
             view={SpotCommandCardContent(item)}
           />
         ));
       default:
         return (
-          <Text style={combinedStyles.noDataText}>Unsupported Data Type</Text>
+          <Text style={combinedStyles.noDataText}>{errorStrings.UNSUPPORTED_DATA_TYPE}</Text>
         );
     }
   };
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
   noDataText: {
     textAlign: 'center',
     fontSize: 14,
-    color: '#aaa',
+    color: colors.lightGray,
   },
 });
 

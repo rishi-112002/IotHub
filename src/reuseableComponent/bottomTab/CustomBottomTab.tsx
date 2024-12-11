@@ -1,7 +1,9 @@
-import React, { CustomComponentPropsWithRef, useRef } from 'react';
+import React, { CustomComponentPropsWithRef, useContext, useRef } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, View, Text, StyleSheet, Animated } from 'react-native';
 import fontSizes from '../../assets/fonts/FontSize';
+import colors from '../../assets/color/colors';
+import { ScrollContext } from '../../contextApi/AnimationContext';
 
 // Define the Tab Navigator
 const Tab = createBottomTabNavigator();
@@ -25,28 +27,15 @@ interface CustomBottomTabNavigatorProps {
 function CustomBottomTabNavigator({
   initialRouteName,
   tabs,
-  activeTintColor = 'blue',
-  inactiveTintColor = 'gray',
+  activeTintColor = colors.blueBase,
+  inactiveTintColor = colors.gray,
 }: CustomBottomTabNavigatorProps) {
+  const { setScrollY ,translateY} = useContext(
+    ScrollContext,
+  );
   const scrollY = useRef(new Animated.Value(0)).current;
-
-  const diffClamp = Animated.diffClamp(scrollY, 0, 100);
-
-  const translateY = diffClamp.interpolate({
-    inputRange: [0, 200],
-    outputRange: [0, 140], // Adjust to control hide/show animation
-    extrapolate: "clamp",
-  });
-  const headerTranslate = diffClamp.interpolate({
-    inputRange: [0, 200],
-    outputRange: [0, -140], // Hide on scroll down
-    extrapolate: "clamp",
-  });
-  const searBarTranslate = diffClamp.interpolate({
-    inputRange: [0, 200],
-    outputRange: [0, -200], // Hide on scroll down
-    extrapolate: "clamp",
-  });
+  setScrollY(scrollY);
+  
 
   return (
     <Tab.Navigator
@@ -94,7 +83,6 @@ function CustomBottomTabNavigator({
           key={tab.name}
           name={tab.name}
           component={tab.component}
-          initialParams={{ scrollY, headerTranslate, searBarTranslate }}
         />
       ))}
     </Tab.Navigator>
@@ -110,10 +98,10 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 14,
-    color: "black",
+    color: colors.darkblack,
   },
   activeTabLabel: {
-    color: "tomato",
+    color: colors.redBase,
     fontWeight: "bold",
   },
 });

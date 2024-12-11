@@ -1,9 +1,10 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {spotDetail} from '../../api/EndPointsUrl';
+import { Strings } from '../../assets/constants/Lable';
 
 export const GetSpotDetails = createAsyncThunk(
-  'getSpotDetails',
+  Strings.GET_SPOT_DETAILS,
   async (params: {baseUrl: string; spotName: string}) => {
     const {baseUrl, spotName} = params;
     const fullUrl = `${baseUrl}${spotDetail}/${spotName}`;

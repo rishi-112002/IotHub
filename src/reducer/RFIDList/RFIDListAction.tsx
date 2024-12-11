@@ -1,4 +1,4 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {
   CreateRFIDListEndPoint,
@@ -25,13 +25,13 @@ const handleError = (error: unknown) => {
 };
 
 const postRequest = async (url: string, data: any, config: any) => {
-  const {data: responseData} = await axios.post(url, data, config);
+  const { data: responseData } = await axios.post(url, data, config);
   return responseData;
 };
 
 export const CreateRFIDdata = createAsyncThunk(
   'CreateRFIDdata',
-  async ({rfidData, token, buCode}: any, {rejectWithValue}) => {
+  async ({ rfidData, token, buCode }: any, { rejectWithValue }) => {
     const fullUrl = `${BASE_URL}${CreateRFIDListEndPoint}`;
     try {
       const data = await postRequest(
@@ -52,7 +52,7 @@ export const CreateRFIDdata = createAsyncThunk(
 
 export const EditRFIDdata = createAsyncThunk(
   'EditRFIDdata',
-  async ({rfidData, token, buCode}: any, {rejectWithValue}) => {
+  async ({ rfidData, token, buCode }: any, { rejectWithValue }) => {
     const fullUrl = `${BASE_URL}${EditRFIDListEndPoint}`;
     try {
       const data = await postRequest(
@@ -75,10 +75,10 @@ export const EditRFIDdata = createAsyncThunk(
 
 export const getRfidListAction = createAsyncThunk(
   'getRfidListAction',
-  async ({baseUrl}: any, {rejectWithValue}) => {
+  async ({ baseUrl }: any, { rejectWithValue }) => {
     const fullUrl = `${baseUrl}${RFIDListEndPoint}`;
     try {
-      const {data} = await axios.get(fullUrl);
+      const { data } = await axios.get(fullUrl);
       return data;
     } catch (error) {
       const message = handleError(error);
@@ -89,11 +89,11 @@ export const getRfidListAction = createAsyncThunk(
 
 export const deleteRfidListAction = createAsyncThunk(
   'deleteRfidListAction',
-  async ({id, buCode, token}: any, {rejectWithValue}) => {
+  async ({ id, buCode, token }: any, { rejectWithValue }) => {
     const fullUrl = `${BASE_URL}/iv1/readers/remove/${id}`;
     try {
       const data = await axios.delete(fullUrl, axiosConfig(token, buCode));
-      if (data.result === 'ERROR') {
+      if (!data) {
         return rejectWithValue('Error: Invalid credentials or server error.');
       }
       return data;

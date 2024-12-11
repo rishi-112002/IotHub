@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { types } from '../../assets/constants/Constant';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
 import { resetUpadteStatus } from '../../reducer/weighBridge/WeighBridgeReducer';
+import { Strings } from '../../assets/constants/Lable';
 
 function WeighBridgeFunction(props: { id: any }) {
   const { id } = props
@@ -146,37 +147,37 @@ function WeighBridgeFunction(props: { id: any }) {
 
   const handleOptionSelect = (selected: any) => {
     switch (currentField) {
-      case 'smartController':
+      case Strings.SMART_CONTROLLER_S:
         setSelectedSmartConnector(selected);
         break;
-      case 'events':
+      case Strings.EVENTS_S:
         setSelectedEvent(selected);
         break;
-      case 'weightParsers':
+      case Strings.WEIGHT_PARSER_s:
         setselectedWeightPars(selected);
         break;
-      case 'displayA':
+      case Strings.DISPLAY_A:
         setSelectedDisplayA(selected);
         break;
-      case 'primaryReaderA':
+      case Strings.PRIMARY_READER_A:
         setSelectedPrimaryReaderA(selected);
         break;
-      case 'secondaryReaderA':
+      case Strings.SECOUNDARY_READER_A:
         setSelectedSecondaryReaderA(selected);
         break;
-      case 'displayB':
+      case Strings.DISPLAYB:
         setSelectedDisplayB(selected);
         break;
-      case 'primaryReaderB':
+      case Strings.PRIMARY_READERS_B:
         setSelectedPrimaryReaderB(selected);
         break;
-      case 'secondaryReaderB':
+      case Strings.SECOUNDARY_READERS_B:
         setSelectedSecondaryReaderB(selected);
         break;
-      case 'genericSpotA':
+      case Strings.GENERIC_SPOT_A:
         setSelectedGenericSpotDirA(selected);
         break;
-      case 'genericSpotB':
+      case Strings.GENERIC_SPOT_B:
         setSelectedGenericSpotDirB(selected);
         break;
     }
@@ -192,30 +193,30 @@ function WeighBridgeFunction(props: { id: any }) {
     } else {
       openCalendarModal();
     }
-    if (currentField?.includes('display')) {
+    if (currentField?.includes(Strings.DISPLAY_s)) {
       return displays;
-    } else if (currentField?.includes('Reader')) {
+    } else if (currentField?.includes(Strings.READER)) {
       return readers;
-    } else if (currentField?.includes('genericSpot')) {
+    } else if (currentField?.includes(Strings.GENERIC_SPOT_s)) {
       return GenericSpots;
     }
   };
 
   // Get the options based on the currently focused field
   const getOptions = () => {
-    if (currentField === 'display') {
+    if (currentField === Strings.DISPLAY_s) {
       return displays;
-    } else if (currentField === 'smartController') {
+    } else if (currentField === Strings.SMART_CONTROLLER_S) {
       return smartController;
-    } else if (currentField === 'events') {
+    } else if (currentField === Strings.EVENTS_S) {
       return types;
-    } else if (currentField === 'weightParsers') {
+    } else if (currentField === Strings.WEIGHT_PARSER_s) {
       return weightParsers;
-    } else if (currentField?.includes('display')) {
+    } else if (currentField?.includes(Strings.DISPLAY_s)) {
       return displays;
-    } else if (currentField?.includes('Reader')) {
+    } else if (currentField?.includes(Strings.READER)) {
       return readers;
-    } else if (currentField?.includes('genericSpot')) {
+    } else if (currentField?.includes(Strings.GENERIC_SPOT_s)) {
       return GenericSpots;
     }
     return [];
@@ -232,17 +233,17 @@ function WeighBridgeFunction(props: { id: any }) {
       stableWeightTolerance !== null &&
       stableWeightTicks !== null &&
       minVehicleWeight !== null &&
-      (selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE' ||
-        selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER' ||
-        selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE')
+      (selectedEvent.id === Strings.UNIDIRECTIONAL_WEIGHBRIDGE ||
+        selectedEvent.id === Strings.UNIDIRECTIONAL_WEIGHBRIDGE_3_READER ||
+        selectedEvent.id === Strings.BIDIRECTIONAL_WEIGHBRIDGE)
       ? selectedPrimaryReaderA?.name?.trim() !== ''
-      : selectedEvent.id === 'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
-        ? typeof selectedGenericSpotDirA === 'string' &&
+      : selectedEvent.id === Strings.BIDIRECTIONAL_WEIGHBRIDGE_NO_READER
+        ? typeof selectedGenericSpotDirA === Strings.STRING &&
         selectedGenericSpotDirA.trim() !== '' &&
-        typeof selectedGenericSpotDirB === 'string' &&
+        typeof selectedGenericSpotDirB === Strings.STRING &&
         selectedGenericSpotDirB.trim() !== ''
-        : selectedEvent.id === 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER'
-          ? typeof selectedGenericSpotDirA === 'string' &&
+        : selectedEvent.id === Strings.UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER
+          ? typeof selectedGenericSpotDirA === Strings.STRING &&
           selectedGenericSpotDirA.trim() !== ''
           : selectedPrimaryReaderB?.name?.trim() !== '';
   };
@@ -343,7 +344,7 @@ function WeighBridgeFunction(props: { id: any }) {
     }
     let typeSpecificFields = {};
     switch (selectedEvent.id) {
-      case 'UNIDIRECTIONAL_WEIGHBRIDGE':
+      case Strings.UNIDIRECTIONAL_WEIGHBRIDGE:
         typeSpecificFields = {
           validDiDirA: validIdA,
           primaryReaderIdDirA: Number(selectedPrimaryReaderA.id),
@@ -351,7 +352,7 @@ function WeighBridgeFunction(props: { id: any }) {
         };
         break;
 
-      case 'BIDIRECTIONAL_WEIGHBRIDGE':
+      case Strings.BIDIRECTIONAL_WEIGHBRIDGE:
         typeSpecificFields = {
           primaryReaderIdDirB: Number(selectedPrimaryReaderB.id),
           validDiDirA: validIdA,
@@ -362,7 +363,7 @@ function WeighBridgeFunction(props: { id: any }) {
 
         };
         break;
-      case 'UNIDIRECTIONAL_WEIGHBRIDGE_3_READER':
+      case Strings.BIDIRECTIONAL_WEIGHBRIDGE_NO_READER:
         typeSpecificFields = {
           validDiDirA: validIdA,
           primaryReaderIdDirA: Number(selectedPrimaryReaderA.id),
@@ -370,14 +371,14 @@ function WeighBridgeFunction(props: { id: any }) {
         };
         break;
 
-      case 'UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER':
+      case Strings.UNIDIRECTIONAL_WEIGHBRIDGE_NO_READER:
         typeSpecificFields = {
           validDiDirA: validIdA,
           ...(displayAId && { displayIdDirA: Number(selectedDisplayA.id) })
         };
         break;
 
-      case 'BIDIRECTIONAL_WEIGHBRIDGE_NO_READER':
+      case Strings.BIDIRECTIONAL_WEIGHBRIDGE_NO_READER:
         typeSpecificFields = {
           validDiDirA: validIdA,
           validDiDirB: validIdB,
@@ -450,16 +451,16 @@ function WeighBridgeFunction(props: { id: any }) {
   const smartControllerId = smartControllerOfSpot?.id;
   //primaryReaders
   const ReaderOfSpot = WeighBridgeSpot.readers;
-  const primaryReaderA = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === "PRIMARY" && item.direction === "A");
-  const primaryReaderB = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === "PRIMARY" && item.direction === "B");
+  const primaryReaderA = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === Strings.PRIMARY && item.direction === Strings.A);
+  const primaryReaderB = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === Strings.PRIMARY && item.direction === Strings.B);
   const PrimaryReaderAName = primaryReaderA?.name;
   const PrimaryReaderAId = primaryReaderA?.id;
   const PrimaryReaderBName = primaryReaderB?.name;
   const PrimaryReaderBId = primaryReaderB?.id;
 
   //secoundaryReader
-  const secoundaryReaderA = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === "SECONDARY" && item.direction === "A");
-  const secoundaryReaderB = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === "SECONDARY" && item.direction === "B");
+  const secoundaryReaderA = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === Strings.SECONDARY && item.direction === Strings.A);
+  const secoundaryReaderB = ReaderOfSpot?.find((item: { type: string, direction: string }) => item.type === Strings.SECONDARY && item.direction === Strings.B);
   const secoundaryReaderAName = secoundaryReaderA?.name;
   const secoundaryReaderAId = secoundaryReaderA?.id;
   const secoundaryReaderBName = secoundaryReaderB?.name;
@@ -468,8 +469,8 @@ function WeighBridgeFunction(props: { id: any }) {
   //displays
   const displayOfSpot = WeighBridgeSpot.displays
 
-  const displayA = displayOfSpot?.find((item: { direction: string }) => item.direction === "A");
-  const displayB = displayOfSpot?.find((item: { direction: string }) => item.direction === "B");
+  const displayA = displayOfSpot?.find((item: { direction: string }) => item.direction === Strings.A);
+  const displayB = displayOfSpot?.find((item: { direction: string }) => item.direction === Strings.B);
   const displayAName = displayA?.name;
   const displayAId = displayA?.id;
   const displayBName = displayB?.name;
@@ -512,11 +513,11 @@ function WeighBridgeFunction(props: { id: any }) {
   useEffect(() => {
     switch (updateStatus) {
       case 'failed':
-        CustomToast('error', uploadError);
+        CustomToast(Strings.ERROR_s, uploadError);
         dispatch(resetUpadteStatus());
         break;
       case 'succeeded':
-        CustomToast('success', updateStatus);
+        CustomToast(Strings.SUCCESS_s, updateStatus);
         dispatch(resetUpadteStatus());
         navigation.navigate('WeighbridgesScreen');
         break;

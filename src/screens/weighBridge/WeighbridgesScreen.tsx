@@ -1,5 +1,5 @@
 import { Animated, View, StyleSheet, Text } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import colors from '../../assets/color/colors';
 import SpotsDataByTypeComponent from '../../component/listComp/SpotsDataByTypeComponent';
 import WeighBridgeScreenHooks from '../../CustomHooks/weighBridgeHooks/WeighBridgeScreenHooks';
@@ -11,6 +11,8 @@ import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import { useNetwork } from '../../contextApi/NetworkContex';
+import { errorStrings, IconName, ImagePath, Strings } from '../../assets/constants/Lable';
+import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
 
 function Weighbridges() {
   const { isConnected } = useNetwork();
@@ -47,13 +49,13 @@ function Weighbridges() {
     <View style={styles.container}>
       <CustomHeader
         buCode={undefined}
-        userLogo={'account-circle'}
-        title={'Weighbridges'}
+        userLogo={IconName.ACCOUNT_CIRCLE}
+        title={Strings.WEIGHBRIDGES}
         translateY={translateY}
         onSearchPress={handleSearchPress}
         onFilterPress={toggleFilterMenu}
-        searchIcon={require('../../assets/icons/search.png')}
-        filterIcon={require('../../assets/icons/filterMedium.png')}
+        filterIcon={ImagePath.FILTER_ICON}
+        searchIcon={ImagePath.SEARCH_ICON}
         filterCount={filterCount}
       />
       {isConnected ? (
@@ -82,7 +84,7 @@ function Weighbridges() {
                   <ScrollableBadges
                     badges={[
                       {
-                        key: 'Connectivity',
+                        key: Strings.CONNECTIVITY,
                         value: weighBridgeTypeConnectivity,
                       },
                     ]}
@@ -102,7 +104,7 @@ function Weighbridges() {
             <View style={{ flex: 1 }}>
               <SpotsDataByTypeComponent
                 data={spotsData}
-                type={'UNIDIRECTIONAL_WEIGHBRIDGE'}
+                type={Strings.UNIDIRECTIONAL_WEIGHBRIDGE}
                 handleScroll={(e: {
                   nativeEvent: { contentOffset: { y: number } };
                 }) => {
@@ -133,10 +135,7 @@ function Weighbridges() {
           </Animated.View>
         )
       ) : (
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-          <Text>No Internet Connection</Text>
-        </View>
+        <NoInternetScreen />
       )}
 
       {/* Animated CustomAlert */}
@@ -146,8 +145,8 @@ function Weighbridges() {
             isVisible={isVisible}
             onClose={() => setIsVisible(false)}
             onOkPress={confirmDelete}
-            title="GENERIC_SPOT"
-            message="Are you sure you want to delete this GENERIC_SPOT?"
+            title={Strings.WEIGHBRIDGE_SPOT}
+            message={Strings.CONFIRM_WEIGHBRIDGE_DELETE}
           />
         </Animated.View>
       )}

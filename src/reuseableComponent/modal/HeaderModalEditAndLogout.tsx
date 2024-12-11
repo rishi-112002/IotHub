@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { IconName } from '../../assets/constants/Lable';
 
 
 function UserModal(props: { modalVisible: any, setModalVisible: any, username: any, onLogout: any }) {
-    const { modalVisible, setModalVisible, username, onLogout} = props
+    const { modalVisible, setModalVisible, username, onLogout } = props
     return (
         <Modal
             animationType="fade"
@@ -19,11 +20,11 @@ function UserModal(props: { modalVisible: any, setModalVisible: any, username: a
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         <View style={styles.modalItem}>
-                            <MaterialIcons name="person" size={24} color="black" />
+                            <MaterialIcons name={IconName.PERSON} size={24} color="black" />
                             <Text style={styles.modalText}>{username}</Text>
                         </View>
                         <TouchableOpacity style={styles.modalItem} onPress={onLogout}>
-                            <MaterialIcons name="logout" size={24} color="black" />
+                            <MaterialIcons name={IconName.LOGOUT} size={24} color="black" />
                             <Text style={styles.modalText}>Logout</Text>
                         </TouchableOpacity>
                     </View>
@@ -47,10 +48,10 @@ const styles = StyleSheet.create({
     modalItem: {
         flexDirection: 'row',
         marginVertical: 10,
-     marginHorizontal:15
+        marginHorizontal: 15
     },
     modalText: {
-        marginLeft:"auto",
+        marginLeft: "auto",
         fontSize: 18,
     },
     closeButton: {

@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomIcon from "../../reuseableComponent/customIcons/CustomIcon";
 import colors from "../../assets/color/colors";
 import fontSizes from "../../assets/fonts/FontSize";
+import { ImagePath } from "../../assets/constants/Lable";
 
 function DashBoardSubHeader(props: { heading: string, onPress: any, subHeading: string, count: any, iconPath: any }) {
     const { heading, subHeading, count, iconPath, onPress } = props
@@ -18,12 +19,11 @@ function DashBoardSubHeader(props: { heading: string, onPress: any, subHeading: 
                             <Text style={{ fontSize: fontSizes.smallText }} >{subHeading} </Text>
                             <Text style={{ color: colors.darkblack, fontSize: fontSizes.text }}>
                                 {count}</Text>
-
                         </View>
                     </View>
                 </View>
                 <View style={{ flex: 0.1, alignItems: 'center' }}>
-                    <CustomIcon iconPath={require("../../assets/icons/arrowRightMedium.png")}
+                    <CustomIcon iconPath={ImagePath.RIGHT_ARROW}
                         onPress={undefined} />
 
                 </View>

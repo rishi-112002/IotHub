@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { evenLogs, EventLofsForToday, getAllSpotEventLogsUrl } from "../../api/EndPointsUrl";
+import { Strings } from "../../assets/constants/Lable";
 
 
-export const GetSpotEventLogs = createAsyncThunk("getSpotEventLogs", async (params: { baseUrl: string|null, spotName: string }) => {
+export const GetSpotEventLogs = createAsyncThunk(Strings.GET_SPOT_EVENT_LOGS, async (params: { baseUrl: string | null, spotName: string }) => {
     const { baseUrl, spotName } = params
     const fullUrl = `${baseUrl}${evenLogs}?spot=${spotName}&limit=500`
 
@@ -13,7 +14,7 @@ export const GetSpotEventLogs = createAsyncThunk("getSpotEventLogs", async (para
     } catch (err) {
     }
 })
-export const GetSpotEventLogsForToday = createAsyncThunk("getSpotEventLogsForToday ", async (params: { baseUrl: string|null, time: string }) => {
+export const GetSpotEventLogsForToday = createAsyncThunk(Strings.GET_SPOT_EVENT_LOGS_FOR_TODAY, async (params: { baseUrl: string | null, time: string }) => {
     const { baseUrl } = params
     const fullUrl = `${baseUrl}${EventLofsForToday}`;
 
@@ -23,7 +24,7 @@ export const GetSpotEventLogsForToday = createAsyncThunk("getSpotEventLogsForTod
     } catch (err) {
     }
 })
-export const GetAllSpotEventLogs = createAsyncThunk("getAllSpotEventLogs ", async (params: { baseUrl: string|null}) => {
+export const GetAllSpotEventLogs = createAsyncThunk(Strings.GET_ALL_SPOT_EVENT_LOGS, async (params: { baseUrl: string | null }) => {
     const { baseUrl } = params
     const fullUrl = `${baseUrl}${getAllSpotEventLogsUrl}`;
 

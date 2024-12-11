@@ -17,3 +17,10 @@ export const EditRFIDListEndPoint = '/iv1/readers/update';
 export const EditSpot = "/iv1/spots/"
 export const EventLofsForToday = "/iv1/eventLogs/list?spot=ALL"
 export const getAllSpotEventLogsUrl = "/iv1/eventLogs/list?spot=ALL"
+export const BaseUrlHTTPS = "https://13.235.84.67"
+export const uploadSpotUrl = "/iv1/spots/create"
+export const UpdateSpotUrl = "/iv1/spots/update"
+export const DeleteRfid = "/iv1/readers/remove/"
+
+
+

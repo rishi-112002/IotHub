@@ -1,13 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { deleteSpots, EditSpot, SpotDataByType } from '../../api/EndPointsUrl';
+import { BaseUrlHTTPS, deleteSpots, EditSpot, SpotDataByType, UpdateSpotUrl, uploadSpotUrl } from '../../api/EndPointsUrl';
 import axios from 'axios';
+import { errorStrings, Strings } from '../../assets/constants/Lable';
 
 export const uploadGenericData = createAsyncThunk(
-    'spot/uploadGenericData',
+    Strings.UPLOAD_GENERIC_SPOT,
     async (params: { genericData: any; baseUrls: string | null; token: any, buCode: any }, { rejectWithValue }) => {
         const { genericData, baseUrls, token, buCode } = params;
         try {
-            const { data } = await axios.post('https://13.235.84.67/iv1/spots/create', genericData, {
+            const { data } = await axios.post(`${BaseUrlHTTPS}${uploadSpotUrl}`, genericData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'current-bu': buCode,
@@ -15,10 +16,8 @@ export const uploadGenericData = createAsyncThunk(
                     'client-name': 'iothub',
                 },
             });
-
-
             if (!data) {
-                return rejectWithValue('Upload failed: Invalid data or server error.');
+                return rejectWithValue(errorStrings.UPLOAD_FAILED_ERROR);
             }
             return data;
         } catch (err: any) {
@@ -27,34 +26,33 @@ export const uploadGenericData = createAsyncThunk(
             if (err.response) {
                 // Server returned a response (4xx or 5xx)
                 const status = err.response.status;
-                const message = err.response.data?.message || 'An error occurred during the upload.';
+                const message = err.response.data?.message || errorStrings.ERROR_DURING_UPLOAD;
 
                 // Log the exact error response
-                // console.error(`Upload failed with status ${status}: ${message}`);
+
 
                 // Return the specific error message from the server
-                return rejectWithValue(`Upload error: ${message}`);
+                return rejectWithValue(`${errorStrings.UPLOAD_ERROR}: ${message}`);
 
             } else if (err.request) {
                 // The request was made but no response was received (e.g., network issues)
-                // console.error('No response received from the server:', err.request);
-                return rejectWithValue('No response from the server. Please check your network connection.');
 
+                return rejectWithValue(`${errorStrings.NO_RESPONSE_FROM_SERVER} ${errorStrings.INTERNET_ERROR}`);
             } else {
                 // Something happened in setting up the request that triggered an Error
-                // console.error('Error in request setup:', err.message);
-                return rejectWithValue(`Upload error: ${err.message}`);
+
+                return rejectWithValue(`${errorStrings.UPLOAD_ERROR}: ${err.message}`);
             }
         }
     }
 );
-export const GenericSpotsData = createAsyncThunk('genericSpotsData', async (params: { baseUrl: string | null, buCode: string | null, token: string | null },) => {
+export const GenericSpotsData = createAsyncThunk(Strings.GENERIC_SPOTS_DATA, async (params: { baseUrl: string | null, buCode: string | null, token: string | null },) => {
     const { baseUrl, buCode, token } = params;
     const fullUrl = `${baseUrl}${SpotDataByType}`;
 
     try {
         const { data } = await axios.get(fullUrl);
-        const filteredData = data.filter((item: any) => item.type === 'GENERIC_SPOT');
+        const filteredData = data.filter((item: any) => item.type === Strings.GENERIC_SPOT);
         const Data = {
             filteredData,
         };
@@ -63,12 +61,10 @@ export const GenericSpotsData = createAsyncThunk('genericSpotsData', async (para
     }
 })
 export const DeleteGenericSpot = createAsyncThunk(
-    'deleteSpot',
+    Strings.DELETE_SPOT,
     async (params: { baseUrl: any; id: string; bucode: string | null; token: string | null }, { rejectWithValue }) => {
         const { id, bucode, token } = params;
-        const fullUrl = `https://13.235.84.67${deleteSpots}${id}`;
-        console.log("id in action", id , fullUrl)
-
+        const fullUrl = `${BaseUrlHTTPS}${deleteSpots}${id}`;
         try {
             const { data } = await axios.delete(fullUrl, {
                 headers: {
@@ -78,18 +74,18 @@ export const DeleteGenericSpot = createAsyncThunk(
                     'client-name': 'iothub',
                 },
             });
-            
+
             return { data, id }; // Success: Return data and ID
         } catch (err: any) {
             if (err.response) {
                 // Server returned an error response
                 return rejectWithValue({
-                    message: err.response.data?.message || "Unknown error occurred",
+                    message: err.response.data?.message || errorStrings.ERROR_DURING_UPLOAD,
                     status: err.response.status,
                 });
             } else if (err.request) {
                 // No response received
-                return rejectWithValue({ message: "No response from server", status: null });
+                return rejectWithValue({ message: errorStrings.NO_RESPONSE_FROM_SERVER, status: null });
             } else {
                 // Error during request setup
                 return rejectWithValue({ message: err.message, status: null });
@@ -97,7 +93,8 @@ export const DeleteGenericSpot = createAsyncThunk(
         }
     }
 );
-export const GenericSpotData = createAsyncThunk('genericSpotData', async (params: { baseUrl: string | null, buCode: string | null, token: string | null, id: any }) => {
+export const GenericSpotData = createAsyncThunk(Strings.GENERIC_SPOT_DATA, async (params: { baseUrl: string | null, buCode: string | null, token: string | null, id: any }) => {
+
     const { baseUrl, buCode, token, id } = params;
     const fullUrl = `${baseUrl}${EditSpot}${id}`;
 
@@ -108,11 +105,11 @@ export const GenericSpotData = createAsyncThunk('genericSpotData', async (params
     }
 })
 export const UpdateGenericSpot = createAsyncThunk(
-    'spot/updateGenericSpot',
+    Strings.UPDATE_GENERIC_SPOT,
     async (params: { genericData: any; baseUrls: string | null; token: any, buCode: any }, { rejectWithValue }) => {
         const { genericData, baseUrls, token, buCode } = params;
         try {
-            const { data } = await axios.post('https://13.235.84.67/iv1/spots/update', genericData, {
+            const { data } = await axios.post(`${BaseUrlHTTPS}${UpdateSpotUrl}`, genericData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'current-bu': buCode,
@@ -123,7 +120,7 @@ export const UpdateGenericSpot = createAsyncThunk(
 
 
             if (!data) {
-                return rejectWithValue('update failed: Invalid data or server error.');
+                return rejectWithValue(errorStrings.UPDATE_FAILED_ERROR);
             }
             return data;
         } catch (err: any) {
@@ -132,23 +129,19 @@ export const UpdateGenericSpot = createAsyncThunk(
             if (err.response) {
                 // Server returned a response (4xx or 5xx)
                 const status = err.response.status;
-                const message = err.response.data?.message || 'An error occurred during the upload.';
+                const message = err.response.data?.message || errorStrings.ERROR_DURING_UPLOAD;
 
-                // Log the exact error response
-                // console.error(`update failed with status ${status}: ${message}`);
 
-                // Return the specific error message from the server
-                return rejectWithValue(`update error: ${message}`);
+
+                return rejectWithValue(`${errorStrings.UPLOAD_ERROR}${message}`);
 
             } else if (err.request) {
                 // The request was made but no response was received (e.g., network issues)
-                // console.error('No response received from the server:', err.request);
-                return rejectWithValue('No response from the server. Please check your network connection.');
+
+                return rejectWithValue(`${errorStrings.NO_RESPONSE_FROM_SERVER} ${errorStrings.INTERNET_ERROR}`);
 
             } else {
-                // Something happened in setting up the request that triggered an Error
-                // console.error('Error in request setup:', err.message);
-                return rejectWithValue(`update error: ${err.message}`);
+                return rejectWithValue(`${errorStrings.UPLOAD_ERROR} ${err.message}`);
             }
         }
     }

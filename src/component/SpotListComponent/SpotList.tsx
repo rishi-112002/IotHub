@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useCallback, useEffect} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -13,7 +13,8 @@ import SpotItem from './SpotItem';
 import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-import {getResponsiveHeight} from '../RFIDComponent/RfidListComponent';
+import { getResponsiveHeight } from '../RFIDComponent/RfidListComponent';
+import { IconName, Strings } from '../../assets/constants/Lable';
 
 interface SpotData {
   id: string;
@@ -48,25 +49,22 @@ const SpotList: React.FC<SpotListComponentProps> = ({
       const totalItems = spotData.length;
       const isAllDataFetched = spotData.length === totalItems;
       if (isAllDataFetched) {
-        console.log('All data has been fetched');
         setIsLoadingMore(false);
       }
     }
   }, [spotData]);
 
   // Render each item
-  const renderSpot: React.FC<{item: SpotData}> = useCallback(
-    ({item}) => (
+  const renderSpot: React.FC<{ item: SpotData }> = useCallback(
+    ({ item }) => (
       <CardItemWith_Icon
-        iconName={item.active ? 'location-on' : 'location-off'}
+        iconName={item.active ? IconName.LOCATION_ON : IconName.LOCATION_OFF}
         view={<SpotItem item={item} baseUrl={null} />}
         key={item?.name}
       />
     ),
     [],
   );
-  // const keyExterator = useCallback(, []);
-
   return (
     <View>
       <FlatList
@@ -75,7 +73,6 @@ const SpotList: React.FC<SpotListComponentProps> = ({
         keyExtractor={(item: SpotData) => String(item.id)}
         onRefresh={loadRfidList}
         refreshing={refreshing}
-        // onScroll={handleScroll}
         contentContainerStyle={contentContainerStyle}
         removeClippedSubviews={true}
         windowSize={getResponsiveHeight(121)}
@@ -89,7 +86,7 @@ const SpotList: React.FC<SpotListComponentProps> = ({
           isLoadingMore ? (
             <View style={styles.footer}>
               <ActivityIndicator size="small" color={colors.AppPrimaryColor} />
-              <Text style={styles.footerText}>Loading...</Text>
+              <Text style={styles.footerText}>{Strings.LOADING}...</Text>
             </View>
           ) : null
         }

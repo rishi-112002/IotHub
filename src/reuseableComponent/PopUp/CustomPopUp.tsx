@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
+import { Strings } from '../../assets/constants/Lable';
 
 interface CustomAlertProps {
   isVisible: boolean;
@@ -34,17 +35,16 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
         <Text style={styles.alertTitle}>{title}</Text>
         <Text style={styles.alertMessage}>{message}</Text>
         <View
-          // eslint-disable-next-line react-native/no-inline-styles
-          style={{backgroundColor: '#edebeb', height: 1}}
+          style={{ backgroundColor: colors.CloudyWhite, height: 1 }}
         />
         <View style={styles.buttonContainer}>
           {showCancel && (
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>{Strings.CANCLE}</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.okButton} onPress={onOkPress}>
-            <Text style={styles.okButtonText}>Confirm</Text>
+            <Text style={styles.okButtonText}>{Strings.CONFIRM}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -57,12 +57,12 @@ export default CustomAlert;
 const styles = StyleSheet.create({
   alertContainer: {
     backgroundColor: 'white',
-    borderRadius:20,
-    borderWidth:1,
-    borderColor:'#edebeb',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.CloudyWhite,
     elevation: 10,
-    shadowColor: '#000',
-    shadowOffset: {width: 10, height: 40},
+    shadowColor: colors.darkblack,
+    shadowOffset: { width: 10, height: 40 },
     shadowOpacity: 9,
     shadowRadius: 80,
   },
@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 25,
     color: colors.inkDarkest,
-    backgroundColor: '#edebeb',
+    backgroundColor: colors.CloudyWhite,
     borderTopRightRadius: 20,
-    borderBottomRightRadius:20,
+    borderBottomRightRadius: 20,
   },
   alertMessage: {
     fontSize: fontSizes.heading,
@@ -83,15 +83,14 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   buttonContainer: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
+    padding: 15,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignSelf: 'flex-end',
     width: '70%',
   },
   cancelButton: {
-    borderColor: '#D3D3D3',
+    borderColor: colors.lightGray,
     borderWidth: 1,
     padding: 10,
     borderRadius: 10,
@@ -105,14 +104,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   okButtonText: {
-    color: 'white',
-    fontSize: 16,
+    color: colors.white,
+    fontSize: fontSizes.title,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   cancelButtonText: {
-    color: 'black',
-    fontSize: 16,
+    color: colors.darkblack,
+    fontSize: fontSizes.title,
     fontWeight: 'bold',
     textAlign: 'center',
   },

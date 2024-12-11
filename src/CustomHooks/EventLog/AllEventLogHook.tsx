@@ -8,6 +8,7 @@ import { Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { GetSpotName } from '../../reducer/spotData/spotDataAction';
 import { direction, EventNames } from '../../assets/constants/Constant';
+import { Strings } from '../../assets/constants/Lable';
 
 const AllEventLogHooks = () => {
   const navigation = useNavigation();
@@ -120,7 +121,7 @@ const AllEventLogHooks = () => {
           matchesToDate
         );
       });
-  
+
       setFilteredLogs(filteredData);
       setIsFocused(false);
       SetIsFilterWork(true);
@@ -202,11 +203,11 @@ const AllEventLogHooks = () => {
     date: React.SetStateAction<string>,
     dateValue: any,
   ) => {
-    if (selectedOption.id === 'FROM_DATE') {
+    if (selectedOption.id === Strings.FROM_DATE) {
       setDateFromValue(dateValue);
       setSelectedFromDate(date);
     }
-    if (selectedOption.id === 'TO_DATE') {
+    if (selectedOption.id === Strings.TO_DATE) {
       setToDateValue(dateValue);
       setSelectedToDate(date);
     }
@@ -215,13 +216,13 @@ const AllEventLogHooks = () => {
   };
 
   const handleOptionSelect = (selected: any) => {
-    if (currentField === 'DIRECTION') {
+    if (currentField === Strings.DIRECTION) {
       // Handle direction selection
       setSelectedDirection(selected);
-    } else if (currentField === 'SPOT_NAME') {
+    } else if (currentField === Strings.SPOT_NAME) {
       // Handle spot selection
       setSelectedSpot(selected);
-    } else if (currentField === 'NAME') {
+    } else if (currentField === Strings.NAME) {
       // Handle name selection
       setSelectedName(selected);
     }
@@ -233,11 +234,11 @@ const AllEventLogHooks = () => {
   // Get unique names
 
   const getOptions = () => {
-    if (currentField === 'DIRECTION') {
+    if (currentField === Strings.DIRECTION) {
       return direction;
-    } else if (currentField === 'SPOT_NAME') {
+    } else if (currentField === Strings.SPOT_NAME) {
       return spotName;
-    } else if (currentField === 'NAME') {
+    } else if (currentField === Strings.NAME) {
       return EventNames;
     }
     return [];

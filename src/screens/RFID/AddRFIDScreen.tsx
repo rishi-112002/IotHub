@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
@@ -9,6 +9,8 @@ import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import { useRfidAddForm } from '../../CustomHooks/RFIDHooks/RFIDAddHook';
 import { useNetwork } from '../../contextApi/NetworkContex';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
+import { Lable, Strings } from '../../assets/constants/Lable';
+import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
 
 const RfidAddScreen = () => {
   const { isConnected } = useNetwork();
@@ -45,7 +47,7 @@ const RfidAddScreen = () => {
             <View style={{ padding: 20 }}>
               {/* Name Input */}
               <CustomTextInput
-                label="Name"
+                label={Strings.NAME_s}
                 value={name}
                 errorMessage={errors.name}
                 keyboardType="default"
@@ -59,7 +61,7 @@ const RfidAddScreen = () => {
               {/* Model Number Input */}
               <View style={{ position: 'relative' }}>
                 <CustomTextInput
-                  label="Model Number"
+                  label={Lable.MODEL_NUMBER}
                   value={modal || ''}
                   editable={false}
                   errorMessage={errors.modal}
@@ -79,8 +81,8 @@ const RfidAddScreen = () => {
                   isVisible={dropdownVisible}
                   handleCloseModal={() => setDropdownVisible(false)}
                   onOptionSelected={handleModalSelect}
-                  nameKey="name"
-                  valueKey="value"
+                  nameKey={Strings.NAME_S}
+                  valueKey={Strings.VALUE}
 
                 />
               )}
@@ -90,7 +92,7 @@ const RfidAddScreen = () => {
                 <View>
 
                   <CustomTextInput
-                    label="IP Address"
+                    label={Lable.IP_ADDRESS}
                     value={IPAddress}
                     errorMessage={errors.IPAddress}
                     keyboardType="default"
@@ -102,7 +104,7 @@ const RfidAddScreen = () => {
 
                   />
                   <CustomTextInput
-                    label="Port Number"
+                    label={Lable.PORT_NUMBER}
                     value={port}
                     errorMessage={errors.port}
                     keyboardType="numeric"
@@ -118,7 +120,7 @@ const RfidAddScreen = () => {
 
               {/* Save Button */}
               <CustomButton
-                label="Save"
+                label={Lable.SAVE}
                 onPress={handleSaveData}
                 disabled={Loader} // Disable button when saving
               />
@@ -126,9 +128,7 @@ const RfidAddScreen = () => {
           )}
         </ScrollView>
       ) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-          <Text>No Internet Connection</Text>
-        </View>
+        <NoInternetScreen />
       )}
     </>
   );

@@ -4,6 +4,7 @@ import { Card } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
+import { IconName, Strings } from '../../assets/constants/Lable';
 
 // This component takes 'spotData' as a prop and renders various details about a spot.
 const SpotDetailsComponent = (props: { spotData: any }) => {
@@ -13,7 +14,7 @@ const SpotDetailsComponent = (props: { spotData: any }) => {
         weight,
         weightStable,
         weightError,
-        // di,
+        di,
         currentState,
         delayed,
         weighmentProcess,
@@ -24,31 +25,31 @@ const SpotDetailsComponent = (props: { spotData: any }) => {
         // Wrapping the entire component inside ScrollView to handle long content with vertical scrolling
         <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer}>
             <View style={{ padding: 20 }}>
-                
+
                 {/* Connectivity Section */}
                 <View style={styles.section}>
                     <View style={styles.row}>
-                        <Text style={styles.sectionTitle}>Connectivity:</Text>
+                        <Text style={styles.sectionTitle}>{Strings.CONNECTIVITY}</Text>
                         {/* If connectivity is available, display it; otherwise, show 'N/A' */}
-                        <Text style={styles.sectionText}>{connectivity || 'N/A'}</Text>
+                        <Text style={styles.sectionText}>{connectivity || Strings.NA}</Text>
                     </View>
                 </View>
 
                 {/* Weight Section */}
                 <View style={styles.section}>
                     <View style={styles.row}>
-                        <Text style={styles.sectionTitle}>Weight:</Text>
+                        <Text style={styles.sectionTitle}>{Strings.WEIGHT}:</Text>
                         {/* Display weight if available, otherwise 'N/A' */}
-                        <Text style={styles.sectionText}>{weight !== null ? weight : 'N/A'}</Text>
+                        <Text style={styles.sectionText}>{weight !== null ? weight : Strings.NA}</Text>
                     </View>
                 </View>
 
                 {/* Weight Stability Section */}
                 <View style={styles.section}>
                     <View style={styles.row}>
-                        <Text style={styles.sectionTitle}>Weight Stable:</Text>
+                        <Text style={styles.sectionTitle}>{Strings.WEIGHT_SCALE}:</Text>
                         {/* Conditionally render the weight stability status */}
-                        <Text style={styles.statusText}>{weightStable ? 'Stable' : 'Not Stable'}</Text>
+                        <Text style={styles.statusText}>{weightStable ? Strings.STABLE : Strings.NOT_STABLE}</Text>
                         {/* If there's a weight error, display it */}
                         {weightError && (
                             <Text style={styles.errorText}>{`Error: ${weightError}`}</Text>
@@ -59,34 +60,34 @@ const SpotDetailsComponent = (props: { spotData: any }) => {
                 {/* Digital Input (DI) Section */}
                 <View style={styles.section}>
                     <View style={styles.row}>
-                        <Text style={styles.sectionTitle}>Digital Input (DI):</Text>
+                        <Text style={styles.sectionTitle}>{Strings.DIGITAL_INPUT_DI}:</Text>
                         {/* Display DI data or 'N/A' */}
-                        <Text style={styles.sectionText}>{di || 'N/A'}</Text>
+                        <Text style={styles.sectionText}>{di || Strings.NA}</Text>
                     </View>
                 </View>
 
                 {/* Current State Section */}
                 <View style={styles.section}>
                     <View style={styles.row}>
-                        <Text style={styles.sectionTitle}>Current State:</Text>
+                        <Text style={styles.sectionTitle}>{Strings.CURRENT_STATE}:</Text>
                         {/* Display the current state of the spot */}
-                        <Text style={styles.sectionText}>{currentState || 'N/A'}</Text>
+                        <Text style={styles.sectionText}>{currentState || Strings.NA}</Text>
                     </View>
                 </View>
 
                 {/* Delayed Status Section */}
                 <View style={styles.section}>
                     <View style={styles.row}>
-                        <Text style={styles.sectionTitle}>Delayed:</Text>
+                        <Text style={styles.sectionTitle}>{Strings.DELAYED}:</Text>
                         {/* Conditionally show whether the process is delayed or not */}
-                        <Text style={styles.sectionText}>{delayed ? 'Yes' : 'No'}</Text>
+                        <Text style={styles.sectionText}>{delayed ? Strings.YES : Strings.NO}</Text>
                     </View>
                 </View>
 
                 {/* Weighment Process Section */}
                 <View style={styles.section}>
                     <View style={styles.row}>
-                        <Text style={styles.sectionTitle}>Weighment Process:</Text>
+                        <Text style={styles.sectionTitle}>{Strings.WEIGHT_PROCESS}:</Text>
                         {/* If there is weighment process data, map through the array and display each process */}
                         {weighmentProcess && weighmentProcess.length > 0 ? (
                             weighmentProcess.map((process: any, index: number) => (
@@ -96,7 +97,7 @@ const SpotDetailsComponent = (props: { spotData: any }) => {
                             ))
                         ) : (
                             <View style={{ marginStart: 'auto' }}>
-                                <Text style={styles.sectionText}>No weighment process</Text>
+                                <Text style={styles.sectionText}>{Strings.NO_WEIGHT_PROCESS}</Text>
                             </View>
                         )}
                     </View>
@@ -105,20 +106,20 @@ const SpotDetailsComponent = (props: { spotData: any }) => {
 
             {/* Readers Section */}
             {readers && readers.length > 0 && (
-                <Card style={{padding:10 , backgroundColor:colors.white}}>
-                    <Text style={styles.sectionTitle}>Readers</Text>
+                <Card style={{ padding: 10, backgroundColor: colors.white }}>
+                    <Text style={styles.sectionTitle}>{Strings.READERS}</Text>
                     {/* Iterate through the readers array and display the health status of each device */}
                     {readers.map((reader: any, index: number) => (
                         <View key={index} style={styles.readerContainer}>
                             {/* Conditionally render icon color based on health status */}
                             <MaterialIcons
-                                name={reader.healthStatus === 'OUT_OF_SERVICE' ? 'error-outline' : 'check-circle'}
+                                name={reader.healthStatus === Strings.OUT_OF_SERVICE ? IconName.ERROR_OUTLINE : IconName.CHECK_CIRCLE}
                                 size={24}
-                                color={reader.healthStatus === 'OUT_OF_SERVICE' ? colors.redDarkest : colors.greenDarkest}
+                                color={reader.healthStatus === Strings.OUT_OF_SERVICE? colors.redDarkest : colors.greenDarkest}
                             />
                             <View>
-                                <Text style={styles.readerText}>Device ID: {reader.deviceId}</Text>
-                                <Text style={styles.readerText}>Health Status: {reader.healthStatus}</Text>
+                                <Text style={styles.readerText}>{Strings.DEVICE_ID}: {reader.deviceId}</Text>
+                                <Text style={styles.readerText}>{Strings.HEALTH_STATUS}: {reader.healthStatus}</Text>
                             </View>
                         </View>
                     ))}

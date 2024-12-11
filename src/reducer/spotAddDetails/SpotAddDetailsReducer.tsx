@@ -6,6 +6,7 @@ import {
   GetWeightBridge,
   GetWeightParsers,
 } from './SpotAddDetailsAction';
+import { Strings } from '../../assets/constants/Lable';
 
 type AuthState = {
   smartController: [];
@@ -29,7 +30,7 @@ const initState: AuthState = {
   smartControllerLoader: false,
 };
 export const SpotAddDetailsSlice = createSlice({
-  name: 'genericAddDetails',
+  name: Strings.SPOT_ADD_DETAILS,
   initialState: initState,
   reducers: {},
   extraReducers: builder => {

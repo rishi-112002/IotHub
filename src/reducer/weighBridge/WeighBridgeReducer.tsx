@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DeleteWeighBridgeSpot, UpdateWeighBridgeSpot, WeighBridegeSpotDataEdit, weighBridgeAdd, WeighBridgeSpotData } from './WeighBridgeAction';
 import { act } from 'react';
+import { errorStrings, Strings } from '../../assets/constants/Lable';
 
 interface weighBridgeSpot {
     id: number;
@@ -134,7 +135,7 @@ export const WeighBridgeSlice = createSlice({
             .addCase(weighBridgeAdd.fulfilled, (state, action: PayloadAction<any>) => {
                 state.weighBridge = action.payload;
                 const newData = action.payload;
-                if (state.weighBridge.result !== 'ERROR') {
+                if (state.weighBridge.result !== Strings.ERROR) {
                     state.status = 'succeeded';
                     state.error = null;
 
@@ -150,7 +151,7 @@ export const WeighBridgeSlice = createSlice({
             })
             .addCase(weighBridgeAdd.rejected, (state, action) => {
                 state.status = 'failed';
-                state.error = action.payload as string || 'Failed to upload weighBridge data';
+                state.error = action.payload as string || errorStrings.FAILED_TO_UPLOAD_WEIGHBRIDGE;
             })
             .addCase(WeighBridgeSpotData.pending, (state) => {
                 state.loader = true;
@@ -222,7 +223,7 @@ export const WeighBridgeSlice = createSlice({
             .addCase(UpdateWeighBridgeSpot.rejected, (state, action) => {
                 state.updateStatus = 'failed';
                 state.error =
-                    (action.payload as string) || 'Failed to upload WeighBridge';
+                    (action.payload as string) || errorStrings.FAILED_TO_UPLOAD_WEIGHBRIDGE;
             })
             .addCase(UpdateWeighBridgeSpot.pending, state => {
                 state.updateStatus = 'loading';

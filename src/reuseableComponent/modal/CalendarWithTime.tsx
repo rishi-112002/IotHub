@@ -1,6 +1,7 @@
 import DateTimePicker from 'react-native-ui-datepicker';
 import React from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
+import colors from '../../assets/color/colors';
 
 export default function CustomDateTimePicker(props: { visible: any, onClose: any, onDateSelect: any }) {
     const { visible, onClose, onDateSelect } = props;
@@ -41,16 +42,16 @@ export default function CustomDateTimePicker(props: { visible: any, onClose: any
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        backgroundColor: '#F5FCFF',
+        backgroundColor:colors.BabyBlue,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: "gray",
+        borderColor: colors.gray,
     },
     modalContainer: {
         flex: 1,
         padding: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.6)',  // Darker transparent background
+        backgroundColor: colors.darkerTransparent,  // Darker transparent background
     },
 });
