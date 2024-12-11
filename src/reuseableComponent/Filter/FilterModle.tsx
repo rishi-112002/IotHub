@@ -8,6 +8,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { IconName, Strings } from '../../assets/constants/Lable';
+import colors from '../../assets/color/colors';
 type type = "used" | "connectivity"
 function FilterModal(props: {
   isVisible: boolean,
@@ -18,20 +20,20 @@ function FilterModal(props: {
 }) {
   const { handleFilterPress, isVisible, spotTypeConnectivity, toggleFilterMenu, type } = props
   const handleConnectedPress = () => {
-    if (type === "connectivity") {
-      handleFilterPress('connected')
+    if (type === Strings.CONNECTIVITY_S) {
+      handleFilterPress(Strings.CONNECTED_S)
     }
     else {
-      handleFilterPress("used")
+      handleFilterPress(Strings.USED_s)
     }
   }
 
   const handleNotConnectedPress = () => {
-    if (type === "connectivity") {
-      handleFilterPress('not-connected')
+    if (type === Strings.CONNECTIVITY_S) {
+      handleFilterPress(Strings.NOT_CONNECTED_s)
     }
     else {
-      handleFilterPress("un-used")
+      handleFilterPress(Strings.UN_USED_s)
     }
   }
   return (
@@ -47,32 +49,32 @@ function FilterModal(props: {
               <TouchableOpacity
                 style={[
                   styles.filterItem,
-                  spotTypeConnectivity === 'connected' && styles.selectedFilter,
+                  spotTypeConnectivity === Strings.CONNECTED_S && styles.selectedFilter,
                 ]}
                 onPress={handleConnectedPress}>
-                <MaterialIcons name="link" size={24} color="black" />
-                <Text style={styles.filterText}> {type === "connectivity" ? "Connected" : "Used"}</Text>
+                <MaterialIcons name={IconName.LINK} size={24} color={colors.darkblack} />
+                <Text style={styles.filterText}> {type === Strings.CONNECTIVITY_S ? Strings.CONNECTED : Strings.USED}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[
                   styles.filterItem,
-                  spotTypeConnectivity === 'not-connected' &&
+                  spotTypeConnectivity === Strings.NOT_CONNECTED_s &&
                   styles.selectedFilter,
                 ]}
                 onPress={handleNotConnectedPress}>
-                <MaterialIcons name="link-off" size={24} color="black" />
-                <Text style={styles.filterText}>{type === "connectivity" ? "Not Connected" : "Un-Used"}</Text>
+                <MaterialIcons name={IconName.LINK_OFF} size={24} color={colors.darkblack} />
+                <Text style={styles.filterText}>{type === Strings.CONNECTIVITY_S ? Strings.NOT_CONNECTED : Strings.UN_USED_s}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[
                   styles.filterItem,
-                  spotTypeConnectivity === 'all' && styles.selectedFilter,
+                  spotTypeConnectivity === Strings.ALL && styles.selectedFilter,
                 ]}
-                onPress={() => handleFilterPress('all')}>
-                <MaterialIcons name="filter-list" size={24} color="black" />
-                <Text style={styles.filterText}>All</Text>
+                onPress={() => handleFilterPress(Strings.ALL)}>
+                <MaterialIcons name={IconName.FILTER_LIST} size={24} color={colors.darkblack} />
+                <Text style={styles.filterText}>{Strings.ALL}</Text>
               </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>

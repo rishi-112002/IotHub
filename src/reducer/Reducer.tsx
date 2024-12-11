@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Strings } from "../assets/constants/Lable";
 
 export const apiResponseList = createSlice({
-    name: "AllResponseData",
+    name: Strings.ALL_RESPONSE_DATA,
     initialState: { apiResponse: {} },
     reducers: {
         responseDetails: (state, action:PayloadAction<{}>) => {

@@ -6,15 +6,14 @@ import {
   Animated,
 } from 'react-native';
 import LoginStyles from './LoginStyles';
-import React, { useEffect } from 'react';
+import React from 'react';
 import colors from '../../../assets/color/colors';
 import SuccessLoader from '../../../reuseableComponent/loader/LoginSuccessLoader';
 import CustomTextInput from '../../../reuseableComponent/customTextInput/CustomTextInput';
-import BusinessUnitModal from '../../../reuseableComponent/modal/BuinessUnitsModal';
 import CustomButton from '../../../reuseableComponent/customButton/CustomButton';
-import LoginEffect from "../../../screens/authScreen/login/LoginEffect"
-import { Colors2 } from '../../../assets/color/Colors2';
+import LoginEffect from "./LoginEffect"
 import GenericModal from '../../../reuseableComponent/modal/GenralModal';
+import { Lable, IconName, Strings } from '../../../assets/constants/Lable';
 function LoginForm() {
   const {
     loader,
@@ -38,13 +37,10 @@ function LoginForm() {
     isButtonDisabled,
   } = LoginEffect();
   const { styles } = LoginStyles();
-  useEffect(() => {
-
-  }, [])
   return (
     <View style={styles.mainContainer}>
-      <StatusBar backgroundColor={Colors2.HelperTextColor} />
-      <Text style={styles.signInStyle}>{"Log In"}</Text>
+      <StatusBar backgroundColor={colors.HelperTextColor} />
+      <Text style={styles.signInStyle}>{Lable.LOG_IN}</Text>
       {loader && (
         <View style={styles.loaderContainer}>
           <SuccessLoader />
@@ -57,28 +53,27 @@ function LoginForm() {
             transform: [{ translateY: slideUpAnim }],
           },
         ]}>
-        <Text style={styles.heading}>Welcome Back</Text>
+        <Text style={styles.heading}>{Strings.WELCOME_BACK}</Text>
         <View style={{ height: "10%" }}></View>
         <CustomTextInput
-          label="User name"
+          label={Lable.USER_NAME}
           value={userName}
           errorMessage={errors.userName}
           editable={true}
-          style={{ flex: 1, color: Colors2.PrimaryTextColor }}
+          style={{ flex: 1, color: colors.PrimaryTextColor }}
           type='input'
           setTextInput={handleUserNameChange}
           required={false}
         />
         <CustomTextInput
-          label="Password"
+          label={Lable.PASSWORD}
           value={password}
           secureTextEntry={!passwordVisible}
           errorMessage={errors.password}
-          iconName={passwordVisible ? 'visibility' : 'visibility-off'}
+          iconName={passwordVisible ? IconName.VISIBILITY : IconName.VISIBILITY_OFF}
           handleVisibility={handleVisibityClick}
           editable={true}
-          style={{ flex: 1, color: Colors2.PrimaryTextColor }}
-
+          style={{ flex: 1, color: colors.PrimaryTextColor }}
           type='input'
           setTextInput={setPassword}
           required={false}
@@ -87,11 +82,11 @@ function LoginForm() {
           <CustomTextInput
             value={selectedOption.name}
             setTextInput={undefined}
-            label="Business unit"
+            label={Lable.BUSINESS_UNIT}
             editable={false}
             type='dropdown'
             onPress={() => handleOpenModal()}
-            style={{ flex: 1, color: Colors2.PrimaryTextColor }}
+            style={{ flex: 1, color: colors.PrimaryTextColor }}
 
             required={false}
           />
@@ -100,15 +95,15 @@ function LoginForm() {
             isVisible={isFocused}
             handleCloseModal={handleCloseModal}
             onOptionSelected={handleOptionSelected}
-            nameKey="name"
-            valueKey="value"
+            nameKey={Strings.NAME_s}
+            valueKey={"code"}
           />
 
         </View>
         <View style={{ marginTop: "10%" }}>
 
           <CustomButton
-            label="Log In"
+            label={Lable.LOG_IN}
             onPress={handleLogin}
             disabled={isButtonDisabled}
           />
@@ -122,7 +117,7 @@ function LoginForm() {
               onPress={() => {
                 navigation.navigate('UrlScreen', { baseUrls });
               }}>
-              <Text style={styles.subText}>Update/Change Server</Text>
+              <Text style={styles.subText}>{Strings.UPDATE_CHANGE_SERVER}</Text>
             </TouchableOpacity>
           </View>
         </View>

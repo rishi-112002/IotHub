@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   TextInput,
@@ -12,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-import { Colors2 } from '../../assets/color/Colors2';
+import { IconName } from '../../assets/constants/Lable';
 
 type CustomTextInputProps = {
   label?: string;
@@ -62,7 +62,7 @@ function CustomTextInput({
   const inputContainerStyle = useMemo(() => {
     return [
       styles.inputContainer,
-      { borderColor: isFocused ? colors.AppPrimaryColor : '#ccc' }
+      { borderColor: isFocused ? colors.AppPrimaryColor : colors.SoftGray }
     ];
   }, [isFocused]);
 
@@ -72,7 +72,7 @@ function CustomTextInput({
       {label && (
         <Text style={labelStyle}>
           {label}
-          <Text style={{color: colors.redDarkest}}> {required && '*'}</Text>
+          <Text style={{ color: colors.redDarkest }}> {required && '*'}</Text>
         </Text>
       )}
       <TouchableOpacity
@@ -87,7 +87,7 @@ function CustomTextInput({
           onBlur={editable ? handleBlur : undefined}
           onChangeText={text => setTextInput(text)}
           placeholder={placeholder}
-          placeholderTextColor="black"
+          placeholderTextColor={colors.darkblack}
           value={value}
           editable={type === 'input' && editable} // Allow editing only if type is 'input' and editable
           {...rest}
@@ -96,16 +96,16 @@ function CustomTextInput({
           <Icon
             name={iconName}
             size={24}
-            color={isFocused ? colors.AppPrimaryColor : 'black'}
+            color={isFocused ? colors.AppPrimaryColor : colors.darkblack}
             style={styles.icon}
             onPress={handleVisibility}
           />
         )}
         {type === 'dropdown' && (
           <Icon
-            name="arrow-drop-down"
+            name={IconName.ARROW_DROP_DOWN}
             size={30}
-            color={Colors2.SecondaryTextColor}
+            color={colors.SecondaryTextColor}
             style={styles.icon}
             onPress={onPress}
           />
@@ -126,13 +126,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#ccc',
+    borderColor: colors.SoftGray,
     borderRadius: 10,
-    // justifyContent: "center"
   },
   input: {
     fontSize: fontSizes.smallText,
-    color: 'red',
+    color:colors.redBase,
     flexGrow: 1,
     alignItems: 'baseline'
   },
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   errorText: {
-    color: 'red',
+    color:colors.redBase,
     fontSize: fontSizes.smallText,
     marginTop: 4,
   },
@@ -152,13 +151,13 @@ const styles = StyleSheet.create({
   underlineBlurred: {
     marginTop: -8,
     height: 2,
-    backgroundColor: '#ccc',
+    backgroundColor: colors.SoftGray,
   },
   label: {
     position: 'absolute',
     fontSize: fontSizes.text,
-    color: '#8292B4',
-    backgroundColor: '#fff',
+    color: colors.AppPrimaryColor,
+    backgroundColor: colors.white,
     paddingHorizontal: 3,
   },
   labelFocused: {
@@ -170,7 +169,7 @@ const styles = StyleSheet.create({
   labelBlurred: {
     top: 12,
     fontSize: fontSizes.text,
-    color: '#8292B4',
+    color: colors.gray,
   },
 });
 

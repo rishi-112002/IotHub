@@ -6,6 +6,7 @@ import {
   UpdateGenericSpot,
   uploadGenericData,
 } from './uploadGenericDataAction';
+import { errorStrings } from '../../assets/constants/Lable';
 interface GenericSpot {
   id: number;
   createdBy: string;
@@ -148,7 +149,7 @@ export const UploadGenericSlice = createSlice({
       .addCase(uploadGenericData.rejected, (state, action) => {
         state.status = 'failed';
         state.error =
-          (action.payload as string) || 'Failed to upload generic data';
+          (action.payload as string) || errorStrings.UPLOAD_FAILED_ERROR;
       })
       .addCase(GenericSpotsData.pending, state => {
         state.loader = true;
@@ -165,8 +166,6 @@ export const UploadGenericSlice = createSlice({
       });
     builder.addCase(DeleteGenericSpot.fulfilled, (state, action) => {
       state.response = action.payload;
-      console.log("fulfiled of delete")
-
       state.loader = false;
       state.deleteError = null;
       state.deleteStatus = 'succeeded';
@@ -177,7 +176,6 @@ export const UploadGenericSlice = createSlice({
       );
     });
     builder.addCase(DeleteGenericSpot.rejected, (state, action: any) => {
-      console.log("rejected of delete", action.payload.message)
       state.response = [];
       state.deleteStatus = 'failed';
       state.deleteError = action.payload.message;
@@ -193,8 +191,6 @@ export const UploadGenericSlice = createSlice({
       })
       .addCase(GenericSpotData.fulfilled, (state, action) => {
         state.loader = false;
-        // Assuming the action.payload has a spotType property
-        // Modify the payload structure to include spotType
         state.GenericSpot = action.payload; // Update GenericSpots
       })
       .addCase(GenericSpotData.rejected, state => {
@@ -221,7 +217,7 @@ export const UploadGenericSlice = createSlice({
       .addCase(UpdateGenericSpot.rejected, (state, action) => {
         state.updateStatus = 'failed';
         state.error =
-          (action.payload as string) || 'Failed to upload generic data';
+          (action.payload as string) || errorStrings.UPLOAD_FAILED_ERROR;
       })
       .addCase(UpdateGenericSpot.pending, state => {
         state.updateStatus = 'loading';

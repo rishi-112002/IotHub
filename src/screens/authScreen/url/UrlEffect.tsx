@@ -13,12 +13,13 @@ import { RootState, store } from '../../../reducer/Store';
 import { GetUrls } from '../../../reducer/url/UrlAction';
 import showCustomToast from '../../../reuseableComponent/modal/CustomToast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { errorStrings, Strings } from '../../../assets/constants/Lable';
 
 interface urlScreenParams {
   baseUrls: string;
 }
 function UrlEffect() {
-  const route = useRoute<RouteProp<{ params: urlScreenParams }, 'params'>>();
+  const route = useRoute<RouteProp<{ params: urlScreenParams }>>();
   const passedBaseUrl = route.params?.baseUrls || '';
   const [url, setUrl] = useState(passedBaseUrl);
   const isLogedIn = useSelector(
@@ -39,33 +40,33 @@ function UrlEffect() {
   const handleUrlChange = (input: string) => {
     const newValue = input.replace(/\s/g, '');
     if (input !== newValue) {
-      setErrors(prev => ({ ...prev, url: 'URL cannot contain spaces' }));
+      setErrors(prev => ({ ...prev, url: errorStrings.BASE_URL_SPACE_ERROR }));
     } else {
       setErrors(prev => ({ ...prev, url: undefined }));
     }
     setUrl(newValue);
 
     setIsButtonDisabled(
-      !(newValue.startsWith('http://') || newValue.startsWith('https://')),
+      !(newValue.startsWith(Strings.HTTPS) || newValue.startsWith(Strings.HTTPS)),
     );
   };
 
   const handleClick = async () => {
     const newErrors: { url?: string } = {};
-  
+
     if (!url) {
-      newErrors.url = 'Please enter the URL';
+      newErrors.url = errorStrings.BASE_URL_EMPTY_ERROR;
     } else {
       setLoading(true);
       try {
         // Await the dispatch and get the result
         const resultAction = await store.dispatch(GetUrls({ baseUrl: url }));
-  
+
         if (GetUrls.fulfilled.match(resultAction)) {
           // Thunk succeeded, save the base URL and update state
           await AsyncStorage.setItem('baseurl', url);
           dispatch(setBaseUrl(url));
-  
+
           // Navigate based on login status
           if (url === passedBaseUrl && isLogedIn) {
             navigation.navigate('Drawer', { screen: 'bottomTabNavigation' });
@@ -75,24 +76,22 @@ function UrlEffect() {
         } else if (GetUrls.rejected.match(resultAction)) {
           // Thunk failed, handle errors
           const errorMessage = resultAction.payload as string;
-          console.error('URL Fetch Error:', errorMessage);
-          showCustomToast('error', errorMessage || 'Please check the URL and try again.');
+          showCustomToast(Strings.ERROR_s, errorMessage || errorStrings.BASE_URL_WRONG_ERROR);
         }
       } catch (error) {
         // Handle unexpected errors
-        console.error('Unexpected Error:', error);
         showCustomToast(
-          'error',
-          'Failed to fetch configuration. Please check the URL and try again.',
+          Strings.ERROR_s,
+          errorStrings.BASE_URL_WRONG_ERROR
         );
       } finally {
         setLoading(false); // Hide loader after processing
       }
     }
-  
+
     setErrors(newErrors);
   };
-  
+
   // Slide-up animation
   useEffect(() => {
     Animated.timing(slideUpAnim, {

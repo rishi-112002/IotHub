@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import { Animated, StyleSheet, View } from 'react-native';
 import EventLogsList from '../../component/EventLog/EventLogList';
-import React, {  } from 'react';
+import React, { } from 'react';
 import AllEventLogHooks from '../../CustomHooks/EventLog/AllEventLogHook';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
@@ -12,6 +12,7 @@ import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import CustomSubHeader from '../../reuseableComponent/header/CustomSubHeader';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
+import { ImagePath, Strings } from '../../assets/constants/Lable';
 
 function AllEventLogsScreen() {
 
@@ -33,10 +34,10 @@ function AllEventLogsScreen() {
                 :
                 <View style={{ flex: 1 }}>
                     <CustomSubHeader
-                        spotName={'EventLogs'}
+                        spotName={Strings.EVENT_LOGS}
                         onPress={() => setIsFocused(true)}
-                        filterIconPath={require('../../assets/icons/filterMedium.png')}
-                        searchIconPath={require('../../assets/icons/search.png')}
+                        filterIconPath={ImagePath.FILTER_ICON}
+                        searchIconPath={ImagePath.SEARCH_ICON}
                         onBackPress={() => navigation.goBack()}
                         translateY={translateY}
                         filterCount={filterCount}
@@ -53,7 +54,6 @@ function AllEventLogsScreen() {
                                     searchQuery={searchQuery}
                                     setSearchQuery={setSearchQuery}
                                     clearSearch={() => setSearchQuery("")}
-
                                     placeholder={undefined} />
                             </Animated.View>
                         )}
@@ -62,12 +62,12 @@ function AllEventLogsScreen() {
                             <View style={{ flex: 0.05 }}>
                                 <ScrollableBadges badges={[
 
-                                        { key: 'Spot', value: selectedSpot.name },
-                                        { key: 'Direction', value: selectedDirection.name },
-                                        { key: 'Name', value: selectedName.name },
-                                        { key: 'From Date', value: selectedFromDate },
-                                        { key: 'To Date', value: selectedToDate },
-                                    ]}
+                                    { key: Strings.SPOT, value: selectedSpot.name },
+                                    { key: Strings.DIRECTION_S, value: selectedDirection.name },
+                                    { key: Strings.NAME_s, value: selectedName.name },
+                                    { key: Strings.FROM_DATE_s, value: selectedFromDate },
+                                    { key: Strings.TO_DATE_s, value: selectedToDate },
+                                ]}
                                     setFilterCount={setFilterCount}
                                     filterCount={filterCount}
                                     setSelectedSpot={setSelectedSpot}
@@ -88,7 +88,7 @@ function AllEventLogsScreen() {
                                 setRequestData={setRequestData}
                                 onScroll={(e: { nativeEvent: { contentOffset: { y: number; }; }; }) => {
                                     scrollY.setValue(e.nativeEvent.contentOffset.y);
-                                } } scrollEnabled={true}                            />
+                                }} scrollEnabled={true} />
                         </View>
                     </Animated.View>
 
@@ -109,14 +109,14 @@ function AllEventLogsScreen() {
                             direction={selectedDirection}
                             handleFilterClick={handleFilterClick}
                             handleReset={handleReset}
-                            setFilterCount={setFilterCount} 
+                            setFilterCount={setFilterCount}
                             setSelectedSpot={setSelectedSpot}
                             setSelectedDirection={setSelectedDirection}
                             setSelectedFromDate={setSelectedFromDate}
                             setSelectedName={setSelectedName}
                             setSelectedToDate={setSelectedToDate}
                             setToDateValue={setToDateValue}
-                            setDateFromValue={setDateFromValue}/>
+                            setDateFromValue={setDateFromValue} />
                     }
                     <CustomDateTimePicker
                         visible={isCalendarVisible}
@@ -128,8 +128,8 @@ function AllEventLogsScreen() {
                         isVisible={GenericmodalVisible}
                         handleCloseModal={() => setGenericmodalVisible(false)}
                         onOptionSelected={handleOptionSelect}
-                        nameKey="name"
-                        valueKey="id"
+                        nameKey={Strings.NAME_S}
+                        valueKey={Strings.VALUE}
                     />}
                 </View>
             }

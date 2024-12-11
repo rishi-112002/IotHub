@@ -6,6 +6,7 @@ import { useGenericAddEffect } from './GenericAddEffect';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
 import { resetUpadteStatus } from '../../reducer/genericSpot/uploadGenericDataReducer';
 import { weighBridges } from '../../api/EndPointsUrl';
+import { Strings } from '../../assets/constants/Lable';
 
 function GenericAddFunction(props: { id: any }) {
   const { id } = props
@@ -118,15 +119,13 @@ function GenericAddFunction(props: { id: any }) {
 
   const displayName = displayOfSpot?.[0]?.name;
   const displayId = displayOfSpot?.[0]?.id;
-  // Find the event object with a matching id
-  // const matchedprimaryReader = smartController.find(smartio => smartio.id === smartControllerOfSpot)
   const eventFromApi = GenericSpot.events;
   const matchedEvent = events.find(event => event.id === eventFromApi);
   const primaryReaderOfSpot = GenericSpot.readers;
 
   // Filter primary and secondary readers
-  const primaryReader = primaryReaderOfSpot?.find((item: { type: string }) => item.type === "PRIMARY");
-  const secondaryReader = primaryReaderOfSpot?.find((item: { type: string }) => item.type === "SECONDARY");
+  const primaryReader = primaryReaderOfSpot?.find((item: { type: string }) => item.type === Strings.PRIMARY);
+  const secondaryReader = primaryReaderOfSpot?.find((item: { type: string }) => item.type === Strings.SECONDARY);
 
   // Extracting the properties for primary and secondary readers
   const PrimaryReaderName = primaryReader?.name;
@@ -160,11 +159,11 @@ function GenericAddFunction(props: { id: any }) {
   useEffect(() => {
     switch (updateStatus) {
       case 'failed':
-        CustomToast('error', uploadError);
+        CustomToast(Strings.ERROR_s, uploadError);
         dispatch(resetUpadteStatus());
         break;
       case 'succeeded':
-        CustomToast('success', updateStatus);
+        CustomToast(Strings.SUCCESS_s, updateStatus);
         dispatch(resetUpadteStatus());
         navigation.navigate('GenericSpotScreen');
         break;
@@ -177,25 +176,25 @@ function GenericAddFunction(props: { id: any }) {
   const handleOptionSelect = useCallback(
     (selected: any) => {
       switch (currentField) {
-        case 'display':
+        case Strings.DISPLAY_s:
           setSelectedDisplay(selected);
           break;
-        case 'primaryReader':
+        case Strings.PRIMARY_READERS_S:
           setSelectedPrimaryReader(selected);
           break;
-        case 'secoundaryReader':
+        case Strings.SECOUNDARY_READERS_s:
           setSelectedSecoundaryReader(selected);
           break;
-        case 'smartController':
+        case Strings.SMART_CONTROLLER_S:
           setSelectedSmartConnector(selected);
           break;
-        case 'events':
+        case Strings.EVENTS_S:
           setSelectedEvent(selected);
           break;
-        case 'weightbridge':
+        case Strings.WEIGHBRIDGE_S:
           setSelectedWeighBridge(selected);
           break;
-        case 'direction':
+        case Strings.DIRECTION_s:
           setSelectedDirection(selected);
           break;
       }
@@ -204,6 +203,25 @@ function GenericAddFunction(props: { id: any }) {
     },
     [currentField],
   );
+  const getOptions = () => {
+    if (currentField === Strings.DISPLAY_s) {
+      return displays;
+    } else if (currentField === Strings.SECOUNDARY_READERS_s) {
+      return readers;
+    } else if (currentField === Strings.PRIMARY_READERS_S) {
+      return readers;
+    } else if (currentField === Strings.SMART_CONTROLLER_S) {
+      return smartController;
+    } else if (currentField === Strings.EVENTS_S) {
+      return events;
+    } else if (currentField === Strings.WEIGHBRIDGE_S) {
+      return Weightbridge;
+    } else if (currentField === Strings.DIRECTION_s) {
+      return direction;
+    }
+
+    return [];
+  };
 
   // Function to handle input focus and show the modal with the correct options
   const handleFocus = useCallback((field: string) => {
@@ -226,49 +244,40 @@ function GenericAddFunction(props: { id: any }) {
     } else {
       setErrors((prev: any) => ({ ...prev, name: undefined }));
     }
-    handleInputChange('name', newValue);
+    handleInputChange(Strings.NAME_s, newValue);
   }
   const handleDelayChange = (input: string) => {
     const newValue = input.replace(/\s/g, '');
     if (input !== newValue) {
-      setErrors((prev: any) => ({ ...prev, delay: 'space is not allowed' }));
+      setErrors((prev: any) => ({ ...prev, delay: Strings.SPACE_NOT_ALLOWED }));
     } else {
       setErrors((prev: any) => ({ ...prev, delay: undefined }));
     }
-    handleInputChange('delay', newValue);
-  }
-  const handleEventChange = (input: string) => {
-    const newValue = input.replace(/\s/g, '');
-    if (input !== newValue) {
-      setErrors((prev: any) => ({ ...prev, delay: 'space is not allowed' }));
-    } else {
-      setErrors((prev: any) => ({ ...prev, delay: undefined }));
-    }
-    handleInputChange('delay', newValue);
+    handleInputChange(Strings.DELAY_s, newValue);
   }
   const handleSaveData = useCallback(() => {
 
     if (!selectedEvent.id) {
-      newErrors.event = 'Event is required';
+      newErrors.event = Strings.EVENT_IS_REQUIRED;
     }
     if (!formData.name) {
-      newErrors.name = 'Name is required';
+      newErrors.name = Strings.NAME_IS_REQUIRED;
     }
     if (!formData.delay) {
-      newErrors.delay = 'Delay is required';
+      newErrors.delay = Strings.DELAY_IS_REQUIRED;
     }
     if (isDriverTagEnabled && !formData.driverTagTimeOut) {
-      newErrors.driverTagTimeOut = 'Driver Tag TimeOut is required';
+      newErrors.driverTagTimeOut = Strings.DRIVER_TAG_TIMEOUT_IS_REQUIRED;
     }
     if (isSecurityTagEnabled && !formData.sequrityTagTimeOut) {
-      newErrors.sequrityDelay = 'Sequrity Delay is required';
+      newErrors.sequrityDelay = Strings.SECURITY_DELAY_IS_REQUIRED;
     }
     if (isWeightBridgeEntryEnabled) {
       if (!selectedDirection) {
-        newErrors.direction = 'Direction is required';
+        newErrors.direction = Strings.DIRECTION_IS_REQUIRED;
       }
       if (!selectedWeighBridge) {
-        newErrors.weighBridge = 'WeighBridge is required';
+        newErrors.weighBridge = Strings.WEIGHBRIDGE_IS_REQUIRED;
       }
     }
 
@@ -280,8 +289,8 @@ function GenericAddFunction(props: { id: any }) {
     const dataToSave = {
       active: isActiveEnabled,
       buCode: buCode,
-      ...((selectedEvent.id === 'TAG_ENTRY' || selectedEvent.id === 'TAG_ENTRY_AND_EXIT') && selectedPrimaryReader.id && { primaryReaderIdDirA: selectedPrimaryReader.id }),
-      ...((selectedEvent.id === 'TAG_ENTRY' || selectedEvent.id === 'TAG_ENTRY_AND_EXIT') && selectedSecoundaryReader.id && { secondaryReaderIdDirA: selectedSecoundaryReader.id }),
+      ...((selectedEvent.id === Strings.TAG_ENTRY || selectedEvent.id === Strings.TAG_ENTRY_AND_EXIT) && selectedPrimaryReader.id && { primaryReaderIdDirA: selectedPrimaryReader.id }),
+      ...((selectedEvent.id === Strings.TAG_ENTRY || selectedEvent.id === Strings.TAG_ENTRY_AND_EXIT) && selectedSecoundaryReader.id && { secondaryReaderIdDirA: selectedSecoundaryReader.id }),
       ...(GenericSpot?.id && { id: GenericSpot.id }),
       delayAlertAfter: Number(formData.delay),
       driverTag: isDriverTagEnabled,
@@ -295,7 +304,7 @@ function GenericAddFunction(props: { id: any }) {
       }),
 
       tagCount: formData.minTagCount ? Number(formData.minTagCount) : null,
-      type: 'GENERIC_SPOT',
+      type: Strings.GENERIC_SPOT,
       weighbridgeDirection: isWeightBridgeEntryEnabled
         && selectedDirection.id
         ? selectedDirection.id
@@ -346,25 +355,6 @@ function GenericAddFunction(props: { id: any }) {
   ]);
 
 
-  const getOptions = () => {
-    if (currentField === 'display') {
-      return displays;
-    } else if (currentField === 'secoundaryReader') {
-      return readers;
-    } else if (currentField === 'primaryReader') {
-      return readers;
-    } else if (currentField === 'smartController') {
-      return smartController;
-    } else if (currentField === 'events') {
-      return events;
-    } else if (currentField === 'weightbridge') {
-      return Weightbridge;
-    } else if (currentField === 'direction') {
-      return direction;
-    }
-
-    return [];
-  };
 
   useEffect(() => {
     if (id) {

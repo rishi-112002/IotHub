@@ -11,11 +11,12 @@ import colors from "../../assets/color/colors";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { AppNavigationParams } from "../../navigation/NavigationStackList";
 import fontSizes from "../../assets/fonts/FontSize";
+import { IconName, Strings } from "../../assets/constants/Lable";
 
 function CustomMenu(props: { baseUrl: any, spotName: any }) {
     const { baseUrl, spotName } = props;
     const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-
+    console.log("spotName", spotName)
     return (
         <Menu style={{ borderRadius: 20 }}>
             <MenuTrigger style={styles.triggerWrapper}>
@@ -28,7 +29,7 @@ function CustomMenu(props: { baseUrl: any, spotName: any }) {
                 >
                     <View style={styles.menuOption}>
                         <Icon name="info" size={18} color={colors.blueDarkest} />
-                        <Text style={styles.menuOptionText}>Spot Details</Text>
+                        <Text style={styles.menuOptionText}>{Strings.SPOT_DETSILS}</Text>
                     </View>
                 </MenuOption>
 
@@ -37,8 +38,8 @@ function CustomMenu(props: { baseUrl: any, spotName: any }) {
                     onSelect={() => navigation.navigate("EventLogScreen", { baseUrls: baseUrl, spotName })}
                 >
                     <View style={styles.menuOption}>
-                        <Icon name="event-note" size={18} color={colors.blueDarkest} />
-                        <Text style={styles.menuOptionText}>Event Logs</Text>
+                        <Icon name={IconName.EVENT_NOTE} size={18} color={colors.blueDarkest} />
+                        <Text style={styles.menuOptionText}>{Strings.EVENT_LOGS}</Text>
                     </View>
                 </MenuOption>
             </MenuOptions>

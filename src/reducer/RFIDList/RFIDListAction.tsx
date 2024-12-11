@@ -1,8 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { CreateRFIDListEndPoint, EditRFIDListEndPoint, RFIDListEndPoint } from '../../api/EndPointsUrl';
-
-const BASE_URL = 'https://13.235.84.67';
+import axios, { HttpStatusCode } from 'axios';
+import { BaseUrlHTTPS, CreateRFIDListEndPoint, DeleteRfid, EditRFIDListEndPoint, RFIDListEndPoint } from '../../api/EndPointsUrl';
+import { errorStrings, Strings } from '../../assets/constants/Lable';
 
 const axiosConfig = (token: string, buCode: string) => ({
   headers: {
@@ -15,9 +14,9 @@ const axiosConfig = (token: string, buCode: string) => ({
 
 const handleError = (error: unknown) => {
   if (axios.isAxiosError(error)) {
-    return error.response?.data?.message || 'An error occurred.';
+    return error.response?.data?.message || errorStrings.ERROR_DURING_UPLOAD;
   }
-  return `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  return `${Strings.ERROR_s}: ${error instanceof Error ? error.message : errorStrings.UNKNOW_ERROR}`;
 };
 
 const postRequest = async (url: string, data: any, config: any) => {
@@ -26,13 +25,13 @@ const postRequest = async (url: string, data: any, config: any) => {
 };
 
 export const CreateRFIDdata = createAsyncThunk(
-  'CreateRFIDdata',
-  async ({ rfidData, token, buCode }:any, { rejectWithValue }) => {
-    const fullUrl = `${BASE_URL}${CreateRFIDListEndPoint}`;
+  Strings.CREATE_RFID,
+  async ({ rfidData, token, buCode }: any, { rejectWithValue }) => {
+    const fullUrl = `${BaseUrlHTTPS}${CreateRFIDListEndPoint}`;
     try {
       const data = await postRequest(fullUrl, rfidData, axiosConfig(token, buCode));
       if (!data) {
-        return rejectWithValue('Upload failed: Invalid data or server error.');
+        return rejectWithValue(errorStrings.UPLOAD_FAILED_ERROR);
       }
       return data;
     } catch (error) {
@@ -43,13 +42,13 @@ export const CreateRFIDdata = createAsyncThunk(
 );
 
 export const EditRFIDdata = createAsyncThunk(
-  'EditRFIDdata',
+  Strings.EDIT_RFID_,
   async ({ rfidData, token, buCode }: any, { rejectWithValue }) => {
-    const fullUrl = `${BASE_URL}${EditRFIDListEndPoint}`;
+    const fullUrl = `${BaseUrlHTTPS}${EditRFIDListEndPoint}`;
     try {
       const data = await postRequest(fullUrl, rfidData, axiosConfig(token, buCode));
       if (!data) {
-        return rejectWithValue('Upload failed: Invalid data or server error.');
+        return rejectWithValue(errorStrings.UPDATE_FAILED_ERROR);
       }
       return data;
     } catch (error) {
@@ -60,7 +59,7 @@ export const EditRFIDdata = createAsyncThunk(
 );
 
 export const getRfidListAction = createAsyncThunk(
-  'getRfidListAction',
+  Strings.GET_RFID_LIST_ACTION,
   async ({ baseUrl }: any, { rejectWithValue }) => {
 
     const fullUrl = `${baseUrl}${RFIDListEndPoint}`;
@@ -75,13 +74,13 @@ export const getRfidListAction = createAsyncThunk(
 );
 
 export const deleteRfidListAction = createAsyncThunk(
-  'deleteRfidListAction',
-  async ({ id, buCode, token }:any, { rejectWithValue }) => {
-    const fullUrl = `${BASE_URL}/iv1/readers/remove/${id}`;
+  Strings.DELETE_RFID_READER,
+  async ({ id, buCode, token }: any, { rejectWithValue }) => {
+    const fullUrl = `${BaseUrlHTTPS}${DeleteRfid}${id}`;
     try {
       const data = await axios.delete(fullUrl, axiosConfig(token, buCode));
-      if (data.result === 'ERROR') {
-        return rejectWithValue('Error: Invalid credentials or server error.');
+      if (!data) {
+        return rejectWithValue(errorStrings.NO_RESPONSE_FROM_SERVER);
       }
       return data;
     } catch (error) {

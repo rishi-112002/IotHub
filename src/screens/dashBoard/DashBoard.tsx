@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 
-import React, { } from 'react';
+import React, { useContext } from 'react';
 import { Animated, View } from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import DashBoardHook from '../../CustomHooks/dashBordEffect/DashBoardHooks';
@@ -8,10 +8,13 @@ import { useNetwork } from '../../contextApi/NetworkContex';
 import DashboardComp from '../../component/dashBoardCom/DashBoardComp';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
-function DashBoard({ route }: { route: any }) {
+import { IconName, Strings } from '../../assets/constants/Lable';
+import { ScrollContext } from '../../contextApi/AnimationContext';
+function DashBoard() {
   const { isConnected } = useNetwork();
-
-  const { scrollY, headerTranslate } = route.params;
+  const {scrollY,headerTranslate } = useContext(
+    ScrollContext,
+  );
   const {
     buCode,
     spotListData,
@@ -44,8 +47,8 @@ function DashBoard({ route }: { route: any }) {
     <View style={{ flex: 1 }}>
       <CustomHeader
         buCode={buCode}
-        userLogo={'account-circle'}
-        title={'Dashboard'}
+        userLogo={IconName.ACCOUNT_CIRCLE}
+        title={Strings.DASHBOARD}
         translateY={headerTranslate}
         onSearchPress={undefined}
         onFilterPress={undefined}

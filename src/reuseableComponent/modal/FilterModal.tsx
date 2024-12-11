@@ -5,7 +5,8 @@ import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomIcon from '../customIcons/CustomIcon';
 import CustomButton from '../customButton/CustomButton';
-import { Colors2 } from '../../assets/color/Colors2';
+import { IconName, Strings } from '../../assets/constants/Lable';
+
 
 type FilterModalProps = {
     filters: any;
@@ -62,7 +63,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     const handleSelectFilter = useCallback((option: { name: string; id: string, path: any }) => {
         Keyboard.dismiss();
         onOptionSelected(option);
-        if (option.id === "FROM_DATE" || option.id === "TO_DATE") {
+        if (option.id ===  Strings.FROM_DATE|| option.id === Strings.TO_DATE) {
             openCalendarModal();
         } else {
             setGenericmodalVisible(true);
@@ -71,11 +72,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
     }, [onOptionSelected, openCalendarModal, setGenericmodalVisible, setCurrentFiled]);
     const handleClearSelection = useCallback(
         (id: any) => {
-            if (id === 'FROM_DATE') { setSelectedFromDate(null); setDateFromValue("") };
-            if (id === 'TO_DATE') { setSelectedToDate(""); setToDateValue("") };
-            if (id === 'SPOT_NAME') { setSelectedSpot("") };
-            if (id === 'NAME') { setSelectedName("") };
-            if (id === 'DIRECTION') { setSelectedDirection("") };
+            if (id === Strings.FROM_DATE) { setSelectedFromDate(null); setDateFromValue("") };
+            if (id === Strings.TO_DATE) { setSelectedToDate(""); setToDateValue("") };
+            if (id === Strings.SPOT_NAME) { setSelectedSpot("") };
+            if (id === Strings.NAME) { setSelectedName("") };
+            if (id === Strings.DIRECTION) { setSelectedDirection("") };
         }, []);
 
 
@@ -85,22 +86,22 @@ const FilterModal: React.FC<FilterModalProps> = ({
             <View style={styles.itemTextContainer}>
                 <Text style={styles.itemText}>
                     {item.name}
-                    {item.id === 'FROM_DATE' && DateFromValue ? `: ${DateFromValue}` : ''}
-                    {item.id === 'TO_DATE' && ToDateValue ? `: ${ToDateValue}` : ''}
-                    {item.id === 'SPOT_NAME' && spot.name ? `: ${spot.name}` : ''}
-                    {item.id === 'NAME' && name.name ? `: ${name.name}` : ''}
-                    {item.id === 'DIRECTION' && direction.name ? `: ${direction.name}` : ''}
+                    {item.id === Strings.FROM_DATE && DateFromValue ? `: ${DateFromValue}` : ''}
+                    {item.id === Strings.TO_DATE && ToDateValue ? `: ${ToDateValue}` : ''}
+                    {item.id === Strings.SPOT_NAME && spot.name ? `: ${spot.name}` : ''}
+                    {item.id === Strings.NAME && name.name ? `: ${name.name}` : ''}
+                    {item.id === Strings.DIRECTION && direction.name ? `: ${direction.name}` : ''}
                 </Text>
-                {((item.id === 'FROM_DATE' && DateFromValue) ||
-                    (item.id === 'TO_DATE' && ToDateValue) ||
-                    (item.id === 'SPOT_NAME' && spot.name) ||
-                    (item.id === 'NAME' && name.name) ||
-                    (item.id === 'DIRECTION' && direction.name)) && (
+                {((item.id === Strings.FROM_DATE && DateFromValue) ||
+                    (item.id === Strings.TO_DATE && ToDateValue) ||
+                    (item.id === Strings.SPOT_NAME && spot.name) ||
+                    (item.id === Strings.NAME && name.name) ||
+                    (item.id === Strings.DIRECTION && direction.name)) && (
                         <TouchableOpacity
                             style={styles.clearButton}
                             onPress={() => handleClearSelection(item.id)}
                         >
-                            <Icon name="close" size={15} color={colors.redDarkest} />
+                            <Icon name={IconName.CLOSE} size={15} color={colors.redDarkest} />
                         </TouchableOpacity>
                     )}
             </View>
@@ -130,7 +131,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <View style={styles.modalHeading}>
-                        <Text style={styles.modalTitle}>Select Filter</Text>
+                        <Text style={styles.modalTitle}>{Strings.SELECT_FILTER}</Text>
                         <View style={{ flexDirection: 'row', columnGap: 10, padding: 5 }}>
 
                             <TouchableOpacity style={{
@@ -141,11 +142,11 @@ const FilterModal: React.FC<FilterModalProps> = ({
                                     color: colors.AppPrimaryColor,
                                     fontSize: fontSizes.text, fontWeight: "500"
                                 }}>
-                                    Reset
+                                    {Strings.RESET}
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
-                                <Icon name="cancel" size={24} color={Colors2.SecondaryTextColor} />
+                                <Icon name={IconName.CANCLE} size={24} color={colors.SecondaryTextColor} />
                             </TouchableOpacity>
                         </View>
 
@@ -156,7 +157,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                         keyExtractor={(item) => item.id}
                         style={styles.list}
                     />
-                    <CustomButton label={'filter'} onPress={handleFilterClick} />
+                    <CustomButton label={Strings.FILTER} onPress={handleFilterClick} />
                 </View>
             </View>
         </Modal>
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: colors.darkerTransparent,
     },
     modalContent: {
         backgroundColor: colors.white,
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
     },
     clearButton: {
         marginLeft: 10, // Add spacing between the text and the close button
-        backgroundColor: Colors2.DividerColor, // Optional: Add a background color for the button
+        backgroundColor: colors.DividerColor, // Optional: Add a background color for the button
         borderRadius: 15, // Optional: Make it circular
         padding: 2, // Add padding for better touch experience
     },

@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import CustomIcon from "../../reuseableComponent/customIcons/CustomIcon";
 import fontSizes from "../../assets/fonts/FontSize";
 import colors from "../../assets/color/colors";
-import { Colors2 } from "../../assets/color/Colors2";
+import { ImagePath, Strings } from "../../assets/constants/Lable";
 
 function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, item: any, navigate: any, navigation: any }) {
     const { item, handleDelete, height, navigate, navigation } = props
@@ -19,21 +19,19 @@ function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, ite
 
                             <Text style={styles.spotTitle}>{item.name}</Text>
                             <View style={{
-                                backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
+                                backgroundColor: item.active ? colors.MintGreen : colors.BlushPink,
                                 borderRadius: 20,
                                 width: item.active ? "28%" : "38%",
-                                paddingHorizontal:5
+                                paddingHorizontal: 5
                             }}>
                                 <Text
                                     style={[
                                         styles.statusText,
                                         {
-                                            color: item.active ? '#15803D' : '#B91C1C',
-                                            // backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
-
+                                            color: item.active ? colors.greenBase : colors.redBase,
                                         },
                                     ]}>
-                                    {item.active ? 'Connected' : 'Not Connected'}
+                                    {item.active ? Strings.CONNECTED : Strings.NOT_CONNECTED}
                                 </Text>
                             </View>
                         </View>
@@ -42,11 +40,11 @@ function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, ite
 
                             <View style={styles.iconContainer}>
                                 <CustomIcon
-                                    iconPath={require('../../assets/icons/deleteIcon.png')}
+                                    iconPath={ImagePath.DELETE}
                                     onPress={() => handleDelete(item.id)}
                                 />
                                 <CustomIcon
-                                    iconPath={require('../../assets/icons/Edit--Streamline-Tabler.png')}
+                                    iconPath={ImagePath.EDIT}
                                     onPress={() => navigate(item.id)}
                                 />
                             </View>
@@ -55,13 +53,13 @@ function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, ite
 
                     <View style={{ flexDirection: 'row', columnGap: 50, marginTop: 5 }}>
                         <View>
-                            <Text style={styles.infoText}>ValidId </Text>
+                            <Text style={styles.infoText}>{Strings.VALID_ID} </Text>
                             <Text style={styles.value}>
                                 {item.validDiDirA}
                             </Text>
                         </View>
                         <View>
-                            <Text style={styles.infoText}>Event</Text>
+                            <Text style={styles.infoText}>{Strings.EVENT}</Text>
                             <Text style={styles.value}>
                                 {item.events}
                             </Text>
@@ -86,7 +84,7 @@ const styles = StyleSheet.create({
     },
     spotTitle: {
         fontSize: fontSizes.title,
-        color: Colors2.SecondaryTextColor,
+        color: colors.SecondaryTextColor,
     },
     statusContainer: {
         flexDirection: 'row',
@@ -100,11 +98,11 @@ const styles = StyleSheet.create({
     },
     statusText: {
         fontSize: fontSizes.smallText,
-        color: Colors2.SecondaryTextColor,
+        color: colors.SecondaryTextColor,
     },
     value: {
         fontSize: fontSizes.smallText,
-        color: Colors2.SecondaryTextColor,
+        color: colors.SecondaryTextColor,
     },
     activeText: {
         width: "13%",
@@ -124,7 +122,7 @@ const styles = StyleSheet.create({
     },
     infoText: {
         fontSize: fontSizes.smallText,
-        color: Colors2.HelperTextColor,
+        color: colors.HelperTextColor,
     },
     divider: {
         height: 1,

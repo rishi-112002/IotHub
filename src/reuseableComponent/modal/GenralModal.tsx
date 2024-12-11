@@ -13,8 +13,8 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import CustomSearchBar from '../customSearchBar/CustomSearchBar';
-import { Colors2 } from '../../assets/color/Colors2';
 import fontSizes from '../../assets/fonts/FontSize';
+import { IconName, Strings } from '../../assets/constants/Lable';
 
 function GenericModal(props: {
   options: any[];
@@ -69,21 +69,21 @@ function GenericModal(props: {
   return (
     <View style={styles.container}>
       <Modal transparent={true} animationType="slide" visible={isVisible}>
-        <TouchableWithoutFeedback onPress={() => console.log('hello')}>
+        <TouchableWithoutFeedback onPress={() => handleCloseModal()}>
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
               <View style={styles.modalheading}>
-                <Text style={styles.modalTitle}>Select Option</Text>
+                <Text style={styles.modalTitle}>{Strings.SELECT_OPTION}</Text>
                 <View style={styles.modalheadingicon}>
                   <TouchableOpacity
                     style={styles.closeButton}
                     onPress={handleSearchClick}>
-                    <Icon name="search" size={24} color={Colors2.SecondaryTextColor} />
+                    <Icon name={IconName.SEARCH} size={24} color={colors.SecondaryTextColor} />
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.closeButton}
                     onPress={() => handleCloseModal()}>
-                    <Icon name="cancel" size={24} color={Colors2.SecondaryTextColor} />
+                    <Icon name={IconName.CANCLE} size={24} color={colors.SecondaryTextColor} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: colors.darkerTransparent,
   },
   modalContent: {
     backgroundColor: 'white',
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: fontSizes.text,
-    color: Colors2.PrimaryTextColor
+    color: colors.PrimaryTextColor
   },
   closeButton: {
     alignItems: 'center',

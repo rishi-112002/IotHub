@@ -93,8 +93,7 @@ export const useEditRfid = (item: RFIDItem) => {
         .unwrap();
 
       showCustomToast('success', 'Data Update successfully!');
-      // navigation.navigate('RfidReader');
-      // setTimeout(() => {
+     
     } catch (err) {
       showCustomToast(
         'fail',

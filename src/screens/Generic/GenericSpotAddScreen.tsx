@@ -9,7 +9,7 @@ interface genericAdd {
 }
 function GenericAddScreen() {
 
-  const route = useRoute<RouteProp<{ params: genericAdd }, 'params'>>();
+  const route = useRoute<RouteProp<{ params: genericAdd }>>();
   const id = route.params?.id || '';
   return (
     <View style={{ flex: 1  , backgroundColor:colors.white}}>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { IconName, Strings } from '../../assets/constants/Lable';
 
 function ScrollableBadges(props: {
   filterCount: any;
@@ -42,7 +43,7 @@ function ScrollableBadges(props: {
   );
   useEffect(() => {
     // Filter out entries where the value is empty or null and update the badgeList
-    setBadgeList(badges.filter((badge: {value: any}) => badge.value));
+    setBadgeList(badges.filter((badge: { value: any }) => badge.value));
   }, [badges]);
 
   const removeBadge = (key: any) => {
@@ -50,28 +51,28 @@ function ScrollableBadges(props: {
 
     let count = filterCount;
 
-    if (key === 'Spot') {
+    if (key === Strings.SPOT) {
       count = count - 1;
       setFilterCount(count);
       setSelectedSpot('');
-    } else if (key === 'Connectivity') {
+    } else if (key === Strings.CONNECTIVITY) {
       count = count - 1;
-      setConnectivity('all');
+      setConnectivity(Strings.ALL);
       setFilterCount(count);
-    } else if (key === 'Direction') {
+    } else if (key === Strings.DIRECTION_S) {
       count = count - 1;
       setFilterCount(count);
       setSelectedDirection('');
-    } else if (key === 'Name') {
+    } else if (key === Strings.NAME_S) {
       count = count - 1;
       setFilterCount(count);
       setSelectedName('');
-    } else if (key === 'From Date') {
+    } else if (key === Strings.FROM_DATE_s) {
       count = count - 1;
       setFilterCount(count);
       setSelectedFromDate('');
       setDateFromValue('');
-    } else if (key === 'To Date') {
+    } else if (key === Strings.TO_DATE_s) {
       count = count - 1;
       setFilterCount(count);
       setSelectedToDate('');
@@ -87,11 +88,11 @@ function ScrollableBadges(props: {
       {badgeList.map((badge: any, index: any) => (
         <View key={index} style={styles.badgeContainer}>
           <Text style={styles.badgeText}>
-            {badge.key === 'Connectivity' ? ' ' : `${badge.key};`} {badge.value}
+            {badge.key === Strings.CONNECTIVITY ? ' ' : `${badge.key};`} {badge.value}
           </Text>
 
           <TouchableOpacity onPress={() => removeBadge(badge.key)}>
-            <Icon name="cancel" size={15} color={colors.blueBase} />
+            <Icon name={IconName.CANCLE} size={15} color={colors.blueBase} />
           </TouchableOpacity>
         </View>
       ))}

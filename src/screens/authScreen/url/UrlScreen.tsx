@@ -7,6 +7,8 @@ import UrlEffect from './UrlEffect';
 import UrlStyles from './UrlStyles';
 import React from 'react';
 import fontSizes from '../../../assets/fonts/FontSize';
+import { IconName, Lable, Strings } from '../../../assets/constants/Lable';
+import colors from '../../../assets/color/colors';
 
 function UrlScreen() {
   const {
@@ -25,14 +27,14 @@ function UrlScreen() {
         {url && (
           <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
             <MaterialIcons
-              name="arrow-back"
+              name={IconName.ARROW_BACK}
               size={24}
-              color="white"
+              color={colors.white}
               style={styles.backIcon}
             />
           </TouchableOpacity>
         )}
-        <Text style={styles.headerTitle}>Server Configuration</Text>
+        <Text style={styles.headerTitle}>{Strings.SERVER_CONFIGURATION}</Text>
       </View>
       <Animated.View
         style={[
@@ -42,20 +44,18 @@ function UrlScreen() {
           },
         ]}>
         {loading && <CustomLoader />}
-        {!url && <Text style={styles.heading}>Welcome</Text>}
+        {!url && <Text style={styles.heading}>{Strings.WELCOME}</Text>}
         <View style={{ marginTop: 10, gap: 5 }}>
           <Text style={styles.sub_heading}>
-            Setup  Server
+            {Strings.SETUP_SERVER}
           </Text>
           <Text style={{ fontSize: fontSizes.smallText }}>
-            Enter the server base url to setup and configure the app 
-            according to your organisation .
-
+            {Strings.BASE_URL_DESCRIPTION}
           </Text>
         </View>
         <View style={styles.inputContainer}>
           <CustomTextInput
-            label="Base Url"
+            label={Lable.BASE_URL}
             value={url}
             onChangeText={handleUrlChange}
             errorMessage={errors.url}
@@ -66,7 +66,7 @@ function UrlScreen() {
         </View>
         <View style={{ marginTop: 40 }}>
           <CustomButton
-            label={'Save'}
+            label={Lable.SAVE}
             onPress={handleClick}
             disabled={false}
           />

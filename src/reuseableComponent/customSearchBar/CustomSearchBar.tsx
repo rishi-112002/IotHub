@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { IconName, Lable, Strings } from '../../assets/constants/Lable';
+import colors from '../../assets/color/colors';
 type SearchBarProps = {
     placeholder?: string;
     onSearch: (query: string) => void;
@@ -8,7 +10,7 @@ type SearchBarProps = {
     searchIcon: string;
 };
 
-function CustomSearchBar({ placeholder = 'Search', onSearch, onCancel, searchIcon }: SearchBarProps) {
+function CustomSearchBar({ placeholder = IconName.SEARCH, onSearch, onCancel, searchIcon }: SearchBarProps) {
     const [searchText, setSearchText] = useState<string>('');
 
     const handleSearch = (text: string) => {
@@ -23,7 +25,7 @@ function CustomSearchBar({ placeholder = 'Search', onSearch, onCancel, searchIco
 
     return (
         <View style={styles.container}>
-            <Icon name={searchIcon} size={20} color="#000" />
+            <Icon name={searchIcon} size={20} color={colors.darkblack} />
             <TextInput
                 style={styles.input}
                 placeholder={placeholder}
@@ -33,7 +35,7 @@ function CustomSearchBar({ placeholder = 'Search', onSearch, onCancel, searchIco
             />
             {searchText.length > 0 && (
                 <TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
-                    <Text style={styles.cancelText}>Cancel</Text>
+                    <Text style={styles.cancelText}>{Strings.CANCLE}</Text>
                 </TouchableOpacity>
             )}
         </View>
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: colors.SoftGray,
         padding: 8,
         borderRadius: 8,
         marginHorizontal: 16,
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
     },
     cancelText: {
-        color: '#007BFF',
+        color: colors.AppPrimaryColor,
         fontSize: 16,
     },
 });

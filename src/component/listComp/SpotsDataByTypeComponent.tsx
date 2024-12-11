@@ -14,6 +14,7 @@ import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
 import {getResponsiveHeight} from '../RFIDComponent/RfidListComponent';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
+import { IconName, Strings } from '../../assets/constants/Lable';
 const Item_Height = 90;
 function SpotsDataByTypeComponent(props: {
   data: any;
@@ -24,7 +25,7 @@ function SpotsDataByTypeComponent(props: {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const {data, handleScroll, handleDelete, type} = props;
   const navigate = (id: any) => {
-    if (type === 'GENERIC_SPOT') {
+    if (type === Strings.GENERIC_SPOT) {
       navigation.navigate('GenericSpotAddScreen', {id: id});
     } else {
       navigation.navigate('WeighbridgesAddScreen', {id: id});
@@ -38,7 +39,6 @@ function SpotsDataByTypeComponent(props: {
       const totalItems = data.length;
       const isAllDataFetched = data.length === totalItems;
       if (isAllDataFetched) {
-        console.log('All data has been fetched');
         setIsLoadingMore(false);
       }
     }
@@ -46,7 +46,7 @@ function SpotsDataByTypeComponent(props: {
   const renderSpot = useCallback(
     ({item}: {item: any}) => (
       <CardItemWith_Icon
-        iconName={item.active ? 'location-on' : 'location-off'}
+        iconName={item.active ?IconName.LOCATION_ON :IconName.LOCATION_OFF}
         view={
           <SpotDataByTypeSubComponent
             handleDelete={handleDelete}
@@ -64,16 +64,7 @@ function SpotsDataByTypeComponent(props: {
   return (
     <View style={styles.container}>
       <FlatList
-        // initialNumToRender={15}
-        // maxToRenderPerBatch={15}
         data={data}
-        // getItemLayout={(_data, index) => {
-        //   return {
-        //     index,
-        //     length: Item_Height,
-        //     offset: Item_Height * index,
-        //   };
-        // }}
         keyExtractor={(_item, index) => index.toString()}
         renderItem={renderSpot}
         contentContainerStyle={styles.flatListContent}
@@ -88,7 +79,7 @@ function SpotsDataByTypeComponent(props: {
           isLoadingMore === true ? (
             <View style={styles.footer}>
               <ActivityIndicator size="small" color={colors.AppPrimaryColor} />
-              <Text style={styles.footerText}>Loading...</Text>
+              <Text style={styles.footerText}>{Strings.LOADING}...</Text>
             </View>
           ) : null
         }

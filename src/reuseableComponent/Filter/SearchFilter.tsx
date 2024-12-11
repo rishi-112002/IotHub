@@ -3,7 +3,7 @@ import { TextInput, View, TouchableOpacity, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors'; // Ensure this is properly imported
 import fontSizes from '../../assets/fonts/FontSize'; // Ensure this is properly imported
-import { Colors2 } from '../../assets/color/Colors2';
+import { IconName } from '../../assets/constants/Lable';
 
 function SearchBar(props: {
   searchQuery: any,
@@ -11,13 +11,13 @@ function SearchBar(props: {
   clearSearch: any,
   placeholder: any,
 }) {
-  const { clearSearch, placeholder = "search...", searchQuery, setSearchQuery } = props
+  const { clearSearch, placeholder = `${IconName.SEARCH}...`, searchQuery, setSearchQuery } = props
 
 
   return (
     <View style={styles.searchWrapper}>
       <View style={styles.searchInput}>
-        <MaterialIcons name="search" size={25} color={Colors2.SecondaryTextColor} />
+        <MaterialIcons name={IconName.SEARCH} size={25} color={colors.SecondaryTextColor} />
         <TextInput
           style={styles.textInput}
           placeholder={placeholder}
@@ -26,7 +26,7 @@ function SearchBar(props: {
         />
         {searchQuery.length > 0 && (
           <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
-            <MaterialIcons name="clear" size={20} color={colors.redBase} />
+            <MaterialIcons name={IconName.CLEAR} size={20} color={colors.redBase} />
           </TouchableOpacity>
         )}
       </View>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     width: '95%',
     height: 45,
     borderWidth: 1,
-    borderColor: '#dbd9da',
+    borderColor: colors.SoftGray,
     borderRadius: 30,
     fontSize: fontSizes.text,
     paddingLeft: 10,

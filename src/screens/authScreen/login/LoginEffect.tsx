@@ -8,6 +8,7 @@ import { AppNavigationParams } from '../../../navigation/NavigationStackList';
 import NetInfo from '@react-native-community/netinfo';
 import { useSelector } from 'react-redux';
 import { resetStatus } from '../../../reducer/Login/LoginReducer';
+import { errorStrings, Strings } from '../../../assets/constants/Lable';
 
 function LoginEffect() {
   const [userName, setUserName] = useState<string>('');
@@ -19,7 +20,7 @@ function LoginEffect() {
   const { buinessunits } = useSelector((State: RootState) => State.buinessUnits);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-  const [loader, setLoader] = useState(false); // Loader state
+  const [loader, setLoader] = useState(false);
   const loginStatus = useSelector(
     (state: RootState) => state.authentication.status,
   );
@@ -43,15 +44,15 @@ function LoginEffect() {
     const newErrors: { userName?: string; password?: string } = {};
 
     if (!userName) {
-      newErrors.userName = 'Username is required';
+      newErrors.userName = errorStrings.USER_NAME_ERROR_TEXT;
     } else if (/\s/.test(userName)) {
-      newErrors.userName = 'Username cannot contain spaces';
+      newErrors.userName = errorStrings.USER_NAME_SPACE_ERROR;
     }
 
     if (!password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = errorStrings.PASSWORD_ERROR;
     } else if (password.length < 8) {
-      newErrors.password = 'Password should be min of 8 characters';
+      newErrors.password = errorStrings.PASSWORD_LENGTH_ERROR;
     }
 
     setErrors(newErrors);
@@ -63,7 +64,7 @@ function LoginEffect() {
     if (input !== newValue) {
       setErrors(prev => ({
         ...prev,
-        userName: 'Username cannot contain spaces',
+        userName: errorStrings.USER_NAME_SPACE_ERROR,
       }));
     } else {
       setErrors(prev => ({ ...prev, userName: undefined }));
@@ -76,8 +77,8 @@ function LoginEffect() {
     setLoader(true)
     if (!netInfo.isConnected) {
       showCustomToast(
-        'fail',
-        'Please check your internet connection and try again.',
+        Strings.FAIL,
+        errorStrings.INTERNET_ERROR
       );
       setLoader(false);
       return;
@@ -92,7 +93,7 @@ function LoginEffect() {
       try {
         store.dispatch(loginUser({ loginData, baseUrls }));
       } catch (e) {
-        showCustomToast('error', e);
+        showCustomToast(Strings.ERROR_s, e);
       }
     }
   };
@@ -116,8 +117,6 @@ function LoginEffect() {
       easing: Easing.out(Easing.ease),
     }).start();
   }, [slideUpAnim]);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleLoginStatus = useCallback(() => {
     if (loginStatus === 'succeeded') {
       setLoader(false);
@@ -126,7 +125,7 @@ function LoginEffect() {
     } else if (loginStatus === 'failed') {
       showCustomToast(
         'error',
-        'Your authentication information is incorrect. Please try again.',
+        errorStrings.AUTHENTICATON_ERROR,
       );
       setLoader(false);
     }

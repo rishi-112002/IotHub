@@ -11,9 +11,7 @@ import { slideFromRight } from './NavigationTransition';
 const Stack = createStackNavigator<AppNavigationParams>();
 
 
-function HomeNavigation({ route }: { route: any }) {
-  const { scrollY, headerTranslate } = route.params;
-  console.log("scrolly in navigation", scrollY, headerTranslate)
+function HomeNavigation() {
   return (
     <Stack.Navigator
       initialRouteName="HomeScreen"
@@ -24,7 +22,6 @@ function HomeNavigation({ route }: { route: any }) {
         name="HomeScreen"
         component={HomeScreen}
         options={{ headerShown: false }}
-        initialParams={{ scrollY, headerTranslate }}
       />
 
       {/* Define the EventLogsScreen with a header shown */}

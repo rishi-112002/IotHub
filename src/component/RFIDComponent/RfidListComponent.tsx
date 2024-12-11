@@ -5,6 +5,7 @@ import RFIDItemComponent from './RFIDItemComponent';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
+import { Strings } from '../../assets/constants/Lable';
 const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 export const getResponsiveWidth = (percentage: number) =>
   (SCREEN_WIDTH * percentage) / 100;
@@ -42,7 +43,6 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
       const totalItems = ListData.length;
       const isAllDataFetched = ListData.length === totalItems;
       if (isAllDataFetched) {
-        console.log('All data has been fetched');
         setIsLoadingMore(false);
       }
     }
@@ -84,7 +84,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
                   size="small"
                   color={colors.AppPrimaryColor}
                 />
-                <Text style={styles.footerText}>Loading...</Text>
+                <Text style={styles.footerText}>{Strings.LOADING}...</Text>
               </View>
             ) : null
           }

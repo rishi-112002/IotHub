@@ -4,6 +4,7 @@ import {
   GetSpotEventLogs,
   GetSpotEventLogsForToday,
 } from './EventLogsAction';
+import { Strings } from '../../assets/constants/Lable';
 
 type AuthState = {
   eventLogs: [];
@@ -21,7 +22,7 @@ const initState: AuthState = {
   allEventLogLoader: false,
 };
 export const eventLogsSlice = createSlice({
-  name: 'eventLogs',
+  name: Strings.EVENT_LOGS,
   initialState: initState,
   reducers: {},
   extraReducers: builder => {

@@ -1,16 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, ScrollView, Text} from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import LoadingModal from '../../reuseableComponent/loader/CustomLoaderFaiz';
-import {useEditRfid} from '../../CustomHooks/RFIDHooks/RFIDEditHook';
-import {MODEL_LIST} from '../../assets/constants/Constant';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {useNetwork} from '../../contextApi/NetworkContex';
-import { Colors2 } from '../../assets/color/Colors2';
+import { useEditRfid } from '../../CustomHooks/RFIDHooks/RFIDEditHook';
+import { MODEL_LIST } from '../../assets/constants/Constant';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { useNetwork } from '../../contextApi/NetworkContex';
 
 // Define MODEL_LIST here
 
@@ -25,9 +24,9 @@ interface readerParams {
 }
 
 function EditRfidScreen() {
-  const route = useRoute<RouteProp<{params: readerParams}, 'params'>>();
+  const route = useRoute<RouteProp<{ params: readerParams }, 'params'>>();
   const readers = route.params?.readers || '';
-  const {isConnected} = useNetwork();
+  const { isConnected } = useNetwork();
 
   const {
     name,
@@ -51,14 +50,14 @@ function EditRfidScreen() {
   return (
     <>
       {isConnected ? (
-        <ScrollView contentContainerStyle={{backgroundColor: colors.white}}>
+        <ScrollView contentContainerStyle={{ backgroundColor: colors.white }}>
           {Loader || smartControllerLoader ? (
             <LoadingModal
               visible={Loader}
               message="Processing your request..."
             />
           ) : (
-            <View style={{padding: 20}}>
+            <View style={{ padding: 20 }}>
               <CustomTextInput
                 label="Name"
                 value={name}
@@ -67,8 +66,7 @@ function EditRfidScreen() {
                 keyboardType="default"
                 returnKeyType="next"
                 setTextInput={setName}
-                style={{ flex: 1, color: Colors2.SecondaryTextColor }}
-
+                style={{ flex: 1, color: colors.SecondaryTextColor }}
                 onFocus={() => handleInputFocus('name')}
                 required={false}
               />
@@ -79,7 +77,7 @@ function EditRfidScreen() {
                 errorMessage={errors.model}
                 onPress={() => setDropdownVisible(true)}
                 setTextInput={undefined}
-                style={{ flex: 1, color: Colors2.SecondaryTextColor }}
+                style={{ flex: 1, color: colors.SecondaryTextColor }}
 
                 required={false}
                 type={'dropdown'}
@@ -105,7 +103,7 @@ function EditRfidScreen() {
                     errorMessage={errors.IPAddress}
                     keyboardType="default"
                     returnKeyType="next"
-                    style={{ flex: 1, color: Colors2.SecondaryTextColor }}
+                    style={{ flex: 1, color: colors.SecondaryTextColor }}
 
                     setTextInput={setIPAddress}
                     onFocus={() => handleInputFocus('IPAddress')}
@@ -117,7 +115,7 @@ function EditRfidScreen() {
                     value={port?.toString()}
                     errorMessage={errors.port}
                     keyboardType="numeric"
-                    style={{ flex: 1, color: Colors2.SecondaryTextColor }}
+                    style={{ flex: 1, color: colors.SecondaryTextColor }}
                     setTextInput={setPort}
                     onFocus={() => handleInputFocus('port')}
                     required={false}
@@ -130,7 +128,7 @@ function EditRfidScreen() {
           )}
         </ScrollView>
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
           <Text>No Internet Connection</Text>
         </View>
       )}

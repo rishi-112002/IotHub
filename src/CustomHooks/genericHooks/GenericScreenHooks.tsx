@@ -19,6 +19,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
 import { Animated } from 'react-native';
 import { resetDeleteStatus } from '../../reducer/genericSpot/uploadGenericDataReducer';
+import { errorStrings, Strings } from '../../assets/constants/Lable';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 const GenericScreenHooks = () => {
@@ -117,21 +118,21 @@ const GenericScreenHooks = () => {
       return;
     }
     setIsVisible(false);
-      store.dispatch(
-        DeleteGenericSpot({
-          baseUrl: baseUrls,
-          id: deleteId,
-          bucode: buCode,
-          token: token,
-        }),
-      );
+    store.dispatch(
+      DeleteGenericSpot({
+        baseUrl: baseUrls,
+        id: deleteId,
+        bucode: buCode,
+        token: token,
+      }),
+    );
   }, [deleteId, baseUrls, buCode, token, Loader]);
 
   const spotsData = GenericSpots.filter((spot: any) => {
     const matchesFilter =
-      genericTypeConnectivity === 'all' ||
-      (genericTypeConnectivity === 'connected' && spot?.active) ||
-      (genericTypeConnectivity === 'not-connected' && !spot?.active);
+      genericTypeConnectivity === Strings.ALL ||
+      (genericTypeConnectivity === Strings.CONNECTED_S && spot?.active) ||
+      (genericTypeConnectivity === Strings.NOT_CONNECTED_s && !spot?.active);
     const matchesSearch = searchQuery
       ? Object.values(spot).some(value =>
         String(value).toLowerCase().includes(searchQuery.toLowerCase()),
@@ -159,23 +160,23 @@ const GenericScreenHooks = () => {
     if (deleteStatus !== "idle") {
       if (deleteStatus === "succeeded") {
         store.dispatch(resetDeleteStatus())
-        CustomToast('success', 'Deleted successfully');
+        CustomToast(Strings.SUCCESS_s, Strings.DELETED_SUCCESSFULLY);
       } else if (deleteStatus === "failed") {
         store.dispatch(resetDeleteStatus())
-        CustomToast('error', `Failed to delete: ${deleteError}`);
+        CustomToast(Strings.ERROR_s, `${errorStrings.FAILED_TO_DELETE}: ${deleteError}`);
       }
     }
   }, [Loader, deleteError, deleteId]);
 
   useEffect(() => {
-    if (genericTypeConnectivity !== 'all') {
+    if (genericTypeConnectivity !== Strings.ALL) {
       setFilterBadgeVisible(true);
     }
   }, [genericTypeConnectivity]);
 
   const handleResetConnectivity = () => {
     navigation.goBack();
-    setGenericTypeConnectivity('all');
+    setGenericTypeConnectivity(Strings.ALL);
     return true;
   };
   useBackHandler(handleResetConnectivity);

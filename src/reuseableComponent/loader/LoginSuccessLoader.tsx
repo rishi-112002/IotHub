@@ -3,6 +3,7 @@ import { View, Animated, StyleSheet, Text } from 'react-native';
 import colors from '../../assets/color/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import fontSizes from '../../assets/fonts/FontSize';
+import { IconName, Strings } from '../../assets/constants/Lable';
 
 const SuccessLoader = () => {
     const circleScale = useRef(new Animated.Value(0)).current;
@@ -31,11 +32,11 @@ const SuccessLoader = () => {
             <Animated.View style={[styles.circle, { transform: [{ scale: circleScale }] }]}>
                 {/* Animated Checkmark */}
                 <Animated.View style={{ opacity: checkmarkOpacity }}>
-                    <Icon name="check" size={30} color={colors.greenDarkest} />
+                    <Icon name={IconName.CHECK} size={30} color={colors.greenDarkest} />
                 </Animated.View>
             </Animated.View>
             <Text style={{ color: colors.blueDarkest, fontSize: fontSizes.text, fontWeight: "500" }}>
-                Success
+             {Strings.SUCCESS}
             </Text>
         </View>
     );

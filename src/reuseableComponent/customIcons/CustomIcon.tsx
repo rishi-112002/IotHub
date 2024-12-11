@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, TouchableOpacity, View, ImageStyle, StyleProp } from "react-native";
-import { Colors2 } from "../../assets/color/Colors2";
+import colors from "../../assets/color/colors";
 
 interface CustomIconProps {
     iconPath: any;
@@ -14,7 +14,7 @@ function CustomIcon(props: CustomIconProps) {
     return (
         <View>
             <TouchableOpacity onPress={onPress}>
-                <Image source={iconPath} style={{ tintColor: Colors2.IconColor }} />
+                <Image source={iconPath} style={{ tintColor: colors.IconColor }} />
             </TouchableOpacity>
         </View>
     );

@@ -16,6 +16,7 @@ import CustomToast from '../../reuseableComponent/modal/CustomToast';
 import React from 'react';
 import { GenericSpotData } from '../../reducer/genericSpot/uploadGenericDataAction';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { Strings } from '../../assets/constants/Lable';
 
 export const useGenericAddEffect = (id: any) => {
   const [loader, setLoader] = useState(false);
@@ -73,12 +74,12 @@ export const useGenericAddEffect = (id: any) => {
     switch (status) {
       case 'failed':
         if (uploadError) {
-          CustomToast('error', uploadError);
+          CustomToast(Strings.ERROR_s, uploadError);
           dispatch(resetStatus());
         }
         break;
       case 'succeeded':
-        CustomToast('success', status);
+        CustomToast(Strings.SUCCESS_s, status);
         dispatch(resetStatus());
         navigation.goBack();
         break;
@@ -91,11 +92,11 @@ export const useGenericAddEffect = (id: any) => {
   useEffect(() => {
     switch (updateStatus) {
       case 'failed':
-        CustomToast('error', uploadError);
+        CustomToast(Strings.ERROR_s, uploadError);
         dispatch(resetUpadteStatus());
         break;
       case 'succeeded':
-        CustomToast('success', status);
+        CustomToast(Strings.SUCCESS_s, status);
         dispatch(resetUpadteStatus());
         navigation.goBack();
         break;
@@ -107,13 +108,13 @@ export const useGenericAddEffect = (id: any) => {
   useEffect(() => {
     switch (deleteStatus) {
       case 'failed':
-        CustomToast('error', uploadError);
+        CustomToast(Strings.ERROR_s, uploadError);
 
         dispatch(resetDeleteStatus());
         setLoader(false); // Reset loader after failure
         break;
       case 'succeeded':
-        CustomToast('success', status);
+        CustomToast(Strings.SUCCESS_s, status);
 
         dispatch(resetDeleteStatus());
         setLoader(false); // Reset loader after success
@@ -133,7 +134,7 @@ export const useGenericAddEffect = (id: any) => {
         <View>
           <Text style={styles.headerTitle}>
             {' '}
-            {id ? 'Update Generic Details' : 'Add Generic Details'}
+            {id ? Strings.UPDATE_GENERIC_DETAILS : Strings.ADD_GENERIC_DETAILS}
           </Text>
         </View>
       ),
