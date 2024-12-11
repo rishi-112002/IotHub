@@ -97,9 +97,6 @@ export const DeleteGenericSpot = createAsyncThunk(
         }
     }
 );
-
-
-
 export const GenericSpotData = createAsyncThunk('genericSpotData', async (params: { baseUrl: string | null, buCode: string | null, token: string | null, id: any }) => {
     const { baseUrl, buCode, token, id } = params;
     const fullUrl = `${baseUrl}${EditSpot}${id}`;
@@ -110,7 +107,6 @@ export const GenericSpotData = createAsyncThunk('genericSpotData', async (params
     } catch (err) {
     }
 })
-
 export const UpdateGenericSpot = createAsyncThunk(
     'spot/updateGenericSpot',
     async (params: { genericData: any; baseUrls: string | null; token: any, buCode: any }, { rejectWithValue }) => {

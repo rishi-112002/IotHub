@@ -11,9 +11,11 @@ import SearchBar from '../../reuseableComponent/Filter/SearchFilter'; // Import 
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import {useNetwork} from '../../contextApi/NetworkContex';
+import fontSizes from '../../assets/fonts/FontSize';
 
 const RfidReader = ({navigation}: any) => {
   const {
+    noResults,
     Loader,
     loadRfidList,
     handleDelete,
@@ -35,6 +37,8 @@ const RfidReader = ({navigation}: any) => {
     setFilterCount,
     rfidType,
     setRfidType,
+    onViewableItemsChanged,
+    viewabilityConfig,
   } = RfidListHook();
   const {isConnected} = useNetwork();
   const scrollY = new Animated.Value(0);
@@ -99,19 +103,26 @@ const RfidReader = ({navigation}: any) => {
               />
             </View>
           )}
-
-          <RfidListComponent
-            ListData={filteredRfid} // Use filtered data here
-            Loader={Loader}
-            scrollY={scrollY}
-            handleDelete={handleDelete}
-            loadRfidList={loadRfidList}
-            refreshing={refreshing}
-            handleScroll={e => {
-              scrollY.setValue(e.nativeEvent.contentOffset.y);
-            }}
-            buttonVisible={false}
-          />
+          {noResults ? (
+            <Text style={styles.noResultsText}>
+              No results found for "{searchQuery}"
+            </Text>
+          ) : (
+            <RfidListComponent
+              ListData={filteredRfid} // Use filtered data here
+              loader={Loader}
+              scrollY={scrollY}
+              handleDelete={handleDelete}
+              loadRfidList={loadRfidList}
+              refreshing={refreshing}
+              handleScroll={e => {
+                scrollY.setValue(e.nativeEvent.contentOffset.y);
+              }}
+              buttonVisible={false}
+              onViewableItemsChanged={onViewableItemsChanged}
+              viewabilityConfig={viewabilityConfig}
+            />
+          )}
           {modelShow && (
             <FilterModal
               isVisible={modelShow}
@@ -151,6 +162,13 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     // marginTop: 60,
     // marginBottom: -42,
+  },
+  noResultsText: {
+    justifyContent: 'center',
+    fontSize: fontSizes.text,
+    color: colors.gray,
+    paddingVertical: 100,
+    textAlign: 'center',
   },
 });
 
