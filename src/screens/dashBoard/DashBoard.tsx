@@ -1,20 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
 
-import React, { useContext } from 'react';
-import { Animated, View } from 'react-native';
+import React, {useContext} from 'react';
+import {Animated, View} from 'react-native';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import DashBoardHook from '../../CustomHooks/dashBordEffect/DashBoardHooks';
-import { useNetwork } from '../../contextApi/NetworkContex';
+import {useNetwork} from '../../contextApi/NetworkContex';
 import DashboardComp from '../../component/dashBoardCom/DashBoardComp';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
-import { IconName, Strings } from '../../assets/constants/Lable';
-import { ScrollContext } from '../../contextApi/AnimationContext';
+import {IconName, Strings} from '../../assets/constants/Lable';
+import {ScrollContext} from '../../contextApi/AnimationContext';
+import {STYLES} from '../../styles/ScreensStyles';
 function DashBoard() {
-  const { isConnected } = useNetwork();
-  const {scrollY,headerTranslate } = useContext(
-    ScrollContext,
-  );
+  const {isConnected} = useNetwork();
+  const {scrollY, headerTranslate} = useContext(ScrollContext);
   const {
     buCode,
     spotListData,
@@ -44,7 +43,7 @@ function DashBoard() {
     onMomnetumScrollEnd,
   } = DashBoardHook();
   return (
-    <View style={{ flex: 1 }}>
+    <View style={STYLES.FLEX_1}>
       <CustomHeader
         buCode={buCode}
         userLogo={IconName.ACCOUNT_CIRCLE}
@@ -56,51 +55,50 @@ function DashBoard() {
         filterIcon={undefined}
         filterCount={undefined}
       />
-      {
-        isLoading ?
-          (
-            <View style={{ flex: 1, backgroundColor: colors.white }}>
-              <SequentialBouncingLoader />
-            </View>
-          ) :
-          <View style={{ flex: 1 }}>
-            <DashboardComp
-              spotListData={spotListData}
-              eventLogsByTime={eventLogsByTime}
-              WeighBridgeDisConnected={WeighBridgeDisConnected}
-              WeighBridgeConnected={WeighBridgeConnected}
-              genericDisConnected={genericDisConnected}
-              genericConnected={genericConnected}
-              rfidCount={rfidCount}
-              rfidUnUsedCount={rfidUnUsedCount}
-              navigation={navigation}
-              rfidUsedCount={rfidUsedCount}
-              topRecentLogs={topRecentLogs}
-              handleScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-                { useNativeDriver: false }
-              )}
-
-              setModalVisible={setModalVisible}
-              setRequestData={setRequestData}
-              handleRfidUsedClick={handleRfidUsedClick}
-              handleAllClick={handleAllClick}
-              handleGenericConnectedClick={handleGenericConnectedClick}
-              handleGenericNotConnectedClick={handleGenericNotConnectedClick}
-              handleRfidAllClick={handleRfidAllClick}
-              handleRfidUnUsedClick={handleRfidUnUsedClick}
-              handleWeighBridgeConnectedClick={handleWeighBridgeConnectedClick}
-              handleWeighBridgeNotConnectedClick={handleWeighBridgeNotConnectedClick}
-              buCode={buCode} isConnected={isConnected}
-              onMomentumScrollBegin={onMomnetumScrollBegin}
-              onMomentumScrollEnd={onMomnetumScrollEnd}
-              onScrollEndDrag={onScrollEndDrag} />
-          </View>
-      }
-
+      {isLoading ? (
+        <View style={STYLES.Sequential_LOADER_BACKGROUND}>
+          <SequentialBouncingLoader />
+        </View>
+      ) : (
+        <View style={STYLES.FLEX_1}>
+          <DashboardComp
+            spotListData={spotListData}
+            eventLogsByTime={eventLogsByTime}
+            WeighBridgeDisConnected={WeighBridgeDisConnected}
+            WeighBridgeConnected={WeighBridgeConnected}
+            genericDisConnected={genericDisConnected}
+            genericConnected={genericConnected}
+            rfidCount={rfidCount}
+            rfidUnUsedCount={rfidUnUsedCount}
+            navigation={navigation}
+            rfidUsedCount={rfidUsedCount}
+            topRecentLogs={topRecentLogs}
+            handleScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {y: scrollY}}}],
+              {useNativeDriver: false},
+            )}
+            setModalVisible={setModalVisible}
+            setRequestData={setRequestData}
+            handleRfidUsedClick={handleRfidUsedClick}
+            handleAllClick={handleAllClick}
+            handleGenericConnectedClick={handleGenericConnectedClick}
+            handleGenericNotConnectedClick={handleGenericNotConnectedClick}
+            handleRfidAllClick={handleRfidAllClick}
+            handleRfidUnUsedClick={handleRfidUnUsedClick}
+            handleWeighBridgeConnectedClick={handleWeighBridgeConnectedClick}
+            handleWeighBridgeNotConnectedClick={
+              handleWeighBridgeNotConnectedClick
+            }
+            buCode={buCode}
+            isConnected={isConnected}
+            onMomentumScrollBegin={onMomnetumScrollBegin}
+            onMomentumScrollEnd={onMomnetumScrollEnd}
+            onScrollEndDrag={onScrollEndDrag}
+          />
+        </View>
+      )}
     </View>
   );
-
 }
 
 export default DashBoard;

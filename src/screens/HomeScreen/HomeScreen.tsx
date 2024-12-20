@@ -2,7 +2,6 @@
 import React, { useContext, useState } from 'react';
 import {
   Animated,
-  StyleSheet,
   Text,
   View,
   KeyboardAvoidingView,
@@ -12,8 +11,6 @@ import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
-import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import { useNetwork } from '../../contextApi/NetworkContex';
 import { getResponsiveHeight } from '../../component/RFIDComponent/RfidListComponent';
@@ -22,6 +19,7 @@ import SpotList from '../../component/SpotListComponent/SpotList';
 import { IconName, ImagePath, Strings } from '../../assets/constants/Lable';
 import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
 import { ScrollContext } from '../../contextApi/AnimationContext';
+import { STYLES } from '../../styles/ScreensStyles';
 function HomeScreen() {
   const {
     Loader,
@@ -52,10 +50,10 @@ function HomeScreen() {
     setIsSearchVisible(!isSearchVisible);
   };
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={STYLES.Home_container}>
       <GestureHandlerRootView>
         <Animated.View
-          style={[styles.headerContainer, { paddingTop: headerTranslate }]}>
+          style={[{ paddingTop: headerTranslate }]}>
           <CustomHeader
             buCode={buCode}
             userLogo={IconName.ACCOUNT_CIRCLE}
@@ -69,7 +67,7 @@ function HomeScreen() {
           />
           {/* Search */}
           <Animated.View
-            style={[styles.searchBarContainer, { paddingTop: searchBarTranslate, zIndex: 1000 }]}>
+            style={[STYLES.Home_searchBarContainer, { paddingTop: searchBarTranslate, zIndex: 1000 }]}>
             {isSearchVisible && (
               <SearchBar
                 searchQuery={searchQuery}
@@ -103,7 +101,7 @@ function HomeScreen() {
             ) : (
               <Animated.View
                 style={[
-                  styles.listWrapper,
+                  STYLES.Home_listWrapper,
                   { transform: [{ translateY: headerTranslate }] },
                   {
                     marginBottom:
@@ -114,9 +112,9 @@ function HomeScreen() {
                           : getResponsiveHeight(9),
                   },
                 ]}>
-                <View style={styles.listWrapper}>
+                <View style={STYLES.Home_listWrapper}>
                   {noResults ? (
-                    <Text style={styles.noResultsText}>
+                    <Text style={STYLES.noResultsText}>
                       {Strings.NO_SEARCH_FOUND_FOR} "{searchQuery}"
                     </Text>
                   ) : (
@@ -156,44 +154,4 @@ function HomeScreen() {
     </KeyboardAvoidingView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-    zIndex: 9999,
-  },
-  headerContainer: {
-  },
-  listWrapper: {
-    zIndex: 9999,
-    paddingHorizontal: 4.5,
-  },
-  noResultsText: {
-    justifyContent: 'center',
-    fontSize: fontSizes.text,
-    color: colors.gray,
-    paddingVertical: 100,
-    textAlign: 'center',
-  },
-  searchBarContainer: {
-    marginTop: 60,
-    marginBottom: 5,
-  },
-  footerLoaderContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-  },
-  footerLoaderText: {
-    marginLeft: 10,
-    fontSize: fontSizes.smallText,
-    color: colors.gray,
-  },
-  noConnection: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 export default HomeScreen;

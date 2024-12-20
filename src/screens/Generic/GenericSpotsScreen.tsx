@@ -1,7 +1,7 @@
-import { ActivityIndicator, Animated, View, StyleSheet, Text } from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import { ActivityIndicator, Animated, View, StyleSheet } from 'react-native';
 
 import React from 'react';
-import colors from '../../assets/color/colors';
 import SpotsDataByTypeComponent from '../../component/listComp/SpotsDataByTypeComponent';
 import GenericScreenHooks from '../../CustomHooks/genericHooks/GenericScreenHooks';
 import FloatingActionCutomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
@@ -11,8 +11,9 @@ import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import { useNetwork } from '../../contextApi/NetworkContex';
-import { errorStrings, IconName, ImagePath, Strings } from '../../assets/constants/Lable';
+import { IconName, ImagePath, Strings } from '../../assets/constants/Lable';
 import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import { STYLES } from '../../styles/ScreensStyles';
 
 function GenericSpot() {
   const { isConnected } = useNetwork();
@@ -43,7 +44,7 @@ function GenericSpot() {
     setGenericTypeConnectivity,
   } = GenericScreenHooks();
   return (
-    <View style={styles.container}>
+    <View style={STYLES.Sequential_LOADER_BACKGROUND}>
       <CustomHeader
         buCode={undefined}
         userLogo={IconName.ACCOUNT_CIRCLE}
@@ -57,10 +58,10 @@ function GenericSpot() {
       />
       {isConnected ? (
         Loader ? (
-          <ActivityIndicator size="large" style={styles.loader} />
+          <ActivityIndicator size="large" style={STYLES.FLEX_1} />
         ) : (
           <Animated.View
-            style={[styles.contentContainer, { paddingTop: paddingTopAnimated }]}>
+            style={[STYLES.AllEVENT_contentContainer, { paddingTop: paddingTopAnimated }]}>
             {isSearchVisible && (
               <Animated.View style={[{ transform: [{ translateY: translateY }] }]}>
                 <SearchBar
@@ -71,7 +72,7 @@ function GenericSpot() {
                 />
               </Animated.View>
             )}
-            {filterBadgeVisible && genericTypeConnectivity !== 'all' && (
+            {filterBadgeVisible && genericTypeConnectivity !== Strings.ALL && (
               <View style={{ flex: 0.06 }}>
                 <ScrollableBadges
                   badges={[
@@ -122,7 +123,7 @@ function GenericSpot() {
         <NoInternetScreen />
       )}
       {isVisible && (
-        <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
+        <Animated.View style={[STYLES.Generic_modalContainer, { opacity: fadeAnim }]}>
           <CustomAlert
             isVisible={isVisible}
             onClose={() => setIsVisible(false)}
@@ -135,25 +136,5 @@ function GenericSpot() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  loader: {
-    flex: 1,
-  },
-  contentContainer: {
-    position: 'relative',
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  modalContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default GenericSpot;

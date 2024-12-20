@@ -37,7 +37,6 @@ const SpotList: React.FC<SpotListComponentProps> = ({
   spotData,
   refreshing,
   loadRfidList,
-  handleScroll,
   contentContainerStyle,
 }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(true);

@@ -21,7 +21,7 @@ export function TextStyles() {
         },
         statusText: {
             fontSize: fontSizes.smallText,
-
+            color: colors.PrimaryTextColor,
         },
         ipText: {
             marginTop: 4,
@@ -109,6 +109,7 @@ export function TextStyles() {
             paddingVertical: 20,
             paddingHorizontal: 25,
             textAlign: 'left',
+            color: colors.PrimaryTextColor
         },
         resetText: {
             color: colors.AppPrimaryColor,
@@ -126,7 +127,7 @@ export function TextStyles() {
         filterText: {
             marginLeft: 8,
             fontSize: fontSizes.title,
-            color:colors.PrimaryTextColor
+            color: colors.PrimaryTextColor
         },
         CustomInputLabel: {
             position: 'absolute',

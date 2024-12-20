@@ -44,7 +44,8 @@ export const ReaderCardContent = (
         <Text style={textStyles.spotTitle}>{reader.name || Strings.NA}</Text>
       )}
       <Text style={textStyles.statusText}>{reader.ip || Strings.NA}</Text>
-      <View style={cardStyles.cardRowConatiner}>
+      <View
+        style={[cardStyles.cardRowConatiner, { marginRight: 50 }]}>
         <SpotlistTextComponent name={Strings.MODEL} value={reader.model || Strings.NA} />
         <SpotlistTextComponent name={Strings.TYPE} value={reader.type || Strings.NA} />
         <SpotlistTextComponent name={Strings.PORT} value={reader.port || Strings.NA} />

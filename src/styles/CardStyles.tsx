@@ -34,9 +34,11 @@ export function CardStyles() {
             elevation: 1, padding: 5, backgroundColor: colors.white, borderRadius: 20, flex: 1
         },
         cardRowConatiner: {
+            flex: 1,
             flexDirection: 'row',
             marginTop: 5,
             gap: 20,
+            justifyContent: 'space-between'
         },
     })
     return { cardStyles }

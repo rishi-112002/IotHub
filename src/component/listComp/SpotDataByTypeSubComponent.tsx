@@ -7,6 +7,7 @@ import { ComponentStyles } from "../../styles/ComponentStyles";
 import { CardStyles } from "../../styles/CardStyles";
 import { ContainerStyles } from "../../styles/ContainerStyles";
 import { TextStyles } from "../../styles/TextStyles";
+import { SpotlistTextComponent } from "../../reuseableComponent/textComponent/SpotListTextComponent";
 
 function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, item: any, navigate: any, navigation: any }) {
     const { item, handleDelete, navigate, navigation } = props
@@ -53,20 +54,9 @@ function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, ite
                         </View>
                     </View>
 
-                    <View style={cardStyles.cardRowConatiner}>
-                        <View>
-                            <Text style={textStyles.infoText}>{Strings.VALID_ID} </Text>
-                            <Text style={textStyles.value}>
-                                {item.validDiDirA}
-                            </Text>
-                        </View>
-                        <View>
-                            <Text style={textStyles.infoText}>{Strings.EVENT}</Text>
-                            <Text style={textStyles.value}>
-                                {item.events}
-                            </Text>
-                        </View>
-
+                    <View style={[cardStyles.cardRowConatiner, { justifyContent: 'flex-start', gap: 50 }]}>
+                        <SpotlistTextComponent name={Strings.VALID_ID} value={item.validDiDirA} />
+                        <SpotlistTextComponent name={Strings.EVENT} value={item.events} />
                     </View>
                 </TouchableOpacity>
             </View>

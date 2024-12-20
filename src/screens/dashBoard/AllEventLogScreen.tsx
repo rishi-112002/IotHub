@@ -13,6 +13,7 @@ import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import CustomSubHeader from '../../reuseableComponent/header/CustomSubHeader';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import { ImagePath, Strings } from '../../assets/constants/Lable';
+import { STYLES } from '../../styles/ScreensStyles';
 
 function AllEventLogsScreen() {
 
@@ -26,13 +27,13 @@ function AllEventLogsScreen() {
 
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={STYLES.FLEX_1}>
             {loader ?
-                <View style={{ flex: 1, backgroundColor: colors.white }}>
+                <View style={STYLES.Sequential_LOADER_BACKGROUND}>
                     <SequentialBouncingLoader />
                 </View>
                 :
-                <View style={{ flex: 1 }}>
+                <View style={STYLES.FLEX_1}>
                     <CustomSubHeader
                         spotName={Strings.EVENT_LOGS}
                         onPress={() => setIsFocused(true)}
@@ -42,7 +43,7 @@ function AllEventLogsScreen() {
                         translateY={translateY}
                         filterCount={filterCount}
                         onSearchPress={handleSearchPress} />
-                    <Animated.View style={[styles.contentContainer, { paddingTop: paddingTopAnimated }]}>
+                    <Animated.View style={[STYLES.AllEVENT_contentContainer, { paddingTop: paddingTopAnimated }]}>
 
 
                         {isSearchVisible && (
@@ -59,7 +60,7 @@ function AllEventLogsScreen() {
                         )}
                         {
                             filterBadgeVisible &&
-                            <View style={{ flex: 0.05 }}>
+                            <View style={STYLES.FLEX_05}>
                                 <ScrollableBadges badges={[
 
                                     { key: Strings.SPOT, value: selectedSpot.name },
@@ -81,7 +82,7 @@ function AllEventLogsScreen() {
                             </View>
 
                         }
-                        <View style={{ flex: 1 }}>
+                        <View style={STYLES.FLEX_1}>
                             <EventLogsList
                                 data={filteredLogs}
                                 setModal={setModalVisible}
@@ -138,25 +139,5 @@ function AllEventLogsScreen() {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.white,
-    },
-    loader: {
-        flex: 1,
-    },
-    contentContainer: {
-        position: 'relative',
-        flex: 1,
-        backgroundColor: colors.white,
-    },
-    modalContainer: {
-        ...StyleSheet.absoluteFillObject,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
 
 export default AllEventLogsScreen;

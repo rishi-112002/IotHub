@@ -2,8 +2,8 @@
 import GenericAddForm from '../../component/genericComp/GenericAddForm';
 import React from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { Text, View } from 'react-native';
-import colors from '../../assets/color/colors';
+import { View } from 'react-native';
+import { STYLES } from '../../styles/ScreensStyles';
 interface genericAdd {
   id: any;
 }
@@ -12,7 +12,7 @@ function GenericAddScreen() {
   const route = useRoute<RouteProp<{ params: genericAdd }>>();
   const id = route.params?.id || '';
   return (
-    <View style={{ flex: 1  , backgroundColor:colors.white}}>
+    <View style={STYLES.Sequential_LOADER_BACKGROUND}>
       <GenericAddForm id={id} />
     </View>
   );

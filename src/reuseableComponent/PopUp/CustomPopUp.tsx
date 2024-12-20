@@ -1,10 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
-import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
 import { Strings } from '../../assets/constants/Lable';
-import { ComponentStyles } from '../../styles/ComponentStyles';
 import { ContainerStyles } from '../../styles/ContainerStyles';
 import { TextStyles } from '../../styles/TextStyles';
 import { ButtonStyles } from '../../styles/ButtonStyles';

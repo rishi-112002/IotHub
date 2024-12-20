@@ -1,6 +1,5 @@
-import { Animated, View, StyleSheet, Text } from 'react-native';
+import {Animated, View} from 'react-native';
 import React from 'react';
-import colors from '../../assets/color/colors';
 import SpotsDataByTypeComponent from '../../component/listComp/SpotsDataByTypeComponent';
 import WeighBridgeScreenHooks from '../../CustomHooks/weighBridgeHooks/WeighBridgeScreenHooks';
 import FloatingActionCutomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
@@ -10,12 +9,13 @@ import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
-import { useNetwork } from '../../contextApi/NetworkContex';
-import { errorStrings, IconName, ImagePath, Strings } from '../../assets/constants/Lable';
-import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import {useNetwork} from '../../contextApi/NetworkContex';
+import {IconName, ImagePath, Strings} from '../../assets/constants/Lable';
+import {NoInternetScreen} from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import {STYLES} from '../../styles/ScreensStyles';
 
 function Weighbridges() {
-  const { isConnected } = useNetwork();
+  const {isConnected} = useNetwork();
 
   const {
     Loader,
@@ -34,7 +34,6 @@ function Weighbridges() {
     filterCount,
     isSearchVisible,
     filterBadgeVisible,
-    setModelShow,
     modelShow,
     setFilterCount,
     searchQuery,
@@ -46,7 +45,7 @@ function Weighbridges() {
   } = WeighBridgeScreenHooks();
 
   return (
-    <View style={styles.container}>
+    <View style={STYLES.Sequential_LOADER_BACKGROUND}>
       <CustomHeader
         buCode={undefined}
         userLogo={IconName.ACCOUNT_CIRCLE}
@@ -64,12 +63,11 @@ function Weighbridges() {
         ) : (
           <Animated.View
             style={[
-              styles.animatedContainer,
-              { paddingTop: paddingTopAnimated },
+              STYLES.WebBridge_animatedContainer,
+              {paddingTop: paddingTopAnimated},
             ]}>
             {isSearchVisible && (
-              <Animated.View
-                style={[{ transform: [{ translateY: translateY }] }]}>
+              <Animated.View style={[{transform: [{translateY: translateY}]}]}>
                 <SearchBar
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
@@ -78,35 +76,34 @@ function Weighbridges() {
                 />
               </Animated.View>
             )}
-            {filterBadgeVisible &&
-              weighBridgeTypeConnectivity !== 'all' && (
-                <View style={{ flex: 0.06 }}>
-                  <ScrollableBadges
-                    badges={[
-                      {
-                        key: Strings.CONNECTIVITY,
-                        value: weighBridgeTypeConnectivity,
-                      },
-                    ]}
-                    filterCount={filterCount}
-                    setFilterCount={setFilterCount}
-                    setSelectedSpot={undefined}
-                    setSelectedDirection={undefined}
-                    setSelectedFromDate={undefined}
-                    setSelectedName={undefined}
-                    setSelectedToDate={undefined}
-                    setToDateValue={undefined}
-                    setDateFromValue={undefined}
-                    setConnectivity={setWeighBridgeTypeConnectivity}
-                  />
-                </View>
-              )}
-            <View style={{ flex: 1 }}>
+            {filterBadgeVisible && weighBridgeTypeConnectivity !== 'all' && (
+              <View style={{flex: 0.06}}>
+                <ScrollableBadges
+                  badges={[
+                    {
+                      key: Strings.CONNECTIVITY,
+                      value: weighBridgeTypeConnectivity,
+                    },
+                  ]}
+                  filterCount={filterCount}
+                  setFilterCount={setFilterCount}
+                  setSelectedSpot={undefined}
+                  setSelectedDirection={undefined}
+                  setSelectedFromDate={undefined}
+                  setSelectedName={undefined}
+                  setSelectedToDate={undefined}
+                  setToDateValue={undefined}
+                  setDateFromValue={undefined}
+                  setConnectivity={setWeighBridgeTypeConnectivity}
+                />
+              </View>
+            )}
+            <View style={STYLES.FLEX_1}>
               <SpotsDataByTypeComponent
                 data={spotsData}
                 type={Strings.UNIDIRECTIONAL_WEIGHBRIDGE}
                 handleScroll={(e: {
-                  nativeEvent: { contentOffset: { y: number } };
+                  nativeEvent: {contentOffset: {y: number}};
                 }) => {
                   scrollY.setValue(e.nativeEvent.contentOffset.y);
                 }}
@@ -140,7 +137,8 @@ function Weighbridges() {
 
       {/* Animated CustomAlert */}
       {isVisible && (
-        <Animated.View style={[styles.modalContainer, { opacity: fadeAnim }]}>
+        <Animated.View
+          style={[STYLES.Generic_modalContainer, {opacity: fadeAnim}]}>
           <CustomAlert
             isVisible={isVisible}
             onClose={() => setIsVisible(false)}
@@ -153,21 +151,5 @@ function Weighbridges() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  animatedContainer: {
-    position: 'relative',
-    flex: 1,
-  },
-  modalContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default Weighbridges;

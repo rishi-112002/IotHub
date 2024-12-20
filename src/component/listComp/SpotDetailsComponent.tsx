@@ -4,13 +4,13 @@ import { Card } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import { IconName, Strings } from '../../assets/constants/Lable';
-
 import { CardStyles } from '../../styles/CardStyles';
 import { ContainerStyles } from '../../styles/ContainerStyles';
 import { TextStyles } from '../../styles/TextStyles';
 import { TextComponent } from '../../reuseableComponent/textComponent/TextComponent';
 
 // This component takes 'spotData' as a prop and renders various details about a spot.
+// <<<<<<< HEAD
 const SpotDetailsComponent = (props: { spotData: any }) => {
     const { spotData } = props;
     const {

@@ -10,6 +10,9 @@ import { useEditRfid } from '../../CustomHooks/RFIDHooks/RFIDEditHook';
 import { MODEL_LIST } from '../../assets/constants/Constant';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useNetwork } from '../../contextApi/NetworkContex';
+import { Lable, Strings } from '../../assets/constants/Lable';
+import { STYLES } from '../../styles/ScreensStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
 
 // Define MODEL_LIST here
 
@@ -27,6 +30,7 @@ function EditRfidScreen() {
   const route = useRoute<RouteProp<{ params: readerParams }, 'params'>>();
   const readers = route.params?.readers || '';
   const { isConnected } = useNetwork();
+  const { containerStyles } = ContainerStyles();
 
   const {
     name,
@@ -48,18 +52,15 @@ function EditRfidScreen() {
   } = useEditRfid(readers);
 
   return (
-    <>
+    <View style={containerStyles.mainContainer}>
       {isConnected ? (
         <ScrollView contentContainerStyle={{ backgroundColor: colors.white }}>
           {Loader || smartControllerLoader ? (
-            <LoadingModal
-              visible={Loader}
-              message="Processing your request..."
-            />
+            <LoadingModal visible={Loader} message={Strings.Loader_Messsage} />
           ) : (
             <View style={{ padding: 20 }}>
               <CustomTextInput
-                label="Name"
+                label={Strings.NAME_S}
                 value={name}
                 editable
                 errorMessage={errors.name}
@@ -67,20 +68,19 @@ function EditRfidScreen() {
                 returnKeyType="next"
                 setTextInput={setName}
                 style={{ flex: 1, color: colors.SecondaryTextColor }}
-                onFocus={() => handleInputFocus('name')}
+                onFocus={() => handleInputFocus(Strings.NAME_s)}
                 required={false}
               />
               <CustomTextInput
-                label="Model Number"
+                label={Lable.MODEL_NUMBER}
                 value={model}
                 editable={false}
                 errorMessage={errors.model}
                 onPress={() => setDropdownVisible(true)}
                 setTextInput={undefined}
                 style={{ flex: 1, color: colors.SecondaryTextColor }}
-
                 required={false}
-                type={'dropdown'}
+                type="dropdown"
               />
 
               {dropdownVisible && (
@@ -89,8 +89,8 @@ function EditRfidScreen() {
                   isVisible={dropdownVisible}
                   handleCloseModal={() => setDropdownVisible(false)}
                   onOptionSelected={handleModalSelect}
-                  nameKey="name"
-                  valueKey="value"
+                  nameKey={Strings.NAME_s}
+                  valueKey={Strings.VALUE}
                 />
               )}
 
@@ -98,41 +98,40 @@ function EditRfidScreen() {
               {showIpAndPortFields && (
                 <>
                   <CustomTextInput
-                    label="IP Address"
+                    label={Strings.IPAddress}
                     value={IPAddress}
                     errorMessage={errors.IPAddress}
                     keyboardType="default"
                     returnKeyType="next"
                     style={{ flex: 1, color: colors.SecondaryTextColor }}
-
                     setTextInput={setIPAddress}
-                    onFocus={() => handleInputFocus('IPAddress')}
+                    onFocus={() => handleInputFocus(Strings.IPAddress)}
                     required={false}
                   />
 
                   <CustomTextInput
-                    label="Port Number"
+                    label={Lable.PORT_NUMBER}
                     value={port?.toString()}
                     errorMessage={errors.port}
-                    keyboardType="numeric"
+                    keyboardType="default"
                     style={{ flex: 1, color: colors.SecondaryTextColor }}
                     setTextInput={setPort}
-                    onFocus={() => handleInputFocus('port')}
+                    onFocus={() => handleInputFocus(Strings.port)}
                     required={false}
                   />
                 </>
               )}
 
-              <CustomButton label="Save" onPress={handleSaveData} />
+              <CustomButton label={Lable.SAVE} onPress={handleSaveData} />
             </View>
           )}
         </ScrollView>
       ) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-          <Text>No Internet Connection</Text>
+        <View style={STYLES.No_Internet_View}>
+          <Text>{Strings.NO_INTERNET_CONNECTION}</Text>
         </View>
       )}
-    </>
+    </View>
   );
 }
 

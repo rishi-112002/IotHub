@@ -62,7 +62,7 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
             <CustomMenu baseUrl={baseUrl} spotName={item.name} />
           </View>
         </View>
-        <View style={cardStyles.cardRowConatiner}>
+        <View style={[cardStyles.cardRowConatiner]}>
 
           <SpotlistTextComponent name={Strings.EXPIRY_DATE} value={item.expiryDate ? item.expiryDate : Strings.NA} />
           <SpotlistTextComponent name={Strings.DELAY} value={item.delayed ? Strings.DELAYED : Strings.ON_TIME} />
