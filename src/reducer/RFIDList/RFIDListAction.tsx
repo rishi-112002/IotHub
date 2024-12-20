@@ -93,7 +93,11 @@ export const deleteRfidListAction = createAsyncThunk(
     const fullUrl = `${BASE_URL}/iv1/readers/remove/${id}`;
     try {
       const data = await axios.delete(fullUrl, axiosConfig(token, buCode));
-      if (!data) {
+// <<<<<<< HEAD
+      if (data?.result === 'ERROR') {
+// =======
+//       if (!data) {
+// >>>>>>> 6f69ef7344946d0c8ddcdee1f36941bae4e8716e
         return rejectWithValue('Error: Invalid credentials or server error.');
       }
       return data;

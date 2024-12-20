@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {View, Animated, StyleSheet, Text} from 'react-native';
+import React from 'react';
+import {View, Animated, Text} from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomHeader from '../../reuseableComponent/header/CustomHeader';
 import FloatingActionCustomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
@@ -11,7 +11,8 @@ import SearchBar from '../../reuseableComponent/Filter/SearchFilter'; // Import 
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import {useNetwork} from '../../contextApi/NetworkContex';
-import fontSizes from '../../assets/fonts/FontSize';
+import {IconName, Lable, Strings} from '../../assets/constants/Lable';
+import {STYLES} from '../ScreensStyles';
 
 const RfidReader = ({navigation}: any) => {
   const {
@@ -60,11 +61,11 @@ const RfidReader = ({navigation}: any) => {
   });
 
   return (
-    <View style={{flex: 1, backgroundColor: colors.white}}>
+    <View style={STYLES.Sequential_LOADER_BACKGROUND}>
       <CustomHeader
-        title="RFID Readers"
+        title={Lable.RFID_Readers}
         buCode={buCode}
-        userLogo={'account-circle'}
+        userLogo={IconName.ACCOUNT_CIRCLE}
         translateY={translateY}
         onSearchPress={handleSearchPress} // Set search press handler
         onFilterPress={toggleFilterMenu}
@@ -86,10 +87,10 @@ const RfidReader = ({navigation}: any) => {
               />
             </Animated.View>
           )}
-          {filterBadgeVisible && rfidType !== 'all' && (
+          {filterBadgeVisible && rfidType !== Strings.ALL && (
             <View style={{flex: 0.06, marginTop: 10}}>
               <ScrollableBadges
-                badges={[{key: 'Connectivity', value: rfidType}]}
+                badges={[{key: Strings.CONNECTIVITY, value: rfidType}]}
                 filterCount={filterCount}
                 setFilterCount={setFilterCount}
                 setSelectedSpot={undefined}
@@ -104,7 +105,7 @@ const RfidReader = ({navigation}: any) => {
             </View>
           )}
           {noResults ? (
-            <Text style={styles.noResultsText}>
+            <Text style={STYLES.noResultsText}>
               No results found for "{searchQuery}"
             </Text>
           ) : (
@@ -129,7 +130,7 @@ const RfidReader = ({navigation}: any) => {
               toggleFilterMenu={toggleFilterMenu}
               spotTypeConnectivity={rfidType}
               handleFilterPress={handleFilterPress}
-              type={'used'}
+              type="used"
             />
           )}
 
@@ -138,14 +139,14 @@ const RfidReader = ({navigation}: any) => {
               isVisible={alertVisible}
               onClose={() => setAlertVisible(false)}
               onOkPress={confirmDelete}
-              title="Delete RFID"
-              message="Are you sure you want to delete this RFID?"
+              title={Strings.DELETE_RFID}
+              message={Strings.CONFIRM_RFID_DELETE}
               showCancel={true}
             />
           )}
 
           <FloatingActionCustomButton
-            onPress={() => navigation.navigate('RfidAdd')}
+            onPress={() => navigation.navigate(Strings.RfidAdd)}
             translateButtonY={translateButtonY} // translateButtonY={translateButtonY}
           />
         </Animated.View>
@@ -157,19 +158,5 @@ const RfidReader = ({navigation}: any) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  searchBarContainer: {
-    // marginTop: 60,
-    // marginBottom: -42,
-  },
-  noResultsText: {
-    justifyContent: 'center',
-    fontSize: fontSizes.text,
-    color: colors.gray,
-    paddingVertical: 100,
-    textAlign: 'center',
-  },
-});
 
 export default React.memo(RfidReader);

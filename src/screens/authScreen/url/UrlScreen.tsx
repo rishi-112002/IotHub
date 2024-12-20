@@ -4,11 +4,11 @@ import CustomButton from '../../../reuseableComponent/customButton/CustomButton'
 import CustomTextInput from '../../../reuseableComponent/customTextInput/CustomTextInput';
 import CustomLoader from '../../../reuseableComponent/loader/CustomLoader';
 import UrlEffect from './UrlEffect';
-import UrlStyles from './UrlStyles';
 import React from 'react';
 import fontSizes from '../../../assets/fonts/FontSize';
 import { IconName, Lable, Strings } from '../../../assets/constants/Lable';
 import colors from '../../../assets/color/colors';
+import { STYLES } from '../../ScreensStyles';
 
 function UrlScreen() {
   const {
@@ -20,40 +20,39 @@ function UrlScreen() {
     setUrl,
     slideUpAnim,
     url } = UrlEffect();
-  const { styles } = UrlStyles();
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.row}>
+    <View style={STYLES.mainContainer}>
+      <View style={STYLES.URL_row}>
         {url && (
           <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
             <MaterialIcons
               name={IconName.ARROW_BACK}
               size={24}
               color={colors.white}
-              style={styles.backIcon}
+              style={STYLES.URL_backIcon}
             />
           </TouchableOpacity>
         )}
-        <Text style={styles.headerTitle}>{Strings.SERVER_CONFIGURATION}</Text>
+        <Text style={STYLES.URL_headerTitle}>{Strings.SERVER_CONFIGURATION}</Text>
       </View>
       <Animated.View
         style={[
-          styles.container,
+          STYLES.Login_container,
           {
             transform: [{ translateY: slideUpAnim }],
           },
         ]}>
         {loading && <CustomLoader />}
-        {!url && <Text style={styles.heading}>{Strings.WELCOME}</Text>}
+        {!url && <Text style={STYLES.URL_heading}>{Strings.WELCOME}</Text>}
         <View style={{ marginTop: 10, gap: 5 }}>
-          <Text style={styles.sub_heading}>
+          <Text style={STYLES.URL_sub_heading}>
             {Strings.SETUP_SERVER}
           </Text>
           <Text style={{ fontSize: fontSizes.smallText }}>
             {Strings.BASE_URL_DESCRIPTION}
           </Text>
         </View>
-        <View style={styles.inputContainer}>
+        <View style={STYLES.URL_inputContainer}>
           <CustomTextInput
             label={Lable.BASE_URL}
             value={url}
