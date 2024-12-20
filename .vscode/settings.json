@@ -24,6 +24,7 @@
         "gorhom",
         "iothub",
         "Kbutton",
+        "Keybord",
         "Lable",
         "milli",
         "Momnetum",
@@ -46,6 +47,7 @@
         "Upadte",
         "Userlogin",
         "viewability",
+        "weighment",
         "weightbridge"
     ]
 }

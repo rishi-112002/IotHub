@@ -1,17 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {useSelector} from 'react-redux';
-import {RootState, store} from '../../reducer/Store';
-import {Animated, Text, View} from 'react-native';
-import {useContext, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import { useSelector } from 'react-redux';
+import { RootState, store } from '../../reducer/Store';
+import { Animated, Text, View } from 'react-native';
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   GetAllSpotEventLogs,
   GetSpotEventLogsForToday,
 } from '../../reducer/eventLogs/EventLogsAction';
-import {GetSpotData} from '../../reducer/spotData/spotDataAction';
-import {getRfidListAction} from '../../reducer/RFIDList/RFIDListAction';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import {DataByConnectivityContext} from '../../contextApi/DataByConnectivity';
-import {AppNavigationParams} from '../../navigation/NavigationStackList';
+import { GetSpotData } from '../../reducer/spotData/spotDataAction';
+import { getRfidListAction } from '../../reducer/RFIDList/RFIDListAction';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import { AppNavigationParams } from '../../navigation/NavigationStackList';
+import { Strings } from '../../assets/constants/Lable';
 
 function DashBoardHook() {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +46,7 @@ function DashBoardHook() {
   const onMomnetumScrollEnd = () => {
     const toValue =
       _scrollValue > CONTAINERHEiGHT &&
-      _clampedScrollValue > CONTAINERHEiGHT / 2
+        _clampedScrollValue > CONTAINERHEiGHT / 2
         ? _offsetValue + CONTAINERHEiGHT
         : _offsetValue - CONTAINERHEiGHT;
     Animated.timing(offSetAnimation, {
@@ -58,7 +59,7 @@ function DashBoardHook() {
     scrollEndTimer = setTimeout(onMomnetumScrollEnd, 250);
   };
   useEffect(() => {
-    scrollY.addListener(({value}) => {
+    scrollY.addListener(({ value }) => {
       const diff = value - _scrollValue;
       _scrollValue = value;
       _clampedScrollValue = Math.min(
@@ -66,7 +67,7 @@ function DashBoardHook() {
         CONTAINERHEiGHT,
       );
     });
-    offSetAnimation.addListener(({value}) => {
+    offSetAnimation.addListener(({ value }) => {
       _offsetValue = value;
     });
   }, []);
@@ -83,8 +84,8 @@ function DashBoardHook() {
     (state: RootState) => state.rfidList.RfidListData.length,
   );
   const handleScroll = Animated.event(
-    [{nativeEvent: {contentOffset: {y: scrollY}}}],
-    {useNativeDriver: false}, // or true if you don't need manual interpolation
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: false }, // or true if you don't need manual interpolation
   );
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const buCode = useSelector((State: RootState) => State.authentication.buCode);
@@ -108,17 +109,17 @@ function DashBoardHook() {
     (spot: any) => spot.active === false,
   ).length;
   const WeighBridgeDisConnected = spotListData.filter(
-    (spot: any) => spot.active === false && spot.type !== 'GENERIC_SPOT',
+    (spot: any) => spot.active === false && spot.type !== Strings.GENERIC_SPOT,
   ).length;
   const WeighBridgeConnected = spotListData.filter(
-    (spot: any) => spot.active === true && spot.type !== 'GENERIC_SPOT',
+    (spot: any) => spot.active === true && spot.type !== Strings.GENERIC_SPOT,
   ).length;
 
   const genericDisConnected = spotListData.filter(
-    (spot: any) => spot.active === false && spot.type === 'GENERIC_SPOT',
+    (spot: any) => spot.active === false && spot.type === Strings.GENERIC_SPOT,
   ).length;
   const genericConnected = spotListData.filter(
-    (spot: any) => spot.active === true && spot.type === 'GENERIC_SPOT',
+    (spot: any) => spot.active === true && spot.type === Strings.GENERIC_SPOT,
   ).length;
   const rfidUnUsedCount = rfidList.filter(
     (item: any) => item.type === null && item.direction === null,
@@ -134,7 +135,7 @@ function DashBoardHook() {
   useEffect(() => {
     const interval = setInterval(() => {
       store.dispatch(
-        GetSpotEventLogsForToday({baseUrl: baseUrl, time: formattedDate}),
+        GetSpotEventLogsForToday({ baseUrl: baseUrl, time: formattedDate }),
       );
     }, 4000); // 5000 milliseconds = 5 seconds
 
@@ -143,9 +144,9 @@ function DashBoardHook() {
   }, [baseUrl, formattedDate]);
 
   useEffect(() => {
-    store.dispatch(GetSpotData({baseUrl: baseUrl}));
-    store.dispatch(GetAllSpotEventLogs({baseUrl: baseUrl}));
-    store.dispatch(getRfidListAction({baseUrl}));
+    store.dispatch(GetSpotData({ baseUrl: baseUrl }));
+    store.dispatch(GetAllSpotEventLogs({ baseUrl: baseUrl }));
+    store.dispatch(getRfidListAction({ baseUrl }));
   }, [baseUrl]);
 
   useEffect(() => {
@@ -172,46 +173,47 @@ function DashBoardHook() {
     setRfidType,
   } = useContext(DataByConnectivityContext);
   const handleAllClick = () => {
-    setSpotTypeConnectivity('all');
+    setSpotTypeConnectivity(Strings.ALL);
     navigation.navigate('LiveSpots');
   };
 
   const handleConnectedClick = () => {
-    setSpotTypeConnectivity('connected');
+    setSpotTypeConnectivity(Strings.CONNECTED_S);
     navigation.navigate('LiveSpots');
   };
   const handleNotConnectedClick = () => {
-    setSpotTypeConnectivity('not-connected');
+    setSpotTypeConnectivity(Strings.NOT_CONNECTED_s);
     navigation.navigate('LiveSpots');
   };
 
   const handleGenericConnectedClick = () => {
-    setGenericTypeConnectivity('connected');
-    navigation.navigate('Drawer', {screen: 'GenericSpotNavigation'});
+    setGenericTypeConnectivity(Strings.CONNECTED_S);
+    navigation.navigate('Drawer', { screen: 'GenericSpotNavigation' });
   };
   const handleGenericNotConnectedClick = () => {
-    setGenericTypeConnectivity('not-connected');
-    navigation.navigate('Drawer', {screen: 'GenericSpotNavigation'});
+    setGenericTypeConnectivity(Strings.NOT_CONNECTED_s);
+    navigation.navigate('Drawer', { screen: 'GenericSpotNavigation' });
   };
   const handleWeighBridgeConnectedClick = () => {
-    setWeighBridgeTypeConnectivity('connected');
-    navigation.navigate('Drawer', {screen: 'WeighBridgeNavigation'});
+    setWeighBridgeTypeConnectivity(Strings.CONNECTED_S);
+    navigation.navigate('Drawer', { screen: 'WeighBridgeNavigation' });
   };
   const handleWeighBridgeNotConnectedClick = () => {
-    setWeighBridgeTypeConnectivity('not-connected');
-    navigation.navigate('Drawer', {screen: 'WeighBridgeNavigation'});
+    setWeighBridgeTypeConnectivity(Strings.NOT_CONNECTED_s);
+    navigation.navigate('Drawer', { screen: 'WeighBridgeNavigation' });
   };
 
   const handleRfidUsedClick = () => {
-    setRfidType('used');
+    setRfidType(Strings.USED_s);
     navigation.navigate('RfidScreenNavigation');
   };
+
   const handleRfidUnUsedClick = () => {
-    setRfidType('un-used');
+    setRfidType(Strings.UN_USED_s);
     navigation.navigate('RfidScreenNavigation');
   };
   const handleRfidAllClick = () => {
-    setRfidType('all');
+    setRfidType(Strings.ALL);
     navigation.navigate('RfidScreenNavigation');
   };
   useEffect(() => {

@@ -1,7 +1,7 @@
 import React, { useCallback, memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import fontSizes from '../../assets/fonts/FontSize';
-import { Colors2 } from '../../assets/color/Colors2';
+import colors from '../../assets/color/colors';
 
 type CustomSwitchProps = {
   value: boolean; // State to determine if the switch is active
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: fontSizes.subheading,
-    color: Colors2.PrimaryTextColor, // Text color
+    color: colors.PrimaryTextColor, // Text color
   },
   switchContainer: {
     width: 50,
@@ -58,17 +58,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   inactive: {
-    backgroundColor: '#E8EBF3', // Inactive state background
+    backgroundColor: colors.SoftGray, // Inactive state background
   },
   active: {
-    backgroundColor: '#4CAF50', // Active state background
+    backgroundColor: colors.FreshGreen, // Active state background
   },
   switchInactive: {
-    backgroundColor: '#979EC2',
+    backgroundColor:  colors.SlateBlue,
     transform: [{ translateX: 0 }],
   },
   switchActive: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     transform: [{ translateX: 24 }], // Move to the right when active
   },
 });

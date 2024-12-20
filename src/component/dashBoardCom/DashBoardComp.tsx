@@ -6,6 +6,8 @@ import DashboardCardView from "./DashBoardCardView";
 import { ScrollView } from 'react-native-virtualized-view';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SequentialBouncingLoader from "../../reuseableComponent/loader/BallBouncingLoader";
+import { Strings } from "../../assets/constants/Lable";
+import { NoInternetScreen } from "../../reuseableComponent/defaultScreen/NoInternetScreen";
 
 function DashboardComp(props: {
     buCode: any,
@@ -59,7 +61,7 @@ function DashboardComp(props: {
         handleRfidUnUsedClick,
         handleWeighBridgeConnectedClick,
         handleWeighBridgeNotConnectedClick,
-        isConnected    } = props
+        isConnected } = props
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -77,40 +79,40 @@ function DashboardComp(props: {
 
                                 <DashboardCardView
                                     connectedCards={[{
-                                        name: "Generic", count: genericConnected || 0, icon: "",
+                                        name: Strings.GENERIC, count: genericConnected || 0, icon: "",
                                         onPress: handleGenericConnectedClick, countColor: colors.greenBase,
                                         backgroundColor: colors.greenSoftneer
                                     },
                                     {
-                                        name: "Weighrbidge", count: WeighBridgeConnected || 0, icon: "",
+                                        name: Strings.WEIGHBRIDGE, count: WeighBridgeConnected || 0, icon: "",
                                         onPress: handleWeighBridgeConnectedClick, countColor: colors.greenBase,
                                         backgroundColor: colors.greenSoftneer
                                     }]}
                                     notConnectedCards={[{
-                                        name: "Generic", count: genericDisConnected || 0, icon: "",
+                                        name: Strings.GENERIC, count: genericDisConnected || 0, icon: "",
                                         onPress: handleGenericNotConnectedClick, countColor: colors.redBase,
                                         backgroundColor: colors.redSoftner
                                     },
                                     {
-                                        name: "Weighbridge", count: WeighBridgeDisConnected || 0, icon: "",
+                                        name: Strings.WEIGHBRIDGE, count: WeighBridgeDisConnected || 0, icon: "",
                                         onPress: handleWeighBridgeNotConnectedClick, countColor: colors.redBase,
                                         backgroundColor: colors.redSoftner
-                                    }]} heading={'Spots'} totalCount={spotListData.length}
+                                    }]} heading={Strings.SPOTS} totalCount={spotListData.length}
                                     ViewAllPress={handleAllClick} type={'connectivity'} card={[]} />
                             </View>
                             {/* RFID Section */}
                             <View style={{ elevation: 1, padding: 5, backgroundColor: colors.white, borderRadius: 20, flex: 1 }}>
                                 <DashboardCardView
-                                    heading={'RFID Readers'}
+                                    heading={Strings.RFID_READERS}
                                     totalCount={rfidCount}
                                     ViewAllPress={handleRfidAllClick} type={'useability'}
                                     card={[{
-                                        name: "Used", count: rfidUsedCount || 0, icon: "",
+                                        name: Strings.USED, count: rfidUsedCount || 0, icon: "",
                                         onPress: handleRfidUsedClick, countColor: colors.greenBase,
                                         backgroundColor: colors.greenSoftneer
                                     },
                                     {
-                                        name: "Unused", count: rfidUnUsedCount || 0, icon: "",
+                                        name: Strings.UNUSED, count: rfidUnUsedCount || 0, icon: "",
                                         onPress: handleRfidUnUsedClick, countColor: colors.redBase,
                                         backgroundColor: colors.redSoftner
                                     }]} connectedCards={[]} notConnectedCards={[]} />
@@ -121,7 +123,7 @@ function DashboardComp(props: {
                                 style={{ elevation: 1, padding: 5, backgroundColor: colors.white, borderRadius: 20, flex: 1 }}>
 
                                 <DashboardCardView
-                                    heading={'Recent Event Logs'}
+                                    heading={Strings.RECENT_EVENT_LOGS}
                                     totalCount={eventLogsByTime ? eventLogsByTime.length : 0}
                                     ViewAllPress={() => navigation.navigate('Drawer', { screen: 'AllEventLogsScreen' })}
                                     type={'eventLog'}
@@ -145,9 +147,7 @@ function DashboardComp(props: {
                         </View>
                     )
                         : (
-                            <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-                                <Text>No Internet Connection</Text>
-                            </View>
+                            <NoInternetScreen />
                         )}
                 </View>
             </ScrollView>

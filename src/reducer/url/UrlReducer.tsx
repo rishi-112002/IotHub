@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { GetUrls } from "./UrlAction";
+import { errorStrings, Strings } from "../../assets/constants/Lable";
 
 type AuthState = {
   urls: any[]; // Updated to 'any[]' to handle the array of URLs
@@ -14,7 +15,7 @@ const initState: AuthState = {
 };
 
 export const GetUrlsSlice = createSlice({
-  name: "urls",
+  name: Strings.URLS,
   initialState: initState,
   reducers: {},
   extraReducers: (builder) => {
@@ -26,7 +27,7 @@ export const GetUrlsSlice = createSlice({
 
     builder.addCase(GetUrls.rejected, (state, action: PayloadAction<any>) => {
       state.urls = []; // Clear URLs on error
-      state.error = action.payload || "Network error occurred. Please try again."; // Set error from action or default message
+      state.error = action.payload || errorStrings.INTERNET_ERROR; // Set error from action or default message
       state.loader = false; // Stop the loader
     });
 

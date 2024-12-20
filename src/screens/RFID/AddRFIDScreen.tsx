@@ -1,17 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import {View, ScrollView} from 'react-native';
 import colors from '../../assets/color/colors';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
-import { useRfidAddForm } from '../../CustomHooks/RFIDHooks/RFIDAddHook';
-import { useNetwork } from '../../contextApi/NetworkContex';
+import {useRfidAddForm} from '../../CustomHooks/RFIDHooks/RFIDAddHook';
+import {useNetwork} from '../../contextApi/NetworkContex';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
+import {Lable, Strings} from '../../assets/constants/Lable';
+import {NoInternetScreen} from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import { STYLES } from '../ScreensStyles';
 
 const RfidAddScreen = () => {
-  const { isConnected } = useNetwork();
+  const {isConnected} = useNetwork();
 
   const {
     name,
@@ -31,35 +34,33 @@ const RfidAddScreen = () => {
     handleModalSelect,
     setDropdownVisible,
   } = useRfidAddForm(); // Use custom hook
-
-  console.log("modal name ", modal)
   return (
     <>
       {isConnected ? (
         <ScrollView
-          contentContainerStyle={{ backgroundColor: colors.white, flex: 1 }}>
+          contentContainerStyle={STYLES.Sequential_LOADER_BACKGROUND}>
           {Loader ? (
             // <ActivityIndicator size="large" />
             <SequentialBouncingLoader />
           ) : (
-            <View style={{ padding: 20 }}>
+            <View style={{padding: 20}}>
               {/* Name Input */}
               <CustomTextInput
-                label="Name"
+                label={Strings.NAME_s}
                 value={name}
                 errorMessage={errors.name}
                 keyboardType="default"
                 returnKeyType="next"
                 setTextInput={setName}
-                onFocus={() => handleInputFocus('name')}
+                onFocus={() => handleInputFocus(Strings.NAME_s)}
                 required={true}
-                style={{ flex: 1 }}
+                style={{flex: 1}}
               />
 
               {/* Model Number Input */}
-              <View style={{ position: 'relative' }}>
+              <View style={{position: 'relative'}}>
                 <CustomTextInput
-                  label="Model Number"
+                  label={Lable.MODEL_NUMBER}
                   value={modal || ''}
                   editable={false}
                   errorMessage={errors.modal}
@@ -67,8 +68,7 @@ const RfidAddScreen = () => {
                   onPress={() => setDropdownVisible(true)}
                   required={true}
                   type="dropdown"
-                  style={{ flex: 1 }}
-
+                  style={{flex: 1}}
                 />
               </View>
 
@@ -79,46 +79,41 @@ const RfidAddScreen = () => {
                   isVisible={dropdownVisible}
                   handleCloseModal={() => setDropdownVisible(false)}
                   onOptionSelected={handleModalSelect}
-                  nameKey="name"
-                  valueKey="value"
-
+                  nameKey={Strings.NAME_s}
+                  valueKey={Strings.VALUE}
                 />
               )}
 
               {/* IP Address And Port Input */}
-              {(modal !== 'FX9600' && modal !== null) && (
+              {modal !== 'FX9600' && modal !== null && (
                 <View>
-
                   <CustomTextInput
-                    label="IP Address"
+                    label={Lable.IP_ADDRESS}
                     value={IPAddress}
                     errorMessage={errors.IPAddress}
                     keyboardType="default"
                     returnKeyType="next"
                     setTextInput={setIPAddress}
-                    onFocus={() => handleInputFocus('IPAddress')}
+                    onFocus={() => handleInputFocus(Strings.IPAddress)}
                     required={false}
-                    style={{ flex: 1 }}
-
+                    style={{flex: 1}}
                   />
                   <CustomTextInput
-                    label="Port Number"
+                    label={Lable.PORT_NUMBER}
                     value={port}
                     errorMessage={errors.port}
                     keyboardType="numeric"
                     setTextInput={setPort}
-                    onFocus={() => handleInputFocus('port')}
+                    onFocus={() => handleInputFocus(Strings.port)}
                     required={false}
-                    style={{ flex: 1 }}
-
+                    style={{flex: 1}}
                   />
                 </View>
-
               )}
 
               {/* Save Button */}
               <CustomButton
-                label="Save"
+                label={Lable.SAVE}
                 onPress={handleSaveData}
                 disabled={Loader} // Disable button when saving
               />
@@ -126,9 +121,7 @@ const RfidAddScreen = () => {
           )}
         </ScrollView>
       ) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-          <Text>No Internet Connection</Text>
-        </View>
+        <NoInternetScreen />
       )}
     </>
   );

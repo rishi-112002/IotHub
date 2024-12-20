@@ -1,20 +1,13 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StatusBar,
-  Animated,
-} from 'react-native';
-import LoginStyles from './LoginStyles';
-import React, { useEffect } from 'react';
+import {View, Text, TouchableOpacity, StatusBar, Animated} from 'react-native';
+import { STYLES } from '../../ScreensStyles';
+import React from 'react';
 import colors from '../../../assets/color/colors';
 import SuccessLoader from '../../../reuseableComponent/loader/LoginSuccessLoader';
 import CustomTextInput from '../../../reuseableComponent/customTextInput/CustomTextInput';
-import BusinessUnitModal from '../../../reuseableComponent/modal/BuinessUnitsModal';
 import CustomButton from '../../../reuseableComponent/customButton/CustomButton';
-import LoginEffect from "../../../screens/authScreen/login/LoginEffect"
-import { Colors2 } from '../../../assets/color/Colors2';
+import LoginEffect from './LoginEffect';
 import GenericModal from '../../../reuseableComponent/modal/GenralModal';
+import {Lable, IconName, Strings} from '../../../assets/constants/Lable';
 function LoginForm() {
   const {
     loader,
@@ -37,49 +30,46 @@ function LoginForm() {
     handleLogin,
     isButtonDisabled,
   } = LoginEffect();
-  const { styles } = LoginStyles();
-  useEffect(() => {
-
-  }, [])
   return (
-    <View style={styles.mainContainer}>
-      <StatusBar backgroundColor={Colors2.HelperTextColor} />
-      <Text style={styles.signInStyle}>{"Log In"}</Text>
+    <View style={STYLES.mainContainer}>
+      <StatusBar backgroundColor={colors.HelperTextColor} />
+      <Text style={STYLES.Login_signInStyle}>{Lable.LOG_IN}</Text>
       {loader && (
-        <View style={styles.loaderContainer}>
+        <View style={STYLES.Login_loaderContainer}>
           <SuccessLoader />
         </View>
       )}
       <Animated.View
         style={[
-          styles.container,
+          STYLES.Login_container,
           {
-            transform: [{ translateY: slideUpAnim }],
+            transform: [{translateY: slideUpAnim}],
           },
         ]}>
-        <Text style={styles.heading}>Welcome Back</Text>
-        <View style={{ height: "10%" }}></View>
+        <Text style={STYLES.Login_heading}>{Strings.WELCOME_BACK}</Text>
+        <View style={{height: '10%'}}></View>
         <CustomTextInput
-          label="User name"
+          label={Lable.USER_NAME}
           value={userName}
           errorMessage={errors.userName}
           editable={true}
-          style={{ flex: 1, color: Colors2.PrimaryTextColor }}
-          type='input'
+          style={STYLES.Login_Custom_Input_Style}
+          type="input"
           setTextInput={handleUserNameChange}
           required={false}
         />
         <CustomTextInput
-          label="Password"
+          label={Lable.PASSWORD}
           value={password}
           secureTextEntry={!passwordVisible}
           errorMessage={errors.password}
-          iconName={passwordVisible ? 'visibility' : 'visibility-off'}
+          iconName={
+            passwordVisible ? IconName.VISIBILITY : IconName.VISIBILITY_OFF
+          }
           handleVisibility={handleVisibityClick}
           editable={true}
-          style={{ flex: 1, color: Colors2.PrimaryTextColor }}
-
-          type='input'
+          style={STYLES.Login_Custom_Input_Style}
+          type="input"
           setTextInput={setPassword}
           required={false}
         />
@@ -87,12 +77,11 @@ function LoginForm() {
           <CustomTextInput
             value={selectedOption.name}
             setTextInput={undefined}
-            label="Business unit"
+            label={Lable.BUSINESS_UNIT}
             editable={false}
-            type='dropdown'
+            type="dropdown"
             onPress={() => handleOpenModal()}
-            style={{ flex: 1, color: Colors2.PrimaryTextColor }}
-
+            style={STYLES.Login_Custom_Input_Style}
             required={false}
           />
           <GenericModal
@@ -100,29 +89,28 @@ function LoginForm() {
             isVisible={isFocused}
             handleCloseModal={handleCloseModal}
             onOptionSelected={handleOptionSelected}
-            nameKey="name"
-            valueKey="value"
+            nameKey={Strings.NAME_s}
+            valueKey={'code'}
           />
-
         </View>
-        <View style={{ marginTop: "10%" }}>
-
+        <View style={{marginTop: '10%'}}>
           <CustomButton
-            label="Log In"
+            label={Lable.LOG_IN}
             onPress={handleLogin}
             disabled={isButtonDisabled}
           />
-          <View style={styles.dividerContainer}>
-            <View style={styles.line} />
-            <Text style={styles.orText}>or</Text>
-            <View style={styles.line} />
+          <View style={STYLES.Login_dividerContainer}>
+            <View style={STYLES.Login_line} />
+            <Text style={STYLES.Login_orText}>or</Text>
+            <View style={STYLES.Login_line} />
           </View>
-          <View style={{ borderWidth: 1, borderColor: colors.AppPrimaryColor, marginTop: 20, alignItems: 'center', padding: 5, borderRadius: 20 }}>
+          <View
+            style={STYLES.Login_Button}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('UrlScreen', { baseUrls });
+                navigation.navigate('UrlScreen', {baseUrls});
               }}>
-              <Text style={styles.subText}>Update/Change Server</Text>
+              <Text style={STYLES.Login_subText}>{Strings.UPDATE_CHANGE_SERVER}</Text>
             </TouchableOpacity>
           </View>
         </View>

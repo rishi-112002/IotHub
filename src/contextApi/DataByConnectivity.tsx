@@ -1,4 +1,5 @@
-import React, {createContext, useState} from 'react';
+import React, { createContext, useState } from 'react';
+import { Strings } from '../assets/constants/Lable';
 
 // Define the context type
 interface DataByConnectivityType {
@@ -14,26 +15,26 @@ interface DataByConnectivityType {
 
 // Create the context with default values
 export const DataByConnectivityContext = createContext<DataByConnectivityType>({
-  genericTypeConnectivity: 'all', // Default type
-  setGenericTypeConnectivity: () => {}, // Placeholder
-  weighBridgeTypeConnectivity: 'all', // Default type
-  setWeighBridgeTypeConnectivity: () => {}, // Placeholder
-  spotTypeConnectivity: 'all', // Default type
-  setSpotTypeConnectivity: () => {}, // Placeholder
-  rfidType: 'all',
-  setRfidType: () => {},
+  genericTypeConnectivity: Strings.ALL, // Default type
+  setGenericTypeConnectivity: () => { }, // Placeholder
+  weighBridgeTypeConnectivity:Strings.ALL, // Default type
+  setWeighBridgeTypeConnectivity: () => { }, // Placeholder
+  spotTypeConnectivity:Strings.ALL, // Default type
+  setSpotTypeConnectivity: () => { }, // Placeholder
+  rfidType:Strings.ALL,
+  setRfidType: () => { },
 });
 
 // Create a provider component
-export const InputProvider = (props: {children: React.ReactNode}) => {
-  const {children} = props;
+export const InputProvider = (props: { children: React.ReactNode }) => {
+  const { children } = props;
 
   // States for different types
-  const [genericTypeConnectivity, setGenericTypeConnectivity] = useState('all');
+  const [genericTypeConnectivity, setGenericTypeConnectivity] = useState(Strings.ALL);
   const [weighBridgeTypeConnectivity, setWeighBridgeTypeConnectivity] =
-    useState('all');
-  const [spotTypeConnectivity, setSpotTypeConnectivity] = useState('all');
-  const [rfidType, setRfidType] = useState('all');
+    useState(Strings.ALL);
+  const [spotTypeConnectivity, setSpotTypeConnectivity] = useState(Strings.ALL);
+  const [rfidType, setRfidType] = useState(Strings.ALL);
 
   return (
     <DataByConnectivityContext.Provider

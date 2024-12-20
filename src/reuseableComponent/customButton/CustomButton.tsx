@@ -2,6 +2,8 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, StyleProp, ViewStyle, TextStyle, View } from 'react-native';
 import colors from '../../assets/color/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Strings } from '../../assets/constants/Lable';
+import fontSizes from '../../assets/fonts/FontSize';
 
 type ButtonProps = {
   label: string;
@@ -29,7 +31,7 @@ function CustomButton({
       disabled={disabled}
     >
       {loading ? (
-        <Text style={[styles.label, labelStyle]}>Loading...</Text>
+        <Text style={[styles.label, labelStyle]}>`${Strings.LOADING}...`</Text>
       ) : (
         <View style={{ flexDirection: "row", columnGap: 10 }}>
           <Text style={[styles.label, labelStyle]}>{label}</Text>
@@ -53,11 +55,11 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: fontSizes.title,
     fontWeight: 'bold',
   },
   disabled: {
-    backgroundColor: '#B0B0B0',
+    backgroundColor:colors.LightGray,
   },
 });
 

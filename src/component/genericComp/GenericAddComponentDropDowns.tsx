@@ -1,7 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import React, { useCallback } from 'react';
-import { Colors2 } from '../../assets/color/Colors2';
+import { Strings } from '../../assets/constants/Lable';
+import colors from '../../assets/color/colors';
 function GenericAddComponentDropDowns(props: {
   smartController: any;
   display: any;
@@ -40,9 +41,9 @@ function GenericAddComponentDropDowns(props: {
     <View>
       <CustomTextInput
         value={smartController}
-        onPress={() => handleFocus('smartController')}
+        onPress={() => handleFocus(Strings.SMART_CONTROLLER_S)}
         style={style.input}
-        label={'Smart Controller'}
+        label={Strings.SMART_CONTROLLER}
         disable={false}
         type='dropdown'
         editable={!isActive || !id}
@@ -52,9 +53,9 @@ function GenericAddComponentDropDowns(props: {
       <CustomTextInput
         value={display}
         style={style.input}
-        onPress={() => handleFocus('display')}
+        onPress={() => handleFocus(Strings.DISPLAY_s)}
         errorMessage={undefined}
-        label={'Display'}
+        label={Strings.DISPLAY}
         disable={false}
         type='dropdown'
         editable={!isActive || !id}
@@ -64,9 +65,9 @@ function GenericAddComponentDropDowns(props: {
 
       <CustomTextInput
         value={event}
-        onPress={() => handleFocus('events')}
+        onPress={() => handleFocus(Strings.EVENTS_S)}
         style={style.input}
-        label={'Event'}
+        label={Strings.EVENT}
         disable={false}
         type='dropdown'
         editable={!isActive || !id}
@@ -74,14 +75,14 @@ function GenericAddComponentDropDowns(props: {
         required={true}
         errorMessage={error.event}
       />
-      {(eventId === 'TAG_ENTRY' || eventId === 'TAG_ENTRY_AND_EXIT') && (
+      {(eventId === Strings.TAG_ENTRY || eventId === Strings.TAG_ENTRY_AND_EXIT) && (
         <View>
           <CustomTextInput
             value={primaryReader}
-            onPress={() => handleFocus('primaryReader')}
+            onPress={() => handleFocus(Strings.PRIMARY_READERS_S)}
             style={style.input}
-            label={'Primary Reader'}
-            disable={eventId === 'NONE' ? true : false}
+            label={Strings.PRIMARY_READERS}
+            disable={eventId === Strings.NONE ? true : false}
             type='dropdown'
             editable={!isActive || !id}
             setTextInput={undefined}
@@ -91,13 +92,13 @@ function GenericAddComponentDropDowns(props: {
           <CustomTextInput
             style={style.input}
             value={secoundryReader}
-            onPress={() => handleFocus('secoundaryReader')}
-            label={'Secoundary Reader'}
-            disable={eventId === 'NONE' ? true : false}
+            onPress={() => handleFocus(Strings.SECOUNDARY_READERS_s)}
+            label={Strings.SECOUNDARY_READERS}
+            disable={eventId === Strings.NONE ? true : false}
             type='dropdown'
             editable={!isActive || !id}
             setTextInput={undefined}
-            required={eventId !== 'TAG_ENTRY' ? true : false}
+            required={eventId !== Strings.TAG_ENTRY ? true : false}
           />
         </View>
       )}
@@ -107,7 +108,7 @@ function GenericAddComponentDropDowns(props: {
 const style = StyleSheet.create({
   input: {
     flex: 1,
-    color: Colors2.PrimaryTextColor
+    color: colors.PrimaryTextColor
   },
 });
 export default GenericAddComponentDropDowns;

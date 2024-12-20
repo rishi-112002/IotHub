@@ -2,8 +2,8 @@ import React, { memo, useMemo, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-import { Colors2 } from '../../assets/color/Colors2';
 import CustomIcon from '../../reuseableComponent/customIcons/CustomIcon';
+import { ImagePath, Strings } from '../../assets/constants/Lable';
 
 type EventLogItemProps = {
   item: {
@@ -25,7 +25,6 @@ type EventLogItemProps = {
 const EventLogItem = React.memo(({ item, isSelected, onToggle }: EventLogItemProps) => {
 
   const formattedDetails = JSON.stringify(item.details, null, 2);
-  // console.log("Rendered EventLogItem for: ", item.id);
   return (
     <View style={{ flex: 1, }}>
       {/* Card Container */}
@@ -47,7 +46,7 @@ const EventLogItem = React.memo(({ item, isSelected, onToggle }: EventLogItemPro
                 <Text style={styles.typeText}>{item.type}</Text>
               </View>
 
-              <CustomIcon iconPath={!isSelected ? require("../../assets/icons/downArrowLight.png") : require("../../assets/icons/upArrrowLight.png")} onPress={onToggle} />
+              <CustomIcon iconPath={!isSelected ? ImagePath.DOWN_ARROW_RIGHT : ImagePath.UP_ARROW} onPress={onToggle} />
             </View>
           </View>
         </View>
@@ -63,15 +62,15 @@ const EventLogItem = React.memo(({ item, isSelected, onToggle }: EventLogItemPro
           flex: 1,
         }}>
           <View style={styles.messageContainer}>
-            <Text style={styles.label}>Spot</Text>
+            <Text style={styles.label}>{Strings.SPOT}</Text>
             <Text style={styles.valueText}>{item.spot.substring(0, 12)}</Text>
           </View>
           <View style={styles.messageContainer}>
-            <Text style={styles.label}>Message ID:</Text>
+            <Text style={styles.label}>{Strings.MESSAGE_ID}:</Text>
             <Text style={styles.valueText}>{item.id}</Text>
           </View>
           <View style={styles.dateContainer}>
-            <Text style={styles.label}>Created At:</Text>
+            <Text style={styles.label}>{Strings.CREATED_AT}:</Text>
             <Text style={styles.valueText}>
               {new Date(item.createdAt).toLocaleDateString()}
             </Text>
@@ -85,15 +84,15 @@ const EventLogItem = React.memo(({ item, isSelected, onToggle }: EventLogItemPro
               marginTop: 8,
             }}>
               <View style={styles.messageContainer}>
-                <Text style={styles.label}>TagId</Text>
+                <Text style={styles.label}>{Strings.TAG_ID}</Text>
                 <Text style={styles.valueText}>{item.tagId ? item.tagId : "null"}</Text>
               </View>
               <View style={styles.messageContainer}>
-                <Text style={styles.label}>Direction:</Text>
+                <Text style={styles.label}>{Strings.DIRECTION_S}:</Text>
                 <Text style={styles.valueText}>{item.direction ? item.direction : "null"}</Text>
               </View>
               <View style={styles.dateContainer}>
-                <Text style={styles.label}>vehicleNo:</Text>
+                <Text style={styles.label}>{Strings.VEHICLE_NO}:</Text>
                 <Text style={styles.valueText}>
                   {item.vehicleNumber ? item.vehicleNumber : "null"}
                 </Text>
@@ -102,7 +101,7 @@ const EventLogItem = React.memo(({ item, isSelected, onToggle }: EventLogItemPro
             </View>
             <View style={{ marginTop: 20 }}>
               <Text>
-                Details:-
+                {Strings.DETAILS}
               </Text>
               <View style={styles.detailsContainer}>
 
@@ -150,11 +149,11 @@ const styles = StyleSheet.create({
   },
   spotTitle: {
     fontSize: fontSizes.title,
-    color: Colors2.SecondaryTextColor,
+    color: colors.SecondaryTextColor,
   },
   typeText: {
     fontSize: fontSizes.smallText,
-    color: Colors2.SecondaryTextColor,
+    color: colors.SecondaryTextColor,
   },
   section: {
     flexDirection: 'row',
@@ -172,12 +171,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: fontSizes.smallText,
-    color: Colors2.HelperTextColor,
+    color: colors.HelperTextColor,
     fontWeight: '600',
   },
   valueText: {
     fontSize: fontSizes.smallText,
-    color: Colors2.SecondaryTextColor,
+    color: colors.SecondaryTextColor,
     fontWeight: '500',
     marginTop: 2,
   },
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
   },
   detailsText: {
     fontSize: fontSizes.smallText,
-    color: Colors2.HelperTextColor,
+    color: colors.HelperTextColor,
   },
 });
 

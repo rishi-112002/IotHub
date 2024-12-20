@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import NetInfo from '@react-native-community/netinfo';
 import { Alert } from 'react-native';
+import { errorStrings, Strings } from '../assets/constants/Lable';
 
 // Define the context type
 interface NetworkContextType {
@@ -18,9 +19,9 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
       if (!state.isConnected) {
         Alert.alert(
-          'No Internet Connection',
-          'Please check your internet connection to continue using the app.',
-          [{ text: 'OK' }]
+          errorStrings.NO_INTERNET_CONNECTION,
+          errorStrings.INTERNET_ERROR,
+          [{ text: Strings.OK }]
         );
       }
     });

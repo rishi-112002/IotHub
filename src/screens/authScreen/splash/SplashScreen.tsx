@@ -1,23 +1,22 @@
 import { View, StatusBar } from 'react-native';
 import Animated from 'react-native-reanimated';
 import SplashEffect from './SplashEffect';
-import SplashStyle from './SplashStyle';
+import {STYLES} from '../../ScreensStyles'
 import React from 'react';
-import { Colors2 } from '../../../assets/color/Colors2';
+import colors from '../../../assets/color/colors';
 
 function SplashScreen() {
   const { ring1Style, ring2Style, logoStyle } = SplashEffect();
-  const { styles } = SplashStyle();
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor={Colors2.HelperTextColor}
+    <View style={STYLES.Splash_container}>
+      <StatusBar backgroundColor={colors.HelperTextColor}
         networkActivityIndicatorVisible={true}
         barStyle={'default'} />
-      <Animated.View style={[styles.ringContainer, ring2Style]}>
-        <Animated.View style={[styles.ringContainer, ring1Style]}>
+      <Animated.View style={[STYLES.Splash_ringContainer, ring2Style]}>
+        <Animated.View style={[STYLES.Splash_ringContainer, ring1Style]}>
           <Animated.Image
-            source={require('../../../assets/images/apconicLogo.png')}
-            style={[styles.logo, logoStyle]}
+            source={require("../../../assets/images/apconicLogo.png")}
+            style={[STYLES.Splash_logo, logoStyle]}
           />
         </Animated.View>
       </Animated.View>

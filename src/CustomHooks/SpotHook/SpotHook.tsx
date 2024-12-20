@@ -12,11 +12,10 @@ import { useBackHandler } from '@react-native-community/hooks';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
 import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
+import { Strings } from '../../assets/constants/Lable';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 export const SpotListHook = () => {
-  const dispatch = useDispatch();
-
   const baseUrl = useSelector(
     (state: RootState) => state.authentication.baseUrl,
   );
@@ -50,51 +49,14 @@ export const SpotListHook = () => {
 
   useEffect(() => {
     if (LError) {
-      Alert.alert('Error', LError, [{ text: 'OK' }], { cancelable: false });
-      // >>>>>>> ec436c4728f9119f3c3b614674b1eaab656bba63
+      Alert.alert(Strings.ERROR_s, LError, [{ text: Strings.OK }], { cancelable: false });
     }
   }, [LError]);
-
-  //   // Delete RFID item
-  //   const handleDelete = useCallback(
-  //     async (id: string) => {
-  //       Alert.alert(
-  //         'Delete RFID',
-  //         'Are you sure you want to delete this RFID?',
-  //         [
-  //           {text: 'Cancel', style: 'cancel'},
-  //           {
-  //             text: 'OK',
-  //             onPress: async () => {
-  //               const resultAction = dispatch(
-  //                 deleteRfidListAction({id, buCode, token}),
-  //               );
-  //               if (deleteRfidListAction.fulfilled.match(resultAction)) {
-  //                 Alert.alert(
-  //                   'Success',
-  //                   'RFID deleted successfully!',
-  //                   [{text: 'OK'}],
-  //                   {cancelable: false},
-  //                 );
-  //                 await loadRfidList(); // Refresh list
-  //               } else {
-  //                 // console.error(resultAction.error.message);
-  //               }
-  //             },
-  //           },
-  //         ],
-  //         {cancelable: false},
-  //       );
-  //     },
-  //     [buCode, token, dispatch, loadRfidList],
-  //   );
-
-  // Memoize output to avoid recalculations when nothing changes
   const filteredSpots = spotListData.filter((spot: any) => {
     const matchesFilter =
-      spotTypeConnectivity === 'all' ||
-      (spotTypeConnectivity === 'connected' && spot?.active) ||
-      (spotTypeConnectivity === 'not-connected' && !spot?.active);
+      spotTypeConnectivity === Strings.ALL ||
+      (spotTypeConnectivity === Strings.CONNECTED_S && spot?.active) ||
+      (spotTypeConnectivity === Strings.NOT_CONNECTED_s && !spot?.active);
     const matchesSearch = searchQuery
       ? Object.values(spot).some(value =>
         String(value).toLowerCase().includes(searchQuery.toLowerCase()),
@@ -102,8 +64,6 @@ export const SpotListHook = () => {
       : true;
     return matchesFilter && matchesSearch;
   });
-  console.log('Search Filter Length :-', filteredSpots.length);
-
   // Check if no results match both filter and search query
   const noResults = filteredSpots.length === 0 && searchQuery.length > 0;
 
@@ -119,36 +79,22 @@ export const SpotListHook = () => {
     outputRange: [60, 0],
     extrapolate: 'clamp',
   });
-  // const translateButtonY = diffClamp.interpolate({
-  //   inputRange: [0, 110],
-  //   outputRange: [0, 250],
-  // });
 
-  // Clear search functionality
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const clearSearch = () => setSearchQuery('');
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const clearFilter = () => {
-    setSpotTypeConnectivity('all');
+    setSpotTypeConnectivity(Strings.ALL);
   };
-
-  // Scroll event handler
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleScroll = () => {
-    Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+    Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
       useNativeDriver: false,
     });
   };
 
-  // Toggle the filter menu modal visibility
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const toggleFilterMenu = () => {
     setModelShow(!modelShow);
   };
 
   // Handle filter selection
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleFilterPress = (selectedFilter: FilterOption) => {
     setSpotTypeConnectivity(selectedFilter);
     setSearchQuery('');
@@ -156,7 +102,7 @@ export const SpotListHook = () => {
   };
 
   useEffect(() => {
-    if (spotTypeConnectivity !== 'all') {
+    if (spotTypeConnectivity !== Strings.ALL) {
       setFilterCount(1);
       setFilterBadgeVisible(true);
     }
@@ -164,7 +110,7 @@ export const SpotListHook = () => {
 
   const handleResetConnectivity = () => {
     navigation.goBack();
-    setSpotTypeConnectivity('all');
+    setSpotTypeConnectivity(Strings.ALL);
     return true;
   };
   useBackHandler(handleResetConnectivity);

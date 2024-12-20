@@ -1,32 +1,33 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import {Colors2} from '../../assets/color/Colors2';
 import fontSizes from '../../assets/fonts/FontSize';
 import { Display } from './DetailsCard';
+import colors from '../../assets/color/colors';
+import { Strings } from '../../assets/constants/Lable';
 // interface DisplayCardContent {
 //   data: Reader;
 // }
 
 export const DisplayCardContent = (display: Display) => {
   return (
-        <View style={combinedStyles.infoContainer}>
-          <Text style={combinedStyles.nameText}>{display.name || 'N/A'}</Text>
-          <Text style={combinedStyles.ipText}>{display.ip || 'N/A'}</Text>
-          <View style={combinedStyles.detailsContainer}>
-            <View style={combinedStyles.detailColumn}>
-              <Text style={combinedStyles.label}>Version:</Text>
-              <Text style={combinedStyles.detailText}>
-                {display.version || 'N/A'}
-              </Text>
-            </View>
-            <View style={combinedStyles.detailColumn}>
-              <Text style={combinedStyles.label}>Type:</Text>
-              <Text style={combinedStyles.detailText}>
-                {display.type || 'N/A'}
-              </Text>
-            </View>
-          </View>
+    <View style={combinedStyles.infoContainer}>
+      <Text style={combinedStyles.nameText}>{display.name ||  Strings.NA}</Text>
+      <Text style={combinedStyles.ipText}>{display.ip || Strings.NA}</Text>
+      <View style={combinedStyles.detailsContainer}>
+        <View style={combinedStyles.detailColumn}>
+          <Text style={combinedStyles.label}>{Strings.VERSION}:</Text>
+          <Text style={combinedStyles.detailText}>
+            {display.version || Strings.NA}
+          </Text>
         </View>
+        <View style={combinedStyles.detailColumn}>
+          <Text style={combinedStyles.label}>{Strings.TYPE}:</Text>
+          <Text style={combinedStyles.detailText}>
+            {display.type ||  Strings.NA}
+          </Text>
+        </View>
+      </View>
+    </View>
   );
 };
 
@@ -39,15 +40,15 @@ const combinedStyles = StyleSheet.create({
     paddingLeft: 10,
   },
   nameText: {
-    flex:1,
+    flex: 1,
     marginTop: 4,
-    fontSize: 16,
-    color: Colors2.SecondaryTextColor,
+    fontSize: fontSizes.title,
+    color: colors.SecondaryTextColor,
   },
   ipText: {
     marginTop: 4,
-    fontSize: 12,
-    color: Colors2.SecondaryTextColor,
+    fontSize: fontSizes.smallText,
+    color: colors.SecondaryTextColor,
   },
   detailsContainer: {
     flexDirection: 'row',
@@ -61,10 +62,10 @@ const combinedStyles = StyleSheet.create({
   },
   label: {
     fontSize: fontSizes.smallText,
-    color: Colors2.HelperTextColor,
+    color: colors.HelperTextColor,
   },
   detailText: {
-    fontSize: 12,
-    color: Colors2.SecondaryTextColor,
+    fontSize: fontSizes.smallText,
+    color: colors.SecondaryTextColor,
   },
 });

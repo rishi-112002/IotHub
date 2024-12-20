@@ -1,22 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetBuinessUnits } from '../../reducer/buinessUnits/BuinessUnitsAction';
 import { CheckUserlogin, GetBaseUrl } from '../../reducer/Login/LoginAction';
 import { RootState, store } from '../../reducer/Store';
-import NetInfo from '@react-native-community/netinfo';
-
-// export const netinfo = async () => {
-//     const netInfo = await NetInfo.fetch();
-//     if (!netInfo.isConnected) {
-//         Alert.alert(
-//             'No Internet Connection',
-//             'Please check your internet connection and try again.',
-//         );
-//         return;
-//     }
-// };
-
 function AppNavigationHooks() {
     // State to manage loading status
     const [loading, setLoading] = useState(true);

@@ -1,5 +1,5 @@
 // EventLogList.tsx
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   FlatList,
@@ -12,11 +12,9 @@ import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
-// <<<<<<< HEAD
-import {getResponsiveHeight} from '../RFIDComponent/RfidListComponent';
-// import { CardItemWith_Icon } from '../../reuseableComponent/card/CardItemWithIcon';
-// =======
-// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
+import { getResponsiveHeight } from '../RFIDComponent/RfidListComponent';
+import { IconName, Strings } from '../../assets/constants/Lable';
+import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
 
 type EventLogItemType = {
   id: string;
@@ -46,7 +44,6 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
       const totalItems = data.length;
       const isAllDataFetched = data.length === totalItems;
       if (isAllDataFetched) {
-        console.log('All data has been fetched');
         setIsLoadingMore(false);
       }
     }
@@ -56,9 +53,9 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
     setSelectedItemId(prevId => (prevId === id ? '' : id));
   }, []);
   const renderEventLog = useCallback(
-    ({item}: any) => (
+    ({ item }: any) => (
       <CardItemWith_Icon
-        iconName="event-note"
+        iconName={IconName.EVENT_NOTE}
         view={
           <EventLogItem
             item={item}
@@ -96,15 +93,13 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
                   size="small"
                   color={colors.AppPrimaryColor}
                 />
-                <Text style={styles.footerText}>Loading...</Text>
+                <Text style={styles.footerText}>{Strings.LOADING}...</Text>
               </View>
             ) : null
           }
         />
       ) : (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No Event Logs</Text>
-        </View>
+        <NoInternetScreen />
       )}
     </View>
   );
@@ -116,9 +111,9 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.white,
   },
-  flatListContent: {flexGrow: 1},
-  emptyContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  emptyText: {fontSize: fontSizes.subheading, color: 'gray'},
+  flatListContent: { flexGrow: 1 },
+  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  emptyText: { fontSize: fontSizes.subheading, color: 'gray' },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',

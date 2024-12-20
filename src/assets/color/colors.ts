@@ -52,7 +52,28 @@ const colors = {
     gray: "#767577",
     lightGray: "#d4d4d4",
 
-    inactiveTint: "#979DC2"
+    inactiveTint: "#979DC2",
+    primaryGreen: '#15803D',
+    MintGreen: "#DCFCE7",
+    BlushPink: "#FEF2F2",
+
+
+    PrimaryTextColor: '#131224',
+    SecondaryTextColor: '#474d6a',
+    HelperTextColor: '#969dc0',
+    IconColor: '#6e779b',
+    DividerColor: '#eef4f7',
+
+    FreshGreen: "#4CAF50",
+    SoftGray: "#E8EBF3",
+    SlateBlue: "#979EC2",
+    CloudyWhite: "#edebeb",
+    LightGray: "#D3D3D3",
+    vLightGray: "#E6E6E6",
+    darkerTransparent: 'rgba(0, 0, 0, 0.5)',
+    BabyBlue: "#F5FCFF",
+    SemiTransparentGray: "rgba(128, 128, 128, 0.7)",
+
 };
 
 export default colors;

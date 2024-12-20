@@ -1,12 +1,11 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable @typescript-eslint/no-shadow */
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomMenu from '../../reuseableComponent/menuOptions/CustomMenu';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
-import { Colors2 } from '../../assets/color/Colors2';
+import { Strings } from '../../assets/constants/Lable';
+import colors from '../../assets/color/colors';
 type SpotItemProps = {
   item: {
     name: string;
@@ -25,13 +24,12 @@ type SpotItemProps = {
 const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const OnHandlePress = useCallback((item: any) => {
-    navigation.navigate('SpotDetailScreen', { data: item });
+    navigation.navigate("SpotDetailScreen", { data: item });
   }, [navigation]);
-  console.log("item  inspot item" , item.name)
   return (
     <Animated.View style={styles.spotContainer}>
       <TouchableOpacity
-        onPress={() => OnHandlePress(item)}>
+        onPress={()=>OnHandlePress(item)}>
 
         <View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
@@ -40,22 +38,20 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
                 {item.name}
               </Text>
               <View style={{
-                backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
+                backgroundColor: item.active ? colors.MintGreen : colors.BlushPink,
                 borderRadius: 20,
                 width: item.active ? "24%" : "31%",
-                paddingStart:5
-              
+                paddingStart: 5
+
               }}>
                 <Text
                   style={[
                     styles.statusText,
                     {
-                      color: item.active ? '#15803D' : '#B91C1C',
-                      // backgroundColor: item.active ? '#DCFCE7' : '#FEF2F2',
-
+                      color: item.active ? colors.primaryGreen : colors.redBase,
                     },
                   ]}>
-                  {item.active ? 'Connected' : 'Not Connected'}
+                  {item.active ? Strings.CONNECTED : Strings.NOT_CONNECTED}
                 </Text>
               </View>
             </View>
@@ -67,33 +63,33 @@ const SpotItem = ({ item, baseUrl }: SpotItemProps) => {
 
         <View style={styles.rowContainer}>
           <View>
-            <Text style={styles.label}>Expiry date:</Text>
+            <Text style={styles.label}>{Strings.EXPIRY_DATE}:</Text>
             <Text style={styles.statusText}>
-              {item.expiryDate ? item.expiryDate : 'N/A'}
+              {item.expiryDate ? item.expiryDate : Strings.NA}
             </Text>
           </View>
           <View
             style={[
               styles.delayedContainer,
             ]}>
-            <Text style={styles.label}>Delay:</Text>
+            <Text style={styles.label}>{Strings.DELAY}:</Text>
             <Text
               style={[
                 styles.statusText,
               ]}>
-              {item.delayed ? 'Delayed' : 'On Time'}
+              {item.delayed ? Strings.DELAYED : Strings.ON_TIME}
             </Text>
           </View>
           <View
             style={[
               styles.statusContainer,
             ]}>
-            <Text style={styles.label}>Current State:</Text>
+            <Text style={styles.label}>{Strings.CURRENT_STATE}:</Text>
             <Text
               style={[
                 styles.statusText,
               ]}>
-              {item.currentState || 'No State Info'}
+              {item.currentState ||Strings.NO_STATE_INFO}
             </Text>
           </View>
         </View>
@@ -114,7 +110,7 @@ const styles = StyleSheet.create({
   },
   spotTitle: {
     fontSize: fontSizes.title,
-    color: Colors2.SecondaryTextColor,
+    color: colors.SecondaryTextColor,
   },
   section: {
     flexDirection: 'row',
@@ -123,7 +119,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: fontSizes.smallText,
-    color: Colors2.HelperTextColor,
+    color: colors.HelperTextColor,
   },
   statusContainer: {
     paddingVertical: 3,
@@ -132,7 +128,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: fontSizes.smallText,
-    color: Colors2.SecondaryTextColor,
+    color: colors.SecondaryTextColor,
   },
   delayedContainer: {
 

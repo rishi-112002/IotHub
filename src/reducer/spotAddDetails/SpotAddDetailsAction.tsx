@@ -7,9 +7,10 @@ import {
   weighBridges,
   weightParsers,
 } from '../../api/EndPointsUrl';
+import { Strings } from '../../assets/constants/Lable';
 
 export const GetSmartControllers = createAsyncThunk(
-  'getSmartControllers',
+  Strings.GET_SMART_CONTROLLERS,
   async (params: { baseUrl: any }) => {
     const { baseUrl } = params;
     const fullUrl = `${baseUrl}${smartController}`;
@@ -25,7 +26,7 @@ export const GetSmartControllers = createAsyncThunk(
   },
 );
 export const GetDisplays = createAsyncThunk(
-  'getDisplays',
+  Strings.GET_DISPLAYS,
   async (params: { baseUrl: any }) => {
     const { baseUrl } = params;
     const fullUrl = `${baseUrl}${displays}`;
@@ -41,7 +42,7 @@ export const GetDisplays = createAsyncThunk(
   },
 );
 export const GetReader = createAsyncThunk(
-  'getReader',
+  Strings.GET_READER,
   async (params: { baseUrl: any }) => {
     const { baseUrl } = params;
     const fullUrl = `${baseUrl}${readers}`;
@@ -58,7 +59,7 @@ export const GetReader = createAsyncThunk(
 );
 
 export const GetWeightBridge = createAsyncThunk(
-  'getWeightBridge',
+  Strings.GET_WEIGHT_BRIDGE,
   async (params: { baseUrl: any }) => {
     const { baseUrl } = params;
     const fullUrl = `${baseUrl}${weighBridges}`;
@@ -80,11 +81,9 @@ export const GetWeightBridge = createAsyncThunk(
         }));
         return formattedOptions;
       } else {
-        console.error("No active weighbridges found or the data format is unexpected.");
         return [];
       }
     } catch (err) {
-      console.error("API call failed", err);
       return [];
     }
   }
@@ -93,7 +92,7 @@ export const GetWeightBridge = createAsyncThunk(
 );
 
 export const GetWeightParsers = createAsyncThunk(
-  'getWeightParsers',
+  Strings.GET_WEIGHT_PARSERS,
   async (params: { baseUrl: any }) => {
     const { baseUrl } = params;
     const fullUrl = `${baseUrl}${weightParsers}`;

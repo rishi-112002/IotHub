@@ -16,13 +16,13 @@ import { AppNavigationParams } from '../../navigation/NavigationStackList';
 import { StyleSheet } from 'react-native';
 import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
-import CustomSnackBar from '../../reuseableComponent/modal/CustomSnackBar';
 import {
   resetDeleteStatus,
   resetStatus,
 } from '../../reducer/weighBridge/WeighBridgeReducer';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
 import { logoutUser } from '../../reducer/Login/LoginAction';
+import { errorStrings, IconName, Strings } from '../../assets/constants/Lable';
 
 function WeighBridgeEffectHooks(props: { id: any }) {
   const { id } = props;
@@ -71,15 +71,15 @@ function WeighBridgeEffectHooks(props: { id: any }) {
 
   const handleLogout = async () => {
     Alert.alert(
-      'Logout', // Alert title
-      ' you had to log out to Add', // Alert message
+      Strings.LOGOUT, // Alert title
+      Strings.YOU_HAD_TO_LOGOUT_TO_ADD, // Alert message
       [
         {
-          text: 'Cancel', // Cancel button
+          text: IconName.CANCLE, // Cancel button
           style: 'cancel', // This makes the button appear more prominent
         },
         {
-          text: 'OK', // OK button
+          text: Strings.OK, // OK button
           onPress: () => {
             store.dispatch(logoutUser()); // Log out the user
           },
@@ -111,21 +111,22 @@ function WeighBridgeEffectHooks(props: { id: any }) {
     navigation.setOptions({
       headerTitle: () => (
         <View>
-          <Text style={styles.headerTitle}> {id ? "Update Weighbridge Details" : "Add Weighbridge Details"}</Text>
+          <Text style={styles.headerTitle}>
+            {id ? Strings.UPDATE_WEIGHBRIDGE_DETAILS : Strings.ADD_WEIGHBRIDGE_DETAILS}</Text>
         </View>
       ),
     });
   }, [navigation]);
 
   useEffect(() => {
-    if (uploadError === 'Upload error: User is not logged in') {
+    if (uploadError === errorStrings.UPLOAD_ERROR_USER_NOT_LOGGED_IN) {
       dispatch(resetStatus());
       handleLogout();
     } else if (status === 'failed' && uploadError) {
-      // CustomToast('error', uploadError);
+      CustomToast(Strings.ERROR_s, uploadError);
       dispatch(resetStatus());
     } else if (status === 'succeeded') {
-      CustomToast('success', 'uploaded successfully');
+      CustomToast(Strings.SUCCESS_s, Strings.UPLOAD_SUCCESSFULLY);
       dispatch(resetStatus());
       navigation.goBack();
     } else if (status === 'loading') {
@@ -137,20 +138,12 @@ function WeighBridgeEffectHooks(props: { id: any }) {
     switch (deleteStatus) {
       case 'failed':
         if (uploadError) {
-          CustomSnackBar({
-            text: 'failed',
-            backGroundColor: colors.redBase,
-            textColor: colors.white,
-          });
+          CustomToast(Strings.ERROR_s, uploadError);
           store.dispatch(resetDeleteStatus());
         }
         break;
       case 'succeeded':
-        CustomSnackBar({
-          text: 'Success',
-          backGroundColor: colors.greenBase,
-          textColor: colors.white,
-        });
+        CustomToast(Strings.SUCCESS_s, deleteStatus);
         store.dispatch(resetDeleteStatus());
         break;
       case 'loading':

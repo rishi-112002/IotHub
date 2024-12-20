@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
-import { Colors2 } from '../../assets/color/Colors2';
 import fontSizes from '../../assets/fonts/FontSize';
 
 interface CardItemWithIconProps {
@@ -16,7 +15,7 @@ const CardItemWith_Icon: React.FC<CardItemWithIconProps> = ({ iconName, view }) 
     <View style={combinedStyles.tabItem}>
       <View style={combinedStyles.row}>
         <View style={combinedStyles.iconContainer}>
-          <MaterialIcons name={iconName} size={20} color={Colors2.IconColor} />
+          <MaterialIcons name={iconName} size={20} color={colors.IconColor} />
         </View>
         {view}
       </View>
@@ -30,7 +29,7 @@ const combinedStyles = StyleSheet.create({
     marginTop: 2,
     borderWidth: 2,
     backgroundColor: colors.white,
-    borderColor: Colors2.DividerColor,
+    borderColor: colors.DividerColor,
     borderRadius: 10,
     padding: 10,
     marginBottom: 5,
@@ -56,7 +55,7 @@ const combinedStyles = StyleSheet.create({
     padding: 10,
     height: 45,
     borderWidth: 2,
-    borderColor: Colors2.DividerColor,
+    borderColor: colors.DividerColor,
   },
   infoContainer: {
     flex: 1,
@@ -67,18 +66,18 @@ const combinedStyles = StyleSheet.create({
   },
   nameText: {
     marginTop: 4,
-    fontSize: 16,
-    color: Colors2.SecondaryTextColor,
+    fontSize: fontSizes.title,
+    color: colors.SecondaryTextColor,
   },
   commandNameText: {
     marginTop: 0,
-    fontSize: 16,
-    color: Colors2.SecondaryTextColor,
+    fontSize: fontSizes.title,
+    color: colors.SecondaryTextColor,
   },
   ipText: {
     marginTop: 4,
-    fontSize: 12,
-    color: Colors2.SecondaryTextColor,
+    fontSize: fontSizes.smallText,
+    color: colors.SecondaryTextColor,
   },
   detailsContainer: {
     flexDirection: 'row',
@@ -93,15 +92,15 @@ const combinedStyles = StyleSheet.create({
   },
   label: {
     fontSize: fontSizes.smallText,
-    color: Colors2.HelperTextColor,
+    color: colors.HelperTextColor,
   },
   detailText: {
-    fontSize: 12,
-    color: Colors2.SecondaryTextColor,
+    fontSize: fontSizes.smallText,
+    color: colors.SecondaryTextColor,
   },
   noDataText: {
     textAlign: 'center',
-    fontSize: 14,
+    fontSize:fontSizes.text,
     color: '#aaa',
   },
 });

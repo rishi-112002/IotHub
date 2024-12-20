@@ -10,7 +10,8 @@ import GenericAddInputComponent from './GenericAddInputComponent';
 import GenericAddFunction from '../../CustomHooks/genericHooks/GenericAddFunctions';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 import { useNetwork } from '../../contextApi/NetworkContex';
-import { Colors2 } from '../../assets/color/Colors2';
+import { Lable, Strings } from '../../assets/constants/Lable';
+import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
 
 function GenericAddForm(props: { id: any }) {
   const { id } = props;
@@ -93,11 +94,11 @@ function GenericAddForm(props: { id: any }) {
               <SwitchWithLabel
                 value={isDriverTagEnabled}
                 onChangeValue={toggleDriverTagSwitch}
-                label="Driver Tag"
+                label={Lable.DRIVER_TAG}
               />
               {isDriverTagEnabled && (
                 <CustomTextInput
-                  label="Driver Tag TimeOut (In MilliSecound)"
+                  label={Lable.DRIVER_TAG_TIMEOUT}
                   value={formData.driverTagTimeOut}
                   style={styles.flexContainer}
                   type="input"
@@ -105,7 +106,7 @@ function GenericAddForm(props: { id: any }) {
                   errorMessage={errors.driverTagTimeOut}
                   keyboardType="numeric"
                   setTextInput={(value: any) =>
-                    handleInputChange('driverTagTimeOut', value)
+                    handleInputChange(Strings.DRIVER_TAG_TIMEOUT_s, value)
                   }
                   required={true}
                 />
@@ -113,11 +114,11 @@ function GenericAddForm(props: { id: any }) {
               <SwitchWithLabel
                 value={isSecurityTagEnabled}
                 onChangeValue={toggleSecurityTagSwitch}
-                label="Security Tag"
+                label={Strings.SEQURITY_TAG}
               />
               {isSecurityTagEnabled && (
                 <CustomTextInput
-                  label="Security Tag TimeOut (In milliSecound)"
+                  label={Strings.SEQURITY_TAG_TIMEOUT}
                   value={formData.sequrityTagTimeOut}
                   editable={!isActiveEnabled || !id}
                   type="input"
@@ -125,7 +126,7 @@ function GenericAddForm(props: { id: any }) {
                   errorMessage={errors.sequrityDelay}
                   keyboardType="numeric"
                   setTextInput={(value: any) =>
-                    handleInputChange('sequrityTagTimeOut', value)
+                    handleInputChange(Strings.SEQURITY_TAG_TIMEOUT_s, value)
                   }
                   required={true}
                 />
@@ -133,16 +134,16 @@ function GenericAddForm(props: { id: any }) {
               <SwitchWithLabel
                 value={isWeightBridgeEntryEnabled}
                 onChangeValue={toggleWeightBridgeEntrySwitch}
-                label="Weightbridge Entry"
+                label={Strings.WEIGHBRIDGE_ENTRY}
               />
               {isWeightBridgeEntryEnabled && (
                 <View>
                   <CustomTextInput
                     style={styles.flexContainer}
                     value={selectedWeighBridge.name}
-                    onPress={() => handleFocus('weightbridge')}
+                    onPress={() => handleFocus(Strings.WEIGHBRIDGE_s)}
                     errorMessage={errors.weighBridge}
-                    label="WeighBridge"
+                    label={Strings.WEIGHBRIDGE}
                     type="dropdown"
                     setTextInput={undefined}
                     required={true}
@@ -151,9 +152,9 @@ function GenericAddForm(props: { id: any }) {
                   <CustomTextInput
                     style={styles.flexContainer}
                     value={selectedDirection.id}
-                    onPress={() => handleFocus('direction')}
+                    onPress={() => handleFocus(Strings.DIRECTION_s)}
                     errorMessage={errors.direction}
-                    label="WeighBridge Direction"
+                    label={Strings.WEIGHBRIDE_DIRECTION}
                     disable={false}
                     setTextInput={undefined}
                     required={true}
@@ -167,12 +168,12 @@ function GenericAddForm(props: { id: any }) {
                 isVisible={modalVisible}
                 handleCloseModal={() => setModalVisible(false)}
                 onOptionSelected={handleOptionSelect}
-                nameKey="name"
-                valueKey="id"
+                nameKey={Strings.NAME_s}
+                valueKey={Strings.ID}
               />
               <View>
                 <CustomButton
-                  label={id ? 'update' : 'save'}
+                  label={id ? Lable.UPDATE :Lable.SAVE}
                   onPress={handleSaveData}
                   disabled={!!id && !!editButtonOpacity}
                 />
@@ -185,9 +186,7 @@ function GenericAddForm(props: { id: any }) {
           )}
         </ScrollView>
       ) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-          <Text>No Internet Connection</Text>
-        </View>
+       <NoInternetScreen/>
       )}
     </>
   );
@@ -202,7 +201,7 @@ const styles = StyleSheet.create({
   },
   flexContainer: {
     flex: 1,
-    color: Colors2.PrimaryTextColor
+    color: colors.PrimaryTextColor
   },
   contentContainer: {
     padding: 20,

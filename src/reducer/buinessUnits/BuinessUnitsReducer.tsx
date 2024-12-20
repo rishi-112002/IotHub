@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {GetBuinessUnits} from './BuinessUnitsAction';
+import { Strings } from '../../assets/constants/Lable';
 
 type AuthState = {
   buinessunits: [];
@@ -11,7 +12,7 @@ const initState: AuthState = {
   loader: false,
 };
 export const businessUnitsSlice = createSlice({
-  name: 'buinessunits',
+  name: Strings.BUINESS_UNITS,
   initialState: initState,
   reducers: {},
   extraReducers: builder => {

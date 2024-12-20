@@ -1,7 +1,7 @@
-import {ActivityIndicator, Animated, View, StyleSheet, Text} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import { ActivityIndicator, Animated, View, StyleSheet } from 'react-native';
 
 import React from 'react';
-import colors from '../../assets/color/colors';
 import SpotsDataByTypeComponent from '../../component/listComp/SpotsDataByTypeComponent';
 import GenericScreenHooks from '../../CustomHooks/genericHooks/GenericScreenHooks';
 import FloatingActionCutomButton from '../../reuseableComponent/customButton/FloatingActionCustomButton';
@@ -10,10 +10,13 @@ import CustomAlert from '../../reuseableComponent/PopUp/CustomPopUp';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
-import {useNetwork} from '../../contextApi/NetworkContex';
+import { useNetwork } from '../../contextApi/NetworkContex';
+import { IconName, ImagePath, Strings } from '../../assets/constants/Lable';
+import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import { STYLES } from '../ScreensStyles';
 
 function GenericSpot() {
-  const {isConnected} = useNetwork();
+  const { isConnected } = useNetwork();
   const {
     Loader,
     confirmDelete,
@@ -41,26 +44,26 @@ function GenericSpot() {
     setGenericTypeConnectivity,
   } = GenericScreenHooks();
   return (
-    <View style={styles.container}>
+    <View style={STYLES.Sequential_LOADER_BACKGROUND}>
       <CustomHeader
         buCode={undefined}
-        userLogo={'account-circle'}
-        title={'Generic Spot'}
+        userLogo={IconName.ACCOUNT_CIRCLE}
+        title={Strings.GENERIC_HEADER}
         translateY={translateY}
         onSearchPress={handleSearchPress}
         onFilterPress={toggleFilterMenu}
-        searchIcon={require('../../assets/icons/search.png')}
-        filterIcon={require('../../assets/icons/filterMedium.png')}
+        filterIcon={ImagePath.FILTER_ICON}
+        searchIcon={ImagePath.SEARCH_ICON}
         filterCount={filterCount}
       />
       {isConnected ? (
         Loader ? (
-          <ActivityIndicator size="large" style={styles.loader} />
+          <ActivityIndicator size="large" style={STYLES.FLEX_1} />
         ) : (
           <Animated.View
-            style={[styles.contentContainer, {paddingTop: paddingTopAnimated}]}>
+            style={[STYLES.AllEVENT_contentContainer, { paddingTop: paddingTopAnimated }]}>
             {isSearchVisible && (
-              <Animated.View style={[{transform: [{translateY: translateY}]}]}>
+              <Animated.View style={[{ transform: [{ translateY: translateY }] }]}>
                 <SearchBar
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
@@ -69,11 +72,11 @@ function GenericSpot() {
                 />
               </Animated.View>
             )}
-            {filterBadgeVisible && genericTypeConnectivity !== 'all' && (
-              <View style={{flex: 0.06}}>
+            {filterBadgeVisible && genericTypeConnectivity !== Strings.ALL && (
+              <View style={{ flex: 0.06 }}>
                 <ScrollableBadges
                   badges={[
-                    {key: 'Connectivity', value: genericTypeConnectivity},
+                    { key: Strings.CONNECTIVITY, value: genericTypeConnectivity },
                   ]}
                   filterCount={filterCount}
                   setFilterCount={setFilterCount}
@@ -88,12 +91,12 @@ function GenericSpot() {
                 />
               </View>
             )}
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <SpotsDataByTypeComponent
                 data={spotsData}
                 type={'GENERIC_SPOT'}
                 handleScroll={(e: {
-                  nativeEvent: {contentOffset: {y: number}};
+                  nativeEvent: { contentOffset: { y: number } };
                 }) => {
                   scrollY.setValue(e.nativeEvent.contentOffset.y);
                 }}
@@ -117,43 +120,21 @@ function GenericSpot() {
         )
       ) : (
         // eslint-disable-next-line react-native/no-inline-styles
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
-          <Text>No Internet Connection</Text>
-        </View>
+        <NoInternetScreen />
       )}
       {isVisible && (
-        <Animated.View style={[styles.modalContainer, {opacity: fadeAnim}]}>
+        <Animated.View style={[STYLES.Generic_modalContainer, { opacity: fadeAnim }]}>
           <CustomAlert
             isVisible={isVisible}
             onClose={() => setIsVisible(false)}
             onOkPress={confirmDelete}
-            title="GENERIC_SPOT"
-            message="Are you sure you want to delete this GENERIC_SPOT?"
+            title={Strings.GENERIC_SPOT}
+            message={Strings.CONFIRM_GENERIC_DELETE}
           />
         </Animated.View>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  loader: {
-    flex: 1,
-  },
-  contentContainer: {
-    position: 'relative',
-    flex: 1,
-    backgroundColor: colors.white,
-  },
-  modalContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default GenericSpot;

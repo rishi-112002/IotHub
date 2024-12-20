@@ -1,22 +1,22 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {spotDetails} from '../../api/EndPointsUrl';
+import { spotDetails } from '../../api/EndPointsUrl';
+import { errorStrings, Strings } from '../../assets/constants/Lable';
 
 const handleError = (error: unknown) => {
   if (axios.isAxiosError(error)) {
-    return error.response?.data?.message || 'An error occurred.';
+    return error.response?.data?.message || errorStrings.ERROR_DURING_UPLOAD;
   }
-  return `Error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  return `${Strings.ERROR_s} ${error instanceof Error ? error.message : errorStrings.UNKNOW_ERROR}`;
 };
 
 export const GetSpotData = createAsyncThunk(
-  'getSpotData',
-  async (params: {baseUrl: string | null}, {rejectWithValue}) => {
-    const {baseUrl} = params;
+  Strings.GET_SPOT_DATA,
+  async (params: { baseUrl: string | null }, { rejectWithValue }) => {
+    const { baseUrl } = params;
     const fullUrl = `${baseUrl}${spotDetails}`;
     try {
-      console.log('Check API Call for Spot Data ');
-      const {data} = await axios.get(fullUrl);
+      const { data } = await axios.get(fullUrl);
       return data;
     } catch (error) {
       const message = handleError(error);
@@ -26,12 +26,12 @@ export const GetSpotData = createAsyncThunk(
 );
 
 export const GetSpotName = createAsyncThunk(
-  'getSpotName',
-  async (params: {baseUrl: string | null}, {rejectWithValue}) => {
-    const {baseUrl} = params;
+  Strings.GET_SPOT_NAME,
+  async (params: { baseUrl: string | null }, { rejectWithValue }) => {
+    const { baseUrl } = params;
     const fullUrl = `${baseUrl}${spotDetails}`;
     try {
-      const {data} = await axios.get(fullUrl);
+      const { data } = await axios.get(fullUrl);
       const formattedOptions = data.map((item: any) => ({
         name: item.name,
         id: item.id,

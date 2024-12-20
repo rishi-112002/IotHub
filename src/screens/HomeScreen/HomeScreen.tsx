@@ -1,8 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Animated,
-  StyleSheet,
   Text,
   View,
   KeyboardAvoidingView,
@@ -12,20 +11,16 @@ import BouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import { SpotListHook } from '../../CustomHooks/SpotHook/SpotHook';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
-import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
 import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import { useNetwork } from '../../contextApi/NetworkContex';
 import { getResponsiveHeight } from '../../component/RFIDComponent/RfidListComponent';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SpotList from '../../component/SpotListComponent/SpotList';
-// <<<<<<< HEAD
-// const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-// function HomeScreen({route}: {route: any}) {
-//   const {scrollY, headerTranslate} = route.params;
-// =======
-function HomeScreen({ route }: { route: any }) {
-// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
+import { IconName, ImagePath, Strings } from '../../assets/constants/Lable';
+import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import { ScrollContext } from '../../contextApi/AnimationContext';
+import { STYLES } from '../ScreensStyles';
+function HomeScreen() {
   const {
     Loader,
     modelShow,
@@ -47,30 +42,32 @@ function HomeScreen({ route }: { route: any }) {
   } = SpotListHook();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const { isConnected } = useNetwork();
-  const { scrollY, headerTranslate, searBarTranslate } = route.params;
+  const { scrollY, headerTranslate, searchBarTranslate } = useContext(
+
+    ScrollContext
+  );
   const handleSearchPress = () => {
     setIsSearchVisible(!isSearchVisible);
   };
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={STYLES.Home_container}>
       <GestureHandlerRootView>
         <Animated.View
-          style={[styles.headerContainer, { paddingTop: headerTranslate }]}>
+          style={[{ paddingTop: headerTranslate }]}>
           <CustomHeader
             buCode={buCode}
-            userLogo="account-circle"
-            title="Spots"
+            userLogo={IconName.ACCOUNT_CIRCLE}
+            title={Strings.SPOTS}
             translateY={headerTranslate}
             onSearchPress={handleSearchPress}
             onFilterPress={toggleFilterMenu}
-            searchIcon={require('../../assets/icons/search.png')}
-            filterIcon={require('../../assets/icons/filterMedium.png')}
+            filterIcon={ImagePath.FILTER_ICON}
+            searchIcon={ImagePath.SEARCH_ICON}
             filterCount={undefined}
           />
           {/* Search */}
           <Animated.View
-            style={[styles.searchBarContainer, { paddingTop: searBarTranslate, zIndex: 1000 }]}>
-            {/* <View style={styles.searchBarContainer}> */}
+            style={[STYLES.Home_searchBarContainer, { paddingTop: searchBarTranslate, zIndex: 1000 }]}>
             {isSearchVisible && (
               <SearchBar
                 searchQuery={searchQuery}
@@ -79,9 +76,9 @@ function HomeScreen({ route }: { route: any }) {
                 placeholder={undefined}
               />
             )}
-            {filterBadgeVisible && spotTypeConnectivity !== 'all' && (
+            {filterBadgeVisible && spotTypeConnectivity !== Strings.ALL && (
               <ScrollableBadges
-                badges={[{ key: 'Connectivity', value: spotTypeConnectivity }]}
+                badges={[{ key: Strings.CONNECTIVITY, value: spotTypeConnectivity }]}
                 filterCount={filterCount}
                 setFilterCount={setFilterCount}
                 setConnectivity={setSpotTypeConnectivity}
@@ -104,30 +101,25 @@ function HomeScreen({ route }: { route: any }) {
             ) : (
               <Animated.View
                 style={[
-                  styles.listWrapper,
+                  STYLES.Home_listWrapper,
                   { transform: [{ translateY: headerTranslate }] },
                   {
                     marginBottom:
-                      isSearchVisible && spotTypeConnectivity === 'all'
+                      isSearchVisible && spotTypeConnectivity === Strings.ALL
                         ? getResponsiveHeight(10)
-                        : spotTypeConnectivity === 'all'
-// <<<<<<< HEAD
-                        ? getResponsiveHeight(3)
-                        : getResponsiveHeight(9),
-// =======
-//                           ? getResponsiveHeight(3)
-//                           : getResponsiveHeight(10),
-// >>>>>>> 892e29bf45c5d5a1934b30c7268a847cc19175a7
+                        : spotTypeConnectivity === Strings.ALL
+                          ? getResponsiveHeight(3)
+                          : getResponsiveHeight(9),
                   },
                 ]}>
-                <View style={styles.listWrapper}>
+                <View style={STYLES.Home_listWrapper}>
                   {noResults ? (
-                    <Text style={styles.noResultsText}>
-                      No results found for "{searchQuery}"
+                    <Text style={STYLES.noResultsText}>
+                      {Strings.NO_SEARCH_FOUND_FOR} "{searchQuery}"
                     </Text>
                   ) : (
                     <>
-                      <View style={{marginBottom: getResponsiveHeight(12)}}>
+                      <View style={{ marginBottom: getResponsiveHeight(12) }}>
                         <SpotList
                           spotData={filteredSpots}
                           refreshing={refreshing}
@@ -136,7 +128,6 @@ function HomeScreen({ route }: { route: any }) {
                             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
                             { useNativeDriver: false }
                           )}
-                          // onScroll={handleScroll}
                           contentContainerStyle={undefined}
                         />
                       </View>
@@ -156,58 +147,11 @@ function HomeScreen({ route }: { route: any }) {
             )}
           </>
         ) : (
-          <View style={styles.noConnection}>
-            <Text>No Internet Connection</Text>
-          </View>
+          <NoInternetScreen />
         )}
         {/* </Animated.View> */}
       </GestureHandlerRootView>
     </KeyboardAvoidingView>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-    zIndex: 9999,
-  },
-  headerContainer: {
-    // flex: 1,
-    // zIndex: 9999,
-  },
-  listWrapper: {
-    zIndex: 9999,
-    paddingHorizontal: 4.5,
-    // marginTop: 2,
-  },
-  noResultsText: {
-    justifyContent: 'center',
-    fontSize: fontSizes.text,
-    color: colors.gray,
-    paddingVertical: 100,
-    textAlign: 'center',
-  },
-  searchBarContainer: {
-    // zIndex: 9999,
-    marginTop: 60,
-    marginBottom: 5,
-  },
-  footerLoaderContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-    // marginBottom: 100,
-  },
-  footerLoaderText: {
-    marginLeft: 10,
-    fontSize: fontSizes.smallText,
-    color: colors.gray,
-  },
-  noConnection: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 export default HomeScreen;

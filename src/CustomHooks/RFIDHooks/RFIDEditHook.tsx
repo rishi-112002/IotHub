@@ -6,7 +6,6 @@ import {
   getRfidListAction,
 } from '../../reducer/RFIDList/RFIDListAction';
 import {RootState, store} from '../../reducer/Store';
-import showCustomToast from '../../reuseableComponent/modal/CustomToast';
 import {AppNavigationParams} from '../../navigation/NavigationStackList';
 import React from 'react';
 import {View, Text} from 'react-native';
@@ -15,7 +14,6 @@ import colors from '../../assets/color/colors';
 import fontSizes from '../../assets/fonts/FontSize';
 import CustomToast from '../../reuseableComponent/modal/CustomToast';
 import {resetEditStatus} from '../../reducer/RFIDList/RFIDListReducer';
-
 interface RFIDItem {
   id: string;
   name: string;
@@ -23,7 +21,6 @@ interface RFIDItem {
   ip: string;
   port: number;
 }
-
 export const useEditRfid = (item: RFIDItem) => {
   const [name, setName] = useState<string>(item.name);
   const [model, setModel] = useState<string>(item.model || '');
@@ -33,15 +30,12 @@ export const useEditRfid = (item: RFIDItem) => {
   const [storedPort, setStoredPort] = useState<number>(item.port);
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
   const [loader, setLoader] = useState(false);
-
   const [showIpAndPortFields, setShowIpAndPortFields] = useState<boolean>(
     model !== 'FX9600',
   );
   const [errors, setErrors] = useState<{[key: string]: string}>({});
-
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
   const dispatch = useDispatch();
-
   const Loader = useSelector((state: RootState) => state.rfidList.loader);
   const baseUrl = useSelector(
     (state: RootState) => state.authentication.baseUrl,
@@ -56,11 +50,9 @@ export const useEditRfid = (item: RFIDItem) => {
   );
   const uploadError = useSelector((state: RootState) => state.rfidList.errors);
   const status = useSelector((state: RootState) => state.uploadGeneric.status);
-
   const handleInputFocus = useCallback((field: keyof typeof errors) => {
     setErrors((prevErrors: any) => ({...prevErrors, [field]: undefined}));
   }, []);
-
   const validateInputs = useCallback(() => {
     const newErrors: {name?: string; IPAddress?: string; port?: string} = {};
     if (!name) {
@@ -83,7 +75,6 @@ export const useEditRfid = (item: RFIDItem) => {
       ),
     });
   }, [navigation]);
-
   const handleSaveData = useCallback(async () => {
     const newErrors = validateInputs();
     if (Object.keys(newErrors).length > 0) {
@@ -145,7 +136,6 @@ export const useEditRfid = (item: RFIDItem) => {
         break;
     }
   }, [uploadError, dispatch, status, navigation, updateStatus]);
-
   const handleModalSelect = (selectedModel: {name: string}) => {
     setModel(selectedModel.name);
     if (selectedModel.name === 'FX9600') {
@@ -161,7 +151,6 @@ export const useEditRfid = (item: RFIDItem) => {
     }
     setDropdownVisible(false);
   };
-
   return {
     name,
     model,

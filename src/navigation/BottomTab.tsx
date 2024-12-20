@@ -1,40 +1,39 @@
-import React, { } from 'react';
+import React from 'react';
 import HomeNavigation from './HomeNavigation';
 import colors from '../assets/color/colors';
 import CustomBottomTabNavigator from '../reuseableComponent/bottomTab/CustomBottomTab';
-import { Colors2 } from '../assets/color/Colors2';
 import DashBoard from '../screens/dashBoard/DashBoard';
+import { ImagePath, Strings } from '../assets/constants/Lable';
 
 const BottomTabNavigation = () => {
-
   const tabs = [
     {
-      name: 'DashBoard',
+      name: Strings.DASHBOARD,
       component: DashBoard,
-      icon: require('../assets/icons/dashBoard.png'),
-      focusedIcon: require('../assets/icons/dashBoard.png'),
-      label: 'Dashboard',
+      icon: ImagePath.DASHBOARD,
+      focusedIcon: ImagePath.DASHBOARD,
+      label: Strings.DASHBOARD,
     },
     {
-      name: 'LiveSpots',
+      name: Strings.LIVE_SPOTS,
       component: HomeNavigation,
-      icon: require('../assets/icons/LiveSpots.png'),
-      focusedIcon: require('../assets/icons/LiveSpots.png'),
-      label: 'Spots',
+      icon: ImagePath.LIVE_SPOT,
+      focusedIcon: ImagePath.LIVE_SPOT,
+      label: Strings.SPOTS,
     },
   ];
 
   return (
     <CustomBottomTabNavigator
 
-      initialRouteName="DashBoard"
+      initialRouteName={Strings.DASHBOARD}
       tabs={tabs}
       activeTintColor={colors.AppPrimaryColor}
       inactiveTintColor={colors.inactiveTint}
       tabBarStyle={{
         backgroundColor: colors.white,
         borderWidth: 0.5,
-        borderTopColor: Colors2.DividerColor,
+        borderTopColor: colors.DividerColor,
         elevation: 4,
       }}
     />

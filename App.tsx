@@ -1,31 +1,27 @@
 import React from 'react';
-import {Provider} from 'react-redux';
-import {store} from './src/reducer/Store';
+import { Provider } from 'react-redux';
+import { store } from './src/reducer/Store';
 import AppNavigation from './src/navigation/AppNavigation';
-import {NavigationContainer} from '@react-navigation/native';
-import {MenuProvider} from 'react-native-popup-menu';
+import { NavigationContainer } from '@react-navigation/native';
+import { MenuProvider } from 'react-native-popup-menu';
 import Toast from 'react-native-toast-message';
-import {InputProvider} from './src/contextApi/DataByConnectivity';
-import BottomShow from './src/MY/ShowWithDependency';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import DraggableBottomSheet from './src/MY/WithDependency';
-import ShowBottomSheet from './src/MY/ShowBottomSheet';
-import {NetworkProvider} from './src/contextApi/NetworkContex';
-// import SimpleBottomSheet from './src/MY/WithDependency';
-// import ShowBottomSheet from './src/MY/ShowBottomSheet';
-
+import { InputProvider } from './src/contextApi/DataByConnectivity';
+import { NetworkProvider } from './src/contextApi/NetworkContex';
+import { ScrollProvider } from './src/contextApi/AnimationContext';
 function App() {
   return (
     <Provider store={store}>
       <NetworkProvider>
-        <InputProvider>
-          <NavigationContainer>
-            <MenuProvider>
-              <AppNavigation />
-              <Toast />
-            </MenuProvider>
-          </NavigationContainer>
-        </InputProvider>
+        <ScrollProvider>
+          <InputProvider>
+            <NavigationContainer>
+              <MenuProvider>
+                <AppNavigation />
+                <Toast />
+              </MenuProvider>
+            </NavigationContainer>
+          </InputProvider>
+        </ScrollProvider>
       </NetworkProvider>
     </Provider>
     // <ShowBottomSheet />

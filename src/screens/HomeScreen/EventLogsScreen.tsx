@@ -1,9 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import useEventLogs from '../../CustomHooks/EventLog/EventLogHook';
 import EventLogsList from '../../component/EventLog/EventLogList';
 import React from 'react';
 import {useNetwork} from '../../contextApi/NetworkContex';
+import {NoInternetScreen} from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import {STYLES} from '../ScreensStyles';
 function EventLogsScreen() {
   const {eventLogs, setModalVisible, setRequestData} = useEventLogs();
   const {isConnected} = useNetwork();
@@ -11,18 +13,17 @@ function EventLogsScreen() {
   return (
     <>
       {isConnected ? (
-        <View style={{flex: 1, paddingBottom: 60}}>
+        <View style={STYLES.EventLog_Screen_View}>
           <EventLogsList
             data={eventLogs}
             setModal={setModalVisible}
             setRequestData={setRequestData}
             onScroll={undefined}
-             scrollEnabled={true}          />
+            scrollEnabled={true}
+          />
         </View>
       ) : (
-        <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
-          <Text>No Internet Connection</Text>
-        </View>
+        <NoInternetScreen />
       )}
     </>
   );

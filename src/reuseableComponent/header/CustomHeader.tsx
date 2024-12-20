@@ -18,7 +18,7 @@ import { logoutUser } from '../../reducer/Login/LoginAction';
 import React from 'react';
 import CustomIcon from '../customIcons/CustomIcon';
 import fontSizes from '../../assets/fonts/FontSize';
-import { Colors2 } from '../../assets/color/Colors2';
+import { IconName, Lable, Strings } from '../../assets/constants/Lable';
 
 function CustomHeader(props: {
   buCode: any;
@@ -41,16 +41,16 @@ function CustomHeader(props: {
 
   const handleLogout = async () => {
     Alert.alert(
-      'Confirm Logout', // Alert title
-      'Are you sure you want to log out?', // Alert message
+      Strings.CONFIRM_LOGOUT, // Alert title
+      Strings.SURE_TO_LOGOUT, // Alert message
       [
         {
-          text: 'Cancel', // Cancel button
+          text: IconName.CANCLE, // Cancel button
           onPress: () => setModalVisible(false),
           style: 'cancel', // This makes the button appear more prominent
         },
         {
-          text: 'OK', // OK button
+          text: Strings.OK,
           onPress: () => {
             setModalVisible(false);
             store.dispatch(logoutUser()); // Log out the user
@@ -66,16 +66,16 @@ function CustomHeader(props: {
       style={{
         transform: [{ translateY: translateY }],
         zIndex: 1,
-        position:"absolute" , 
-        left:0,
-        right:0,
-        height:60
+        position: "absolute",
+        left: 0,
+        right: 0,
+        height: 60
       }}>
       <View style={styles.headerContainer}>
         <View style={styles.leftSection}>
           <TouchableOpacity onPress={openDrawer}>
             <MaterialIcons
-              name="menu"
+              name={IconName.MENU}
               size={28}
               color={colors.darkblack}
               style={styles.burgerIcon}
@@ -86,13 +86,13 @@ function CustomHeader(props: {
         {searchIcon && filterIcon &&
 
           <View style={styles.rightSection}>
-            <CustomIcon iconPath={searchIcon} onPress={onSearchPress} style={{tintColor:Colors2.SecondaryTextColor}} />
+            <CustomIcon iconPath={searchIcon} onPress={onSearchPress} style={{ tintColor: colors.SecondaryTextColor }} />
             <View style={styles.iconWrapper}>
               {filterCount > 0 &&
                 <View style={styles.filterCountBadge}>
                   <Text style={styles.filterCountText}>{filterCount}</Text>
                 </View>}
-              <CustomIcon iconPath={filterIcon} onPress={onFilterPress} style={{tintColor:Colors2.SecondaryTextColor}}/>
+              <CustomIcon iconPath={filterIcon} onPress={onFilterPress} style={{ tintColor: colors.SecondaryTextColor }} />
             </View>
           </View>
         }
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     position: 'absolute',
     top: 0,
-
     left: 0,
     right: 0,
   },

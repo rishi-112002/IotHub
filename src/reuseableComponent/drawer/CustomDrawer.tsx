@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState, store } from '../../reducer/Store';
 import { logoutUser } from '../../reducer/Login/LoginAction';
 import SequentialBouncingLoader from '../loader/BallBouncingLoader';
+import { IconName, ImagePath, Strings } from '../../assets/constants/Lable';
 
 function CustomDrawerContent() {
 
@@ -21,15 +22,15 @@ function CustomDrawerContent() {
     const buCode = useSelector((state: RootState) => state.authentication.buCode);
     const handleLogout = async () => {
         Alert.alert(
-            'Confirm Logout', // Alert title
-            'Are you sure you want to log out?', // Alert message
+            Strings.CONFIRM_LOGOUT, // Alert title
+            Strings.SURE_TO_LOGOUT,
             [
                 {
-                    text: 'Cancel', // Cancel button
+                    text: IconName.CANCLE, // Cancel button
                     style: 'cancel', // This makes the button appear more prominent
                 },
                 {
-                    text: 'OK', // OK button
+                    text: Strings.OK, // OK button
                     onPress: () => {
                         store.dispatch(logoutUser());
                         navigation.navigate("LoginScreen")
@@ -39,6 +40,7 @@ function CustomDrawerContent() {
             { cancelable: false }, // Prevents closing the alert by tapping outside of it
         );
     };
+
     if (loading) {
         <View style={{ flex: 1 }}>
             <SequentialBouncingLoader />
@@ -52,7 +54,7 @@ function CustomDrawerContent() {
                 <View style={styles.header}>
                     <View style={{ flexDirection: "row" }}>
                         <Image
-                            source={require('../../assets/images/iotHubLogo.png')}
+                            source={ImagePath.APP_ICON}
                             style={styles.logo}
                         />
                         <View style={{
@@ -63,8 +65,8 @@ function CustomDrawerContent() {
                         }}>
 
                             <View>
-                                <Text style={styles.headerTitle}>IoT Hub</Text>
-                                <Text style={styles.headerSubtitle}>Welcome, {user}!</Text>
+                                <Text style={styles.headerTitle}>{Strings.IOT_HUB}</Text>
+                                <Text style={styles.headerSubtitle}>{Strings.WELCOME} {user}!</Text>
                             </View>
                             <View style={{ borderRadius: 20, borderWidth: 1, borderColor: colors.white, padding: 5 }}>
 
@@ -80,8 +82,9 @@ function CustomDrawerContent() {
                     <DrawerItem
                         label={() => (
                             <View style={styles.itemContainer}>
-                                <MaterialIcons name="gps-fixed" size={20} color={colors.darkblack} />
-                                <Text style={styles.itemText}>Dashboard</Text>
+                                <MaterialIcons name=
+                                    {IconName.GAP_FIXED} size={20} color={colors.darkblack} />
+                                <Text style={styles.itemText}>{Strings.DASHBOARD}</Text>
                             </View>
                         )}
                         onPress={() => navigation.navigate("Drawer", { screen: "bottomTabNavigation" })}
@@ -91,11 +94,11 @@ function CustomDrawerContent() {
                         onPress={() => setIsSpotExpanded(!isSpotExpanded)}
                         style={styles.spotContainer}
                     >
-                        <MaterialIcons name="place" size={20} color={colors.darkblack} />
+                        <MaterialIcons name={IconName.PLACE} size={20} color={colors.darkblack} />
                         <View style={styles.spotLabel}>
-                            <Text style={styles.itemText}>Spot</Text>
+                            <Text style={styles.itemText}>{Strings.SPOTS}</Text>
                             <MaterialIcons
-                                name={isSpotExpanded ? 'expand-less' : 'expand-more'}
+                                name={isSpotExpanded ? IconName.EXPAND_LESS : IconName.EXPAND_MORE}
                                 size={20}
                                 color={colors.darkblack}
                             />
@@ -108,15 +111,15 @@ function CustomDrawerContent() {
                                 onPress={() => navigation.navigate("Drawer", { screen: 'WeighBridgeNavigation' })}
                                 style={styles.subMenuItem}
                             >
-                                <MaterialIcons name="scale" size={18} color={colors.gray} />
-                                <Text style={styles.subMenuText}>Weighbridge</Text>
+                                <MaterialIcons name={IconName.SCALE} size={18} color={colors.gray} />
+                                <Text style={styles.subMenuText}>{Strings.WEIGHBRIDGE}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => navigation.navigate("Drawer", { screen: 'GenericSpotNavigation' })}
                                 style={styles.subMenuItem}
                             >
-                                <MaterialIcons name="location-on" size={18} color={colors.gray} />
-                                <Text style={styles.subMenuText}>Generic</Text>
+                                <MaterialIcons name={IconName.LOCATION_ON} size={18} color={colors.gray} />
+                                <Text style={styles.subMenuText}>{Strings.GENERIC}</Text>
                             </TouchableOpacity>
                         </View>
                     )}
@@ -125,8 +128,8 @@ function CustomDrawerContent() {
                     <DrawerItem
                         label={() => (
                             <View style={styles.itemContainer}>
-                                <MaterialIcons name="wifi-tethering" size={20} color={colors.darkblack} />
-                                <Text style={styles.itemText}>RFID Reader's</Text>
+                                <MaterialIcons name={IconName.WIFI_THETHERING} size={20} color={colors.darkblack} />
+                                <Text style={styles.itemText}>{Strings.RFID_READERS}</Text>
                             </View>
                         )}
                         onPress={() => navigation.navigate("Drawer", { screen: 'RfidScreenNavigation' })}
@@ -135,8 +138,8 @@ function CustomDrawerContent() {
                     <DrawerItem
                         label={() => (
                             <View style={styles.itemContainer}>
-                                <MaterialIcons name="logout" size={20} color={colors.redBase} />
-                                <Text style={[styles.itemText, { color: colors.redBase }]}>Log Out</Text>
+                                <MaterialIcons name={IconName.LOGOUT} size={20} color={colors.redBase} />
+                                <Text style={[styles.itemText, { color: colors.redBase }]}>{Strings.LOGOUT}</Text>
                             </View>
                         )}
                         onPress={handleLogout}

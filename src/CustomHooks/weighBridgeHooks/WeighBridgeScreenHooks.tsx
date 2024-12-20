@@ -12,6 +12,7 @@ import { DataByConnectivityContext } from '../../contextApi/DataByConnectivity';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Animated } from 'react-native';
 import { resetDeleteStatus } from '../../reducer/weighBridge/WeighBridgeReducer';
+import { errorStrings, Strings } from '../../assets/constants/Lable';
 type FilterOption = 'connected' | 'not-connected' | 'all';
 
 function WeighBridgeScreenHooks() {
@@ -47,7 +48,7 @@ function WeighBridgeScreenHooks() {
     store.dispatch(
       WeighBridgeSpotData({
         baseUrl: baseUrls,
-        spotType: 'UNIDIRECTIONAL_WEIGHBRIDGE',
+        spotType: Strings.UNIDIRECTIONAL_WEIGHBRIDGE,
         buCode: buCode,
         token: token,
       }),
@@ -103,10 +104,10 @@ function WeighBridgeScreenHooks() {
   useEffect(() => {
     if (deleteStatus !== "idle") {
       if (deleteStatus === "succeeded") {
-        CustomToast('success', 'Deleted successfully');
+        CustomToast(Strings.SUCCESS_s, Strings.DELETED_SUCCESSFULLY);
         store.dispatch(resetDeleteStatus())
       } else if (deleteStatus === "failed") {
-        CustomToast('error', `Failed to delete: ${deleteError}`);
+        CustomToast(Strings.ERROR_s, `${errorStrings.FAILED_TO_DELETE}: ${deleteError}`);
         store.dispatch(resetDeleteStatus())
       }
     }
@@ -130,9 +131,9 @@ function WeighBridgeScreenHooks() {
   }, [isVisible, fadeAnim]);
   const spotsData = WeighbridgeSpots.filter((spot: any) => {
     const matchesFilter =
-      weighBridgeTypeConnectivity === 'all' ||
-      (weighBridgeTypeConnectivity === 'connected' && spot?.active) ||
-      (weighBridgeTypeConnectivity === 'not-connected' && !spot?.active);
+      weighBridgeTypeConnectivity === Strings.ALL ||
+      (weighBridgeTypeConnectivity === Strings.CONNECTED_S && spot?.active) ||
+      (weighBridgeTypeConnectivity === Strings.NOT_CONNECTED_s && !spot?.active);
     const matchesSearch = searchQuery
       ? Object.values(spot).some((value) =>
         String(value).toLowerCase().includes(searchQuery.toLowerCase())

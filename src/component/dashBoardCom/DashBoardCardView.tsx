@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import fontSizes from "../../assets/fonts/FontSize";
-import { Colors2 } from "../../assets/color/Colors2";
 import colors from "../../assets/color/colors";
 import { SegmentedButton } from "../../reuseableComponent/customButton/SegmentedButton";
+import { Strings } from "../../assets/constants/Lable";
 
 function DashboardCardView(props: {
     connectedCards: { icon: string; name: string; count: number; onPress: any, countColor: string, backgroundColor: string }[];
@@ -15,15 +15,15 @@ function DashboardCardView(props: {
     card: { icon: string; name: string; count: number; onPress: any, countColor: string, backgroundColor: string }[];
 }) {
     const { connectedCards, notConnectedCards, card, heading, totalCount, ViewAllPress, type } = props;
-    const [selectedValue, setSelectedValue] = useState("connected");
+    const [selectedValue, setSelectedValue] = useState(Strings.CONNECTED_S);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleValueChange = useCallback((index: number) => {
-  
+
         setSelectedIndex(index);
-        setSelectedValue(index === 0 ? "connected" : "notConnected")
+        setSelectedValue(index === 0 ? Strings.CONNECTED_S : Strings.NOT_CONNECTED_S)
     }, []);
-    const options = ["Connected", "Not Connected"]
+    const options = [Strings.CONNECTED, Strings.NOT_CONNECTED]
     const renderSpot = useCallback(
         ({ item }: { item: any }) => (
             <TouchableOpacity style={styles.card} onPress={item.onPress}>
@@ -53,13 +53,13 @@ function DashboardCardView(props: {
                     <View>
 
                         <Text style={styles.heading}>{heading}</Text>
-                        <Text style={{ fontSize: fontSizes.smallText }}>Total: {totalCount}</Text>
+                        <Text style={{ fontSize: fontSizes.smallText }}>{Strings.TOTAL}: {totalCount}</Text>
                     </View>
                     {
                         type === "eventLog" ?
                             <View style={{ justifyContent: "center", alignItems: "center", alignContent: "center" }}>
                                 <TouchableOpacity style={styles.viewAllButton} onPress={ViewAllPress}>
-                                    <Text style={styles.viewAllText}>{"View all"}</Text>
+                                    <Text style={styles.viewAllText}>{Strings.VIEW_ALL}</Text>
                                 </TouchableOpacity>
                             </View>
                             :
@@ -78,8 +78,8 @@ function DashboardCardView(props: {
 
             {/* Cards Row */}
             <FlatList
-                style ={{ height: type !== "eventLog" ?"55%" :0}}
-                data={type === "useability" ? card : selectedValue === "connected" ? connectedCards : notConnectedCards}
+                style={{ height: type !== "eventLog" ? "55%" : 0 }}
+                data={type === "useability" ? card : selectedValue === Strings.CONNECTED_S ? connectedCards : notConnectedCards}
                 numColumns={2} // Two cards per row
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.cardRow}
@@ -91,7 +91,7 @@ function DashboardCardView(props: {
             {type !== "eventLog" &&
 
                 <TouchableOpacity style={styles.viewAllButton} onPress={ViewAllPress}>
-                    <Text style={styles.viewAllText}>{"View all"}</Text>
+                    <Text style={styles.viewAllText}>{Strings.VIEW_ALL}</Text>
                 </TouchableOpacity>
             }
         </View>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         width: "45%", // Each card takes 45% of the row width
         borderRadius: 10,
         paddingHorizontal: 15,
-        backgroundColor: Colors2.DividerColor,
+        backgroundColor: colors.DividerColor,
         paddingTop: 15,
         paddingBottom: 10,
         margin: 5, // Small margin for spacing
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     cardTitle: {
         fontSize: fontSizes.text,
         fontWeight: "500",
-        color: Colors2.SecondaryTextColor,
+        color: colors.SecondaryTextColor,
         marginTop: 5,
         textAlign: "center",
     },

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { GetSpotData, GetSpotName } from './spotDataAction';
+import { Strings } from '../../assets/constants/Lable';
 
 type AuthState = {
   spotData: [];
@@ -15,7 +16,7 @@ const initState: AuthState = {
   spotName: []
 };
 export const spotDataSlice = createSlice({
-  name: 'spotData',
+  name: Strings.SPOT_DATA,
   initialState: initState,
   reducers: {},
   extraReducers: builder => {
