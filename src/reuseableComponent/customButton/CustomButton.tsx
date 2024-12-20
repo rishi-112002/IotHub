@@ -1,9 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, StyleProp, ViewStyle, TextStyle, View } from 'react-native';
+import { TouchableOpacity, Text, StyleProp, ViewStyle, TextStyle, View } from 'react-native';
 import colors from '../../assets/color/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Strings } from '../../assets/constants/Lable';
-import fontSizes from '../../assets/fonts/FontSize';
+import { ButtonStyles } from '../../styles/ButtonStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 type ButtonProps = {
   label: string;
@@ -19,22 +21,24 @@ function CustomButton({
   label,
   onPress,
   buttonStyle,
-  labelStyle,
   disabled = false,
   loading = false,
   icon,
 }: ButtonProps) {
+    const { buttonStyles } = ButtonStyles();
+    const { textStyles } = TextStyles();
+    const { containerStyles } = ContainerStyles();
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.button, buttonStyle, disabled && styles.disabled]}
+      style={[buttonStyles.button, buttonStyle, disabled && buttonStyles.buttonDisabled]}
       disabled={disabled}
     >
       {loading ? (
-        <Text style={[styles.label, labelStyle]}>`${Strings.LOADING}...`</Text>
+        <Text style={[textStyles.label]}>`${Strings.LOADING}...`</Text>
       ) : (
-        <View style={{ flexDirection: "row", columnGap: 10 }}>
-          <Text style={[styles.label, labelStyle]}>{label}</Text>
+        <View style={containerStyles.spotIconContainer}>
+          <Text style={[textStyles.label, { color: colors.white }]}>{label}</Text>
           {icon && <Icon name={icon} size={20} color={colors.white} />}
 
         </View>
@@ -44,23 +48,5 @@ function CustomButton({
   );
 }
 
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: colors.AppPrimaryColor,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  label: {
-    color: colors.white,
-    fontSize: fontSizes.title,
-    fontWeight: 'bold',
-  },
-  disabled: {
-    backgroundColor:colors.LightGray,
-  },
-});
 
 export default CustomButton;

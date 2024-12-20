@@ -12,7 +12,7 @@ import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import {useNetwork} from '../../contextApi/NetworkContex';
 import {IconName, ImagePath, Strings} from '../../assets/constants/Lable';
 import {NoInternetScreen} from '../../reuseableComponent/defaultScreen/NoInternetScreen';
-import {STYLES} from '../ScreensStyles';
+import {STYLES} from '../../styles/ScreensStyles';
 
 function Weighbridges() {
   const {isConnected} = useNetwork();

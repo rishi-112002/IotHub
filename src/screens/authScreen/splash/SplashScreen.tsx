@@ -1,7 +1,7 @@
 import { View, StatusBar } from 'react-native';
 import Animated from 'react-native-reanimated';
 import SplashEffect from './SplashEffect';
-import {STYLES} from '../../ScreensStyles'
+import {STYLES} from '../../../styles/ScreensStyles'
 import React from 'react';
 import colors from '../../../assets/color/colors';
 

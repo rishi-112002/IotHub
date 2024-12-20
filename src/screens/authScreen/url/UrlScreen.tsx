@@ -8,7 +8,7 @@ import React from 'react';
 import fontSizes from '../../../assets/fonts/FontSize';
 import { IconName, Lable, Strings } from '../../../assets/constants/Lable';
 import colors from '../../../assets/color/colors';
-import { STYLES } from '../../ScreensStyles';
+import { STYLES } from '../../../styles/ScreensStyles';
 
 function UrlScreen() {
   const {

@@ -13,6 +13,9 @@ import WeighBridgeComponent from './WeighBridgeAddComponent';
 import { useNetwork } from '../../contextApi/NetworkContex';
 import { Lable, Strings } from '../../assets/constants/Lable';
 import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 function WeighBridgeAddForm(props: { id: any }) {
   const { id } = props;
@@ -74,43 +77,42 @@ function WeighBridgeAddForm(props: { id: any }) {
     selectedGenericSpotDirB,
     errors,
   } = WeighBridgeFunction({ id: id });
+  const { styles } = ComponentStyles();
+  const { containerStyles } = ContainerStyles();
+  const { textStyles } = TextStyles();
 
   if (loader) {
-    <View style={{ flex: 1 }}>
+    <View style={containerStyles.mainContainer}>
       <SequentialBouncingLoader />;
     </View>;
   }
   return (
-    <View style={{ flex: 1 }}>
+    <View style={containerStyles.mainContainer}>
       {isConnected ? (
-        <View style={{ flex: 1 }}>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={containerStyles.mainContainer}>
+          <ScrollView contentContainerStyle={containerStyles.scrollContainer}>
             {!smartControllerLoader ? (
-              <View style={styles.container}>
+              <View style={containerStyles.container}>
                 <CustomDateTimePicker
                   visible={isCalendarVisible}
                   onClose={closeCalendarModal}
                   onDateSelect={handleDateSelect}
                 />
-
                 <CustomTextInput
                   label={Strings.NAME_S}
                   value={name}
                   editable={true}
-                  style={styles.flexInput}
                   errorMessage={errors.name}
                   keyboardType="default"
                   returnKeyType="next"
                   setTextInput={setName}
                   required={true}
                 />
-
                 <CustomTextInput
                   label={Strings.DELAY_ALERT_AFTER}
                   value={delay}
                   editable={true}
                   type="input"
-                  style={styles.flexInput}
                   errorMessage={errors.delay}
                   keyboardType="numeric"
                   returnKeyType="next"
@@ -121,7 +123,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                 <CustomTextInput
                   value={selectedEvent.name}
                   onPress={() => handleFocus(Strings.EVENTS_S)}
-                  style={styles.flexInput}
                   errorMessage={errors.event}
                   label={Strings.TYPE}
                   disable={false}
@@ -136,7 +137,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                   onPress={() => handleFocus(Strings.SMART_CONTROLLER_S)}
                   label={Strings.SMART_CONTROLLER}
                   disable={false}
-                  style={styles.flexInput}
                   type="dropdown"
                   editable={false}
                   errorMessage={errors.selectedSmartConnector}
@@ -149,13 +149,13 @@ function WeighBridgeAddForm(props: { id: any }) {
                   label={Strings.WEIGHT_PARSER}
                   disable={false}
                   type="dropdown"
-                  style={styles.flexInput}
                   editable={false}
                   errorMessage={errors.selectedWeightParser}
                   required={true}
                   setTextInput={undefined}
                 />
                 <WeighBridgeComponent
+                  error={errors}
                   platformReadyTicks={platformReadyTicks}
                   setPlatformReadyTicks={setPlatformReadyTicks}
                   platformMaxWeight={platformMaxWeight}
@@ -176,7 +176,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                   onPress={() => handleFocus('')}
                   label={Strings.EXPIRY_DATE}
                   disable={false}
-                  style={styles.flexInput}
                   editable={false}
                   type="dropdown"
                   iconName=""
@@ -188,8 +187,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                 {/* Modal for selecting options */}
 
                 {modalVisible && (
-                  // Alert.alert("hello")
-                  <View style={styles.flexInput}>
+                  <View >
                     <GenericModal
                       options={getOptions()}
                       isVisible={modalVisible}
@@ -211,7 +209,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                   <CustomTextInput
                     label={Strings.DRIVER_TAG_TIMEOUT}
                     value={driverTagTimeOut}
-                    style={styles.flexInput}
                     editable={true}
                     errorMessage={errors.driverTagTimeOut}
                     keyboardType="numeric"
@@ -230,8 +227,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                     label={Strings.SEQURITY_TAG_TIMEOUT}
                     value={securityTagTimeOut}
                     editable={true}
-                    style={styles.flexInput}
-                    errorMessage={errors.securityTagTimeOut}
+                    errorMessage={errors.sequrityDelay}
                     keyboardType="numeric"
                     setTextInput={setSecurityTagTimeOut}
                     required={true}
@@ -240,10 +236,10 @@ function WeighBridgeAddForm(props: { id: any }) {
                 )}
 
                 {selectedEvent.id && (
-                  <View style={styles.flexInput}>
+                  <View style={containerStyles.mainContainer}>
                     {/* Direction A Inputs */}
                     <View>
-                      <Text style={styles.directionText}>{Strings.DIRECTION_A}</Text>
+                      <Text style={[textStyles.sectionTitle, { paddingVertical: 10 }]}>{Strings.DIRECTION_S}{Strings.A}</Text>
 
                       <CustomTextInput
                         value={selectedDisplayA.name}
@@ -253,7 +249,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                         type="dropdown"
                         setTextInput={errors.selectedDisplayA}
                         required={false}
-                        style={styles.flexInput}
+
 
                       />
                       {selectedEvent.id === Strings.UNIDIRECTIONAL_WEIGHBRIDGE ||
@@ -270,8 +266,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                             type="dropdown"
                             setTextInput={undefined}
                             required={true}
-                            style={styles.flexInput}
-
                           />
 
                           <CustomTextInput
@@ -282,8 +276,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                             type="dropdown"
                             setTextInput={undefined}
                             required={false}
-                            style={styles.flexInput}
-
                           />
                         </View>
                       ) : (
@@ -297,8 +289,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                             editable={false}
                             setTextInput={undefined}
                             required={true}
-                            style={styles.flexInput}
-
                           />
                         </View>
                       )}
@@ -309,8 +299,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                         editable={true}
                         type="input"
                         setTextInput={setValidIdA}
-                        style={styles.flexInput}
-
                         required={false}
                       />
                     </View>
@@ -320,7 +308,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                       selectedEvent.id ===
                       Strings.BIDIRECTIONAL_WEIGHBRIDGE_NO_READER) && (
                         <View>
-                          <Text style={styles.directionText}>Direction B</Text>
+                          <Text style={textStyles.sectionTitle}>{Strings.DIRECTION_S}{Strings.B}</Text>
 
                           <CustomTextInput
                             value={selectedDisplayB.name}
@@ -329,7 +317,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                             editable={false}
                             required={false}
                             type="dropdown"
-                            style={styles.flexInput}
                             setTextInput={undefined}
                           />
 
@@ -346,8 +333,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                                 required={true}
                                 type="dropdown"
                                 setTextInput={undefined}
-                                style={styles.flexInput}
-
                                 errorMessage={errors.selectedPrimaryReaderB}
                               />
 
@@ -358,7 +343,6 @@ function WeighBridgeAddForm(props: { id: any }) {
                                 editable={false}
                                 type="dropdown"
                                 required={false}
-                                style={styles.flexInput}
                                 setTextInput={undefined}
                               />
                             </View>
@@ -372,7 +356,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                                 type="dropdown"
                                 required={true}
                                 setTextInput={undefined}
-                                style={styles.flexInput}
+
 
                                 errorMessage={errors.selectedGenericSpotDirB}
                               />
@@ -386,7 +370,7 @@ function WeighBridgeAddForm(props: { id: any }) {
                             editable={true}
                             setTextInput={setValidIdB}
                             required={false}
-                            style={styles.flexInput}
+
                           />
                         </View>
                       )}
@@ -402,12 +386,7 @@ function WeighBridgeAddForm(props: { id: any }) {
               </View>
             ) : (
               <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  paddingVertical: '90%',
-                }}>
+                style={containerStyles.mainContainer}>
                 <SequentialBouncingLoader />
               </View>
             )}
@@ -419,35 +398,4 @@ function WeighBridgeAddForm(props: { id: any }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  headerTitle: {
-    color: colors.darkblack,
-    fontSize: fontSizes.heading,
-  },
-  directionText: { color: colors.darkblack, paddingVertical: 10 },
-  scrollContainer: {
-    backgroundColor: colors.white,
-    flexGrow: 1,
-    // flex:1,
-  },
-  container: {
-    padding: 20,
-    flexGrow: 1,
-  },
-  flexInput: {
-    flex: 1,
-    color: colors.PrimaryTextColor
-  },
-  modalContainer: {
-    backgroundColor: 'pink',
-    flex: 1,
-  },
-  buttonContainer: {
-    marginTop: 20,
-  },
-  loader: {
-    flex: 1,
-  },
-});
 export default WeighBridgeAddForm;

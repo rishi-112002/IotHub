@@ -1,20 +1,20 @@
 // EventLogList.tsx
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
-  FlatList,
   Text,
-  StyleSheet,
   Animated,
   ActivityIndicator,
 } from 'react-native';
 import EventLogItem from './EventLogITem';
 import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
 import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
 import { getResponsiveHeight } from '../RFIDComponent/RfidListComponent';
 import { IconName, Strings } from '../../assets/constants/Lable';
 import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 type EventLogItemType = {
   id: string;
@@ -70,8 +70,12 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
   );
 
   const keyExtractor = useCallback((item: any) => item.id, []);
+  // const { styles } = ComponentStyles();
+  const { styles } = ComponentStyles();
+  const { textStyles } = TextStyles();
+  const { containerStyles } = ContainerStyles()
   return (
-    <View style={styles.listContainer}>
+    <View style={containerStyles.listContainer}>
       {data.length > 0 ? (
         <Animated.FlatList
           data={data}
@@ -93,7 +97,7 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
                   size="small"
                   color={colors.AppPrimaryColor}
                 />
-                <Text style={styles.footerText}>{Strings.LOADING}...</Text>
+                <Text style={textStyles.footerText}>{Strings.LOADING}...</Text>
               </View>
             ) : null
           }
@@ -104,27 +108,5 @@ const EventLogsList: React.FC<EventLogsListProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  listContainer: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: colors.white,
-  },
-  flatListContent: { flexGrow: 1 },
-  emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  emptyText: { fontSize: fontSizes.subheading, color: 'gray' },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-  },
-  footerText: {
-    marginLeft: 10,
-    fontSize: fontSizes.text,
-    color: colors.gray,
-  },
-});
 
 export default EventLogsList;

@@ -1,32 +1,35 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import CustomIcon from "../../reuseableComponent/customIcons/CustomIcon";
-import fontSizes from "../../assets/fonts/FontSize";
 import colors from "../../assets/color/colors";
 import { ImagePath, Strings } from "../../assets/constants/Lable";
+import { ComponentStyles } from "../../styles/ComponentStyles";
+import { CardStyles } from "../../styles/CardStyles";
+import { ContainerStyles } from "../../styles/ContainerStyles";
+import { TextStyles } from "../../styles/TextStyles";
+import { SpotlistTextComponent } from "../../reuseableComponent/textComponent/SpotListTextComponent";
 
 function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, item: any, navigate: any, navigation: any }) {
-    const { item, handleDelete, height, navigate, navigation } = props
+    const { item, handleDelete, navigate, navigation } = props
+    const { styles } = ComponentStyles();
+    const { textStyles } = TextStyles();
+    const { cardStyles } = CardStyles();
+    const { containerStyles } = ContainerStyles()
     return (
-        <View style={{ flex: 1, height: height }}>
-            <View style={styles.spotContainer}>
+        <View style={containerStyles.mainContainer}>
+            <View style={containerStyles.spotContainer}>
                 <TouchableOpacity
                     onPress={() =>
                         navigation.navigate('SpotDetailScreen', { data: item })
                     }>
                     <View style={styles.row}>
-                        <View style={{ flex: 1, gap: 5 }}>
+                        <View style={containerStyles.rowSubContainer}>
 
-                            <Text style={styles.spotTitle}>{item.name}</Text>
-                            <View style={{
-                                backgroundColor: item.active ? colors.MintGreen : colors.BlushPink,
-                                borderRadius: 20,
-                                width: item.active ? "28%" : "38%",
-                                paddingHorizontal: 5
-                            }}>
+                            <Text style={textStyles.spotTitle}>{item.name}</Text>
+                            <View style={item.active ? containerStyles.activeStatusContainer : containerStyles.inactiveStatusContainer}>
                                 <Text
                                     style={[
-                                        styles.statusText,
+                                        textStyles.statusText,
                                         {
                                             color: item.active ? colors.greenBase : colors.redBase,
                                         },
@@ -36,9 +39,9 @@ function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, ite
                             </View>
                         </View>
 
-                        <View style={styles.statusContainer}>
+                        <View style={containerStyles.statusContainer}>
 
-                            <View style={styles.iconContainer}>
+                            <View style={containerStyles.spotIconContainer}>
                                 <CustomIcon
                                     iconPath={ImagePath.DELETE}
                                     onPress={() => handleDelete(item.id)}
@@ -51,20 +54,9 @@ function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, ite
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: 'row', columnGap: 50, marginTop: 5 }}>
-                        <View>
-                            <Text style={styles.infoText}>{Strings.VALID_ID} </Text>
-                            <Text style={styles.value}>
-                                {item.validDiDirA}
-                            </Text>
-                        </View>
-                        <View>
-                            <Text style={styles.infoText}>{Strings.EVENT}</Text>
-                            <Text style={styles.value}>
-                                {item.events}
-                            </Text>
-                        </View>
-
+                    <View style={[cardStyles.cardRowConatiner, { justifyContent: 'flex-start', gap: 50 }]}>
+                        <SpotlistTextComponent name={Strings.VALID_ID} value={item.validDiDirA} />
+                        <SpotlistTextComponent name={Strings.EVENT} value={item.events} />
                     </View>
                 </TouchableOpacity>
             </View>
@@ -72,63 +64,5 @@ function SpotDataByTypeSubComponent(props: { height: any, handleDelete: any, ite
     );
 
 }
-const styles = StyleSheet.create({
-    spotContainer: {
-        flex: 1,
-        paddingStart: 15
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 5,
-    },
-    spotTitle: {
-        fontSize: fontSizes.title,
-        color: colors.SecondaryTextColor,
-    },
-    statusContainer: {
-        flexDirection: 'row',
-        columnGap: 10,
-    },
-    activeStatus: {
-        backgroundColor: '#DCFCE7',
-    },
-    inactiveStatus: {
-        backgroundColor: '#FEF2F2',
-    },
-    statusText: {
-        fontSize: fontSizes.smallText,
-        color: colors.SecondaryTextColor,
-    },
-    value: {
-        fontSize: fontSizes.smallText,
-        color: colors.SecondaryTextColor,
-    },
-    activeText: {
-        width: "13%",
-        backgroundColor: colors.greeenLightest,
-        color: '#15803D',
-        fontSize: fontSizes.vSmallText,
-    },
-    inactiveText: {
-        width: "16%",
-        backgroundColor: colors.redLightest,
-        color: '#B91C1C',
-        fontSize: fontSizes.vSmallText,
-    },
-    iconContainer: {
-        flexDirection: 'row',
-        columnGap: 10,
-    },
-    infoText: {
-        fontSize: fontSizes.smallText,
-        color: colors.HelperTextColor,
-    },
-    divider: {
-        height: 1,
-        marginVertical: 15,
-        backgroundColor: '#d4d4d4',
-    },
-});
 
 export default SpotDataByTypeSubComponent;

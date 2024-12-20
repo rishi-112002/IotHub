@@ -13,7 +13,7 @@ import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import { useNetwork } from '../../contextApi/NetworkContex';
 import { IconName, ImagePath, Strings } from '../../assets/constants/Lable';
 import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
-import { STYLES } from '../ScreensStyles';
+import { STYLES } from '../../styles/ScreensStyles';
 
 function GenericSpot() {
   const { isConnected } = useNetwork();

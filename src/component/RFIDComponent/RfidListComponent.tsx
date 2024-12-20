@@ -1,10 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Animated,
   FlatList,
-  StyleSheet,
   Dimensions,
   ActivityIndicator,
   Text,
@@ -12,9 +11,11 @@ import {
 import RFIDItemComponent from './RFIDItemComponent';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
 import { Strings } from '../../assets/constants/Lable';
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 export const getResponsiveWidth = (percentage: number) =>
   (SCREEN_WIDTH * percentage) / 100;
 export const getResponsiveHeight = (percentage: number) =>
@@ -46,7 +47,9 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
   viewabilityConfig,
 }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(true);
-
+  const { textStyles } = TextStyles();
+  const { styles } = ComponentStyles();
+  const { containerStyles } = ContainerStyles()
   // Load more data as the user scrolls
   const loadMoreData = useCallback(() => {
     if (ListData?.length > 0) {
@@ -59,17 +62,17 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
   }, [ListData]);
 
   const renderItem = useCallback(
-    ({item}: any) => (
+    ({ item }: any) => (
       <RFIDItemComponent handleDelete={handleDelete} reader={item} />
     ),
     [handleDelete],
   );
 
-  const keyExtractor = useCallback((item: {id: string}) => item.id, []);
+  const keyExtractor = useCallback((item: { id: string }) => item.id, []);
 
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyles.mainContainer}>
       {Loader ? (
         <SequentialBouncingLoader />
       ) : (
@@ -77,7 +80,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
           data={ListData}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          contentContainerStyle={{padding: buttonVisible ? 8 : 5}}
+          contentContainerStyle={{ padding: buttonVisible ? 8 : 5 }}
           onScroll={handleScroll}
           onRefresh={loadRfidList}
           refreshing={refreshing}
@@ -97,7 +100,7 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
                   size="small"
                   color={colors.AppPrimaryColor}
                 />
-                <Text style={styles.footerText}>{Strings.LOADING}...</Text>
+                <Text style={textStyles.footerText}>{Strings.LOADING}...</Text>
               </View>
             ) : null
           }
@@ -107,21 +110,5 @@ const RfidListComponent: React.FC<RfidListComponentProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-  },
-  footerText: {
-    marginLeft: 10,
-    fontSize: fontSizes.text,
-    color: colors.gray,
-  },
-});
 
 export default React.memo(RfidListComponent);

@@ -4,6 +4,12 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors'; // Ensure this is properly imported
 import fontSizes from '../../assets/fonts/FontSize'; // Ensure this is properly imported
 import { IconName } from '../../assets/constants/Lable';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ButtonStyles } from '../../styles/ButtonStyles';
+import { CardStyles } from '../../styles/CardStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { InputStyles } from '../../styles/InputStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 function SearchBar(props: {
   searchQuery: any,
@@ -12,20 +18,21 @@ function SearchBar(props: {
   placeholder: any,
 }) {
   const { clearSearch, placeholder = `${IconName.SEARCH}...`, searchQuery, setSearchQuery } = props
-
-
+  const { styles } = ComponentStyles();
+  const { buttonStyles } = ButtonStyles();
+  const { inputStyles } = InputStyles();
   return (
     <View style={styles.searchWrapper}>
-      <View style={styles.searchInput}>
+      <View style={inputStyles.searchFilterInput}>
         <MaterialIcons name={IconName.SEARCH} size={25} color={colors.SecondaryTextColor} />
         <TextInput
-          style={styles.textInput}
+          style={inputStyles.searchTextInput}
           placeholder={placeholder}
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
         {searchQuery.length > 0 && (
-          <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
+          <TouchableOpacity onPress={clearSearch} style={buttonStyles.clearButton}>
             <MaterialIcons name={IconName.CLEAR} size={20} color={colors.redBase} />
           </TouchableOpacity>
         )}
@@ -33,35 +40,5 @@ function SearchBar(props: {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  searchWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  searchInput: {
-    // flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '95%',
-    height: 45,
-    borderWidth: 1,
-    borderColor: colors.SoftGray,
-    borderRadius: 30,
-    fontSize: fontSizes.text,
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: colors.backgroundColor,
-  },
-  textInput: {
-    width: '83%',
-    fontSize: fontSizes.text,
-  },
-  clearButton: {
-    borderRadius: 30,
-    padding: 1,
-  },
-});
 
 export default SearchBar;

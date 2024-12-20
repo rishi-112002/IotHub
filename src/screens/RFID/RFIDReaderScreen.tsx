@@ -12,7 +12,7 @@ import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import FilterModal from '../../reuseableComponent/Filter/FilterModle';
 import {useNetwork} from '../../contextApi/NetworkContex';
 import {IconName, Lable, Strings} from '../../assets/constants/Lable';
-import {STYLES} from '../ScreensStyles';
+import {STYLES} from '../../styles/ScreensStyles';
 
 const RfidReader = ({navigation}: any) => {
   const {

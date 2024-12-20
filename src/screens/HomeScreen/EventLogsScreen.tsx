@@ -5,7 +5,7 @@ import EventLogsList from '../../component/EventLog/EventLogList';
 import React from 'react';
 import {useNetwork} from '../../contextApi/NetworkContex';
 import {NoInternetScreen} from '../../reuseableComponent/defaultScreen/NoInternetScreen';
-import {STYLES} from '../ScreensStyles';
+import {STYLES} from '../../styles/ScreensStyles';
 function EventLogsScreen() {
   const {eventLogs, setModalVisible, setRequestData} = useEventLogs();
   const {isConnected} = useNetwork();

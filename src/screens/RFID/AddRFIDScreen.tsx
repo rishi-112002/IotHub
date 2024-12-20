@@ -11,7 +11,7 @@ import {useNetwork} from '../../contextApi/NetworkContex';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import {Lable, Strings} from '../../assets/constants/Lable';
 import {NoInternetScreen} from '../../reuseableComponent/defaultScreen/NoInternetScreen';
-import { STYLES } from '../ScreensStyles';
+import { STYLES } from '../../styles/ScreensStyles';
 
 const RfidAddScreen = () => {
   const {isConnected} = useNetwork();

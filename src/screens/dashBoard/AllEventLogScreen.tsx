@@ -13,7 +13,7 @@ import ScrollableBadges from '../../reuseableComponent/modal/ScrollableBadges';
 import CustomSubHeader from '../../reuseableComponent/header/CustomSubHeader';
 import SearchBar from '../../reuseableComponent/Filter/SearchFilter';
 import { ImagePath, Strings } from '../../assets/constants/Lable';
-import { STYLES } from '../ScreensStyles';
+import { STYLES } from '../../styles/ScreensStyles';
 
 function AllEventLogsScreen() {
 
@@ -124,14 +124,15 @@ function AllEventLogsScreen() {
                         onClose={closeCalendarModal}
                         onDateSelect={handleDateSelect}
                     />
-                    {GenericmodalVisible && <GenericModal
-                        options={getOptions()}
-                        isVisible={GenericmodalVisible}
-                        handleCloseModal={() => setGenericmodalVisible(false)}
-                        onOptionSelected={handleOptionSelect}
-                        nameKey={Strings.NAME_S}
-                        valueKey={Strings.VALUE}
-                    />}
+                    {GenericmodalVisible &&
+                        <GenericModal
+                            options={getOptions()}
+                            isVisible={GenericmodalVisible}
+                            handleCloseModal={() => setGenericmodalVisible(false)}
+                            onOptionSelected={handleOptionSelect}
+                            nameKey={Strings.NAME_s}
+                            valueKey={Strings.ID}
+                        />}
                 </View>
             }
 

@@ -11,7 +11,7 @@ import DataTab from '../../reuseableComponent/card/DetailsCard';
 import {useNetwork} from '../../contextApi/NetworkContex';
 import {Strings} from '../../assets/constants/Lable';
 import {NoInternetScreen} from '../../reuseableComponent/defaultScreen/NoInternetScreen';
-import {STYLES} from '../ScreensStyles';
+import {STYLES} from '../../styles/ScreensStyles';
 
 const Tab = createMaterialTopTabNavigator();
 

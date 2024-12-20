@@ -19,7 +19,7 @@ import SpotList from '../../component/SpotListComponent/SpotList';
 import { IconName, ImagePath, Strings } from '../../assets/constants/Lable';
 import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
 import { ScrollContext } from '../../contextApi/AnimationContext';
-import { STYLES } from '../ScreensStyles';
+import { STYLES } from '../../styles/ScreensStyles';
 function HomeScreen() {
   const {
     Loader,

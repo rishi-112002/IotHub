@@ -3,7 +3,7 @@ import GenericAddForm from '../../component/genericComp/GenericAddForm';
 import React from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { View } from 'react-native';
-import { STYLES } from '../ScreensStyles';
+import { STYLES } from '../../styles/ScreensStyles';
 interface genericAdd {
   id: any;
 }

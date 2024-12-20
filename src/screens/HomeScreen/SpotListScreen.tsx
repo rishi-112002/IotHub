@@ -15,7 +15,7 @@ import {AppNavigationParams} from '../../navigation/NavigationStackList';
 import React from 'react';
 import SpotDetailsComponent from '../../component/listComp/SpotDetailsComponent';
 import {Strings} from '../../assets/constants/Lable';
-import {STYLES} from '../ScreensStyles';
+import {STYLES} from '../../styles/ScreensStyles';
 interface SpotDetailsScreenParams {
   baseUrls: string;
   spotName: string;

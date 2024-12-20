@@ -1,8 +1,8 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import React, { useCallback } from 'react';
 import { Strings } from '../../assets/constants/Lable';
-import colors from '../../assets/color/colors';
+import { ComponentStyles } from '../../styles/ComponentStyles';
 function GenericAddComponentDropDowns(props: {
   smartController: any;
   display: any;
@@ -36,13 +36,12 @@ function GenericAddComponentDropDowns(props: {
     },
     [setCurrentField, setModalVisible],
   );
-
+  const { styles } = ComponentStyles();
   return (
     <View>
       <CustomTextInput
         value={smartController}
         onPress={() => handleFocus(Strings.SMART_CONTROLLER_S)}
-        style={style.input}
         label={Strings.SMART_CONTROLLER}
         disable={false}
         type='dropdown'
@@ -52,7 +51,7 @@ function GenericAddComponentDropDowns(props: {
       />
       <CustomTextInput
         value={display}
-        style={style.input}
+
         onPress={() => handleFocus(Strings.DISPLAY_s)}
         errorMessage={undefined}
         label={Strings.DISPLAY}
@@ -66,7 +65,7 @@ function GenericAddComponentDropDowns(props: {
       <CustomTextInput
         value={event}
         onPress={() => handleFocus(Strings.EVENTS_S)}
-        style={style.input}
+
         label={Strings.EVENT}
         disable={false}
         type='dropdown'
@@ -80,7 +79,7 @@ function GenericAddComponentDropDowns(props: {
           <CustomTextInput
             value={primaryReader}
             onPress={() => handleFocus(Strings.PRIMARY_READERS_S)}
-            style={style.input}
+
             label={Strings.PRIMARY_READERS}
             disable={eventId === Strings.NONE ? true : false}
             type='dropdown'
@@ -90,7 +89,7 @@ function GenericAddComponentDropDowns(props: {
           />
 
           <CustomTextInput
-            style={style.input}
+
             value={secoundryReader}
             onPress={() => handleFocus(Strings.SECOUNDARY_READERS_s)}
             label={Strings.SECOUNDARY_READERS}
@@ -105,10 +104,4 @@ function GenericAddComponentDropDowns(props: {
     </View>
   );
 }
-const style = StyleSheet.create({
-  input: {
-    flex: 1,
-    color: colors.PrimaryTextColor
-  },
-});
 export default GenericAddComponentDropDowns;

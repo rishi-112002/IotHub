@@ -10,7 +10,7 @@ import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBounci
 import colors from '../../assets/color/colors';
 import {IconName, Strings} from '../../assets/constants/Lable';
 import {ScrollContext} from '../../contextApi/AnimationContext';
-import {STYLES} from '../ScreensStyles';
+import {STYLES} from '../../styles/ScreensStyles';
 function DashBoard() {
   const {isConnected} = useNetwork();
   const {scrollY, headerTranslate} = useContext(ScrollContext);

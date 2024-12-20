@@ -1,9 +1,5 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable react-native/no-inline-styles */
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
-  StyleSheet,
   FlatList,
   View,
   Text,
@@ -12,9 +8,10 @@ import {
 import SpotItem from './SpotItem';
 import CardItemWith_Icon from '../../reuseableComponent/card/CardItemWithIcon';
 import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
 import { getResponsiveHeight } from '../RFIDComponent/RfidListComponent';
 import { IconName, Strings } from '../../assets/constants/Lable';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 interface SpotData {
   id: string;
@@ -52,10 +49,13 @@ const SpotList: React.FC<SpotListComponentProps> = ({
       }
     }
   }, [spotData]);
+  const { styles } = ComponentStyles();
+  const { textStyles } = TextStyles();
+
 
   // Render each item
-  const renderSpot: React.FC<{ item: SpotData }> = useCallback(
-    ({ item }) => (
+  const renderSpot = useCallback(
+    ({ item }: { item: any }) => (
       <CardItemWith_Icon
         iconName={item.active ? IconName.LOCATION_ON : IconName.LOCATION_OFF}
         view={<SpotItem item={item} baseUrl={null} />}
@@ -85,7 +85,7 @@ const SpotList: React.FC<SpotListComponentProps> = ({
           isLoadingMore ? (
             <View style={styles.footer}>
               <ActivityIndicator size="small" color={colors.AppPrimaryColor} />
-              <Text style={styles.footerText}>{Strings.LOADING}...</Text>
+              <Text style={textStyles.footerText}>{Strings.LOADING}...</Text>
             </View>
           ) : null
         }
@@ -93,19 +93,5 @@ const SpotList: React.FC<SpotListComponentProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-  },
-  footerText: {
-    marginLeft: 10,
-    fontSize: fontSizes.text,
-    color: colors.gray,
-  },
-});
 
 export default SpotList;

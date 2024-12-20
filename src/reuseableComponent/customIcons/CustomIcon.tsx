@@ -9,7 +9,7 @@ interface CustomIconProps {
 }
 
 function CustomIcon(props: CustomIconProps) {
-    const { iconPath, onPress, style = {} } = props;
+    const { iconPath, onPress } = props;
 
     return (
         <View>

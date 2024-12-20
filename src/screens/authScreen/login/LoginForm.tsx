@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, StatusBar, Animated} from 'react-native';
-import { STYLES } from '../../ScreensStyles';
+import { STYLES } from '../../../styles/ScreensStyles';
 import React from 'react';
 import colors from '../../../assets/color/colors';
 import SuccessLoader from '../../../reuseableComponent/loader/LoginSuccessLoader';

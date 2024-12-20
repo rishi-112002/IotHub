@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import colors from '../../assets/color/colors';
+import { View, Text } from 'react-native';
 import CardItemWith_Icon from './CardItemWithIcon';
 import { ReaderCardContent } from './ReaderCardContent';
 import { DisplayCardContent } from './DisplayCardContent';
 import { SpotCommandCardContent } from './SpotCommandContent';
 import { errorStrings, IconName } from '../../assets/constants/Lable';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 // Define possible data types and structures
 export interface Reader {
@@ -44,11 +45,11 @@ const DataTab: React.FC<DataTabProps> = ({
   data,
   dataType,
   noDataMessage = 'No Data Available',
-  stylesOverride,
   allow = false,
   // handleDelete,
 }) => {
-  const combinedStyles = { ...styles, ...stylesOverride };
+  const { textStyles } = TextStyles();
+  const { containerStyles } = ContainerStyles();
 
   // Render content based on the data type
   const renderData = () => {
@@ -71,38 +72,27 @@ const DataTab: React.FC<DataTabProps> = ({
       case 'spotCommands':
         return data.map((item: SpotCommand) => (
           <CardItemWith_Icon
-          iconName={IconName.MONITOR}
+            iconName={IconName.MONITOR}
             view={SpotCommandCardContent(item)}
           />
         ));
       default:
         return (
-          <Text style={combinedStyles.noDataText}>{errorStrings.UNSUPPORTED_DATA_TYPE}</Text>
+          <Text style={textStyles.noDataText}>{errorStrings.UNSUPPORTED_DATA_TYPE}</Text>
         );
     }
   };
 
   return (
-    <View style={combinedStyles.tabContainer}>
+    <View style={containerStyles.container}>
       {data.length > 0 ? (
         renderData()
       ) : (
-        <Text style={combinedStyles.noDataText}>{noDataMessage}</Text>
+        <Text style={textStyles.noDataText}>{noDataMessage}</Text>
       )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  tabContainer: {
-    padding: 10,
-    backgroundColor: colors.white,
-  },
-  noDataText: {
-    textAlign: 'center',
-    fontSize: 14,
-    color: colors.lightGray,
-  },
-});
 
 export default DataTab;

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { IconName, Lable, Strings } from '../../assets/constants/Lable';
+import { IconName, Strings } from '../../assets/constants/Lable';
 import colors from '../../assets/color/colors';
+import { ButtonStyles } from '../../styles/ButtonStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
+import { InputStyles } from '../../styles/InputStyles';
 type SearchBarProps = {
     placeholder?: string;
     onSearch: (query: string) => void;
@@ -12,7 +16,10 @@ type SearchBarProps = {
 
 function CustomSearchBar({ placeholder = IconName.SEARCH, onSearch, onCancel, searchIcon }: SearchBarProps) {
     const [searchText, setSearchText] = useState<string>('');
-
+    const { buttonStyles } = ButtonStyles();
+    const { textStyles } = TextStyles();
+    const { inputStyles } = InputStyles();
+    const { containerStyles } = ContainerStyles();
     const handleSearch = (text: string) => {
         setSearchText(text);
         onSearch(text);
@@ -24,52 +31,23 @@ function CustomSearchBar({ placeholder = IconName.SEARCH, onSearch, onCancel, se
     };
 
     return (
-        <View style={styles.container}>
+        <View style={containerStyles.searchContainer}>
             <Icon name={searchIcon} size={20} color={colors.darkblack} />
             <TextInput
-                style={styles.input}
+                style={inputStyles.searchInput}
                 placeholder={placeholder}
                 value={searchText}
                 onChangeText={handleSearch}
                 autoCorrect={false}
             />
             {searchText.length > 0 && (
-                <TouchableOpacity onPress={handleCancel} style={styles.cancelButton}>
-                    <Text style={styles.cancelText}>{Strings.CANCLE}</Text>
+                <TouchableOpacity onPress={handleCancel} style={buttonStyles.searchCancelButton}>
+                    <Text style={textStyles.searchCancelText}>{Strings.CANCLE}</Text>
                 </TouchableOpacity>
             )}
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: colors.SoftGray,
-        padding: 8,
-        borderRadius: 8,
-        marginHorizontal: 16,
-        marginTop: 10,
-    },
-    icon: {
-        width: 20,
-        height: 20,
-        marginRight: 10,
-    },
-    input: {
-        flex: 1,
-        paddingVertical: 4,
-        paddingHorizontal: 8,
-        fontSize: 16,
-    },
-    cancelButton: {
-        paddingHorizontal: 8,
-    },
-    cancelText: {
-        color: colors.AppPrimaryColor,
-        fontSize: 16,
-    },
-});
 
 export default CustomSearchBar;
