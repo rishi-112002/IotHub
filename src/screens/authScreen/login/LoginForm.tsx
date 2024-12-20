@@ -60,7 +60,6 @@ function LoginForm() {
           value={userName}
           errorMessage={errors.userName}
           editable={true}
-          style={{ flex: 1, color: colors.PrimaryTextColor }}
           type='input'
           setTextInput={handleUserNameChange}
           required={false}
@@ -73,7 +72,6 @@ function LoginForm() {
           iconName={passwordVisible ? IconName.VISIBILITY : IconName.VISIBILITY_OFF}
           handleVisibility={handleVisibityClick}
           editable={true}
-          style={{ flex: 1, color: colors.PrimaryTextColor }}
           type='input'
           setTextInput={setPassword}
           required={false}
@@ -86,8 +84,6 @@ function LoginForm() {
             editable={false}
             type='dropdown'
             onPress={() => handleOpenModal()}
-            style={{ flex: 1, color: colors.PrimaryTextColor }}
-
             required={false}
           />
           <GenericModal

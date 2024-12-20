@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -6,15 +5,17 @@ import {
   Modal,
   TouchableOpacity,
   FlatList,
-  StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
 import CustomSearchBar from '../customSearchBar/CustomSearchBar';
-import fontSizes from '../../assets/fonts/FontSize';
 import { IconName, Strings } from '../../assets/constants/Lable';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { TextStyles } from '../../styles/TextStyles';
+import { ButtonStyles } from '../../styles/ButtonStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
 
 function GenericModal(props: {
   options: any[];
@@ -33,6 +34,7 @@ function GenericModal(props: {
     onOptionSelected,
   } = props;
   const [filteredOptions, setFilteredOptions] = useState(options);
+  console.log("option", options)
   const [searchVisible, setSearchVisible] = useState(false);
   const handleSelectOption = (item: any) => {
     Keyboard.dismiss();
@@ -40,6 +42,11 @@ function GenericModal(props: {
     onOptionSelected(item);
     setSearchVisible(false);
   };
+
+  const { containerStyles } = ContainerStyles();
+  const { styles } = ComponentStyles();
+  const { textStyles } = TextStyles();
+  const { buttonStyles } = ButtonStyles();
 
   const filterOptions = (text: string) => {
     setFilteredOptions(
@@ -51,9 +58,9 @@ function GenericModal(props: {
 
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
-      style={styles.item}
+      style={containerStyles.genralItem}
       onPress={() => handleSelectOption(item)}>
-      <Text style={styles.itemText}>{item[nameKey]}</Text>
+      <Text style={textStyles.generalItemText}>{item[nameKey]}</Text>
     </TouchableOpacity>
   );
 
@@ -67,21 +74,21 @@ function GenericModal(props: {
   }, [isVisible, options]);
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyles.NoInteernetScreenContainer}>
       <Modal transparent={true} animationType="slide" visible={isVisible}>
         <TouchableWithoutFeedback onPress={() => handleCloseModal()}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <View style={styles.modalheading}>
-                <Text style={styles.modalTitle}>{Strings.SELECT_OPTION}</Text>
+          <View style={containerStyles.modalContainer}>
+            <View style={containerStyles.modalContent}>
+              <View style={textStyles.generalModalHeading}>
+                <Text style={textStyles.modalTitle}>{Strings.SELECT_OPTION}</Text>
                 <View style={styles.modalheadingicon}>
                   <TouchableOpacity
-                    style={styles.closeButton}
+                    style={buttonStyles.generalCloseButton}
                     onPress={handleSearchClick}>
                     <Icon name={IconName.SEARCH} size={24} color={colors.SecondaryTextColor} />
                   </TouchableOpacity>
                   <TouchableOpacity
-                    style={styles.closeButton}
+                    style={buttonStyles.generalCloseButton}
                     onPress={() => handleCloseModal()}>
                     <Icon name={IconName.CANCLE} size={24} color={colors.SecondaryTextColor} />
                   </TouchableOpacity>
@@ -98,7 +105,7 @@ function GenericModal(props: {
                 data={filteredOptions}
                 renderItem={renderItem}
                 keyExtractor={item => item[valueKey]}
-                style={styles.list}
+                style={styles.generalList}
               />
             </View>
           </View>
@@ -108,61 +115,5 @@ function GenericModal(props: {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: colors.darkerTransparent,
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-  },
-  modalheading: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: colors.AppPrimaryColor
-  },
-  modalheadingicon: {
-    flexDirection: 'row',
-    columnGap: 30,
-  },
-  list: {
-    maxHeight: 300,
-    marginTop: 5,
-  },
-  item: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  itemText: {
-    fontSize: fontSizes.text,
-    color: colors.PrimaryTextColor
-  },
-  closeButton: {
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    color: 'white',
-    fontSize: 16,
-  },
-  selectedUnitText: {
-    marginTop: 20,
-    fontSize: 16,
-  },
-});
-
 export default GenericModal;
+

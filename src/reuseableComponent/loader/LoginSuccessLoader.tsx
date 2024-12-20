@@ -4,10 +4,14 @@ import colors from '../../assets/color/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import fontSizes from '../../assets/fonts/FontSize';
 import { IconName, Strings } from '../../assets/constants/Lable';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
 
 const SuccessLoader = () => {
     const circleScale = useRef(new Animated.Value(0)).current;
     const checkmarkOpacity = useRef(new Animated.Value(0)).current;
+    const { styles } = ComponentStyles();
+    const { containerStyles } = ContainerStyles();
 
     useEffect(() => {
         // First, scale up the circle
@@ -27,7 +31,7 @@ const SuccessLoader = () => {
     }, [circleScale, checkmarkOpacity]);
 
     return (
-        <View style={styles.container}>
+        <View style={containerStyles.loaderContainer}>
             {/* Animated Circle */}
             <Animated.View style={[styles.circle, { transform: [{ scale: circleScale }] }]}>
                 {/* Animated Checkmark */}
@@ -36,27 +40,10 @@ const SuccessLoader = () => {
                 </Animated.View>
             </Animated.View>
             <Text style={{ color: colors.blueDarkest, fontSize: fontSizes.text, fontWeight: "500" }}>
-             {Strings.SUCCESS}
+                {Strings.SUCCESS}
             </Text>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    circle: {
-        width: 70,
-        height: 70,
-        borderRadius: 50, // Makes the view a circle
-        borderWidth: 5,
-        borderColor: colors.blueDarkest,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
 
 export default SuccessLoader;

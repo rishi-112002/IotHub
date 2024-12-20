@@ -1,13 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { Text, View } from 'react-native';
+import React from 'react';
 import { Reader } from './DetailsCard';
-import fontSizes from '../../assets/fonts/FontSize';
 import CustomIcon from '../customIcons/CustomIcon';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { AppNavigationParams } from '../../navigation/NavigationStackList';
-import colors from '../../assets/color/colors';
 import { ImagePath, Strings } from '../../assets/constants/Lable';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
+import { CardStyles } from '../../styles/CardStyles';
+import { SpotlistTextComponent } from '../textComponent/SpotListTextComponent';
 
 export const ReaderCardContent = (
   reader: Reader,
@@ -15,18 +18,16 @@ export const ReaderCardContent = (
   handleDelete: (reader: any) => void,
 ) => {
   const navigation = useNavigation<NavigationProp<AppNavigationParams>>();
-
+  const { styles } = ComponentStyles();
+  const { cardStyles } = CardStyles();
+  const { textStyles } = TextStyles();
+  const { containerStyles } = ContainerStyles();
   return (
-    <View style={combinedStyles.infoContainer}>
+    <View style={[containerStyles.mainContainer, { marginStart: 10 }]}>
       {allowAction ? (
-        <>
-          <View
-            style={{
-              flexDirection: 'row',
-              columnGap: 10,
-              paddingRight: 10,
-            }}>
-            <Text style={combinedStyles.nameText}>{reader.name ||  Strings.NA}</Text>
+        <View style={styles.row}>
+          <Text style={textStyles.spotTitle}>{reader.name || Strings.NA}</Text>
+          <View style={containerStyles.spotIconContainer}>
             <CustomIcon
               iconPath={ImagePath.EDIT}
               onPress={() => {
@@ -38,74 +39,16 @@ export const ReaderCardContent = (
               onPress={() => handleDelete(reader.id)}
             />
           </View>
-        </>
+        </View>
       ) : (
-          <Text style={combinedStyles.nameText}>{reader.name || Strings.NA}</Text>
+        <Text style={textStyles.spotTitle}>{reader.name || Strings.NA}</Text>
       )}
-      <Text style={combinedStyles.ipText}>{reader.ip || Strings.NA}</Text>
-
-      <View style={combinedStyles.detailsContainer}>
-        <View style={combinedStyles.detailColumn}>
-          <Text style={combinedStyles.label}>{Strings.MODEL}:</Text>
-          <Text style={combinedStyles.detailText}>{reader.model || Strings.NA}</Text>
-        </View>
-        <View style={combinedStyles.detailColumn}>
-          <Text style={combinedStyles.label}>{Strings.TYPE}:</Text>
-          <Text style={combinedStyles.detailText}>{reader.type || Strings.NA}</Text>
-        </View>
-        <View style={combinedStyles.detailColumn}>
-          <Text style={combinedStyles.label}>{Strings.PORT}:</Text>
-          <Text style={combinedStyles.detailText}>{reader.port || Strings.NA}</Text>
-        </View>
+      <Text style={textStyles.statusText}>{reader.ip || Strings.NA}</Text>
+      <View style={cardStyles.cardRowConatiner}>
+        <SpotlistTextComponent name={Strings.MODEL} value={reader.model || Strings.NA} />
+        <SpotlistTextComponent name={Strings.TYPE} value={reader.type || Strings.NA} />
+        <SpotlistTextComponent name={Strings.PORT} value={reader.port || Strings.NA} />
       </View>
     </View>
   );
 };
-
-const combinedStyles = StyleSheet.create({
-  infoContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    paddingLeft: 10,
-  },
-  nameText: {
-    flex: 1,
-    marginTop: 1,
-    fontSize:fontSizes.title,
-    color: colors.SecondaryTextColor,
-  },
-  commandNameText: {
-    marginTop: 0,
-    fontSize:fontSizes.title,
-    color: colors.SecondaryTextColor,
-  },
-  ipText: {
-    marginTop: 3,
-    fontSize: fontSizes.smallText,
-    color: colors.SecondaryTextColor,
-  },
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  detailColumn: {
-    flex: 1,
-  },
-  label: {
-    fontSize: fontSizes.smallText,
-    color: colors.HelperTextColor,
-  },
-  detailText: {
-    fontSize:fontSizes.smallText,
-    color: colors.SecondaryTextColor,
-  },
-  noDataText: {
-    textAlign: 'center',
-    fontSize: fontSizes.text,
-    color: colors.lightGray,
-  },
-});

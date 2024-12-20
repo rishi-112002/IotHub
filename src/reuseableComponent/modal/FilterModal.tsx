@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Modal, TouchableOpacity, FlatList, StyleSheet, Keyboard } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, FlatList, Keyboard } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
 import CustomIcon from '../customIcons/CustomIcon';
 import CustomButton from '../customButton/CustomButton';
 import { IconName, Strings } from '../../assets/constants/Lable';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ButtonStyles } from '../../styles/ButtonStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 
 type FilterModalProps = {
@@ -52,8 +55,10 @@ const FilterModal: React.FC<FilterModalProps> = ({
     const [filteredOptions, setFilteredOptions] = useState(filters);
     let count = 0;
 
-
-
+    const { containerStyles } = ContainerStyles();
+    const { styles } = ComponentStyles();
+    const { textStyles } = TextStyles();
+    const { buttonStyles } = ButtonStyles();
     useEffect(() => {
         if (isVisible) {
             setFilteredOptions(filters);
@@ -63,7 +68,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
     const handleSelectFilter = useCallback((option: { name: string; id: string, path: any }) => {
         Keyboard.dismiss();
         onOptionSelected(option);
-        if (option.id ===  Strings.FROM_DATE|| option.id === Strings.TO_DATE) {
+        if (option.id === Strings.FROM_DATE || option.id === Strings.TO_DATE) {
             openCalendarModal();
         } else {
             setGenericmodalVisible(true);
@@ -83,8 +88,8 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
     const renderItem = useCallback(({ item }: { item: { name: string; id: string, path: any } }) => (
         <TouchableOpacity style={styles.item} onPress={() => handleSelectFilter(item)}>
-            <View style={styles.itemTextContainer}>
-                <Text style={styles.itemText}>
+            <View style={containerStyles.itemTextContainer}>
+                <Text style={textStyles.generalItemText}>
                     {item.name}
                     {item.id === Strings.FROM_DATE && DateFromValue ? `: ${DateFromValue}` : ''}
                     {item.id === Strings.TO_DATE && ToDateValue ? `: ${ToDateValue}` : ''}
@@ -98,7 +103,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                     (item.id === Strings.NAME && name.name) ||
                     (item.id === Strings.DIRECTION && direction.name)) && (
                         <TouchableOpacity
-                            style={styles.clearButton}
+                            style={buttonStyles.filterClearButton}
                             onPress={() => handleClearSelection(item.id)}
                         >
                             <Icon name={IconName.CLOSE} size={15} color={colors.redDarkest} />
@@ -128,24 +133,21 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
     return (
         <Modal transparent={true} animationType="slide" visible={isVisible} onRequestClose={handleCloseModal}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <View style={styles.modalHeading}>
-                        <Text style={styles.modalTitle}>{Strings.SELECT_FILTER}</Text>
+            <View style={containerStyles.modalContainer}>
+                <View style={containerStyles.modalContent}>
+                    <View style={textStyles.modalHeading}>
+                        <Text style={textStyles.modalTitle}>{Strings.SELECT_FILTER}</Text>
                         <View style={{ flexDirection: 'row', columnGap: 10, padding: 5 }}>
 
                             <TouchableOpacity style={{
                                 backgroundColor: colors.white,
                                 paddingHorizontal: 5
                             }} onPress={handleReset}>
-                                <Text style={{
-                                    color: colors.AppPrimaryColor,
-                                    fontSize: fontSizes.text, fontWeight: "500"
-                                }}>
+                                <Text style={textStyles.resetText}>
                                     {Strings.RESET}
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.closeButton} onPress={handleCloseModal}>
+                            <TouchableOpacity onPress={handleCloseModal}>
                                 <Icon name={IconName.CANCLE} size={24} color={colors.SecondaryTextColor} />
                             </TouchableOpacity>
                         </View>
@@ -155,7 +157,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
                         data={filteredOptions}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.id}
-                        style={styles.list}
+                        style={styles.generalList}
                     />
                     <CustomButton label={Strings.FILTER} onPress={handleFilterClick} />
                 </View>
@@ -163,65 +165,5 @@ const FilterModal: React.FC<FilterModalProps> = ({
         </Modal>
     );
 };
-
-const styles = StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        backgroundColor: colors.darkerTransparent,
-    },
-    modalContent: {
-        backgroundColor: colors.white,
-        padding: 20,
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-    },
-    modalHeading: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    modalTitle: {
-        fontSize: fontSizes.heading,
-        fontWeight: '500',
-        color: colors.AppPrimaryColor,
-    },
-    modalheading: {
-        flexDirection: "row",
-        justifyContent: "space-between"
-    },
-    list: {
-        marginTop: 5,
-    },
-    item: {
-        padding: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-        flexDirection: "row",
-        justifyContent: "space-between"
-    },
-
-    closeButton: {
-
-    },
-    itemTextContainer: {
-        flexDirection: 'row',
-        alignItems: 'center', // Align text and button in the same row
-        justifyContent: 'space-between', // Space out the text and the close button
-    },
-    clearButton: {
-        marginLeft: 10, // Add spacing between the text and the close button
-        backgroundColor: colors.DividerColor, // Optional: Add a background color for the button
-        borderRadius: 15, // Optional: Make it circular
-        padding: 2, // Add padding for better touch experience
-    },
-    itemText: {
-        fontSize: fontSizes.text,
-        color: colors.darkblack,
-        fontWeight: '400',
-        flexShrink: 1, // Ensure the text doesn't overflow
-    },
-});
-
 export default FilterModal;
+

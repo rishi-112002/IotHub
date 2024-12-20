@@ -123,14 +123,15 @@ function AllEventLogsScreen() {
                         onClose={closeCalendarModal}
                         onDateSelect={handleDateSelect}
                     />
-                    {GenericmodalVisible && <GenericModal
-                        options={getOptions()}
-                        isVisible={GenericmodalVisible}
-                        handleCloseModal={() => setGenericmodalVisible(false)}
-                        onOptionSelected={handleOptionSelect}
-                        nameKey={Strings.NAME_S}
-                        valueKey={Strings.VALUE}
-                    />}
+                    {GenericmodalVisible &&
+                        <GenericModal
+                            options={getOptions()}
+                            isVisible={GenericmodalVisible}
+                            handleCloseModal={() => setGenericmodalVisible(false)}
+                            onOptionSelected={handleOptionSelect}
+                            nameKey={Strings.NAME_s}
+                            valueKey={Strings.ID}
+                        />}
                 </View>
             }
 

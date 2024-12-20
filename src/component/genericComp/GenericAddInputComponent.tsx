@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
 import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 import { Strings } from '../../assets/constants/Lable';
-import colors from '../../assets/color/colors';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { TextStyles } from '../../styles/TextStyles';
+import { ButtonStyles } from '../../styles/ButtonStyles';
+import { CardStyles } from '../../styles/CardStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
 
 function GenericAddInputComponent(props: {
   formData: any;
@@ -15,7 +19,7 @@ function GenericAddInputComponent(props: {
   handleNameChange: any;
   handleDriverTagChange: any
 }) {
-  const { formData, handleInputChange, isActive, onChangeValue, errors, id, handleDriverTagChange,handleNameChange } = props;
+  const { formData, handleInputChange, isActive, onChangeValue, errors, id, handleDriverTagChange, handleNameChange } = props;
   return (
     <View>
       <CustomTextInput
@@ -23,7 +27,6 @@ function GenericAddInputComponent(props: {
         value={formData.name}
         editable={!isActive || !id}
         type='input'
-        style={style.input}
         errorMessage={errors.name}
         keyboardType="default"
         returnKeyType="next"
@@ -41,7 +44,6 @@ function GenericAddInputComponent(props: {
         value={formData.delay}
         editable={!isActive || !id}
         type='input'
-        style={style.input}
         errorMessage={errors.delay}
         keyboardType="numeric"
         returnKeyType="next"
@@ -50,7 +52,6 @@ function GenericAddInputComponent(props: {
       />
       <CustomTextInput
         label={Strings.VALID_ID_STATE}
-        style={style.input}
         value={formData.validId}
         editable={!isActive || !id}
         type='input'
@@ -61,7 +62,6 @@ function GenericAddInputComponent(props: {
 
       <CustomTextInput
         label={Strings.MIN_TAG_COUNT}
-        style={style.input}
         value={formData.minTagCount}
         keyboardType="numeric"
         editable={!isActive || !id}
@@ -72,10 +72,4 @@ function GenericAddInputComponent(props: {
     </View>
   );
 }
-const style = StyleSheet.create({
-  input: {
-    flex: 1,
-    color: colors.PrimaryTextColor
-  },
-});
 export default GenericAddInputComponent;

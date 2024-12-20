@@ -1,9 +1,7 @@
-/* eslint-disable react-native/no-inline-styles */
 import { useCallback, useState } from 'react';
 import {
   Alert,
   Animated,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -17,8 +15,10 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { logoutUser } from '../../reducer/Login/LoginAction';
 import React from 'react';
 import CustomIcon from '../customIcons/CustomIcon';
-import fontSizes from '../../assets/fonts/FontSize';
-import { IconName, Lable, Strings } from '../../assets/constants/Lable';
+import { IconName, Strings } from '../../assets/constants/Lable';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 function CustomHeader(props: {
   buCode: any;
@@ -38,6 +38,9 @@ function CustomHeader(props: {
   const openDrawer = useCallback(() => {
     Navigations.dispatch(DrawerActions.toggleDrawer());
   }, [Navigations]);
+  const { styles } = ComponentStyles();
+  const { textStyles } = TextStyles();
+  const { containerStyles } = ContainerStyles();
 
   const handleLogout = async () => {
     Alert.alert(
@@ -71,8 +74,8 @@ function CustomHeader(props: {
         right: 0,
         height: 60
       }}>
-      <View style={styles.headerContainer}>
-        <View style={styles.leftSection}>
+      <View style={containerStyles.subHeaderContainer}>
+        <View style={containerStyles.leftSectionContainer}>
           <TouchableOpacity onPress={openDrawer}>
             <MaterialIcons
               name={IconName.MENU}
@@ -81,16 +84,16 @@ function CustomHeader(props: {
               style={styles.burgerIcon}
             />
           </TouchableOpacity>
-          <Text style={styles.appName}>{title}</Text>
+          <Text style={textStyles.screenName}>{title}</Text>
         </View>
         {searchIcon && filterIcon &&
 
-          <View style={styles.rightSection}>
+          <View style={containerStyles.headerIconContainer}>
             <CustomIcon iconPath={searchIcon} onPress={onSearchPress} style={{ tintColor: colors.SecondaryTextColor }} />
             <View style={styles.iconWrapper}>
               {filterCount > 0 &&
-                <View style={styles.filterCountBadge}>
-                  <Text style={styles.filterCountText}>{filterCount}</Text>
+                <View style={containerStyles.filterCountBadgeContainer}>
+                  <Text style={textStyles.filterCountText}>{filterCount}</Text>
                 </View>}
               <CustomIcon iconPath={filterIcon} onPress={onFilterPress} style={{ tintColor: colors.SecondaryTextColor }} />
             </View>
@@ -108,67 +111,5 @@ function CustomHeader(props: {
     </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    backgroundColor: colors.white,
-    height: 60,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  leftSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  burgerIcon: {
-    marginRight: 15,
-  },
-  logo: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-    tintColor: colors.darkblack,
-  },
-  iconWrapper: {
-    position: 'relative',
-  },
-  filterCountBadge: {
-    position: 'absolute',
-    top: -5,
-    right: -5,
-    backgroundColor: colors.redDarkest,
-    borderRadius: 10,
-    height: 15,
-    width: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  filterCountText: {
-    color: colors.white,
-    fontSize: fontSizes.vSmallText,
-    fontWeight: 'bold',
-  },
-  appName: {
-    fontSize: 18,
-    color: colors.darkblack,
-    fontWeight: 'bold',
-  },
-  rightSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: 15,
-  },
-  username: {
-    color: colors.darkblack,
-    marginRight: 10,
-    fontSize: 16,
-  },
-});
 export default CustomHeader;
+

@@ -1,8 +1,7 @@
-import { View, ScrollView, StyleSheet, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import React from 'react';
 import SequentialBouncingLoader from '../../reuseableComponent/loader/BallBouncingLoader';
 import CustomTextInput from '../../reuseableComponent/customTextInput/CustomTextInput';
-import colors from '../../assets/color/colors';
 import GenericAddComponentDropDowns from './GenericAddComponentDropDowns';
 import GenericModal from '../../reuseableComponent/modal/GenralModal';
 import CustomButton from '../../reuseableComponent/customButton/CustomButton';
@@ -12,6 +11,7 @@ import SwitchWithLabel from '../../reuseableComponent/switch/SwitchWithLable';
 import { useNetwork } from '../../contextApi/NetworkContex';
 import { Lable, Strings } from '../../assets/constants/Lable';
 import { NoInternetScreen } from '../../reuseableComponent/defaultScreen/NoInternetScreen';
+import { ContainerStyles } from '../../styles/ContainerStyles';
 
 function GenericAddForm(props: { id: any }) {
   const { id } = props;
@@ -50,21 +50,22 @@ function GenericAddForm(props: { id: any }) {
     handleNameChange,
     handleDelayChange
   } = GenericAddFunction({ id });
+  const { containerStyles } = ContainerStyles()
   if (smartControllerLoader || displayLoader || readerLoader || loader) {
     return (
-      <View style={styles.loaderContainer}>
+      <View style={containerStyles.mainContainer}>
         <SequentialBouncingLoader />
       </View>
     );
   }
   return (
-    <>
+    <View style={containerStyles.mainContainer}>
       {isConnected ? (
         <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          style={styles.flexContainer}>
+          contentContainerStyle={containerStyles.scrollContainer}
+        >
           {!smartControllerLoader ? (
-            <View style={styles.contentContainer}>
+            <View >
               <GenericAddInputComponent
                 formData={formData}
                 isActive={isActiveEnabled}
@@ -100,7 +101,7 @@ function GenericAddForm(props: { id: any }) {
                 <CustomTextInput
                   label={Lable.DRIVER_TAG_TIMEOUT}
                   value={formData.driverTagTimeOut}
-                  style={styles.flexContainer}
+
                   type="input"
                   editable={!isActiveEnabled || !id}
                   errorMessage={errors.driverTagTimeOut}
@@ -122,7 +123,7 @@ function GenericAddForm(props: { id: any }) {
                   value={formData.sequrityTagTimeOut}
                   editable={!isActiveEnabled || !id}
                   type="input"
-                  style={styles.flexContainer}
+
                   errorMessage={errors.sequrityDelay}
                   keyboardType="numeric"
                   setTextInput={(value: any) =>
@@ -139,7 +140,7 @@ function GenericAddForm(props: { id: any }) {
               {isWeightBridgeEntryEnabled && (
                 <View>
                   <CustomTextInput
-                    style={styles.flexContainer}
+
                     value={selectedWeighBridge.name}
                     onPress={() => handleFocus(Strings.WEIGHBRIDGE_s)}
                     errorMessage={errors.weighBridge}
@@ -150,7 +151,7 @@ function GenericAddForm(props: { id: any }) {
                     editable={!isActiveEnabled || !id}
                   />
                   <CustomTextInput
-                    style={styles.flexContainer}
+
                     value={selectedDirection.id}
                     onPress={() => handleFocus(Strings.DIRECTION_s)}
                     errorMessage={errors.direction}
@@ -173,39 +174,22 @@ function GenericAddForm(props: { id: any }) {
               />
               <View>
                 <CustomButton
-                  label={id ? Lable.UPDATE :Lable.SAVE}
+                  label={id ? Lable.UPDATE : Lable.SAVE}
                   onPress={handleSaveData}
                   disabled={!!id && !!editButtonOpacity}
                 />
               </View>
             </View>
           ) : (
-            <View style={styles.loaderContainer}>
+            <View style={containerStyles.mainContainer}>
               <SequentialBouncingLoader />
             </View>
           )}
         </ScrollView>
       ) : (
-       <NoInternetScreen/>
+        <NoInternetScreen />
       )}
-    </>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  loaderContainer: {
-    flex: 1,
-  },
-  scrollContainer: {
-    backgroundColor: colors.white,
-  },
-  flexContainer: {
-    flex: 1,
-    color: colors.PrimaryTextColor
-  },
-  contentContainer: {
-    padding: 20,
-  },
-});
-
 export default GenericAddForm;

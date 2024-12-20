@@ -97,7 +97,6 @@ export const Strings = {
     CONFIRM_RFID_DELETE: "Are you sure you want to delete this RFID?",
     NO_SEARCH_FOUND_FOR: " No results found for",
     DISPLAY_A: 'displayA',
-    DIRECTION_A: "Direction A",
     UNIDIRECTIONAL_WEIGHBRIDGE_3_READER: "UNIDIRECTIONAL_WEIGHBRIDGE_3_READER",
     RFID_READERS: "RFID Readers",
     STRING: "string",

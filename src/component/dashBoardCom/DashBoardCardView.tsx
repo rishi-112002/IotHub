@@ -1,9 +1,12 @@
 import React, { useCallback, useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import fontSizes from "../../assets/fonts/FontSize";
-import colors from "../../assets/color/colors";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SegmentedButton } from "../../reuseableComponent/customButton/SegmentedButton";
 import { Strings } from "../../assets/constants/Lable";
+import { ComponentStyles } from "../../styles/ComponentStyles";
+import { TextStyles } from "../../styles/TextStyles";
+import { ButtonStyles } from "../../styles/ButtonStyles";
+import { CardStyles } from "../../styles/CardStyles";
+import { ContainerStyles } from "../../styles/ContainerStyles";
 
 function DashboardCardView(props: {
     connectedCards: { icon: string; name: string; count: number; onPress: any, countColor: string, backgroundColor: string }[];
@@ -15,6 +18,11 @@ function DashboardCardView(props: {
     card: { icon: string; name: string; count: number; onPress: any, countColor: string, backgroundColor: string }[];
 }) {
     const { connectedCards, notConnectedCards, card, heading, totalCount, ViewAllPress, type } = props;
+    const { styles } = ComponentStyles();
+    const { textStyles } = TextStyles();
+    const { buttonStyles } = ButtonStyles();
+    const { cardStyles } = CardStyles();
+    const { containerStyles } = ContainerStyles()
     const [selectedValue, setSelectedValue] = useState(Strings.CONNECTED_S);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -26,10 +34,10 @@ function DashboardCardView(props: {
     const options = [Strings.CONNECTED, Strings.NOT_CONNECTED]
     const renderSpot = useCallback(
         ({ item }: { item: any }) => (
-            <TouchableOpacity style={styles.card} onPress={item.onPress}>
+            <TouchableOpacity style={cardStyles.card} onPress={item.onPress}>
                 <Text
                     style={[
-                        styles.cardCount,
+                        cardStyles.cardCount,
                         {
                             color: item.countColor
                         },
@@ -37,7 +45,7 @@ function DashboardCardView(props: {
                 >
                     {item.count}
                 </Text>
-                <Text style={styles.cardTitle}>{item.name}</Text>
+                <Text style={textStyles.cardTitle}>{item.name}</Text>
             </TouchableOpacity>
         ),
         [selectedValue]
@@ -46,20 +54,20 @@ function DashboardCardView(props: {
 
 
     return (
-        <View style={styles.container}>
+        <View style={containerStyles.container}>
             {/* Header Section */}
             <View style={styles.headerRow}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between", flex: 1 }}>
+                <View style={containerStyles.SubContainer}>
                     <View>
 
-                        <Text style={styles.heading}>{heading}</Text>
-                        <Text style={{ fontSize: fontSizes.smallText }}>{Strings.TOTAL}: {totalCount}</Text>
+                        <Text style={textStyles.heading}>{heading}</Text>
+                        <Text style={textStyles.totalText}>{Strings.TOTAL}: {totalCount}</Text>
                     </View>
                     {
                         type === "eventLog" ?
-                            <View style={{ justifyContent: "center", alignItems: "center", alignContent: "center" }}>
-                                <TouchableOpacity style={styles.viewAllButton} onPress={ViewAllPress}>
-                                    <Text style={styles.viewAllText}>{Strings.VIEW_ALL}</Text>
+                            <View style={styles.SubView}>
+                                <TouchableOpacity style={buttonStyles.viewAllButton} onPress={ViewAllPress}>
+                                    <Text style={textStyles.viewAllText}>{Strings.VIEW_ALL}</Text>
                                 </TouchableOpacity>
                             </View>
                             :
@@ -82,7 +90,7 @@ function DashboardCardView(props: {
                 data={type === "useability" ? card : selectedValue === Strings.CONNECTED_S ? connectedCards : notConnectedCards}
                 numColumns={2} // Two cards per row
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.cardRow}
+                contentContainerStyle={cardStyles.cardRow}
                 renderItem={renderSpot}
                 keyExtractor={(_item, index) => index.toString()}
             />
@@ -90,8 +98,8 @@ function DashboardCardView(props: {
             {/* View All Button */}
             {type !== "eventLog" &&
 
-                <TouchableOpacity style={styles.viewAllButton} onPress={ViewAllPress}>
-                    <Text style={styles.viewAllText}>{Strings.VIEW_ALL}</Text>
+                <TouchableOpacity style={buttonStyles.viewAllButton} onPress={ViewAllPress}>
+                    <Text style={textStyles.viewAllText}>{Strings.VIEW_ALL}</Text>
                 </TouchableOpacity>
             }
         </View>
@@ -99,58 +107,3 @@ function DashboardCardView(props: {
 }
 
 export default DashboardCardView;
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-    },
-    headerRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 10,
-    },
-    heading: {
-        fontSize: fontSizes.heading,
-        fontWeight: "bold",
-        color: "#000",
-    },
-    segmentedButton: {
-        padding: 0,
-    },
-    cardRow: {
-        alignItems: "center",
-        paddingHorizontal: 0,
-    },
-    card: {
-        width: "45%", // Each card takes 45% of the row width
-        borderRadius: 10,
-        paddingHorizontal: 15,
-        backgroundColor: colors.DividerColor,
-        paddingTop: 15,
-        paddingBottom: 10,
-        margin: 5, // Small margin for spacing
-        alignItems: "center",
-        justifyContent: "center",
-        marginHorizontal: 10,
-        height: "80%"
-    },
-    cardTitle: {
-        fontSize: fontSizes.text,
-        fontWeight: "500",
-        color: colors.SecondaryTextColor,
-        marginTop: 5,
-        textAlign: "center",
-    },
-    cardCount: {
-        fontSize: fontSizes.subheader,
-        fontWeight: "bold",
-    },
-    viewAllButton: {
-        alignSelf: "flex-end",
-    },
-    viewAllText: {
-        color: colors.AppPrimaryColor,
-        fontSize: fontSizes.text,
-        fontWeight: "500",
-    },
-});

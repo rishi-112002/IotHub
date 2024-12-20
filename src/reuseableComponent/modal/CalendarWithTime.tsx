@@ -1,6 +1,7 @@
 import DateTimePicker from 'react-native-ui-datepicker';
 import React from 'react';
-import { Modal, StyleSheet, View } from 'react-native';
+import { Modal, View } from 'react-native';
+import { ContainerStyles } from '../../styles/ContainerStyles';
 import colors from '../../assets/color/colors';
 
 export default function CustomDateTimePicker(props: { visible: any, onClose: any, onDateSelect: any }) {
@@ -16,12 +17,16 @@ export default function CustomDateTimePicker(props: { visible: any, onClose: any
             minute: "numeric"
         });
     };
-
+    const { containerStyles } = ContainerStyles();
     return (
         <Modal animationType="fade" transparent={true} visible={visible} onRequestClose={onClose}>
-            <View style={styles.modalContainer}>
-                <View style={styles.container}>
+            <View style={containerStyles.calendarModalContainer}>
+                <View style={containerStyles.CalendarContainer}>
                     <DateTimePicker
+                        calendarTextStyle={{ color: colors.PrimaryTextColor }}
+                        headerTextStyle={{ color: colors.PrimaryTextColor }}
+                        todayTextStyle={{ color: colors.AppPrimaryColor }}
+                        weekDaysTextStyle={{ color: colors.PrimaryTextColor }}
                         mode="single"
                         initialView="day"
                         timePicker={true}
@@ -39,19 +44,3 @@ export default function CustomDateTimePicker(props: { visible: any, onClose: any
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-        backgroundColor:colors.BabyBlue,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: colors.gray,
-    },
-    modalContainer: {
-        flex: 1,
-        padding: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colors.darkerTransparent,  // Darker transparent background
-    },
-});

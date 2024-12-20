@@ -4,12 +4,13 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  StyleSheet,
 } from 'react-native';
 import colors from '../../assets/color/colors';
-import fontSizes from '../../assets/fonts/FontSize';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { IconName, Strings } from '../../assets/constants/Lable';
+import { ComponentStyles } from '../../styles/ComponentStyles';
+import { ContainerStyles } from '../../styles/ContainerStyles';
+import { TextStyles } from '../../styles/TextStyles';
 
 function ScrollableBadges(props: {
   filterCount: any;
@@ -41,6 +42,9 @@ function ScrollableBadges(props: {
   const [badgeList, setBadgeList] = useState(
     badges.filter((badge: any) => badge.value),
   );
+  const { containerStyles } = ContainerStyles();
+  const { styles } = ComponentStyles();
+  const { textStyles } = TextStyles();
   useEffect(() => {
     // Filter out entries where the value is empty or null and update the badgeList
     setBadgeList(badges.filter((badge: { value: any }) => badge.value));
@@ -83,14 +87,13 @@ function ScrollableBadges(props: {
   return (
     <ScrollView
       horizontal
-      style={styles.scrollContainer}
+      style={containerStyles.badgeScrollContainer}
       showsHorizontalScrollIndicator={false}>
       {badgeList.map((badge: any, index: any) => (
-        <View key={index} style={styles.badgeContainer}>
-          <Text style={styles.badgeText}>
+        <View key={index} style={containerStyles.badgeContainer}>
+          <Text style={textStyles.badgeText}>
             {badge.key === Strings.CONNECTIVITY ? ' ' : `${badge.key};`} {badge.value}
           </Text>
-
           <TouchableOpacity onPress={() => removeBadge(badge.key)}>
             <Icon name={IconName.CANCLE} size={15} color={colors.blueBase} />
           </TouchableOpacity>
@@ -99,37 +102,5 @@ function ScrollableBadges(props: {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    backgroundColor: colors.white,
-  },
-  badgeContainer: {
-    marginTop: 10,
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.blueBase,
-    borderRadius: 20,
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    marginRight: 10,
-    position: 'relative',
-    flexDirection: 'row',
-    columnGap: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeText: {
-    fontSize: fontSizes.smallText,
-    textAlign: 'center',
-    color: colors.blueDarkest,
-  },
-  closeIcon: {
-    fontSize: fontSizes.vSmallText,
-    color: colors.blueDarkest,
-  },
-});
 
 export default ScrollableBadges;

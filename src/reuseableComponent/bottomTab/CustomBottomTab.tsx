@@ -1,9 +1,10 @@
-import React, { CustomComponentPropsWithRef, useContext, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Image, View, Text, StyleSheet, Animated } from 'react-native';
+import { Image, View, Text, Animated } from 'react-native';
 import fontSizes from '../../assets/fonts/FontSize';
 import colors from '../../assets/color/colors';
 import { ScrollContext } from '../../contextApi/AnimationContext';
+import { ContainerStyles } from '../../styles/ContainerStyles';
 
 // Define the Tab Navigator
 const Tab = createBottomTabNavigator();
@@ -30,12 +31,12 @@ function CustomBottomTabNavigator({
   activeTintColor = colors.blueBase,
   inactiveTintColor = colors.gray,
 }: CustomBottomTabNavigatorProps) {
-  const { setScrollY ,translateY} = useContext(
+  const { setScrollY, translateY } = useContext(
     ScrollContext,
   );
   const scrollY = useRef(new Animated.Value(0)).current;
   setScrollY(scrollY);
-  
+  const { containerStyles } = ContainerStyles();
 
   return (
     <Tab.Navigator
@@ -45,7 +46,7 @@ function CustomBottomTabNavigator({
         tabBarActiveTintColor: activeTintColor,
         tabBarInactiveTintColor: inactiveTintColor,
         tabBarStyle: [
-          styles.tabBarContainer,
+          containerStyles.tabBarContainer,
           { transform: [{ translateY }] },
         ],
         tabBarIcon: ({ focused }) => {
@@ -88,23 +89,4 @@ function CustomBottomTabNavigator({
     </Tab.Navigator>
   );
 };
-const styles = StyleSheet.create({
-  tabBarContainer: {
-    height: 60,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    position: 'absolute',
-    overflow: 'hidden',
-  },
-  tabLabel: {
-    fontSize: 14,
-    color: colors.darkblack,
-  },
-  activeTabLabel: {
-    color: colors.redBase,
-    fontWeight: "bold",
-  },
-});
-
-
 export default CustomBottomTabNavigator;
