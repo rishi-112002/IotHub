@@ -52,7 +52,8 @@ function EditRfidScreen() {
   return (
     <>
       {isConnected ? (
-        <ScrollView contentContainerStyle={{backgroundColor: colors.white}}>
+        <ScrollView
+          contentContainerStyle={{backgroundColor: colors.white, flex: 1}}>
           {Loader || smartControllerLoader ? (
             <LoadingModal visible={Loader} message={Strings.Loader_Messsage} />
           ) : (
